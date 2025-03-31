@@ -1,0 +1,18 @@
+@import "tailwindcss";
+
+
+@layer base {
+    input {
+        padding: 0.25rem .5rem;
+        border-radius: 0.5rem;
+        border: 1px solid #ccc;
+    }
+
+    a {
+        text-decoration: underline;
+        color: #007bff;
+        &:hover {
+            color: rgba(0, 123, 255, 0.8);
+        }
+    }
+}

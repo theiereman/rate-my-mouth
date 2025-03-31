@@ -22,12 +22,14 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <header>
-    <%= render "layouts/navbar" %>
-    <%= render "shared/flash" %>
-  </header>
 
-  <body>
-    <%= yield %>
+  <body class="p-6">
+    <header>
+      <%= render "layouts/navbar" if user_signed_in? %>
+      <%= render "shared/flash" %>
+    </header>
+    <%= tag.main class: "container mx-auto px-5 #{"mt-10" if user_signed_in?}" do %>
+      <%= yield %>
+    <% end %>
   </body>
 </html>
