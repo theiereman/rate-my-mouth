@@ -22,6 +22,11 @@
     <%= javascript_importmap_tags %>
   </head>
 
+  <header>
+    <%= render "layouts/navbar" %>
+    <%= render "shared/flash" %>
+  </header>
+
   <body>
     <%= yield %>
   </body>

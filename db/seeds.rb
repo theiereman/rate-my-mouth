@@ -7,3 +7,7 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+
+password = SecureRandom.base36(46)
+puts "Admin generated password: #{password}"
+User.create(email: "debug@mail.com", password: password, password_confirmation: password)
