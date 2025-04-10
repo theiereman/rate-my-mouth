@@ -6,7 +6,7 @@ class RecipesController < ApplicationController
   # GET /recipes
   def index
     @recipes = Recipe.all
-    render inertia: 'Recipe/Index', props: {
+    render inertia: "Recipe/Index", props: {
       recipes: @recipes.map do |recipe|
         serialize_recipe(recipe)
       end
@@ -15,7 +15,7 @@ class RecipesController < ApplicationController
 
   # GET /recipes/1
   def show
-    render inertia: 'Recipe/Show', props: {
+    render inertia: "Recipe/Show", props: {
       recipe: serialize_recipe(@recipe)
     }
   end
@@ -23,14 +23,14 @@ class RecipesController < ApplicationController
   # GET /recipes/new
   def new
     @recipe = Recipe.new
-    render inertia: 'Recipe/New', props: {
+    render inertia: "Recipe/New", props: {
       recipe: serialize_recipe(@recipe)
     }
   end
 
   # GET /recipes/1/edit
   def edit
-    render inertia: 'Recipe/Edit', props: {
+    render inertia: "Recipe/Edit", props: {
       recipe: serialize_recipe(@recipe)
     }
   end
@@ -38,6 +38,7 @@ class RecipesController < ApplicationController
   # POST /recipes
   def create
     @recipe = Recipe.new(recipe_params)
+    @recipe.user = current_user
 
     if @recipe.save
       redirect_to @recipe, notice: "Recipe was successfully created."
@@ -69,12 +70,25 @@ class RecipesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def recipe_params
-      params.require(:recipe).permit(:name, :url)
+      params.expect(recipe: [ :name, :url ])
     end
 
     def serialize_recipe(recipe)
+      p recipe.as_json
       recipe.as_json(only: [
         :id, :name, :url
-      ])
+      ]).merge(user: {
+        id: recipe.user.id,
+        username: recipe.user.username
+      }
+      ).merge({
+        comments: recipe.comments.map do |comment|
+          {
+            id: comment.id,
+            content: comment.content,
+            user: comment.user.as_json
+          }
+        end
+      })
     end
 end
