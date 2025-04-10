@@ -1,4 +1,6 @@
+import { Link } from "@inertiajs/react";
+
 export default function HomeButton() {
   //TODO: replace with logo of the app
-  return <a href="/">RateMyMouth</a>;
+  return <Link href="/">RateMyMouth</Link>;
 }

@@ -13,11 +13,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <Navbar />
         <UserActions />
       </header>
-      <article>
+      <main>
         {flash.alert && <div className="alert">{flash.alert}</div>}
         {flash.notice && <div className="notice">{flash.notice}</div>}
         {children}
-      </article>
+      </main>
       <footer></footer>
     </main>
   );

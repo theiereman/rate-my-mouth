@@ -1,7 +1,7 @@
-import { RecipeType } from './types'
+import { RecipeType } from "./types";
 
 interface RecipeProps {
-  recipe: RecipeType
+  recipe: RecipeType;
 }
 
 export default function Recipe({ recipe }: RecipeProps) {
@@ -16,5 +16,5 @@ export default function Recipe({ recipe }: RecipeProps) {
         {recipe.url?.toString()}
       </p>
     </div>
-  )
+  );
 }

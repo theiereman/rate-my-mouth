@@ -8,7 +8,7 @@ class RecipesController < ApplicationController
     @recipes = Recipe.all
     render inertia: "Recipe/Index", props: {
       recipes: @recipes.map do |recipe|
-        serialize_recipe(recipe)
+        serialize_recipe_full(recipe)
       end
     }
   end
@@ -16,7 +16,7 @@ class RecipesController < ApplicationController
   # GET /recipes/1
   def show
     render inertia: "Recipe/Show", props: {
-      recipe: serialize_recipe(@recipe)
+      recipe: serialize_recipe_full(@recipe)
     }
   end
 
@@ -74,9 +74,14 @@ class RecipesController < ApplicationController
     end
 
     def serialize_recipe(recipe)
-      p recipe.as_json
       recipe.as_json(only: [
         :id, :name, :url
+      ])
+    end
+
+    def serialize_recipe_full(recipe)
+      recipe.as_json(only: [
+        :id, :name, :url, :created_at, :updated_at
       ]).merge(user: {
         id: recipe.user.id,
         username: recipe.user.username

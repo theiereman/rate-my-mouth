@@ -1,8 +1,5 @@
 @import "tailwindcss";
 
-@plugin "@tailwindcss/typography";
-@plugin "@tailwindcss/forms";
-
 html,
 body {
   height: 100%;
