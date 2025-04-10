@@ -1,5 +1,6 @@
 import { useForm } from "@inertiajs/react";
 import { CommentableType } from "./types";
+import { COMMENTS_PLACEHOLDERS } from "../../helpers/commentsPlaceholders";
 
 export default function CommentForm({
   commentableType,
@@ -24,7 +25,11 @@ export default function CommentForm({
       <input
         className="flex-1 border border-gray-300 rounded-md py-1 px-2 me-2 placeholder:italic"
         type="text"
-        placeholder="Ajouter un commentaire..."
+        placeholder={`${
+          COMMENTS_PLACEHOLDERS[
+            Math.floor(Math.random() * COMMENTS_PLACEHOLDERS.length)
+          ]
+        }...`}
         value={data.content}
         onChange={(e) => setData("content", e.target.value)}
       />
