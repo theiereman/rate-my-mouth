@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :users
   concern :commentable do
     resources :comments, only: [ :create, :update, :destroy ]
   end
