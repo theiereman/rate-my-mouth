@@ -14,8 +14,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <UserActions />
       </header>
       <main className="mx-auto md:w-2/3 w-full px-8 pt-8">
-        {flash.alert && <div className="alert">{flash.alert}</div>}
-        {flash.notice && <div className="notice">{flash.notice}</div>}
+        {flash.alert && <div className="text-red-600">{flash.alert}</div>}
+        {flash.notice && <div className="text-green-600">{flash.notice}</div>}
         {children}
       </main>
       <footer></footer>

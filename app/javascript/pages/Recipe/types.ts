@@ -1,3 +1,6 @@
+import { CommentType } from "../Comments/types";
+import { UserType } from "../User/types";
+
 export interface RecipeType {
   id: number;
   name: string;
@@ -6,20 +9,6 @@ export interface RecipeType {
   updated_at: string;
   comments: CommentType[];
   user: UserType;
-}
-
-export interface CommentType {
-  id: number;
-  content: string;
-  user: {
-    id: number;
-    username: string;
-  };
-}
-
-export interface UserType {
-  id: number;
-  username: string;
 }
 
 export type RecipeFormType = Omit<RecipeType, "id">;

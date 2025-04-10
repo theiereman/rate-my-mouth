@@ -1,20 +1,44 @@
-import { CommentType } from "../types";
+import { CommentableType, CommentType } from "./types";
+import CommentForm from "./CommentForm";
+import Comment from "./Comment";
 
-export default function Comments({ comments }: { comments: CommentType[] }) {
+export default function Comments({
+  comments,
+  commentableType,
+  commentableId,
+}: {
+  comments: CommentType[];
+  commentableType?: CommentableType;
+  commentableId?: number;
+}) {
   return (
-    <>
-      <h2 className="font-bold text-2xl mt-8">Commentaires</h2>
+    <div id="comments">
+      <h2 className="font-bold">Commentaires ({comments.length})</h2>
+      {commentableId && commentableType && (
+        <CommentForm
+          className="my-8 mt-4"
+          commentableId={commentableId}
+          commentableType={commentableType}
+        />
+      )}
       {comments.length > 0 ? (
-        <ul className="list-disc list-inside">
-          {comments.map((comment) => (
-            <li key={comment.id} className="my-2">
-              <strong>{comment.user.username}</strong>: {comment.content}
-            </li>
-          ))}
+        <ul>
+          {comments
+            .sort(
+              (a, b) =>
+                new Date(b.created_at).getTime() -
+                new Date(a.created_at).getTime()
+            )
+            .map((comment) => (
+              <>
+                <Comment key={comment.id} comment={comment} />
+                <div id="separator" className="h-[1px] bg-gray-200"></div>
+              </>
+            ))}
         </ul>
       ) : (
         <p>Aucun commentaire</p>
       )}
-    </>
+    </div>
   );
 }

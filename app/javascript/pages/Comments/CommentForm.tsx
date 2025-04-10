@@ -1,21 +1,30 @@
 import { useForm } from "@inertiajs/react";
+import { CommentableType } from "./types";
 
-export default function CommentForm({ recipeId }: { recipeId: number }) {
+export default function CommentForm({
+  commentableType,
+  commentableId,
+  className,
+}: {
+  commentableType: CommentableType;
+  commentableId: number;
+  className?: string;
+}) {
   const { data, setData, post, processing, errors } = useForm({
     content: "",
   });
 
   function submit(e) {
     e.preventDefault();
-    post(`/recipes/${recipeId}/comments`);
+    post(`/${commentableType}/${commentableId}/comments`);
   }
 
   return (
-    <form onSubmit={submit}>
+    <form className={`flex ${className}`} onSubmit={submit}>
       <input
-        className="border border-gray-300 rounded-md py-1 px-2 me-2 placeholder:italic"
+        className="flex-1 border border-gray-300 rounded-md py-1 px-2 me-2 placeholder:italic"
         type="text"
-        placeholder="Commentaire..."
+        placeholder="Ajouter un commentaire..."
         value={data.content}
         onChange={(e) => setData("content", e.target.value)}
       />
@@ -25,7 +34,7 @@ export default function CommentForm({ recipeId }: { recipeId: number }) {
         type="submit"
         disabled={processing}
       >
-        Envoyer
+        Commenter
       </button>
     </form>
   );

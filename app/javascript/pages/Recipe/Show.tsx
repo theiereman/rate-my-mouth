@@ -1,7 +1,7 @@
 import { Head } from "@inertiajs/react";
 import { RecipeType } from "./types";
-import CommentForm from "../Comments/CommentForm";
 import Comments from "../Comments/Comments";
+import { CommentableType } from "../Comments/types";
 
 interface ShowProps {
   recipe: RecipeType;
@@ -20,8 +20,11 @@ export default function Show({ recipe }: ShowProps) {
 
         <h2>Instructions :</h2>
 
-        <Comments comments={recipe.comments} />
-        <CommentForm recipeId={recipe.id} />
+        <Comments
+          comments={recipe.comments}
+          commentableId={recipe.id}
+          commentableType={CommentableType.recipe}
+        />
       </div>
     </>
   );

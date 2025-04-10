@@ -24,14 +24,14 @@ class RecipesController < ApplicationController
   def new
     @recipe = Recipe.new
     render inertia: "Recipe/New", props: {
-      recipe: serialize_recipe(@recipe)
+      recipe: @recipe.as_json
     }
   end
 
   # GET /recipes/1/edit
   def edit
     render inertia: "Recipe/Edit", props: {
-      recipe: serialize_recipe(@recipe)
+      recipe: @recipe.as_json
     }
   end
 
@@ -73,27 +73,7 @@ class RecipesController < ApplicationController
       params.expect(recipe: [ :name, :url ])
     end
 
-    def serialize_recipe(recipe)
-      recipe.as_json(only: [
-        :id, :name, :url
-      ])
-    end
-
     def serialize_recipe_full(recipe)
-      recipe.as_json(only: [
-        :id, :name, :url, :created_at, :updated_at
-      ]).merge(user: {
-        id: recipe.user.id,
-        username: recipe.user.username
-      }
-      ).merge({
-        comments: recipe.comments.map do |comment|
-          {
-            id: comment.id,
-            content: comment.content,
-            user: comment.user.as_json
-          }
-        end
-      })
+      recipe.as_json(include: [ :user, comments: { include: :user } ])
     end
 end

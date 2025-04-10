@@ -35,11 +35,6 @@ class CommentsController < ApplicationController
   def set_commentable
     if params[:recipe_id]
       @commentable = Recipe.find(params[:recipe_id])
-    elsif params[:article_id]
-      @commentable = Article.find(params[:article_id])
-      # Ajoutez d'autres modèles commentables selon vos besoins
-      # elsif params[:product_id]
-      #   @commentable = Product.find(params[:product_id])
     end
   end
 
@@ -48,6 +43,6 @@ class CommentsController < ApplicationController
   end
 
   def comment_params
-    params.require(:comment).permit(:content)
+    params.expect(comment: [ :content ])
   end
 end
