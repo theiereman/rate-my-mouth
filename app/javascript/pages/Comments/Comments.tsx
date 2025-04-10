@@ -13,7 +13,7 @@ export default function Comments({ comments }: { comments: CommentType[] }) {
           ))}
         </ul>
       ) : (
-        <p>No comments yet.</p>
+        <p>Aucun commentaire</p>
       )}
     </>
   );

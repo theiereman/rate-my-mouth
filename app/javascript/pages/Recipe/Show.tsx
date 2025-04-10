@@ -12,14 +12,16 @@ export default function Show({ recipe }: ShowProps) {
     <>
       <Head title={`${recipe.name} de ${recipe.user.username}`} />
 
-      <div className="mx-auto md:w-2/3 w-full px-8 pt-8">
-        <div className="mx-auto">
-          <h1 className="font-bold text-4xl">{recipe.name}</h1>
-          <h3 className="italic">de {recipe.user.username}</h3>
-          <iframe src={recipe.url}></iframe>
-          <Comments comments={recipe.comments} />
-          <CommentForm recipeId={recipe.id} />
-        </div>
+      <div className="mx-auto">
+        <h1 className="font-bold text-4xl">{recipe.name}</h1>
+        <h2 className="italic">de {recipe.user.username}</h2>
+
+        <h2>Ingredients :</h2>
+
+        <h2>Instructions :</h2>
+
+        <Comments comments={recipe.comments} />
+        <CommentForm recipeId={recipe.id} />
       </div>
     </>
   );

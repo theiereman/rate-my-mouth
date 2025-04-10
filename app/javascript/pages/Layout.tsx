@@ -1,7 +1,7 @@
 import { usePage } from "@inertiajs/react";
-import Navbar from "./components/Navbar";
-import HomeButton from "./components/HomeButton";
-import UserActions from "./components/UserActions";
+import Navbar from "../components/Navbar";
+import HomeButton from "../components/HomeButton";
+import UserActions from "../components/UserActions";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const { flash } = usePage().props;
@@ -13,7 +13,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <Navbar />
         <UserActions />
       </header>
-      <main>
+      <main className="mx-auto md:w-2/3 w-full px-8 pt-8">
         {flash.alert && <div className="alert">{flash.alert}</div>}
         {flash.notice && <div className="notice">{flash.notice}</div>}
         {children}
