@@ -1,10 +1,34 @@
 class RatingsController < ApplicationController
+  before_action :set_recipe
+
   def create
+    @rating = Rating.find_by(user: current_user, recipe: @recipe)
+    if @rating.nil?
+      @rating = @recipe.ratings.new(rating_params)
+      @rating.user = current_user
+
+      if @rating.save
+        redirect_to @recipe, notice: "Note ajoutée avec succès."
+      else
+        redirect_to @recipe, alert: "Erreur lors de l'ajout de la note."
+      end
+    else
+      if @rating.update(rating_params)
+        redirect_to @recipe, note: "Note mise à jour."
+      else
+        redirect_to @recipe, alert: "Impossible de mettre à jour la note"
+      end
+    end
   end
 
-  def update
+
+  private
+
+  def set_recipe
+    @recipe = Recipe.find(params[:recipe_id])
   end
 
-  def destroy
+  def rating_params
+    params.expect(rating: [ :value ])
   end
 end

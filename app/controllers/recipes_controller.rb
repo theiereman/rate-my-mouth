@@ -16,7 +16,9 @@ class RecipesController < ApplicationController
   # GET /recipes/1
   def show
     render inertia: "Recipe/Show", props: {
-      recipe: serialize_recipe_full(@recipe)
+      recipe: serialize_recipe_full(@recipe),
+      userRating: Rating.find_by(user: current_user, recipe: @recipe)
+
     }
   end
 

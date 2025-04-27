@@ -1,6 +1,7 @@
 import { useForm } from "@inertiajs/react";
 import { CommentableType } from "./types";
 import { COMMENTS_PLACEHOLDERS } from "../../helpers/commentsPlaceholders";
+import { useState, useEffect } from "react";
 
 export default function CommentForm({
   commentableType,
@@ -15,8 +16,19 @@ export default function CommentForm({
     content: "",
   });
 
-  function submit(e) {
-    e.preventDefault();
+  const [placeholder, setPlaceholder] = useState("");
+
+  // Définir le placeholder une seule fois à l'initialisation du composant
+  useEffect(() => {
+    setPlaceholder(
+      COMMENTS_PLACEHOLDERS[
+        Math.floor(Math.random() * COMMENTS_PLACEHOLDERS.length)
+      ]
+    );
+  }, []);
+
+  function submit(event) {
+    event.preventDefault();
     post(`/${commentableType}/${commentableId}/comments`);
   }
 
@@ -25,11 +37,7 @@ export default function CommentForm({
       <input
         className="flex-1 border border-gray-300 rounded-md py-1 px-2 me-2 placeholder:italic"
         type="text"
-        placeholder={`${
-          COMMENTS_PLACEHOLDERS[
-            Math.floor(Math.random() * COMMENTS_PLACEHOLDERS.length)
-          ]
-        }...`}
+        placeholder={`${placeholder}...`}
         value={data.content}
         onChange={(e) => setData("content", e.target.value)}
       />
