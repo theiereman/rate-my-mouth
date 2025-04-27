@@ -4,4 +4,9 @@ class Recipe < ApplicationRecord
   belongs_to :user
 
   validates :name, presence: true
+
+  def average_rating
+    return 0.0 if ratings.size.zero?
+    ratings.reduce(0) { |sum, rating| sum + rating.value }.to_f / ratings.size
+  end
 end

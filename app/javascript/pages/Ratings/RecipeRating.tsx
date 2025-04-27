@@ -20,6 +20,7 @@ export default function RecipeRating({
       precision={0.5}
       value={rating?.value ?? null}
       onChange={handleChange}
+      size="large"
     />
   );
 }

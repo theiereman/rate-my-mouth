@@ -76,6 +76,6 @@ class RecipesController < ApplicationController
     end
 
     def serialize_recipe_full(recipe)
-      recipe.as_json(include: [ :user, comments: { include: :user } ])
+      recipe.as_json(include: [ :user, comments: { include: :user } ], methods: :average_rating)
     end
 end

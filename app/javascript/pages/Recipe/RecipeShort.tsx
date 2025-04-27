@@ -1,6 +1,7 @@
 import { Link, router } from "@inertiajs/react";
 import { formatDate } from "../../helpers/dateHelper";
 import { RecipeType } from "./types";
+import { Rating } from "@mui/material";
 
 interface RecipeProps {
   recipe: RecipeType;
@@ -14,7 +15,10 @@ export default function Recipe({ recipe }: RecipeProps) {
     >
       <div className="flex-1">
         <div className="flex flex-col mb-4">
-          <p>{recipe.name}</p>
+          <div className="flex items-center gap-2">
+            <p>{recipe.name}</p>
+            <Rating size="small" value={recipe.average_rating} readOnly />
+          </div>
           <p className="text-sm italic">par {recipe.user.username}</p>
         </div>
         {

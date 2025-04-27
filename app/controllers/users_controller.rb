@@ -6,7 +6,7 @@ class UsersController < ApplicationController
   # GET /users
   def index
     @users = User.all
-    render inertia: 'User/Index', props: {
+    render inertia: "User/Index", props: {
       users: @users.map do |user|
         serialize_user(user)
       end
@@ -15,7 +15,7 @@ class UsersController < ApplicationController
 
   # GET /users/1
   def show
-    render inertia: 'User/Show', props: {
+    render inertia: "User/Show", props: {
       user: serialize_user(@user)
     }
   end
@@ -23,14 +23,14 @@ class UsersController < ApplicationController
   # GET /users/new
   def new
     @user = User.new
-    render inertia: 'User/New', props: {
+    render inertia: "User/New", props: {
       user: serialize_user(@user)
     }
   end
 
   # GET /users/1/edit
   def edit
-    render inertia: 'User/Edit', props: {
+    render inertia: "User/Edit", props: {
       user: serialize_user(@user)
     }
   end
