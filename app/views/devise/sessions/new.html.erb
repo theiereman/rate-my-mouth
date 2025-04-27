@@ -1,17 +1,17 @@
 <div class="h-full flex flex-col justify-center items-center">
   <h1 class="text-2xl font-bold m-10">Rate My Mouth</h1>
-  <div class="border border-gray-200 bg-gray-50 p-4 rounded-lg">
+  <div class="w-[400px] border border-gray-200 bg-gray-50 p-4 rounded-lg">
     <h1 class="text-center mb-2">Identifiez-vous</h1>
     <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
       <div>
         <%= f.label :email %><br />
-        <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "border border-gray-200 rounded-sm bg-white" %>
+        <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "px-2 py-1 w-full border border-gray-200 rounded-sm bg-white" %>
         
       </div>
 
       <div>
         <%= f.label :password %><br />
-        <%= f.password_field :password, autocomplete: "current-password", class: "border border-gray-200 rounded-sm bg-white" %>
+        <%= f.password_field :password, autocomplete: "current-password", class: "px-2 py-1 w-full border border-gray-200 rounded-sm bg-white" %>
       </div>
 
       <% if devise_mapping.rememberable? %>

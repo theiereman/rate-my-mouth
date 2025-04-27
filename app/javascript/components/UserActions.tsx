@@ -1,28 +1,53 @@
-import { Link } from "@inertiajs/react";
+import { usePage } from "@inertiajs/react";
+import { PageProps } from "../types";
+import ProfilePicPlaceholder from "./ProfilePicPlaceholder";
 
 export default function UserActions() {
+  const { user } = usePage<PageProps>().props;
+
+  const handleLogout = () => {
+    // Créer un formulaire temporaire pour soumettre une requête DELETE
+    const form = document.createElement("form");
+    form.method = "POST";
+    form.action = "/users/sign_out";
+
+    // Ajouter le token CSRF
+    const csrfToken = document
+      .querySelector('meta[name="csrf-token"]')
+      ?.getAttribute("content");
+    if (csrfToken) {
+      const csrfInput = document.createElement("input");
+      csrfInput.type = "hidden";
+      csrfInput.name = "authenticity_token";
+      csrfInput.value = csrfToken;
+      form.appendChild(csrfInput);
+    }
+
+    // Ajouter le champ _method pour simuler DELETE
+    const methodInput = document.createElement("input");
+    methodInput.type = "hidden";
+    methodInput.name = "_method";
+    methodInput.value = "delete";
+    form.appendChild(methodInput);
+
+    // Soumettre le formulaire
+    document.body.appendChild(form);
+    form.submit();
+    document.body.removeChild(form);
+  };
+
   return (
-    <div className="user-actions">
-      <div className="profile-photo-placeholder">
-        {/* Placeholder pour la photo de profil */}
-        <div className="avatar">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            className="w-8 h-8"
-          >
-            <path
-              fillRule="evenodd"
-              d="M18.685 19.097A9.723 9.723 0 0021.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 003.065 7.097A9.716 9.716 0 0012 21.75a9.716 9.716 0 006.685-2.653zm-12.54-1.285A7.486 7.486 0 0112 15a7.486 7.486 0 015.855 2.812A8.224 8.224 0 0112 20.25a8.224 8.224 0 01-5.855-2.438zM15.75 9a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"
-              clipRule="evenodd"
-            />
-          </svg>
-        </div>
+    <div className="flex gap-2 items-center">
+      <div className="flex flex-col text-sm items-end">
+        <span>{user.email}</span>
+        <button
+          className="text-xs text-blue-500 hover:underline hover:cursor-pointer"
+          onClick={handleLogout}
+        >
+          Se déconnecter
+        </button>
       </div>
-      <Link href="#" className="recipes-link">
-        Mes recettes
-      </Link>
+      <ProfilePicPlaceholder />
     </div>
   );
 }

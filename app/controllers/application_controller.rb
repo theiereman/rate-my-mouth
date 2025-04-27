@@ -3,4 +3,9 @@ class ApplicationController < ActionController::Base
   allow_browser versions: :modern
   inertia_share flash: -> { flash.to_hash }
   before_action :authenticate_user!
+  inertia_share do
+    {
+      user: current_user
+    } if user_signed_in?
+  end
 end
