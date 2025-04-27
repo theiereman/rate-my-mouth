@@ -1,28 +1,36 @@
 <div class="h-full flex flex-col justify-center items-center">
+  <h1 class="text-2xl font-bold m-10">Rate My Mouth</h1>
+  <div class="border border-gray-200 bg-gray-50 p-4 rounded-lg">
+    <h1 class="text-center mb-2">Identifiez-vous</h1>
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+      <div>
+        <%= f.label :email %><br />
+        <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "border border-gray-200 rounded-sm bg-white" %>
+        
+      </div>
 
-  <h2>Log in</h2>
-  <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-  </div>
+      <div>
+        <%= f.label :password %><br />
+        <%= f.password_field :password, autocomplete: "current-password", class: "border border-gray-200 rounded-sm bg-white" %>
+      </div>
 
-  <div class="field">
-    <%= f.label :password %><br />
-    <%= f.password_field :password, autocomplete: "current-password" %>
-  </div>
+      <% if devise_mapping.rememberable? %>
+        <div class="">
+          <%= f.check_box :remember_me %>
+          <%= f.label :remember_me %>
+        </div>
+      <% end %>
 
-  <% if devise_mapping.rememberable? %>
-    <div class="field">
-      <%= f.check_box :remember_me %>
-      <%= f.label :remember_me %>
+      <%= f.submit "Se connecter", class: "w-full bg-blue-600 text-white py-1 px-2 mt-2 text-center rounded-lg hover:cursor-pointer hover:bg-blue-500" %>
+    <% end %>
+
+    <div id="alerts" class="text-red-600 text-sm">
+      <%= flash[:alert] %>
     </div>
-  <% end %>
 
-  <div class="actions">
-    <%= f.submit "Log in" %>
+    <div id="links" class="text-sm">
+      <%= render "devise/shared/links" %>
+    </div>
+
   </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
 </div>
