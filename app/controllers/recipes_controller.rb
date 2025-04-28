@@ -5,7 +5,7 @@ class RecipesController < ApplicationController
 
   # GET /recipes
   def index
-    @recipes = Recipe.all
+    @recipes = Recipe.all.order(created_at: :desc)
     render inertia: "Recipe/Index", props: {
       recipes: @recipes.map do |recipe|
         serialize_recipe_full(recipe)
