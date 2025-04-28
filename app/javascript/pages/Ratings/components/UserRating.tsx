@@ -1,8 +1,8 @@
 import Rating from "@mui/material/Rating";
-import { RatingType } from "./types";
+import { RatingType } from "../types";
 import { router } from "@inertiajs/react";
 
-export default function RecipeRating({
+export default function UserRating({
   recipeId,
   rating,
 }: {
@@ -15,12 +15,15 @@ export default function RecipeRating({
   };
 
   return (
-    <Rating
-      name="half-rating"
-      precision={0.5}
-      value={rating?.value ?? null}
-      onChange={handleChange}
-      size="large"
-    />
+    <div>
+      <h1 className="font-semibold">Ma note</h1>
+      <Rating
+        name="half-rating"
+        precision={0.5}
+        value={rating?.value ?? null}
+        onChange={handleChange}
+        size="large"
+      />
+    </div>
   );
 }

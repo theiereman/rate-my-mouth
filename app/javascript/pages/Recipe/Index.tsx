@@ -1,6 +1,6 @@
 import { Head, Link } from "@inertiajs/react";
 import { RecipeType } from "./types";
-import RecipeShort from "./RecipeShort";
+import RecipeShort from "./components/RecipeShort";
 
 interface IndexProps {
   recipes: RecipeType[];

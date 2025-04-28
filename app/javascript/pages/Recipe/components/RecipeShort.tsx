@@ -1,6 +1,6 @@
-import { Link, router } from "@inertiajs/react";
-import { formatDate } from "../../helpers/dateHelper";
-import { RecipeType } from "./types";
+import { Link } from "@inertiajs/react";
+import { formatDate } from "../../../helpers/dateHelper";
+import { RecipeType } from "../types";
 import { Rating } from "@mui/material";
 
 interface RecipeProps {
@@ -21,12 +21,16 @@ export default function Recipe({ recipe }: RecipeProps) {
           </div>
           <p className="text-sm italic">par {recipe.user.username}</p>
         </div>
-        {
-          <p className="text-xs">
+        <div id="reactions" className="flex gap-2">
+          <span className="text-xs">
             {recipe.comments.length} commentaire
             {recipe.comments.length > 1 ? "s" : ""}
-          </p>
-        }
+          </span>
+          <span className="text-xs">
+            {recipe.ratings.length} note
+            {recipe.ratings.length > 1 ? "s" : ""}
+          </span>
+        </div>
       </div>
       <div className="flex flex-col text-right text-sm">
         <p>Créé le : {formatDate(recipe.created_at)}</p>

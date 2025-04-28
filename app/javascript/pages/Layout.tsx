@@ -1,7 +1,7 @@
 import { usePage } from "@inertiajs/react";
-import Navbar from "../components/Navbar";
-import HomeButton from "../components/HomeButton";
-import UserActions from "../components/UserActions";
+import Navbar from "../components/navbar/Navbar";
+import HomeButton from "../components/navbar/HomeButton";
+import UserActions from "../components/navbar/UserActions";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const { flash } = usePage().props;
