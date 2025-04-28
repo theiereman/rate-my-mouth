@@ -12,7 +12,7 @@ export default function CommentForm({
   commentableId: number;
   className?: string;
 }) {
-  const { data, setData, post, processing, errors } = useForm({
+  const { data, setData, post, processing, errors, reset } = useForm({
     content: "",
   });
 
@@ -29,7 +29,10 @@ export default function CommentForm({
 
   function submit(event) {
     event.preventDefault();
-    post(`/${commentableType}/${commentableId}/comments`);
+    post(`/${commentableType}/${commentableId}/comments`, {
+      preserveScroll: true,
+    });
+    reset();
   }
 
   return (
