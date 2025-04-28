@@ -5,9 +5,11 @@ import { router } from "@inertiajs/react";
 export default function UserRating({
   recipeId,
   rating,
+  className,
 }: {
   recipeId: number;
   rating?: RatingType;
+  className?: string;
 }) {
   const handleChange = (e: any, newValue: any) => {
     e.preventDefault();
@@ -15,7 +17,7 @@ export default function UserRating({
   };
 
   return (
-    <div>
+    <div className={className}>
       <h1 className="font-semibold">Ma note</h1>
       <Rating
         name="half-rating"

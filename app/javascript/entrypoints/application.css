@@ -4,3 +4,7 @@ html,
 body {
   height: 100%;
 }
+
+.MuiRating-alternativeIconFilled .MuiRating-iconFilled {
+  color: rgb(138, 179, 255);
+}
