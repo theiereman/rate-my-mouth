@@ -1,27 +1,32 @@
-import { useForm } from '@inertiajs/react'
-import { FormEvent } from 'react'
-import { RecipeFormType, RecipeType } from './types'
+import { useForm } from "@inertiajs/react";
+import { FormEvent } from "react";
+import { RecipeFormType, RecipeType } from "./types";
+import RecipeEditor from "./components/RecipeEditor";
 
 // Temporary fix for InertiaFormProps not being exported from @inertiajs/react
-type InertiaFormProps<TForm extends Record<string, any>> = ReturnType<typeof useForm<TForm>>
+type InertiaFormProps<TForm extends Record<string, any>> = ReturnType<
+  typeof useForm<TForm>
+>;
 
 interface FormProps {
-  recipe: RecipeType
-  onSubmit: (form: InertiaFormProps<RecipeFormType>) => void
-  submitText: string
+  recipe: RecipeType;
+  onSubmit: (form: InertiaFormProps<RecipeFormType>) => void;
+  submitText: string;
 }
 
 export default function Form({ recipe, onSubmit, submitText }: FormProps) {
   const form = useForm<RecipeFormType>({
     name: recipe.name,
+    ingredients: recipe.ingredients,
+    instructions: recipe.instructions,
     url: recipe.url,
-  })
-  const { data, setData, errors, processing } = form
+  });
+  const { data, setData, errors, processing } = form;
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    onSubmit(form)
-  }
+    e.preventDefault();
+    onSubmit(form);
+  };
 
   return (
     <form onSubmit={handleSubmit} className="contents">
@@ -33,7 +38,7 @@ export default function Form({ recipe, onSubmit, submitText }: FormProps) {
           id="name"
           value={data.name}
           className="block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full"
-          onChange={(e) => setData('name', e.target.value)}
+          onChange={(e) => setData("name", e.target.value)}
         />
         {errors.name && (
           <div className="text-red-500 px-3 py-2 font-medium">
@@ -41,6 +46,8 @@ export default function Form({ recipe, onSubmit, submitText }: FormProps) {
           </div>
         )}
       </div>
+
+      <RecipeEditor />
 
       <div className="my-5">
         <label htmlFor="url">Url</label>
@@ -50,12 +57,10 @@ export default function Form({ recipe, onSubmit, submitText }: FormProps) {
           id="url"
           value={data.url}
           className="block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full"
-          onChange={(e) => setData('url', e.target.value)}
+          onChange={(e) => setData("url", e.target.value)}
         />
         {errors.url && (
-          <div className="text-red-500 px-3 py-2 font-medium">
-            {errors.url}
-          </div>
+          <div className="text-red-500 px-3 py-2 font-medium">{errors.url}</div>
         )}
       </div>
 
@@ -69,5 +74,5 @@ export default function Form({ recipe, onSubmit, submitText }: FormProps) {
         </button>
       </div>
     </form>
-  )
+  );
 }

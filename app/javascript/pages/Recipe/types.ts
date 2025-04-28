@@ -6,6 +6,8 @@ export interface RecipeType {
   id: number;
   name: string;
   url: string;
+  ingredients: string[];
+  instructions: string[];
   average_rating: number;
   created_at: string;
   updated_at: string;
@@ -14,4 +16,9 @@ export interface RecipeType {
   user: UserType;
 }
 
-export type RecipeFormType = Omit<RecipeType, "id">;
+export type RecipeFormType {
+  name: string;
+  url: string;
+  ingredients: string[];
+  instructions: string[];
+};
