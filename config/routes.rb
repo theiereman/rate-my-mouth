@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, controllers: { sessions: "users/sessions" }
+
   concern :commentable do
     resources :comments, only: [ :create, :update, :destroy ]
   end
