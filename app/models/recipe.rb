@@ -5,6 +5,9 @@ class Recipe < ApplicationRecord
 
   validates :name, presence: true
 
+  serialize :ingredients, coder: JSON
+  serialize :instructions, coder: JSON
+
   def average_rating
     return 0.0 if ratings.size.zero?
     ratings.reduce(0) { |sum, rating| sum + rating.value }.to_f / ratings.size

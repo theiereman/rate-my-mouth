@@ -39,6 +39,7 @@ class RecipesController < ApplicationController
 
   # POST /recipes
   def create
+    p recipe_params
     @recipe = Recipe.new(recipe_params)
     @recipe.user = current_user
 
@@ -72,7 +73,7 @@ class RecipesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def recipe_params
-      params.expect(recipe: [ :name, :url, :ingredients, :instructions ])
+      params.expect(recipe: [ :name, :url, ingredients: [], instructions: [] ])
     end
 
     def serialize_recipe_full(recipe)

@@ -16,7 +16,7 @@ export interface RecipeType {
   user: UserType;
 }
 
-export type RecipeFormType {
+export type RecipeFormType = {
   name: string;
   url: string;
   ingredients: string[];

@@ -25,7 +25,19 @@ export default function Recipe({
         <h2 className="italic">de {recipe.user.username}</h2>
       </div>
       <h2>Ingredients :</h2>
+      <ul className="list-disc pl-5">
+        {recipe.ingredients.map((ingredient, index) => (
+          <li key={index}>{ingredient}</li>
+        ))}
+      </ul>
+
       <h2>Instructions :</h2>
+      {recipe.instructions.map((instruction, index) => (
+        <div key={index} className="flex gap-2">
+          <span className="font-bold">{index + 1}.</span>
+          <span>{instruction}</span>
+        </div>
+      ))}
     </div>
   );
 }

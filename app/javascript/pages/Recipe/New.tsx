@@ -16,6 +16,7 @@ export default function New({ recipe }: NewProps) {
       <Form
         recipe={recipe}
         onSubmit={(form) => {
+          console.log("Form data:", form.data);
           form.transform((data) => ({ recipe: data }));
           form.post("/recipes");
         }}

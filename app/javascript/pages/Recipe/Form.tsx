@@ -1,12 +1,7 @@
-import { useForm } from "@inertiajs/react";
+import { InertiaFormProps, useForm } from "@inertiajs/react";
 import { FormEvent } from "react";
 import { RecipeFormType, RecipeType } from "./types";
 import RecipeEditor from "./components/RecipeEditor";
-
-// Temporary fix for InertiaFormProps not being exported from @inertiajs/react
-type InertiaFormProps<TForm extends Record<string, any>> = ReturnType<
-  typeof useForm<TForm>
->;
 
 interface FormProps {
   recipe: RecipeType;
@@ -16,10 +11,10 @@ interface FormProps {
 
 export default function Form({ recipe, onSubmit, submitText }: FormProps) {
   const form = useForm<RecipeFormType>({
-    name: recipe.name,
-    ingredients: recipe.ingredients,
-    instructions: recipe.instructions,
-    url: recipe.url,
+    name: recipe.name || "",
+    ingredients: recipe.ingredients || [],
+    instructions: recipe.instructions || [],
+    url: recipe.url || "",
   });
   const { data, setData, errors, processing } = form;
 
@@ -47,7 +42,7 @@ export default function Form({ recipe, onSubmit, submitText }: FormProps) {
         )}
       </div>
 
-      <RecipeEditor />
+      <RecipeEditor form={form} />
 
       <div className="my-5">
         <label htmlFor="url">Url</label>
