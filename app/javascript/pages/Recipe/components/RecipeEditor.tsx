@@ -99,7 +99,7 @@ export default function RecipeEditor({
       form.setData("ingredients", [...form.data.ingredients, inputText.trim()]);
     } else {
       form.setData("instructions", [
-        ...form.data.ingredients,
+        ...form.data.instructions,
         inputText.trim(),
       ]);
     }

@@ -6,7 +6,7 @@ export default function Navbar() {
       <ul className="flex space-x-4">
         <li>
           <Link href="/recipes" className="text-blue-500 hover:underline">
-            Toutes les recettes
+            Les dernières recettes
           </Link>
         </li>
       </ul>

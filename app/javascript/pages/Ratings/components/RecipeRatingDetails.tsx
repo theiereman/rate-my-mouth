@@ -12,8 +12,8 @@ export default function RecipeRatingDetails({
   userRating: RatingType;
 }) {
   return (
-    <div>
-      <UserRating className="mb-4" recipeId={recipe.id} rating={userRating} />
+    <div className="flex flex-col gap-4">
+      <UserRating recipeId={recipe.id} rating={userRating} />
       <RecipeAverageRating recipe={recipe} />
       <LastRatings ratings={recipe.ratings} />
     </div>
