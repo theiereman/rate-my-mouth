@@ -6,6 +6,7 @@ export interface RecipeType {
   id: number;
   name: string;
   url: string;
+  number_of_servings: number;
   ingredients: string[];
   instructions: string[];
   average_rating: number;

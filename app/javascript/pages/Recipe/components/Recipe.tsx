@@ -1,5 +1,6 @@
 import { Rating } from "@mui/material";
 import { RecipeType } from "../types";
+import Ingredients from "../Ingredients/components/Ingredients";
 
 export default function Recipe({
   recipe,
@@ -25,12 +26,7 @@ export default function Recipe({
         <h2 className="italic">de {recipe.user.username}</h2>
       </div>
       <div id="ingredients" className="my-4">
-        <h2 className="font-semibold">Ingredients :</h2>
-        <ul className="list-disc pl-5">
-          {recipe.ingredients.map((ingredient, index) => (
-            <li key={index}>{ingredient}</li>
-          ))}
-        </ul>
+        <Ingredients recipe={recipe} />
       </div>
 
       <div id="instructions" className="my-4">
