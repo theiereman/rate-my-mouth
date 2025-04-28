@@ -1,10 +1,19 @@
 import { usePage } from "@inertiajs/react";
+import { useState, useEffect } from "react";
 import Navbar from "../components/navbar/Navbar";
 import HomeButton from "../components/navbar/HomeButton";
 import UserActions from "../components/navbar/UserActions";
+import Toast from "../components/Toast";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const { flash } = usePage().props;
+  const [showToast, setShowToast] = useState(false);
+
+  useEffect(() => {
+    if (flash.alert) {
+      setShowToast(true);
+    }
+  }, [flash.alert]);
 
   return (
     <main>
@@ -14,8 +23,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <UserActions />
       </header>
       <main className="mx-auto md:w-2/3 w-full px-8 pt-8">
-        {flash.alert && <div className="text-red-600">{flash.alert}</div>}
-        {flash.notice && <div className="text-green-600">{flash.notice}</div>}
+        {showToast && flash.alert && (
+          <Toast
+            message={flash.alert}
+            type="error"
+            onClose={() => setShowToast(false)}
+          />
+        )}
         {children}
       </main>
       <footer></footer>

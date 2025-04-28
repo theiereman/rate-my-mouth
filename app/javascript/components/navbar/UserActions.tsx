@@ -8,7 +8,7 @@ export default function UserActions() {
   return (
     <div className="flex gap-2 items-center">
       <div className="flex flex-col text-sm items-end">
-        <span>{user.email}</span>
+        <span>{user.username}</span>
         <Link
           method="delete"
           className="text-xs text-blue-500 hover:underline hover:cursor-pointer"
