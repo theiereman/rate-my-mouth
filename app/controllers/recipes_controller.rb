@@ -13,6 +13,15 @@ class RecipesController < ApplicationController
     }
   end
 
+  def search
+    @recipes = Recipe.where("name LIKE ?", "%#{params[:query]}%").order(created_at: :desc)
+    render inertia: "Recipe/Index", props: {
+      recipes: @recipes.map do |recipe|
+        serialize_recipe_full(recipe)
+      end
+    }
+  end
+
   # GET /recipes/1
   def show
     render inertia: "Recipe/Show", props: {

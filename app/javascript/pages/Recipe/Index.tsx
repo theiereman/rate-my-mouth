@@ -2,6 +2,8 @@ import { Head } from "@inertiajs/react";
 import { RecipeType } from "./types";
 import RecipeShort from "./components/RecipeShort";
 import { LinkButton } from "../../components/ui";
+import SearchBar from "../../components/ui/SearchBar";
+import { useState } from "react";
 
 interface IndexProps {
   recipes: RecipeType[];
@@ -41,6 +43,8 @@ export default function Index({ recipes }: IndexProps) {
             Nouvelle recette
           </LinkButton>
         </div>
+
+        <SearchBar className="m-6"></SearchBar>
 
         {recipes.length === 0 ? (
           <div className="text-center py-12 bg-neutral-50 rounded-lg border border-neutral-200">

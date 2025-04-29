@@ -7,14 +7,14 @@ export default function Navbar() {
 
   const navItems = [
     { name: "Recettes", href: "/recipes" },
-    { name: "Populaires (wip)", href: "#", disabled: true },
-    { name: "Nouveautés (wip)", href: "#", disabled: true },
+    // { name: "Populaires (wip)", href: "#", disabled: true },
+    // { name: "Nouveautés (wip)", href: "#", disabled: true },
   ];
 
   return (
     <nav className="flex-1 flex justify-center">
       {/* Desktop navigation */}
-      <ul className="hidden md:flex space-x-8">
+      <ul className="hidden md:flex gap-8 items-center">
         {navItems.map((item) => (
           <li key={item.name}>
             <Link

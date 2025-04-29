@@ -2,6 +2,7 @@
   "private": true,
   "type": "module",
   "devDependencies": {
+    "@types/lodash": "^4.17.16",
     "vite": "^5.4.17",
     "vite-plugin-ruby": "^5.1.1"
   },
@@ -20,6 +21,7 @@
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.2",
     "@vitejs/plugin-react": "^4.3.4",
+    "lodash": "^4.17.21",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "tailwindcss": "^4.1.3",

@@ -1,5 +1,5 @@
 import { InertiaFormProps } from "@inertiajs/react";
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { RecipeFormType } from "../types";
 import { Card, Input, Button, Badge } from "../../../components/ui";
 import {
@@ -30,16 +30,10 @@ interface SortableItemProps {
   index: number;
   type: "ingredient" | "instruction";
   children: React.ReactNode;
-  onDelete: (e) => void;
+  onDelete: (e: any) => void;
 }
 
-function SortableItem({
-  id,
-  index,
-  type,
-  children,
-  onDelete,
-}: SortableItemProps) {
+function SortableItem({ id, type, children, onDelete }: SortableItemProps) {
   const { attributes, listeners, setNodeRef, transform, isDragging } =
     useSortable({ id });
 
@@ -99,7 +93,6 @@ export default function RecipeEditor({
 }) {
   const [inputText, setInputText] = useState<string>("");
   const [detectedType, setDetectedType] = useState<DetectionType>("unknown");
-  const inputRef = useRef<HTMLInputElement>(null);
 
   // Configuration des capteurs pour le drag and drop
   const sensors = useSensors(
@@ -395,9 +388,7 @@ export default function RecipeEditor({
             <div className="flex flex-col sm:flex-row gap-2">
               <div className="flex-grow">
                 <Input
-                  ref={inputRef}
                   type="text"
-                  fullWidth
                   value={inputText}
                   onChange={(e) => setInputText(e.target.value)}
                   onKeyDown={handleKeyDown}
