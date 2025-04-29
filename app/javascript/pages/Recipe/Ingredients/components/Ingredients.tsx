@@ -16,7 +16,7 @@ export default function Ingredients({ recipe }: { recipe: RecipeType }) {
   };
 
   //extract every number inside ingredients and multiply them by the number of servings
-  const updatedIngredients = recipe.ingredients.map((ingredient) => {
+  const updatedIngredients = recipe.ingredients?.map((ingredient) => {
     const regex = /(\d+(\.\d+)?)/g;
     const numbers = ingredient.match(regex);
     if (numbers) {
@@ -56,7 +56,7 @@ export default function Ingredients({ recipe }: { recipe: RecipeType }) {
         </div>
       </div>
       <ul className="list-disc pl-5">
-        {updatedIngredients.map((ingredient, index) => (
+        {updatedIngredients?.map((ingredient, index) => (
           <li key={index}>{ingredient}</li>
         ))}
       </ul>

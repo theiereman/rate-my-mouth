@@ -31,7 +31,7 @@ export default function Recipe({
 
       <div id="instructions" className="my-4">
         <h2 className="font-semibold">Instructions :</h2>
-        {recipe.instructions.map((instruction, index) => (
+        {recipe.instructions?.map((instruction, index) => (
           <div key={index} className="flex gap-2">
             <span className="font-bold">{index + 1}.</span>
             <span>{instruction}</span>

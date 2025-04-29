@@ -22,7 +22,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <Navbar />
         <UserActions />
       </header>
-      <main className="mx-auto md:w-2/3 w-full px-8 pt-8">
+      <main className="mx-auto md:w-2/3 w-full px-8 pt-8 pb-6">
         {showToast && flash.alert && (
           <Toast
             message={flash.alert}

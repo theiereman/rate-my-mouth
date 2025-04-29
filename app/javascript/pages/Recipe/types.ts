@@ -7,8 +7,8 @@ export interface RecipeType {
   name: string;
   url: string;
   number_of_servings: number;
-  ingredients: string[];
-  instructions: string[];
+  ingredients: string[] | null;
+  instructions: string[] | null;
   average_rating: number;
   created_at: string;
   updated_at: string;
@@ -20,6 +20,6 @@ export interface RecipeType {
 export type RecipeFormType = {
   name: string;
   url: string;
-  ingredients: string[];
-  instructions: string[];
+  ingredients: string[] | null;
+  instructions: string[] | null;
 };

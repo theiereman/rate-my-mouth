@@ -26,7 +26,7 @@ export default function Form({ recipe, onSubmit, submitText }: FormProps) {
   return (
     <form onSubmit={handleSubmit} className="contents">
       <div className="my-5">
-        <label htmlFor="name">Name</label>
+        <label htmlFor="name">Nom de la recette</label>
         <input
           type="text"
           name="name"

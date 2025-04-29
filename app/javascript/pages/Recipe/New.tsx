@@ -11,7 +11,7 @@ export default function New({ recipe }: NewProps) {
     <>
       <Head title="New recipe" />
 
-      <h1 className="font-bold text-4xl">New recipe</h1>
+      <h1 className="font-bold text-4xl">Nouvelle recette</h1>
 
       <Form
         recipe={recipe}
