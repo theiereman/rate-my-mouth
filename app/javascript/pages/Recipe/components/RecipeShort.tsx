@@ -76,8 +76,9 @@ export default function Recipe({ recipe }: RecipeProps) {
               </div>
             </div>
 
-            <div className="text-xs text-neutral-500 flex flex-wrap justify-between">
+            <div className="text-xs text-neutral-500 flex flex-wrap gap-2">
               <span>Créé le {formatDate(recipe.created_at)}</span>
+              <span>|</span>
               <span>Mis à jour le {formatDate(recipe.updated_at)}</span>
             </div>
           </div>

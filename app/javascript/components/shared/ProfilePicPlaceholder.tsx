@@ -21,7 +21,6 @@ export default function ProfilePicPlaceholder({
           />
         </svg>
       </div>
-      <span className="absolute bottom-0 right-0 block h-2.5 w-2.5 rounded-full bg-green-400 ring-2 ring-white"></span>
     </div>
   );
 }

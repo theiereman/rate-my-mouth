@@ -34,7 +34,7 @@ const getVariantClasses = (variant: string) => {
     case "outlined":
       return "bg-white border border-neutral-200";
     case "flat":
-      return "bg-neutral-50";
+      return "bg-transparent";
     default:
       return "bg-white shadow-md";
   }
@@ -90,10 +90,12 @@ export const Card = ({
   const variantClasses = getVariantClasses(variant);
   const paddingClasses = getPaddingClasses(padding);
   const roundedClasses = getRoundedClasses(rounded);
-  const hoverClasses = hover ? "transition-transform duration-200 hover:scale-[1.01] cursor-pointer" : "";
-  
+  const hoverClasses = hover
+    ? "transition-transform duration-200 hover:scale-[1.01] cursor-pointer"
+    : "";
+
   return (
-    <div 
+    <div
       className={`${variantClasses} ${paddingClasses} ${roundedClasses} ${hoverClasses} ${className}`}
       onClick={onClick}
     >
@@ -103,27 +105,15 @@ export const Card = ({
 };
 
 export const CardHeader = ({ children, className = "" }: CardHeaderProps) => {
-  return (
-    <div className={`mb-4 ${className}`}>
-      {children}
-    </div>
-  );
+  return <div className={`mb-4 ${className}`}>{children}</div>;
 };
 
 export const CardBody = ({ children, className = "" }: CardBodyProps) => {
-  return (
-    <div className={className}>
-      {children}
-    </div>
-  );
+  return <div className={className}>{children}</div>;
 };
 
 export const CardFooter = ({ children, className = "" }: CardFooterProps) => {
-  return (
-    <div className={`mt-4 ${className}`}>
-      {children}
-    </div>
-  );
+  return <div className={`mt-4 ${className}`}>{children}</div>;
 };
 
 Card.Header = CardHeader;

@@ -30,7 +30,7 @@ interface SortableItemProps {
   index: number;
   type: "ingredient" | "instruction";
   children: React.ReactNode;
-  onDelete: () => void;
+  onDelete: (e) => void;
 }
 
 function SortableItem({
@@ -52,7 +52,7 @@ function SortableItem({
   const bgColorClass =
     type === "ingredient"
       ? "border-primary-100 bg-primary-50 hover:bg-primary-100"
-      : "border-secondary-100 bg-secondary-50 hover:bg-secondary-100";
+      : "border-secondary-200 bg-secondary-100 hover:bg-secondary-200";
 
   return (
     <li
@@ -519,7 +519,7 @@ export default function RecipeEditor({
         </Card.Body>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6">
-          <Card variant="outlined">
+          <Card variant="flat">
             <Card.Header>
               <h2 className="text-xl font-semibold text-neutral-800 flex gap-2">
                 Ingrédients
@@ -570,7 +570,10 @@ export default function RecipeEditor({
                           id={`ingredient-${index}`}
                           index={index}
                           type="ingredient"
-                          onDelete={() => deleteItem(index, "ingredient")}
+                          onDelete={(e) => {
+                            e.preventDefault();
+                            deleteItem(index, "ingredient");
+                          }}
                         >
                           <span className="text-neutral-800 self-center">
                             {item}
@@ -583,7 +586,7 @@ export default function RecipeEditor({
               )}
             </Card.Body>
           </Card>
-          <Card variant="outlined">
+          <Card variant="flat">
             <Card.Header>
               <h2 className="text-xl font-semibold text-neutral-800 flex gap-2">
                 Instructions
@@ -633,7 +636,10 @@ export default function RecipeEditor({
                           id={`instruction-${index}`}
                           index={index}
                           type="instruction"
-                          onDelete={() => deleteItem(index, "instruction")}
+                          onDelete={(e) => {
+                            e.preventDefault();
+                            deleteItem(index, "instruction");
+                          }}
                         >
                           <p className="text-neutral-700 self-center">{item}</p>
                         </SortableItem>
