@@ -1,6 +1,7 @@
 <% if resource.errors.any? %>
-  <div id="error_explanation" data-turbo-cache="false" class="text-red-500">
-    <ul>
+  <div id="error_explanation" data-turbo-cache="false" class="mb-4 p-3 bg-red-50 text-red-600 rounded-md">
+    <div class="font-medium">Veuillez corriger les erreurs suivantes :</div>
+    <ul class="mt-2 list-disc list-inside text-sm">
       <% resource.errors.full_messages.each do |message| %>
         <li><%= message %></li>
       <% end %>
