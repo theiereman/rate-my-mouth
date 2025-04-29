@@ -44,24 +44,9 @@ export default function UserActions() {
       {isDropdownOpen && (
         <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 animate-fade-in">
           <Link
-            href="/profile"
-            className="block px-4 py-2 text-sm text-neutral-700 hover:bg-neutral-100 transition-colors"
-            onClick={() => setIsDropdownOpen(false)}
-          >
-            Mon profil
-          </Link>
-          <Link
-            href="/settings"
-            className="block px-4 py-2 text-sm text-neutral-700 hover:bg-neutral-100 transition-colors"
-            onClick={() => setIsDropdownOpen(false)}
-          >
-            Paramètres
-          </Link>
-          <div className="border-t border-neutral-200 my-1"></div>
-          <Link
             href="/users/sign_out"
             method="delete"
-            className="block px-4 py-2 text-sm text-red-600 hover:bg-neutral-100 transition-colors"
+            className="block w-full px-4 py-2 text-sm text-red-600 hover:bg-neutral-100 transition-colors"
             onClick={() => setIsDropdownOpen(false)}
           >
             Se déconnecter
