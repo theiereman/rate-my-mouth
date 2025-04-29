@@ -2,9 +2,95 @@ import { InertiaFormProps } from "@inertiajs/react";
 import { useState, useRef, useEffect } from "react";
 import { RecipeFormType } from "../types";
 import { Card, Input, Button, Badge } from "../../../components/ui";
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from "@dnd-kit/core";
+import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  useSortable,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
 // Type pour les éléments de la recette
 type DetectionType = "ingredient" | "instruction" | "unknown";
+
+// Composant pour un élément glissable (ingrédient ou instruction)
+interface SortableItemProps {
+  id: string;
+  index: number;
+  type: "ingredient" | "instruction";
+  children: React.ReactNode;
+  onDelete: () => void;
+}
+
+function SortableItem({
+  id,
+  index,
+  type,
+  children,
+  onDelete,
+}: SortableItemProps) {
+  const { attributes, listeners, setNodeRef, transform, isDragging } =
+    useSortable({ id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    opacity: isDragging ? 0.5 : 1,
+    zIndex: isDragging ? 1 : 0,
+  };
+
+  const bgColorClass =
+    type === "ingredient"
+      ? "border-primary-100 bg-primary-50 hover:bg-primary-100"
+      : "border-secondary-100 bg-secondary-50 hover:bg-secondary-100";
+
+  return (
+    <li
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      className={`flex items-center gap-2 ${
+        type === "instruction" ? "flex-1" : ""
+      }`}
+    >
+      <div
+        className={`flex-1 flex items-start justify-between p-2 rounded-lg border transition-colors cursor-grab ${bgColorClass}`}
+        {...listeners}
+      >
+        {children}
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={onDelete}
+          className="text-red-600 hover:text-red-700"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            className="w-5 h-5"
+          >
+            <path
+              fillRule="evenodd"
+              d="M8.75 1A2.75 2.75 0 006 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 10.23 1.482l.149-.022.841 10.518A2.75 2.75 0 007.596 19h4.807a2.75 2.75 0 002.742-2.53l.841-10.52.149.023a.75.75 0 00.23-1.482A41.03 41.03 0 0014 4.193V3.75A2.75 2.75 0 0011.25 1h-2.5zM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4zM8.58 7.72a.75.75 0 00-1.5.06l.3 7.5a.75.75 0 101.5-.06l-.3-7.5zm4.34.06a.75.75 0 10-1.5-.06l-.3 7.5a.75.75 0 101.5.06l.3-7.5z"
+              clipRule="evenodd"
+            />
+          </svg>
+        </Button>
+      </div>
+    </li>
+  );
+}
 
 export default function RecipeEditor({
   form,
@@ -14,6 +100,18 @@ export default function RecipeEditor({
   const [inputText, setInputText] = useState<string>("");
   const [detectedType, setDetectedType] = useState<DetectionType>("unknown");
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // Configuration des capteurs pour le drag and drop
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8, // Minimum distance before drag starts (in pixels)
+      },
+    }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
 
   // Expressions régulières pour détecter les types de contenu
   const isIngredient = (text: string) => {
@@ -254,6 +352,36 @@ export default function RecipeEditor({
     }
   };
 
+  // Gestion du drag and drop pour les ingrédients
+  const handleDragEndIngredients = (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (over && active.id !== over.id) {
+      const oldIndex = parseInt(active.id.toString().split("-")[1]);
+      const newIndex = parseInt(over.id.toString().split("-")[1]);
+
+      const ingredients = [...(form.data.ingredients || [])];
+      const reorderedIngredients = arrayMove(ingredients, oldIndex, newIndex);
+
+      form.setData("ingredients", reorderedIngredients);
+    }
+  };
+
+  // Gestion du drag and drop pour les instructions
+  const handleDragEndInstructions = (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (over && active.id !== over.id) {
+      const oldIndex = parseInt(active.id.toString().split("-")[1]);
+      const newIndex = parseInt(over.id.toString().split("-")[1]);
+
+      const instructions = [...(form.data.instructions || [])];
+      const reorderedInstructions = arrayMove(instructions, oldIndex, newIndex);
+
+      form.setData("instructions", reorderedInstructions);
+    }
+  };
+
   return (
     <>
       <Card variant="outlined">
@@ -399,6 +527,20 @@ export default function RecipeEditor({
                   {form.data.ingredients?.length || 0}
                 </Badge>
               </h2>
+              {form.data.ingredients && form.data.ingredients.length > 1 && (
+                <p className="text-xs text-neutral-500 mt-1 flex items-center gap-1">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    className="w-4 h-4"
+                  >
+                    <path d="M7 3.5A1.5 1.5 0 018.5 2h3.879a1.5 1.5 0 011.06.44l3.122 3.12A1.5 1.5 0 0117 6.622V12.5a1.5 1.5 0 01-1.5 1.5h-1v-3.379a3 3 0 00-.879-2.121L10.5 5.379A3 3 0 008.379 4.5H7v-1z" />
+                    <path d="M4.5 6A1.5 1.5 0 003 7.5v9A1.5 1.5 0 004.5 18h7a1.5 1.5 0 001.5-1.5v-5.879a1.5 1.5 0 00-.44-1.06L9.44 6.439A1.5 1.5 0 008.378 6H4.5z" />
+                  </svg>
+                  Glissez-déposez pour réorganiser les ingrédients
+                </p>
+              )}
             </Card.Header>
             <Card.Body className="space-y-2">
               {!form.data.ingredients?.length ? (
@@ -409,35 +551,35 @@ export default function RecipeEditor({
                   </p>
                 </div>
               ) : (
-                <ul className="space-y-2">
-                  {(form.data.ingredients || []).map((item, index) => (
-                    <li
-                      key={item}
-                      className="flex items-center justify-between p-2 rounded-lg border border-primary-100 bg-primary-50 hover:bg-primary-100 transition-colors"
-                    >
-                      <span className="text-neutral-800">{item}</span>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => deleteItem(index, "ingredient")}
-                        className="text-red-600 hover:text-red-700"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                          className="w-5 h-5"
+                <DndContext
+                  sensors={sensors}
+                  collisionDetection={closestCenter}
+                  onDragEnd={handleDragEndIngredients}
+                  modifiers={[restrictToVerticalAxis]}
+                >
+                  <SortableContext
+                    items={(form.data.ingredients || []).map(
+                      (_, index) => `ingredient-${index}`
+                    )}
+                    strategy={verticalListSortingStrategy}
+                  >
+                    <ul className="space-y-2">
+                      {(form.data.ingredients || []).map((item, index) => (
+                        <SortableItem
+                          key={`ingredient-${index}`}
+                          id={`ingredient-${index}`}
+                          index={index}
+                          type="ingredient"
+                          onDelete={() => deleteItem(index, "ingredient")}
                         >
-                          <path
-                            fillRule="evenodd"
-                            d="M8.75 1A2.75 2.75 0 006 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 10.23 1.482l.149-.022.841 10.518A2.75 2.75 0 007.596 19h4.807a2.75 2.75 0 002.742-2.53l.841-10.52.149.023a.75.75 0 00.23-1.482A41.03 41.03 0 0014 4.193V3.75A2.75 2.75 0 0011.25 1h-2.5zM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4zM8.58 7.72a.75.75 0 00-1.5.06l.3 7.5a.75.75 0 101.5-.06l-.3-7.5zm4.34.06a.75.75 0 10-1.5-.06l-.3 7.5a.75.75 0 101.5.06l.3-7.5z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      </Button>
-                    </li>
-                  ))}
-                </ul>
+                          <span className="text-neutral-800 self-center">
+                            {item}
+                          </span>
+                        </SortableItem>
+                      ))}
+                    </ul>
+                  </SortableContext>
+                </DndContext>
               )}
             </Card.Body>
           </Card>
@@ -449,6 +591,20 @@ export default function RecipeEditor({
                   {form.data.instructions?.length || 0}
                 </Badge>
               </h2>
+              {form.data.instructions && form.data.instructions.length > 1 && (
+                <p className="text-xs text-neutral-500 mt-1 flex items-center gap-1">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    className="w-4 h-4"
+                  >
+                    <path d="M7 3.5A1.5 1.5 0 018.5 2h3.879a1.5 1.5 0 011.06.44l3.122 3.12A1.5 1.5 0 0117 6.622V12.5a1.5 1.5 0 01-1.5 1.5h-1v-3.379a3 3 0 00-.879-2.121L10.5 5.379A3 3 0 008.379 4.5H7v-1z" />
+                    <path d="M4.5 6A1.5 1.5 0 003 7.5v9A1.5 1.5 0 004.5 18h7a1.5 1.5 0 001.5-1.5v-5.879a1.5 1.5 0 00-.44-1.06L9.44 6.439A1.5 1.5 0 008.378 6H4.5z" />
+                  </svg>
+                  Glissez-déposez pour réorganiser les instructions
+                </p>
+              )}
             </Card.Header>
             <Card.Body>
               {!form.data.instructions?.length ? (
@@ -459,36 +615,32 @@ export default function RecipeEditor({
                   </p>
                 </div>
               ) : (
-                <ol className="space-y-2 list-none pl-0">
-                  {(form.data.instructions || []).map((item, index) => (
-                    <li key={item} className="flex gap-3 group">
-                      <div className="flex-1 flex items-center justify-between p-2 rounded-lg border border-secondary-100 bg-secondary-50 hover:bg-secondary-100 transition-colors">
-                        <p className="text-neutral-700">
-                          {index + 1} - {item}
-                        </p>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => deleteItem(index, "instruction")}
-                          className="text-red-600 hover:text-red-700"
+                <DndContext
+                  sensors={sensors}
+                  collisionDetection={closestCenter}
+                  onDragEnd={handleDragEndInstructions}
+                >
+                  <SortableContext
+                    items={(form.data.instructions || []).map(
+                      (_, index) => `instruction-${index}`
+                    )}
+                    strategy={verticalListSortingStrategy}
+                  >
+                    <ol className="space-y-2 list-none pl-0">
+                      {(form.data.instructions || []).map((item, index) => (
+                        <SortableItem
+                          key={`instruction-${index}`}
+                          id={`instruction-${index}`}
+                          index={index}
+                          type="instruction"
+                          onDelete={() => deleteItem(index, "instruction")}
                         >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                            className="w-5 h-5"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              d="M8.75 1A2.75 2.75 0 006 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 10.23 1.482l.149-.022.841 10.518A2.75 2.75 0 007.596 19h4.807a2.75 2.75 0 002.742-2.53l.841-10.52.149.023a.75.75 0 00.23-1.482A41.03 41.03 0 0014 4.193V3.75A2.75 2.75 0 0011.25 1h-2.5zM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4zM8.58 7.72a.75.75 0 00-1.5.06l.3 7.5a.75.75 0 101.5-.06l-.3-7.5zm4.34.06a.75.75 0 10-1.5-.06l-.3 7.5a.75.75 0 101.5.06l.3-7.5z"
-                              clipRule="evenodd"
-                            />
-                          </svg>
-                        </Button>
-                      </div>
-                    </li>
-                  ))}
-                </ol>
+                          <p className="text-neutral-700 self-center">{item}</p>
+                        </SortableItem>
+                      ))}
+                    </ol>
+                  </SortableContext>
+                </DndContext>
               )}
             </Card.Body>
           </Card>

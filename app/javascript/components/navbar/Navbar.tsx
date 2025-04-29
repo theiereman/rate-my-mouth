@@ -1,5 +1,6 @@
 import { Link } from "@inertiajs/react";
 import { useState } from "react";
+import { LinkButton } from "../ui";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -8,7 +9,6 @@ export default function Navbar() {
     { name: "Recettes", href: "/recipes" },
     { name: "Populaires (wip)", href: "#", disabled: true },
     { name: "Nouveautés (wip)", href: "#", disabled: true },
-    { name: "Catégories (wip)", href: "#", disabled: true },
   ];
 
   return (
@@ -27,6 +27,14 @@ export default function Navbar() {
             </Link>
           </li>
         ))}
+        <LinkButton
+          href="/recipes/new"
+          variant="primary"
+          size="sm"
+          className="hidden md:block"
+        >
+          Nouvelle recette
+        </LinkButton>
       </ul>
 
       {/* Mobile navigation button */}
