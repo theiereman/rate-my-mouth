@@ -2,6 +2,7 @@ import { InertiaFormProps, useForm } from "@inertiajs/react";
 import { FormEvent } from "react";
 import { RecipeFormType, RecipeType } from "./types";
 import RecipeEditor from "./components/RecipeEditor";
+import { Button, Input, Card } from "../../components/ui";
 
 interface FormProps {
   recipe: RecipeType;
@@ -25,48 +26,68 @@ export default function Form({ recipe, onSubmit, submitText }: FormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="contents">
-      <div className="my-5">
-        <label htmlFor="name">Nom de la recette</label>
-        <input
-          type="text"
-          name="name"
-          id="name"
-          value={data.name}
-          className="block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full"
-          onChange={(e) => setData("name", e.target.value)}
-        />
-        {errors.name && (
-          <div className="text-red-500 px-3 py-2 font-medium">
-            {errors.name}
+      <Card variant="outlined">
+        <Card.Header>
+          <h2 className="text-xl font-semibold text-neutral-800">
+            Informations générales
+          </h2>
+        </Card.Header>
+        <Card.Body className="space-y-4">
+          <div>
+            <Input
+              label="Nom de la recette"
+              type="text"
+              name="name"
+              id="name"
+              value={data.name}
+              onChange={(e) => setData("name", e.target.value)}
+              error={errors.name}
+              fullWidth
+              placeholder="Ex: Tarte aux pommes, Poulet rôti aux herbes..."
+              data-1p-ignore
+              data-lpignore="true"
+              data-protonpass-ignore="true"
+            />
           </div>
-        )}
-      </div>
+
+          <div>
+            <Input
+              label="URL de la source (optionnel)"
+              type="text"
+              name="url"
+              id="url"
+              value={data.url}
+              onChange={(e) => setData("url", e.target.value)}
+              error={errors.url}
+              fullWidth
+              placeholder="https://..."
+              helperText="Si cette recette provient d'un site web, vous pouvez indiquer l'URL ici"
+            />
+          </div>
+        </Card.Body>
+      </Card>
 
       <RecipeEditor form={form} />
 
-      <div className="my-5">
-        <label htmlFor="url">Url</label>
-        <input
-          type="text"
-          name="url"
-          id="url"
-          value={data.url}
-          className="block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full"
-          onChange={(e) => setData("url", e.target.value)}
-        />
-        {errors.url && (
-          <div className="text-red-500 px-3 py-2 font-medium">{errors.url}</div>
-        )}
-      </div>
-
-      <div className="inline">
-        <button
+      <div className="mt-8 flex justify-end">
+        <Button
           type="submit"
-          disabled={processing}
-          className="rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer"
+          variant="primary"
+          size="lg"
+          isLoading={processing}
+          icon={
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              className="w-5 h-5"
+            >
+              <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
+            </svg>
+          }
         >
           {submitText}
-        </button>
+        </Button>
       </div>
     </form>
   );

@@ -1,33 +1,59 @@
 import { RatingType } from "../types";
-import UserRating from "./RatingDisplay";
+import RatingDisplay from "./RatingDisplay";
+import { Avatar } from "../../../components/ui";
 
 export default function LastRatings({
   ratings,
-  count = 5,
+  count = 3,
 }: {
   ratings: RatingType[];
   count?: number;
 }) {
+  const sortedRatings = [...ratings]
+    .sort(
+      (a, b) =>
+        new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+    )
+    .slice(0, count);
+
   return (
-    <div id="ratings">
-      <h2 className="font-semibold mb-2">Les {count} dernières notes</h2>
-      {ratings.length > 0 ? (
-        <ul className="flex flex-col gap-2">
-          {ratings
-            .sort(
-              (a, b) =>
-                new Date(b.created_at).getTime() -
-                new Date(a.created_at).getTime()
-            )
-            .map((rating) => (
-              <li key={rating.id} className="flex items-center gap-2">
-                <UserRating rating={rating} />
-              </li>
-            ))
-            .slice(0, count)}
+    <div>
+      <h3 className="font-medium text-neutral-800 mb-3">
+        Dernières évaluations
+      </h3>
+
+      {sortedRatings.length > 0 ? (
+        <ul className="space-y-4">
+          {sortedRatings.map((rating) => (
+            <li
+              key={rating.id}
+              className="flex items-start gap-3 animate-fade-in"
+            >
+              <Avatar
+                name={rating.user.username}
+                size="sm"
+                className="flex-shrink-0"
+              />
+              <div className="flex-1">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-1">
+                  <span className="font-medium text-sm text-neutral-800">
+                    {rating.user.username}
+                  </span>
+                  <span className="text-xs text-neutral-500">
+                    a noté {rating.value.toFixed(1)}/5
+                  </span>
+                </div>
+                <RatingDisplay rating={rating} />
+              </div>
+            </li>
+          ))}
         </ul>
       ) : (
-        <p>Aucune note</p>
+        <div className="text-center py-4 bg-neutral-50 rounded-lg border border-neutral-100">
+          <p className="text-sm text-neutral-600">
+            Aucune évaluation pour le moment
+          </p>
+        </div>
       )}
     </div>
   );
