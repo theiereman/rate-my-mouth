@@ -1,6 +1,14 @@
 import React from "react";
 
-type BadgeVariant = "primary" | "secondary" | "accent" | "success" | "warning" | "error" | "info" | "neutral";
+type BadgeVariant =
+  | "primary"
+  | "secondary"
+  | "accent"
+  | "success"
+  | "warning"
+  | "error"
+  | "info"
+  | "neutral";
 type BadgeSize = "xs" | "sm" | "md" | "lg";
 
 interface BadgeProps {
@@ -69,7 +77,7 @@ export const Badge = ({
 
   return (
     <span
-      className={`inline-flex items-center font-medium ${variantClasses} ${sizeClasses} ${roundedClasses} ${cursorClass} ${className}`}
+      className={`flex items-center font-medium whitespace-nowrap ${variantClasses} ${sizeClasses} ${roundedClasses} ${cursorClass} ${className}`}
       onClick={onClick}
     >
       {icon && iconPosition === "left" && <span className="mr-1">{icon}</span>}

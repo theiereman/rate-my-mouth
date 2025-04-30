@@ -25,17 +25,17 @@ const getVariantClasses = (variant: string, hasError: boolean) => {
     case "default":
       return `bg-white border ${
         hasError ? "border-red-500" : "border-neutral-300"
-      } focus:border-blue-500 focus:ring-blue-500 ${errorBorderClass}`;
+      } focus:border-blue-500 focus:ring-primary-500 ${errorBorderClass}`;
     case "filled":
-      return `bg-neutral-100 border border-transparent focus:bg-white focus:border-blue-500 focus:ring-blue-500 ${errorBorderClass}`;
+      return `bg-neutral-100 border border-transparent focus:bg-white focus:border-blue-500 focus:ring-primary-500 ${errorBorderClass}`;
     case "outlined":
       return `bg-transparent border ${
         hasError ? "border-red-500" : "border-neutral-300"
-      } focus:border-blue-500 focus:ring-blue-500 ${errorBorderClass}`;
+      } focus:border-blue-500 focus:ring-primary-500 ${errorBorderClass}`;
     default:
       return `bg-white border ${
         hasError ? "border-red-500" : "border-neutral-300"
-      } focus:border-blue-500 focus:ring-blue-500 ${errorBorderClass}`;
+      } focus:border-blue-500 focus:ring-primary-500 ${errorBorderClass}`;
   }
 };
 

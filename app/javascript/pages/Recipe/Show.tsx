@@ -43,7 +43,7 @@ export default function Show({ recipe, userRating }: ShowProps) {
         </div>
       </div>
 
-      <div className="mx-auto flex flex-col gap-8">
+      <div className="mx-auto flex flex-col">
         <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-8">
           <Recipe recipe={recipe} showRating={true} />
           <RecipeRatingDetails recipe={recipe} userRating={userRating} />

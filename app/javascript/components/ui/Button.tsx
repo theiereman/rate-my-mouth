@@ -29,6 +29,7 @@ interface LinkButtonProps {
   className?: string;
   disabled?: boolean;
   children: React.ReactNode;
+  onBefore?: () => void;
 }
 
 const getVariantClasses = (variant: ButtonVariant) => {
@@ -78,7 +79,7 @@ export const Button = ({
   ...props
 }: ButtonProps) => {
   const baseClasses =
-    "inline-flex items-center justify-center font-medium rounded-lg transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 hover:cursor-pointer";
+    "inline-flex items-center justify-center font-medium rounded-lg transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 hover:cursor-pointer";
   const variantClasses = getVariantClasses(variant);
   const sizeClasses = getSizeClasses(size);
   const widthClass = fullWidth ? "w-full" : "";
@@ -137,10 +138,11 @@ export const LinkButton = ({
   className = "",
   disabled,
   children,
+  onBefore,
   ...props
 }: LinkButtonProps) => {
   const baseClasses =
-    "inline-flex items-center justify-center font-medium rounded-lg transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500";
+    "inline-flex items-center justify-center font-medium rounded-lg transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500";
   const variantClasses = getVariantClasses(variant);
   const sizeClasses = getSizeClasses(size);
   const widthClass = fullWidth ? "w-full" : "";
@@ -172,6 +174,7 @@ export const LinkButton = ({
       as={as}
       data={data}
       preserveScroll={preserveScroll}
+      onBefore={onBefore}
       className={`${baseClasses} ${variantClasses} ${sizeClasses} ${widthClass} ${className}`}
       {...props}
     >

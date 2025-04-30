@@ -2,6 +2,7 @@ import { Link, usePage } from "@inertiajs/react";
 import { PageProps } from "../../types";
 import ProfilePicPlaceholder from "../shared/ProfilePicPlaceholder";
 import { useState, useRef, useEffect } from "react";
+import ThemeSelector from "../theme/ThemeSelector";
 
 export default function UserActions() {
   const { user } = usePage<PageProps>().props;
@@ -42,7 +43,13 @@ export default function UserActions() {
 
       {/* Dropdown menu */}
       {isDropdownOpen && (
-        <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 animate-fade-in">
+        <div className="absolute right-0 mt-2 w-64 bg-white rounded-md shadow-lg py-1 z-10 animate-fade-in">
+          {/* Theme selector */}
+          <div className="border-b border-neutral-200">
+            <ThemeSelector />
+          </div>
+
+          {/* User actions */}
           <Link
             href="/users/sign_out"
             method="delete"

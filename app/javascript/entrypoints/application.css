@@ -1,6 +1,13 @@
 @import "tailwindcss";
 @config "./tailwind.config.js";
 
+:root {
+  /* Default theme values - will be overridden by ThemeContext */
+  --primary-hue: 230;
+  --secondary-hue: 300;
+  --accent-hue: 270;
+}
+
 html,
 body {
   height: 100%;
