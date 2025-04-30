@@ -6,7 +6,10 @@ Rails.application.routes.draw do
   end
 
 
-  resources :users
+  resources :users, only: [] do
+    get "list", on: :collection
+  end
+
   resources :recipes, concerns: [ :commentable ] do
     resources :ratings, only: [ :create ]
     get "search", on: :collection

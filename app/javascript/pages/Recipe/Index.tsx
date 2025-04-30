@@ -1,15 +1,56 @@
-import { Head } from "@inertiajs/react";
+import { Head, router } from "@inertiajs/react";
 import { RecipeType } from "./types";
 import RecipeShort from "./components/RecipeShort";
-import { LinkButton } from "../../components/ui";
-import SearchBar from "../../components/ui/SearchBar";
-import { useState } from "react";
+import UserSelector from "../../components/users/UserSelector";
+import { LinkButton, SearchBar, Input } from "../../components/ui";
+import { useEffect, useMemo, useState } from "react";
+import { debounce } from "lodash";
+import LoadingSpinner from "../../components/shared/LoadingSpinner";
 
 interface IndexProps {
   recipes: RecipeType[];
 }
 
 export default function Index({ recipes }: IndexProps) {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const search = (query?: string, user_id?: number | null) => {
+    setIsLoading(true);
+
+    const params: { query?: string; user_id?: number } = {};
+
+    if (query?.trim()) params.query = query;
+    if (user_id) params.user_id = user_id;
+
+    router.get("/recipes/search", params, {
+      preserveState: true,
+      preserveScroll: true,
+      onSuccess: () => setIsLoading(false),
+      onError: () => setIsLoading(false),
+    });
+  };
+
+  const debouncedSearch = useMemo(() => debounce(search, 500), []);
+
+  useEffect(() => {
+    return () => {
+      debouncedSearch.cancel();
+    };
+  }, [debouncedSearch]);
+
+  const handleSearch = (query: string) => {
+    setIsLoading(true);
+    setSearchQuery(query);
+    debouncedSearch(query, selectedUserId);
+  };
+
+  const handleUserSelected = (userId: number | null) => {
+    setSelectedUserId(userId);
+    search(searchQuery, userId);
+  };
+
   return (
     <>
       <Head title="Recettes" />
@@ -44,7 +85,28 @@ export default function Index({ recipes }: IndexProps) {
           </LinkButton>
         </div>
 
-        <SearchBar className="m-6"></SearchBar>
+        <div
+          id="filters"
+          className="border rounded-lg p-4 my-6 border-neutral-200"
+        >
+          <h1 className="text-xl font-semibold text-neutral-800 mb-2">
+            Filtres
+            <p className="text-sm font-normal text-neutral-500 ">
+              Additionnez les filtres entre eux pour affiner la recherche
+            </p>
+          </h1>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <Input
+              placeholder="Rechercher une recette..."
+              onChange={(e) => handleSearch(e.target.value)}
+              value={searchQuery}
+              rightIcon={isLoading ? <LoadingSpinner /> : undefined}
+            />
+
+            <UserSelector onUserSelected={handleUserSelected} />
+          </div>
+        </div>
 
         {recipes.length === 0 ? (
           <div className="text-center py-12 bg-neutral-50 rounded-lg border border-neutral-200">
