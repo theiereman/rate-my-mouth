@@ -1,8 +1,8 @@
 # Name of your application. Used to uniquely configure containers.
-service: rate_my_mouth
+service: rate-my-mouth
 
 # Name of the container image.
-image: teyermann/rate_my_mouth
+image: teyermann/rate-my-mouth
 
 # Deploy to these servers.
 servers:
