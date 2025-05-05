@@ -18,3 +18,15 @@ body {
   height: 100%;
   background-color: #fafafa; /* neutral-50 */
 }
+
+.material-icon--sm {
+  font-size: 1em;
+}
+
+.material-icon--lg {
+  font-size: 3em;
+}
+
+.material-icon--fill {
+  font-variation-settings: "FILL" 1;
+}

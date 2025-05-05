@@ -30,7 +30,10 @@ export default function Form({ recipe, onSubmit, submitText }: FormProps) {
     <form onSubmit={handleSubmit} className="contents">
       <Card variant="outlined">
         <Card.Header>
-          <h2 className="text-xl font-semibold text-neutral-800">
+          <h2 className="text-xl font-semibold text-neutral-800 flex items-center gap-1">
+            <span className="material-symbols-outlined text-primary-600">
+              article
+            </span>
             Informations générales
           </h2>
         </Card.Header>

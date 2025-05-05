@@ -89,12 +89,12 @@ const getRoundedClasses = (rounded: string) => {
 
 const getInitials = (name: string) => {
   if (!name) return "";
-  
+
   const names = name.split(" ");
   if (names.length === 1) {
     return names[0].charAt(0).toUpperCase();
   }
-  
+
   return (names[0].charAt(0) + names[names.length - 1].charAt(0)).toUpperCase();
 };
 
@@ -114,10 +114,11 @@ export const Avatar = ({
   const statusSizeClasses = getStatusSizeClasses(size);
   const roundedClasses = getRoundedClasses(rounded);
   const cursorClass = onClick ? "cursor-pointer" : "";
-  
+
   const statusPositionClasses = {
     "top-right": "top-0 right-0 transform translate-x-1/4 -translate-y-1/4",
-    "bottom-right": "bottom-0 right-0 transform translate-x-1/4 translate-y-1/4",
+    "bottom-right":
+      "bottom-0 right-0 transform translate-x-1/4 translate-y-1/4",
   };
 
   return (
@@ -128,31 +129,14 @@ export const Avatar = ({
           alt={alt || name}
           className={`${sizeClasses} ${roundedClasses} ${cursorClass} object-cover`}
         />
-      ) : name ? (
+      ) : (
         <div
           className={`${sizeClasses} ${roundedClasses} ${cursorClass} bg-primary-100 text-primary-800 flex items-center justify-center font-medium`}
         >
           {getInitials(name)}
         </div>
-      ) : (
-        <div
-          className={`${sizeClasses} ${roundedClasses} ${cursorClass} bg-neutral-200 flex items-center justify-center`}
-        >
-          <svg
-            className="w-1/2 h-1/2 text-neutral-500"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fillRule="evenodd"
-              d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-              clipRule="evenodd"
-            />
-          </svg>
-        </div>
       )}
-      
+
       {status !== "none" && (
         <span
           className={`absolute ${statusPositionClasses[statusPosition]} ${statusClasses} ${statusSizeClasses} ${roundedClasses} ring-2 ring-white`}

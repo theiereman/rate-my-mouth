@@ -2,7 +2,6 @@ import Input from "./Input";
 import { router } from "@inertiajs/react";
 import { useEffect, useMemo, useState } from "react";
 import { debounce } from "lodash";
-import LoadingSpinner from "../shared/LoadingSpinner";
 
 export default function SearchBar({
   className = "",
@@ -60,7 +59,13 @@ export default function SearchBar({
         placeholder={placeholder}
         value={searchQuery}
         onChange={handleChange}
-        rightIcon={isLoading ? <LoadingSpinner /> : undefined}
+        rightIcon={
+          isLoading ? (
+            <span className="material-symbols-outlined text-primary-600">
+              progress_activity
+            </span>
+          ) : undefined
+        }
       ></Input>
     </div>
   );

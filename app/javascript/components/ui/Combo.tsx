@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 import { debounce } from "lodash";
 import Input from "./Input";
-import LoadingSpinner from "../shared/LoadingSpinner";
 
 interface ComboProps {
   value: number | null;
@@ -92,24 +91,17 @@ export default function Combo({
 
   // Toggle dropdown icon
   const dropdownIcon = (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 20 20"
-      fill="currentColor"
-      className={`w-5 h-5 transition-transform duration-200 ${
-        isOpen ? "transform rotate-180" : ""
-      }`}
-    >
-      <path
-        fillRule="evenodd"
-        d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-        clipRule="evenodd"
-      />
-    </svg>
+    <span className="material-symbols-outlined">keyboard_arrow_down</span>
   );
 
   // Loading icon
-  const loadingIcon = isLoading ? <LoadingSpinner /> : dropdownIcon;
+  const loadingIcon = isLoading ? (
+    <span className="material-symbols-outlined text-primary-600">
+      progress_activity
+    </span>
+  ) : (
+    dropdownIcon
+  );
 
   return (
     <div className="flex items-end gap-1">
@@ -159,12 +151,14 @@ export default function Combo({
 
       {erasable && value && (
         <button
-          className="text-red-500 text-xl cursor-pointer mb-2"
+          className="text-red-500 text-xl cursor-pointer mb-2 flex items-center"
           onClick={() => {
             handleSelect(null);
           }}
         >
-          ❌
+          <span className="material-symbols-outlined text-primary-600">
+            close
+          </span>
         </button>
       )}
     </div>

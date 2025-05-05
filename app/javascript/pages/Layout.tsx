@@ -1,4 +1,4 @@
-import { usePage } from "@inertiajs/react";
+import { Head, usePage } from "@inertiajs/react";
 import { useState, useEffect } from "react";
 import Navbar from "../components/navbar/Navbar";
 import HomeButton from "../components/navbar/HomeButton";
@@ -17,37 +17,46 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   }, [flash.alert]);
 
   return (
-    <div className="flex flex-col min-h-screen bg-neutral-50">
-      <header className="sticky top-0 z-10 bg-white shadow-sm border-b border-neutral-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center">
-              <HomeButton />
+    <>
+      <Head>
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+        />
+      </Head>
+
+      <div className="flex flex-col min-h-screen bg-neutral-50">
+        <header className="sticky top-0 z-10 bg-white shadow-sm border-b border-neutral-200">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-between items-center h-16">
+              <div className="flex items-center">
+                <HomeButton />
+              </div>
+              <Navbar />
+              <UserActions />
             </div>
-            <Navbar />
-            <UserActions />
           </div>
-        </div>
-      </header>
+        </header>
 
-      <main className="flex-grow">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in">
-          {showToast && flash.alert && (
-            <Toast
-              message={flash.alert}
-              type="error"
-              onClose={() => setShowToast(false)}
-            />
-          )}
-          {children}
-        </div>
-      </main>
+        <main className="flex-grow">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in">
+            {showToast && flash.alert && (
+              <Toast
+                message={flash.alert}
+                type="error"
+                onClose={() => setShowToast(false)}
+              />
+            )}
+            {children}
+          </div>
+        </main>
 
-      <footer className=" py-4">
-        <p className="text-neutral-500 text-sm ms-2">
-          © {new Date().getFullYear()} RateMyMouth. Tous droits réservés.
-        </p>
-      </footer>
-    </div>
+        <footer className=" py-4">
+          <p className="text-neutral-500 text-sm ms-2">
+            © {new Date().getFullYear()} RateMyMouth. Tous droits réservés.
+          </p>
+        </footer>
+      </div>
+    </>
   );
 }

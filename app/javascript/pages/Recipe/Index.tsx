@@ -5,7 +5,6 @@ import UserSelector from "../../components/users/UserSelector";
 import { LinkButton, Input } from "../../components/ui";
 import { useEffect, useMemo, useState } from "react";
 import { debounce } from "lodash";
-import LoadingSpinner from "../../components/shared/LoadingSpinner";
 
 interface IndexProps {
   recipes: RecipeType[];
@@ -70,15 +69,11 @@ export default function Index({ recipes }: IndexProps) {
             href="/recipes/new"
             variant="primary"
             size="lg"
+            className=""
             icon={
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                className="w-5 h-5"
-              >
-                <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
-              </svg>
+              <span className="material-symbols-outlined current-color">
+                add
+              </span>
             }
           >
             Nouvelle recette
@@ -101,7 +96,13 @@ export default function Index({ recipes }: IndexProps) {
               placeholder="Rechercher une recette..."
               onChange={(e) => handleSearch(e.target.value)}
               value={searchQuery}
-              rightIcon={isLoading ? <LoadingSpinner /> : undefined}
+              rightIcon={
+                isLoading ? (
+                  <span className="material-symbols-outlined text-primary-600">
+                    progress_activity
+                  </span>
+                ) : undefined
+              }
             />
 
             <UserSelector onUserSelected={handleUserSelected} />
@@ -110,20 +111,6 @@ export default function Index({ recipes }: IndexProps) {
 
         {recipes.length === 0 ? (
           <div className="text-center py-12 bg-neutral-50 rounded-lg border border-neutral-200">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-12 w-12 mx-auto text-neutral-400 mb-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={1.5}
-                d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"
-              />
-            </svg>
             <h3 className="text-lg font-medium text-neutral-800 mb-2">
               Aucune recette disponible
             </h3>
