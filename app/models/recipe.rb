@@ -4,6 +4,7 @@ class Recipe < ApplicationRecord
   belongs_to :user
 
   validates :name, presence: true
+  validates :number_of_servings, presence: true, numericality: { only_integer: true, greater_than: 0 }
 
   serialize :ingredients, coder: JSON
   serialize :instructions, coder: JSON

@@ -16,6 +16,7 @@ export default function Form({ recipe, onSubmit, submitText }: FormProps) {
     ingredients: recipe.ingredients || [],
     instructions: recipe.instructions || [],
     url: recipe.url || "",
+    number_of_servings: recipe.number_of_servings || 4,
   });
   const { data, setData, errors, processing } = form;
 
@@ -33,37 +34,44 @@ export default function Form({ recipe, onSubmit, submitText }: FormProps) {
           </h2>
         </Card.Header>
         <Card.Body className="space-y-4">
-          <div>
-            <Input
-              label="Nom de la recette"
-              type="text"
-              name="name"
-              id="name"
-              value={data.name}
-              onChange={(e) => setData("name", e.target.value)}
-              error={errors.name}
-              fullWidth
-              placeholder="Ex: Tarte aux pommes, Poulet rôti aux herbes..."
-              data-1p-ignore
-              data-lpignore="true"
-              data-protonpass-ignore="true"
-            />
-          </div>
+          <Input
+            label="Nom de la recette"
+            type="text"
+            name="name"
+            id="name"
+            value={data.name}
+            onChange={(e) => setData("name", e.target.value)}
+            error={errors.name}
+            placeholder="Ex: Tarte aux pommes, Poulet rôti aux herbes..."
+            data-1p-ignore
+            data-lpignore="true"
+            data-protonpass-ignore="true"
+          />
 
-          <div>
-            <Input
-              label="URL de la source (optionnel)"
-              type="text"
-              name="url"
-              id="url"
-              value={data.url}
-              onChange={(e) => setData("url", e.target.value)}
-              error={errors.url}
-              fullWidth
-              placeholder="https://..."
-              helperText="Si cette recette provient d'un site web, vous pouvez indiquer l'URL ici"
-            />
-          </div>
+          <Input
+            label="URL de la source (optionnel)"
+            type="text"
+            name="url"
+            id="url"
+            value={data.url}
+            onChange={(e) => setData("url", e.target.value)}
+            error={errors.url}
+            placeholder="https://..."
+            helperText="Si cette recette provient d'un site web, vous pouvez indiquer l'URL ici"
+          />
+
+          <Input
+            label="Nombre de personnes"
+            helperText="Quantité de personnes pour lesquelles cette recette est prévue"
+            type="number"
+            name="number_of_servings"
+            id="number_of_servings"
+            value={data.number_of_servings}
+            onChange={(e) =>
+              setData("number_of_servings", parseInt(e.target.value))
+            }
+            error={errors.number_of_servings}
+          />
         </Card.Body>
       </Card>
 

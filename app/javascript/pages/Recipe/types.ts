@@ -22,4 +22,5 @@ export type RecipeFormType = {
   url: string;
   ingredients: string[] | null;
   instructions: string[] | null;
+  number_of_servings: number;
 };

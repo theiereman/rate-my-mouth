@@ -93,7 +93,7 @@ class RecipesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def recipe_params
-      params.expect(recipe: [ :name, :url, ingredients: [], instructions: [] ])
+      params.expect(recipe: [ :name, :url, :number_of_servings, ingredients: [], instructions: [] ])
     end
 
     def serialize_recipe_full(recipe)
