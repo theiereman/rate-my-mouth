@@ -1,6 +1,7 @@
 import { InputHTMLAttributes } from "react";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+  mandatory?: boolean;
   label?: string;
   helperText?: string;
   error?: string;
@@ -39,6 +40,7 @@ const getVariantClasses = (variant: string, hasError: boolean) => {
 };
 
 export const Input = ({
+  mandatory = false,
   label = "",
   helperText = "",
   error = "",
@@ -68,6 +70,7 @@ export const Input = ({
           className={`block text-sm font-medium text-neutral-700 mb-1 ${labelClassName}`}
         >
           {label}
+          {mandatory && <span className="text-red-500"> *</span>}
         </label>
       )}
       <div className="relative">

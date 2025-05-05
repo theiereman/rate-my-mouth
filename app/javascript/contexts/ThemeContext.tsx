@@ -11,6 +11,9 @@ export type ThemeColors = {
   primary: string;
   secondary: string;
   accent: string;
+  valid?: string;
+  error?: string;
+  warning?: string;
 };
 
 export type ThemeOption = {
@@ -28,10 +31,19 @@ export const calculateTriad = (baseHue: number): ThemeColors => {
   const secondaryHue = (hue + 120) % 360;
   const accentHue = (hue + 240) % 360;
 
+  // Calculer des variations légères pour les couleurs sémantiques
+  // Nous gardons les couleurs proches de leurs valeurs par défaut mais avec une légère influence du thème
+  const validHue = (140 + (hue % 30) - 15) % 360; // Variation de ±15° autour de 140° (vert)
+  const errorHue = (20 + (hue % 20) - 10) % 360; // Variation de ±10° autour de 20° (rouge)
+  const warningHue = (85 + (hue % 16) - 8) % 360; // Variation de ±8° autour de 85° (jaune)
+
   return {
     primary: hue.toString(),
     secondary: secondaryHue.toString(),
     accent: accentHue.toString(),
+    valid: validHue.toString(),
+    error: errorHue.toString(),
+    warning: warningHue.toString(),
   };
 };
 

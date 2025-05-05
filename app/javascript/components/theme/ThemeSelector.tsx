@@ -109,11 +109,11 @@ export default function ThemeSelector() {
             <button
               key={theme.id}
               onClick={() => {
-                setCustomColors({
-                  primary: theme.colors.primary,
-                  secondary: theme.colors.secondary,
-                  accent: theme.colors.accent,
-                } as ThemeColors);
+                // Use calculateTriad to ensure we get all colors including semantic ones
+                const colors = calculateTriad(
+                  parseInt(theme.colors.primary, 10)
+                );
+                setCustomColors(colors);
                 setTheme(theme);
               }}
               className={`w-full aspect-square rounded-full border-2 transition-all ${
@@ -156,19 +156,52 @@ export default function ThemeSelector() {
                 style={{
                   backgroundColor: `oklch(0.75 0.2 ${customColors.primary})`,
                 }}
+                title="Couleur primaire"
               ></div>
               <div
                 className="rounded-full flex-1"
                 style={{
                   backgroundColor: `oklch(0.75 0.2 ${customColors.secondary})`,
                 }}
+                title="Couleur secondaire"
               ></div>
               <div
                 className="rounded-full flex-1"
                 style={{
                   backgroundColor: `oklch(0.75 0.2 ${customColors.accent})`,
                 }}
+                title="Couleur d'accent"
               ></div>
+            </div>
+
+            {/* Semantic colors preview */}
+            <div className="mt-3">
+              <label className="block text-xs font-medium text-neutral-700 mb-1">
+                Couleurs sémantiques
+              </label>
+              <div className="flex h-3 items-stretch gap-1">
+                <div
+                  className="rounded-full flex-1"
+                  style={{
+                    backgroundColor: `oklch(0.75 0.2 ${customColors.valid})`,
+                  }}
+                  title="Valid (vert)"
+                ></div>
+                <div
+                  className="rounded-full flex-1"
+                  style={{
+                    backgroundColor: `oklch(0.75 0.2 ${customColors.error})`,
+                  }}
+                  title="Error (rouge)"
+                ></div>
+                <div
+                  className="rounded-full flex-1"
+                  style={{
+                    backgroundColor: `oklch(0.75 0.2 ${customColors.warning})`,
+                  }}
+                  title="Warning (jaune)"
+                ></div>
+              </div>
             </div>
           </div>
         </div>

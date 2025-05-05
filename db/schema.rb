@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_28_154524) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_05_025410) do
   create_table "comments", force: :cascade do |t|
     t.string "content"
     t.integer "user_id", null: false
@@ -20,6 +20,25 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_28_154524) do
     t.integer "commentable_id"
     t.index ["commentable_type", "commentable_id"], name: "index_comments_on_commentable_type_and_commentable_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
+  create_table "ingredients", force: :cascade do |t|
+    t.string "name"
+    t.float "quantity"
+    t.string "unit"
+    t.integer "recipe_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["recipe_id"], name: "index_ingredients_on_recipe_id"
+  end
+
+  create_table "instructions", force: :cascade do |t|
+    t.string "name"
+    t.integer "position"
+    t.integer "recipe_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["recipe_id"], name: "index_instructions_on_recipe_id"
   end
 
   create_table "ratings", force: :cascade do |t|
@@ -38,9 +57,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_28_154524) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id", null: false
+    t.text "instruction"
     t.text "instructions"
     t.text "ingredients"
     t.integer "number_of_servings", default: 4, null: false
+    t.integer "difficulty", default: 0, null: false
     t.index ["user_id"], name: "index_recipes_on_user_id"
   end
 
@@ -58,6 +79,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_28_154524) do
   end
 
   add_foreign_key "comments", "users"
+  add_foreign_key "ingredients", "recipes"
+  add_foreign_key "instructions", "recipes"
   add_foreign_key "ratings", "recipes"
   add_foreign_key "ratings", "users"
   add_foreign_key "recipes", "users"

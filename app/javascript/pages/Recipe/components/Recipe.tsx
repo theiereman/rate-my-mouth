@@ -4,6 +4,7 @@ import Ingredients from "../Ingredients/components/Ingredients";
 import { Card, Badge, LinkButton } from "../../../components/ui";
 import { usePage } from "@inertiajs/react";
 import { PageProps } from "../../../types";
+import DifficultyBadge from "./DifficultyBadge";
 
 export default function Recipe({
   recipe,
@@ -13,6 +14,8 @@ export default function Recipe({
   showRating?: boolean;
 }) {
   const { user } = usePage<PageProps>().props;
+
+  console.log(recipe.difficulty_value);
 
   return (
     <div className="animate-fade-in">
@@ -84,6 +87,7 @@ export default function Recipe({
           <Badge variant="primary" size="md">
             {recipe.instructions?.length || 0} étapes
           </Badge>
+          <DifficultyBadge difficulty={recipe.difficulty_value} />
         </div>
       </div>
 

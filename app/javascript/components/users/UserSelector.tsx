@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import Combo from "../ui/Combo";
+import Combo, { ComboValue } from "../ui/Combo";
 
 interface User {
   id: number;
@@ -9,7 +9,7 @@ interface User {
 }
 
 interface UserSelectorProps {
-  onUserSelected: (userId: number | null, user: User | null) => void;
+  onUserSelected: (userId: number | null) => void;
   label?: string;
   placeholder?: string;
   className?: string;
@@ -26,7 +26,7 @@ export default function UserSelector({
   const [users, setUsers] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [selectedUser, setSelectedUser] = useState<number | null>(null);
 
   // Charger la liste des utilisateurs
   useEffect(() => {
@@ -57,25 +57,15 @@ export default function UserSelector({
   }, [initialUserId]);
 
   // Formater les utilisateurs pour l'affichage dans la combo
-  const userOptions = users.map((user) => `${user.username} (${user.email})`);
+  const userOptions: ComboValue[] = users.map<ComboValue>((user) => {
+    return { value: user.id, label: `${user.username} (${user.email})` };
+  });
 
   // Gérer la sélection d'un utilisateur
-  const handleUserSelected = (selectedValue: string) => {
-    const index = userOptions.findIndex((option) => option === selectedValue);
-    if (index !== -1) {
-      const user = users[index];
-      setSelectedUser(user);
-      onUserSelected(user.id, user);
-    } else {
-      setSelectedUser(null);
-      onUserSelected(null, null);
-    }
+  const handleUserSelected = (selectedValue: ComboValue | null) => {
+    setSelectedUser(selectedValue?.value ?? null);
+    onUserSelected(selectedValue?.value ?? null);
   };
-
-  // Formater la valeur sélectionnée pour l'affichage
-  const displayValue = selectedUser
-    ? `${selectedUser.username} (${selectedUser.email})`
-    : "";
 
   return (
     <div className={className}>
@@ -86,8 +76,9 @@ export default function UserSelector({
         onSelectedValue={handleUserSelected}
         placeholder={isLoading ? "Chargement des utilisateurs..." : placeholder}
         label={label}
-        value={displayValue}
+        value={selectedUser}
         disabled={isLoading || users.length === 0}
+        erasable
       />
     </div>
   );

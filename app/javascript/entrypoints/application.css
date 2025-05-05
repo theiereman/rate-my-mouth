@@ -6,6 +6,11 @@
   --primary-hue: 230;
   --secondary-hue: 300;
   --accent-hue: 270;
+
+  /* Semantic color hues - can be adjusted by themes */
+  --valid-hue: 140;
+  --error-hue: 20;
+  --warning-hue: 85;
 }
 
 html,
