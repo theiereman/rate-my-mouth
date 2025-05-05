@@ -53,7 +53,7 @@ export default function Comments({
           </ul>
         ) : (
           <div className="py-8 text-center">
-            <span className="material-symbols-outlined material-symbols-filled text-primary-600">
+            <span className="material-symbols-outlined material-symbols-filled text-primary-600 material-icon--lg">
               mode_comment
             </span>
             <p className="text-neutral-600">Aucun commentaire pour le moment</p>

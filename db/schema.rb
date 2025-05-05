@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_05_025410) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_05_095554) do
   create_table "comments", force: :cascade do |t|
     t.string "content"
     t.integer "user_id", null: false
@@ -42,6 +42,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_05_025410) do
     t.text "ingredients"
     t.integer "number_of_servings", default: 4, null: false
     t.integer "difficulty", default: 0, null: false
+    t.text "description"
     t.index ["user_id"], name: "index_recipes_on_user_id"
   end
 

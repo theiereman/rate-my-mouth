@@ -75,6 +75,8 @@ export default function Recipe({
           </Badge>
           <DifficultyBadge difficulty={recipe.difficulty_value} />
         </div>
+
+        <div className="text-neutral-600">{recipe.description}</div>
       </div>
 
       <Card variant="outlined" padding="sm">

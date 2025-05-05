@@ -2,7 +2,7 @@ import { InertiaFormProps, useForm } from "@inertiajs/react";
 import { FormEvent } from "react";
 import { RecipeFormType, RecipeType } from "./types";
 import RecipeEditor from "./components/RecipeEditor";
-import { Button, Input, Card, Combo } from "../../components/ui";
+import { Button, Input, Card, Combo, TextArea } from "../../components/ui";
 
 interface FormProps {
   recipe: RecipeType;
@@ -18,6 +18,7 @@ export default function Form({ recipe, onSubmit, submitText }: FormProps) {
     url: recipe.url || "",
     number_of_servings: recipe.number_of_servings || 4,
     difficulty: recipe.difficulty_value || 0,
+    description: recipe.description || "",
   });
   const { data, setData, errors, processing } = form;
 
@@ -47,10 +48,20 @@ export default function Form({ recipe, onSubmit, submitText }: FormProps) {
             value={data.name}
             onChange={(e) => setData("name", e.target.value)}
             error={errors.name}
-            placeholder="Ex: Tarte aux pommes, Poulet rôti aux herbes..."
+            placeholder="Tarte aux pommes, Poulet rôti aux herbes..."
             data-1p-ignore
             data-lpignore="true"
             data-protonpass-ignore="true"
+          />
+
+          <TextArea
+            label="Description"
+            name="description"
+            id="description"
+            value={data.description}
+            onChange={(e) => setData("description", e.target.value)}
+            error={errors.description}
+            placeholder="Une recette de mon enfance qui me donne les larmes aux yeux quand j'y pense..."
           />
 
           <Input
