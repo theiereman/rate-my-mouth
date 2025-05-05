@@ -58,7 +58,7 @@ export default function UserSelector({
 
   // Formater les utilisateurs pour l'affichage dans la combo
   const userOptions: ComboValue[] = users.map<ComboValue>((user) => {
-    return { value: user.id, label: `${user.username} (${user.email})` };
+    return { value: user.id, label: user.username };
   });
 
   // Gérer la sélection d'un utilisateur
