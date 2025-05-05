@@ -2,7 +2,8 @@ import { Link } from "@inertiajs/react";
 import { formatDate } from "../../../helpers/dateHelper";
 import { RecipeType } from "../types";
 import { Rating } from "@mui/material";
-import { Card } from "../../../components/ui";
+import { Badge, Card } from "../../../components/ui";
+import DifficultyBadge from "./DifficultyBadge";
 
 interface RecipeProps {
   recipe: RecipeType;
@@ -48,7 +49,7 @@ export default function Recipe({ recipe }: RecipeProps) {
             </div>
 
             <div className="flex flex-wrap gap-3 mb-3">
-              <div className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800">
+              <Badge variant="primary">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-3.5 w-3.5 mr-1"
@@ -60,9 +61,8 @@ export default function Recipe({ recipe }: RecipeProps) {
                 </svg>
                 {recipe.comments.length} commentaire
                 {recipe.comments.length > 1 ? "s" : ""}
-              </div>
-
-              <div className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-secondary-100 text-secondary-800">
+              </Badge>
+              <Badge variant="secondary">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-3.5 w-3.5 mr-1"
@@ -73,7 +73,10 @@ export default function Recipe({ recipe }: RecipeProps) {
                 </svg>
                 {recipe.ratings.length} note
                 {recipe.ratings.length > 1 ? "s" : ""}
-              </div>
+              </Badge>
+              <DifficultyBadge
+                difficulty={recipe.difficulty_value}
+              ></DifficultyBadge>
             </div>
 
             <div className="text-xs text-neutral-500 flex flex-wrap gap-2">

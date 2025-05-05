@@ -4,29 +4,38 @@ import Input from "./Input";
 import LoadingSpinner from "../shared/LoadingSpinner";
 
 interface ComboProps {
-  values: any[];
-  onSelectedValue: (value: string) => void;
+  value: number | null;
+  values: ComboValue[];
+  onSelectedValue: (value: ComboValue | null) => void;
   placeholder?: string;
   label?: string;
-  value: string;
   className?: string;
   disabled?: boolean;
   variant?: "default" | "filled" | "outlined";
+  erasable?: boolean;
+  mandatory?: boolean;
+}
+
+export interface ComboValue {
+  value: number;
+  label: string;
 }
 
 export default function Combo({
   values,
+  value = null,
   onSelectedValue,
   placeholder = "Sélectionner...",
   label = "",
-  value = "",
   className = "",
   disabled = false,
+  erasable = false,
   variant = "default",
+  mandatory = false,
 }: ComboProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
-  const [filteredValues, setFilteredValues] = useState<any[]>(values);
+  const [filteredValues, setFilteredValues] = useState<ComboValue[]>(values);
   const [isLoading, setIsLoading] = useState(false);
   const comboRef = useRef<HTMLDivElement>(null);
 
@@ -36,7 +45,7 @@ export default function Combo({
       debounce((query: string) => {
         setIsLoading(true);
         const filtered = values.filter((value) =>
-          value.toString().toLowerCase().includes(query.toLowerCase())
+          value.label.toLowerCase().includes(query.toLowerCase())
         );
         setFilteredValues(filtered);
         setIsLoading(false);
@@ -52,7 +61,7 @@ export default function Combo({
   };
 
   // Handle option selection
-  const handleSelect = (value: any) => {
+  const handleSelect = (value: ComboValue | null) => {
     setSearchValue("");
     setIsOpen(false);
     onSelectedValue(value);
@@ -107,9 +116,16 @@ export default function Combo({
       <div className={`relative ${className}`} ref={comboRef}>
         {/* Input field with search functionality */}
         <Input
+          mandatory={mandatory}
           label={label}
           placeholder={placeholder}
-          value={isOpen ? searchValue : value}
+          value={
+            isOpen
+              ? searchValue
+              : value !== null
+              ? values.find((v) => v.value === value)?.label || ""
+              : ""
+          }
           onChange={handleSearchChange}
           onClick={() => !disabled && setIsOpen(true)}
           rightIcon={loadingIcon}
@@ -128,7 +144,7 @@ export default function Combo({
                     className="px-4 py-2 hover:bg-primary-50 cursor-pointer text-neutral-700 hover:text-primary-700 transition-colors duration-150"
                     onClick={() => handleSelect(value)}
                   >
-                    {value}
+                    {value.label}
                   </li>
                 ))}
               </ul>
@@ -141,7 +157,7 @@ export default function Combo({
         )}
       </div>
 
-      {value && (
+      {erasable && value && (
         <button
           className="text-red-500 text-xl cursor-pointer mb-2"
           onClick={() => {

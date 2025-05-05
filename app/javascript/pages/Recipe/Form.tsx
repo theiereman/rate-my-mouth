@@ -2,7 +2,7 @@ import { InertiaFormProps, useForm } from "@inertiajs/react";
 import { FormEvent } from "react";
 import { RecipeFormType, RecipeType } from "./types";
 import RecipeEditor from "./components/RecipeEditor";
-import { Button, Input, Card } from "../../components/ui";
+import { Button, Input, Card, Combo } from "../../components/ui";
 
 interface FormProps {
   recipe: RecipeType;
@@ -17,6 +17,7 @@ export default function Form({ recipe, onSubmit, submitText }: FormProps) {
     instructions: recipe.instructions || [],
     url: recipe.url || "",
     number_of_servings: recipe.number_of_servings || 4,
+    difficulty: recipe.difficulty_value || 0,
   });
   const { data, setData, errors, processing } = form;
 
@@ -35,6 +36,7 @@ export default function Form({ recipe, onSubmit, submitText }: FormProps) {
         </Card.Header>
         <Card.Body className="space-y-4">
           <Input
+            mandatory
             label="Nom de la recette"
             type="text"
             name="name"
@@ -61,6 +63,7 @@ export default function Form({ recipe, onSubmit, submitText }: FormProps) {
           />
 
           <Input
+            mandatory
             label="Nombre de personnes"
             helperText="Quantité de personnes pour lesquelles cette recette est prévue"
             type="number"
@@ -71,6 +74,20 @@ export default function Form({ recipe, onSubmit, submitText }: FormProps) {
               setData("number_of_servings", parseInt(e.target.value))
             }
             error={errors.number_of_servings}
+          />
+
+          <Combo
+            mandatory
+            label="Difficulté"
+            values={[
+              { value: 0, label: "Facile" },
+              { value: 1, label: "Moyen" },
+              { value: 2, label: "Difficile" },
+            ]}
+            onSelectedValue={(value) =>
+              setData("difficulty", value?.value ?? 0)
+            }
+            value={data.difficulty}
           />
         </Card.Body>
       </Card>

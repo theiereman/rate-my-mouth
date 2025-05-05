@@ -9,7 +9,7 @@ class RecipesController < ApplicationController
 
     render inertia: "Recipe/Index", props: {
       recipes: @recipes.map do |recipe|
-        serialize_recipe_full(recipe)
+        recipe_as_json recipe
       end
     }
   end
@@ -28,7 +28,7 @@ class RecipesController < ApplicationController
 
     render inertia: "Recipe/Index", props: {
       recipes: @recipes.map do |recipe|
-        serialize_recipe_full(recipe)
+        recipe_as_json recipe
       end
     }
   end
@@ -36,7 +36,7 @@ class RecipesController < ApplicationController
   # GET /recipes/1
   def show
     render inertia: "Recipe/Show", props: {
-      recipe: serialize_recipe_full(@recipe),
+      recipe: recipe_as_json,
       userRating: Rating.find_by(user: current_user, recipe: @recipe)
 
     }
@@ -46,14 +46,14 @@ class RecipesController < ApplicationController
   def new
     @recipe = Recipe.new
     render inertia: "Recipe/New", props: {
-      recipe: @recipe.as_json
+      recipe: recipe_as_json
     }
   end
 
   # GET /recipes/1/edit
   def edit
     render inertia: "Recipe/Edit", props: {
-      recipe: @recipe.as_json
+      recipe: recipe_as_json
     }
   end
 
@@ -93,10 +93,10 @@ class RecipesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def recipe_params
-      params.expect(recipe: [ :name, :url, :number_of_servings, ingredients: [], instructions: [] ])
+      params.expect(recipe: [ :name, :url, :number_of_servings, :difficulty, ingredients: [], instructions: [] ])
     end
 
-    def serialize_recipe_full(recipe)
-      recipe.as_json(include: [ :user, comments: { include: :user }, ratings: { include: :user } ], methods: :average_rating)
+    def recipe_as_json(recipe = @recipe)
+      recipe.as_json(include: [ :user, comments: { include: :user }, ratings: { include: :user } ], methods: [ :average_rating, :difficulty_value ])
     end
 end

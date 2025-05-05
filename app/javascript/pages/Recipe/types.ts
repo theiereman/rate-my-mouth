@@ -7,6 +7,8 @@ export interface RecipeType {
   name: string;
   url: string;
   number_of_servings: number;
+  difficulty: number;
+  difficulty_value: number;
   ingredients: string[] | null;
   instructions: string[] | null;
   average_rating: number;
@@ -23,4 +25,5 @@ export type RecipeFormType = {
   ingredients: string[] | null;
   instructions: string[] | null;
   number_of_servings: number;
+  difficulty: number;
 };
