@@ -1,4 +1,6 @@
 class Rating < ApplicationRecord
+  include Achievable
+
   belongs_to :user
   belongs_to :recipe
 

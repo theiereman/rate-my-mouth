@@ -1,4 +1,6 @@
 class Recipe < ApplicationRecord
+  include Achievable
+
   attribute :difficulty, :integer
   enum :difficulty, easy: 0, medium: 1, hard: 2
 
