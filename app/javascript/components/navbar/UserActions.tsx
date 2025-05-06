@@ -42,12 +42,19 @@ export default function UserActions() {
 
       {/* Dropdown menu */}
       {isDropdownOpen && (
-        <div className="absolute right-0 mt-2 w-64 bg-white rounded-md shadow-lg py-1 z-10">
+        <div className="absolute right-0 mt-2 bg-white rounded-md shadow-lg py-1 z-10">
           {/* User actions */}
+          <Link
+            href="/my_profile"
+            className="block w-full px-4 text-end py-2 text-sm text-neutral-600 hover:bg-neutral-100 transition-colors"
+            onClick={() => setIsDropdownOpen(false)}
+          >
+            Mon profil
+          </Link>
           <Link
             href="/users/sign_out"
             method="delete"
-            className="block w-full px-4 py-2 text-sm text-red-600 hover:bg-neutral-100 transition-colors"
+            className="block w-full text-end px-4 py-2 text-sm text-red-600 hover:bg-neutral-100 transition-colors"
             onClick={() => setIsDropdownOpen(false)}
           >
             Se déconnecter

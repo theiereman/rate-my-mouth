@@ -6,6 +6,7 @@ class User < ApplicationRecord
   has_many :recipes, dependent: :destroy
   has_many :comments, dependent: :destroy
   has_many :ratings, dependent: :destroy
+  has_many :user_achievements, dependent: :destroy
 
   validates :username, presence: true, uniqueness: true
 end

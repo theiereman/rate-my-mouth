@@ -22,6 +22,12 @@ class UsersController < ApplicationController
     }
   end
 
+  def my_profile
+    render inertia: "User/Show", props: {
+      user: current_user.as_json(only: [ :id, :username, :email ])
+    }
+  end
+
   # GET /users/new
   def new
     @user = User.new
