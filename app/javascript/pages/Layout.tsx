@@ -5,6 +5,7 @@ import HomeButton from "../components/navbar/HomeButton";
 import UserActions from "../components/navbar/UserActions";
 import Toast from "../components/Toast";
 import { PageProps } from "../types";
+import ThemeSelector from "../components/theme/ThemeSelector";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const { flash } = usePage<PageProps>().props;
@@ -28,12 +29,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <div className="flex flex-col min-h-screen bg-neutral-50">
         <header className="sticky top-0 z-10 bg-white shadow-sm border-b border-neutral-200">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between items-center h-16">
-              <div className="flex items-center">
-                <HomeButton />
-              </div>
+            <div className="flex items-center h-16 gap-2">
+              <HomeButton className="me-6" />
               <Navbar />
               <UserActions />
+              <ThemeSelector></ThemeSelector>
             </div>
           </div>
         </header>

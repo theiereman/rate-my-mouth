@@ -142,6 +142,7 @@ export default {
         "slide-in": "slideIn 0.3s ease-in-out",
         "slide-up": "slideUp 0.3s ease-in-out",
         "bounce-light": "bounceLight 1s infinite",
+        spin: "spin 1s linear infinite",
       },
       keyframes: {
         fadeIn: {
@@ -159,6 +160,10 @@ export default {
         bounceLight: {
           "0%, 100%": { transform: "translateY(-2px)" },
           "50%": { transform: "translateY(0)" },
+        },
+        spin: {
+          "0%": { transform: "rotate(0deg)" },
+          "100%": { transform: "rotate(360deg)" },
         },
       },
       transitionProperty: {
