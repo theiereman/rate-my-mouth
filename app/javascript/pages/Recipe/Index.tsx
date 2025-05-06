@@ -98,7 +98,7 @@ export default function Index({ recipes }: IndexProps) {
               value={searchQuery}
               rightIcon={
                 isLoading ? (
-                  <span className="material-symbols-outlined text-primary-600">
+                  <span className="material-symbols-outlined text-primary-600 animate-spin">
                     progress_activity
                   </span>
                 ) : undefined

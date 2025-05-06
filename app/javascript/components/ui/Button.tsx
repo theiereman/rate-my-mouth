@@ -93,7 +93,7 @@ export const Button = ({
       {...props}
     >
       {isLoading && (
-        <span className="material-symbols-outlined text-primary-600">
+        <span className="material-symbols-outlined text-primary-600 animate-spin mr-2">
           progress_activity
         </span>
       )}

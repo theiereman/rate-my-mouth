@@ -12,19 +12,9 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="flex-1 flex justify-center">
+    <nav className="flex-1 flex">
       {/* Desktop navigation */}
       <ul className="hidden md:flex gap-8 items-center">
-        {navItems.map((item) => (
-          <li key={item.name}>
-            <Link
-              href={item.href}
-              className={`text-neutral-600 hover:text-primary-600 font-medium transition-colors duration-200 py-2 border-b-2 border-transparent hover:border-primary-600`}
-            >
-              {item.name}
-            </Link>
-          </li>
-        ))}
         <LinkButton
           href="/recipes/new"
           variant="primary"
@@ -33,6 +23,16 @@ export default function Navbar() {
         >
           Nouvelle recette
         </LinkButton>
+        {/* {navItems.map((item) => (
+          <li key={item.name}>
+            <Link
+              href={item.href}
+              className={`text-neutral-600 hover:text-primary-600 font-medium transition-colors duration-200 py-2 border-b-2 border-transparent hover:border-primary-600`}
+            >
+              {item.name}
+            </Link>
+          </li>
+        ))} */}
       </ul>
 
       {/* Mobile navigation button */}

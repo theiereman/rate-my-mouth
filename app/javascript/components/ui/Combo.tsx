@@ -96,7 +96,7 @@ export default function Combo({
 
   // Loading icon
   const loadingIcon = isLoading ? (
-    <span className="material-symbols-outlined text-primary-600">
+    <span className="material-symbols-outlined text-primary-600 animate-spin">
       progress_activity
     </span>
   ) : (
