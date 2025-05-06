@@ -117,4 +117,18 @@ AchievementRules.define do
 
          false
        }
+
+  rule key: :bad_reputation,
+       name: "Mauvaise réputation",
+       description: "Avoir une note moyenne inférieure à 2 sur 10 recettes",
+       triggers: { "Rating" => :created },
+       condition: ->(rating) { rating.user.recipes.count >= 10 && rating.user.recipes.average(:average_rating).to_f < 2.0 }
+
+  rule key: :feast,
+       name: "Joyeux festin",
+       description: "Créer une recette avec des quantités pour 10 personnes (ou plus)",
+       triggers: { "Recipe" => :created },
+       condition: ->(recipe) { recipe.user.recipes.where("number_of_servings >= 10").count >= 1 }
+
+  rule
 end
