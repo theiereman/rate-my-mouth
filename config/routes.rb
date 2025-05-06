@@ -8,7 +8,10 @@ Rails.application.routes.draw do
 
   resources :users, only: [] do
     get "list", on: :collection
+    resources :achievements, only: [ :index ]
   end
+
+  get "my_profile", to: "users#my_profile"
 
   resources :recipes, concerns: [ :commentable ] do
     resources :ratings, only: [ :create ]

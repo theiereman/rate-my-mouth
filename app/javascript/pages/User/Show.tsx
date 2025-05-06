@@ -1,53 +1,68 @@
-import { Head, Link } from '@inertiajs/react'
-import User from './User'
-import { UserType } from './types'
+import { Head } from "@inertiajs/react";
+import { UserType, AchievementType } from "./types";
+import UserProfile from "./components/UserProfile";
+import AchievementsList from "./components/AchievementsList";
+import { LinkButton } from "../../components/ui";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 interface ShowProps {
-  user: UserType
-  flash: { notice?: string }
+  user: UserType;
+  flash: { notice?: string };
+}
+
+interface AchievementsData {
+  achievements: AchievementType[];
 }
 
 export default function Show({ user, flash }: ShowProps) {
+  const [achievementsData, setAchievementsData] =
+    useState<AchievementsData | null>(null);
+  const [loadingAchievements, setLoadingAchievements] = useState(true);
+
+  useEffect(() => {
+    const fetchAchievements = async () => {
+      try {
+        const response = await axios.get(`/users/${user.id}/achievements`);
+        setAchievementsData(response.data);
+      } catch (error) {
+        console.error("Impossible de récupérer les succès:", error);
+      } finally {
+        setLoadingAchievements(false);
+      }
+    };
+
+    fetchAchievements();
+  }, [user.id]);
+
   return (
     <>
-      <Head title={`User #${user.id}`} />
+      <Head title={`Profil de ${user.username}`} />
 
-      <div className="mx-auto md:w-2/3 w-full px-8 pt-8">
-        <div className="mx-auto">
-          {flash.notice && (
-            <p className="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block">
-              {flash.notice}
-            </p>
-          )}
-
-          <h1 className="font-bold text-4xl">User #{user.id}</h1>
-
-          <User user={user} />
-
-          <Link
-            href={`/users/${user.id}/edit`}
-            className="mt-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium"
-          >
-            Edit this user
-          </Link>
-          <Link
-            href="/users"
-            className="ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium"
-          >
-            Back to users
-          </Link>
-          <div className="inline-block ml-2">
-            <Link
-              href={`/users/${user.id}`}
-              as="button"
-              method="delete"
-              className="mt-2 rounded-lg py-3 px-5 bg-gray-100 font-medium"
-            >
-              Destroy this user
-            </Link>
-          </div>
+      {flash.notice && (
+        <div className="mb-4 bg-green-50 p-4 rounded-lg text-green-700">
+          {flash.notice}
         </div>
+      )}
+
+      <div className="mx-auto flex flex-col gap-8">
+        <UserProfile user={user} />
+
+        {loadingAchievements ? (
+          <div className="text-center py-8">
+            <span className="material-symbols-outlined animate-spin text-primary-600 text-4xl">
+              progress_activity
+            </span>
+            <p className="mt-2 text-neutral-600">Chargement des données...</p>
+          </div>
+        ) : (
+          achievementsData && (
+            <>
+              <AchievementsList achievements={achievementsData.achievements} />
+            </>
+          )
+        )}
       </div>
     </>
-  )
+  );
 }

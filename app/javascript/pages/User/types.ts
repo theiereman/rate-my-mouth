@@ -1,6 +1,14 @@
-export interface UserType {
-  id: number
-  username: string
+export interface AchievementType {
+  key: string;
+  name: string;
+  description: string;
+  unlocked: boolean;
 }
 
-export type UserFormType = Omit<UserType, 'id'>
+export interface UserType {
+  id: number;
+  username: string;
+  email?: string;
+}
+
+export type UserFormType = Omit<UserType, "id">;
