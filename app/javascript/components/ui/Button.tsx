@@ -93,14 +93,14 @@ export const Button = ({
       {...props}
     >
       {isLoading && (
-        <span className="material-symbols-outlined text-primary-600 animate-spin mr-2">
+        <span className="material-symbols-outlined text-white-600 animate-spin mr-2">
           progress_activity
         </span>
       )}
       {icon && iconPosition === "left" && !isLoading && (
         <span className="mr-2 flex">{icon}</span>
       )}
-      {children}
+      {!isLoading && children}
       {icon && iconPosition === "right" && (
         <span className="ml-2 flex">{icon}</span>
       )}

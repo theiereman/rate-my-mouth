@@ -1,8 +1,6 @@
 class RecipesController < ApplicationController
   before_action :set_recipe, only: %i[ show edit update destroy ]
 
-  inertia_share flash: -> { flash.to_hash }
-
   # GET /recipes
   def index
     @recipes = Recipe.all.order(created_at: :desc)
