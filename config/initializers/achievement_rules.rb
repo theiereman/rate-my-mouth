@@ -1,13 +1,14 @@
 class AchievementRules
   class Rule
-    attr_reader :key, :name, :description, :triggers, :condition
+    attr_reader :key, :name, :description, :triggers, :condition, :target_user
 
-    def initialize(key:, name:, description:, triggers:, condition:)
+    def initialize(key:, name:, description:, triggers:, condition:, target_user:)
       @key = key
       @name = name
       @description = description
       @triggers = normalize_triggers(triggers)
       @condition = condition
+      @target_user = target_user
     end
 
     def satisfied?(event_name, record)
@@ -50,13 +51,14 @@ class AchievementRules
     instance_eval(&block)
   end
 
-  def self.rule(key:, name:, description:, triggers:, condition:)
+  def self.rule(key:, name:, description:, triggers:, condition:, target_user: nil)
     @rules << Rule.new(
       key: key,
       name: name,
       description: description,
       triggers: triggers,
-      condition: condition
+      condition: condition,
+      target_user: target_user
     )
   end
 end
@@ -120,9 +122,10 @@ AchievementRules.define do
 
   rule key: :bad_reputation,
        name: "Mauvaise réputation",
-       description: "Avoir une note moyenne inférieure à 2 sur 10 recettes",
+       description: "Avoir une note moyenne inférieure à 2 (sur un total d'au moins 10 recettes)",
        triggers: { "Rating" => :created },
-       condition: ->(rating) { rating.user.recipes.count >= 10 && rating.user.recipes.joins(:ratings).average("ratings.value").to_f < 2.0 }
+       target_user: ->(rating) { rating.recipe.user },
+       condition: ->(rating) { rating.recipe.user.recipes.count >= 10 && rating.recipe.user.recipes.joins(:ratings).average("ratings.value").to_f < 2.0 }
 
   rule key: :feast,
        name: "Joyeux festin",

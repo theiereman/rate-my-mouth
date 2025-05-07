@@ -8,10 +8,17 @@ class AchievementRulesTest < ActiveSupport::TestCase
       email: "test@example.com",
       password: "password123"
     )
+
+    @other_user = User.create!(
+      username: "other_user",
+      email: "other@example.com",
+      password: "password123"
+    )
   end
 
   teardown do
     @user.destroy if @user.present?
+    @other_user.destroy if @other_user.present?
   end
 
   test "first_recipe achievement is unlocked when user creates first recipe" do
@@ -198,5 +205,34 @@ class AchievementRulesTest < ActiveSupport::TestCase
     achievement = @user.user_achievements.find_by(key: "food_critique")
     assert_not_nil achievement
     assert_not_nil achievement.unlocked_at
+  end
+
+  test "bad_reputation achievement is unlocked when user has a bad reputation" do
+    # Créer 10 recettes pour pouvoir les noter
+    recipes = []
+    10.times do |i|
+      recipes << Recipe.create!(
+        name: "Recipe to Rate #{i}",
+        user: @user, # Utiliser un autre utilisateur pour la recette
+        number_of_servings: 4,
+        ingredients: [ "Ingredient 1", "Ingredient 2" ],
+        instructions: [ "Step 1", "Step 2" ]
+      )
+    end
+
+    achievement = @user.user_achievements.find_by(key: :bad_reputation)
+    assert_nil achievement
+
+    # Noter les 10 recettes avec une note inférieure à 2
+    recipes.each do |recipe|
+      recipe.ratings.create!(
+        value: 1.0,
+        user: @other_user
+      )
+    end
+
+    # Vérifier que l'achievement a bien été débloqué
+    achievement = @user.user_achievements.find_by(key: :bad_reputation)
+    assert_not_nil achievement
   end
 end

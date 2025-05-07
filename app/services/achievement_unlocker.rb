@@ -9,14 +9,16 @@ class AchievementUnlocker
 
     AchievementRules.rules.each do |rule|
       next unless rule.satisfied?(event_name, record)
-      unlock(rule.key)
+      unlock(rule, record)
     end
   end
 
   private
 
-  def unlock(key)
-    return if @user.user_achievements.exists?(key: key.to_s)
-    UserAchievement.create!(user: @user, key: key.to_s, unlocked_at: Time.current)
+  def unlock(rule, record)
+    key = rule.key
+    target_user = rule.respond_to?(:target_user) && rule.target_user ? rule.target_user.call(record) : @user
+    return if target_user.user_achievements.exists?(key: key.to_s)
+    UserAchievement.create!(user: target_user, key: key.to_s, unlocked_at: Time.current)
   end
 end
