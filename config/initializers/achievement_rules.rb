@@ -122,7 +122,7 @@ AchievementRules.define do
        name: "Mauvaise réputation",
        description: "Avoir une note moyenne inférieure à 2 sur 10 recettes",
        triggers: { "Rating" => :created },
-       condition: ->(rating) { rating.user.recipes.count >= 10 && rating.user.recipes.average(:average_rating).to_f < 2.0 }
+       condition: ->(rating) { rating.user.recipes.count >= 10 && rating.user.recipes.joins(:ratings).average("ratings.value").to_f < 2.0 }
 
   rule key: :feast,
        name: "Joyeux festin",
@@ -130,5 +130,22 @@ AchievementRules.define do
        triggers: { "Recipe" => :created },
        condition: ->(recipe) { recipe.user.recipes.where("number_of_servings >= 10").count >= 1 }
 
-  rule
+  rule key: :spammer,
+       name: "Forceur",
+       description: "Ajouter 10 commentaires sur la même recette",
+       triggers: { "Comment" => :created },
+       condition: ->(recipe) { recipe.user.comments.on_recipes.group(:commentable_id).count.any? { |_, count| count >= 10 } }
+
+  # NOTE: rails is currently having issue with the ingredients and instructions attributes because stored as nil when empty array (serialized string)
+  # rule key: :chemist,
+  #      name: "Chimiste",
+  #      description: "Créer une recette avec au minimum 20 ingrédients et 15 étapes",
+  #      triggers: { "Recipe" => :created },
+  #      condition: ->(recipe) { recipe.user.recipes.any? { |r| p r.ingredients.size >= 20 && r.instructions.size >= 15 } }
+  #
+  ## rule key: :low_effort,
+  #      name: "Flemmard",
+  #      description: "Créer une recette avec au maximum 2 ingrédients et 3 étapes",
+  #      triggers: { "Recipe" => :created },
+  #      condition: ->(recipe) { recipe.user.recipes.any? { |r| p r.ingredients.size <= 2 && r.instructions.size <= 3 } }
 end
