@@ -13,8 +13,6 @@ interface ShowProps {
 }
 
 export default function Show({ recipe, userRating }: ShowProps) {
-  console.log(recipe);
-
   return (
     <>
       <Head title={`${recipe.name} de ${recipe.user.username}`} />

@@ -4,7 +4,7 @@ import { UserType } from "../types";
 export default function UserLink({ user }: { user: UserType }) {
   return (
     <Link
-      href={`/users/${user.id}`}
+      href={`/users/${user.username}`}
       className="text-primary-600 hover:underline"
     >
       {user.username}

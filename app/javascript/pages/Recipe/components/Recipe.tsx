@@ -16,8 +16,6 @@ export default function Recipe({
 }) {
   const { user } = usePage<PageProps>().props;
 
-  console.log(recipe.difficulty_value);
-
   return (
     <div className="animate-fade-in">
       <div className="mb-8">

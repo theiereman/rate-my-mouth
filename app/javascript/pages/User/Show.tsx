@@ -53,7 +53,7 @@ export default function Show({ user, flash }: ShowProps) {
             <span className="material-symbols-outlined animate-spin text-primary-600 text-4xl">
               progress_activity
             </span>
-            <p className="mt-2 text-neutral-600">Chargement des données...</p>
+            <p className="mt-2 text-neutral-600">Chargement des succès...</p>
           </div>
         ) : (
           achievementsData && (

@@ -9,10 +9,11 @@ Rails.application.routes.draw do
   end
 
 
-  resources :users, only: [ :show ] do
+  resources :users, only: [] do
     get "list", on: :collection
     resources :achievements, only: [ :index ]
   end
+  get "users/:username", to: "users#show"
 
   get "my_profile", to: "users#my_profile"
 

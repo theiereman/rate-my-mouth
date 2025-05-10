@@ -28,7 +28,7 @@ export default function Recipe({ recipe }: RecipeProps) {
 
           <div className="flex-1">
             <div className="flex flex-col mb-3">
-              <div className="flex items-center gap-2 mb-1">
+              <div className="flex items-center gap-2">
                 <h3 className="text-lg font-medium text-neutral-800">
                   {recipe.name}
                 </h3>
@@ -39,8 +39,8 @@ export default function Recipe({ recipe }: RecipeProps) {
                   className="text-primary-400"
                 />
               </div>
-              <span className="text-sm">
-                par <UserLink user={recipe.user} />
+              <span className="text-sm text-neutral-600">
+                par {recipe.user.username}
               </span>
             </div>
 

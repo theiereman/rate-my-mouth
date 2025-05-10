@@ -1,21 +1,13 @@
 class UsersController < ApplicationController
   before_action :set_user, only: %i[ show ]
 
-  # GET /users
-  def index
-    @users = User.all
-    render inertia: "User/Index", props: {
-      users: @users.as_json(only: [ :id, :username ])
-    }
-  end
-
   # GET /users/list.json
   def list
     @users = User.all.order(:username)
     render json: @users.as_json(only: [ :id, :username, :email ])
   end
 
-  # GET /users/1
+  # GET /users/:username
   def show
     render inertia: "User/Show", props: {
       user: user_as_json
@@ -29,14 +21,9 @@ class UsersController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_user
-      @user = User.find(params[:id])
-    end
-
-    # Only allow a list of trusted parameters through.
-    def user_params
-      params.require(:user).permit(:username)
+      @user = User.find_by(username: params[:username])
+      redirect_to root_path, alert: "Utilisateur introuvable" if @user.nil?
     end
 
     def user_as_json(user = @user)
