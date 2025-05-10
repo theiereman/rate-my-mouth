@@ -9,4 +9,16 @@ class User < ApplicationRecord
   has_many :user_achievements, dependent: :destroy
 
   validates :username, presence: true, uniqueness: true
+
+  def number_of_recipes
+    recipes.count
+  end
+
+  def number_of_comments
+    comments.count
+  end
+
+  def number_of_ratings
+    ratings.count
+  end
 end

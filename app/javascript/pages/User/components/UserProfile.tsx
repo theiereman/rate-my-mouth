@@ -1,5 +1,6 @@
 import { UserType } from "../types";
-import { Card } from "../../../components/ui";
+import { Badge, Card } from "../../../components/ui";
+import { formatDate } from "../../../helpers/dateHelper";
 
 interface UserProfileProps {
   user: UserType;
@@ -13,11 +14,11 @@ export default function UserProfile({ user }: UserProfileProps) {
           <span className="material-symbols-outlined text-primary-600">
             person
           </span>
-          Mon profil
+          Profil
         </h2>
       </Card.Header>
-      <Card.Body>
-        <div className="flex flex-col md:flex-row md:items-center gap-4">
+      <Card.Body className="flex flex-col gap-4">
+        <div className="flex gap-4 items-center">
           <div className="flex-shrink-0 w-20 h-20 bg-primary-100 rounded-full flex items-center justify-center text-primary-500">
             <span className="material-symbols-outlined material-icon--lg">
               person
@@ -27,10 +28,17 @@ export default function UserProfile({ user }: UserProfileProps) {
             <h3 className="text-lg font-medium text-neutral-800 mb-1">
               {user.username}
             </h3>
-            {user.email && (
-              <p className="text-neutral-600 mb-3">{user.email}</p>
-            )}
+            <p className="text-sm text-neutral-600">
+              Membre depuis le {formatDate(user.created_at)}
+            </p>
           </div>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <Badge variant="primary">
+            {user.number_of_comments} commentaires
+          </Badge>
+          <Badge variant="secondary">{user.number_of_recipes} recettes</Badge>
+          <Badge variant="accent">{user.number_of_ratings} évaluations</Badge>
         </div>
       </Card.Body>
     </Card>
