@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   end
 
 
-  resources :users, only: [] do
+  resources :users, only: [ :show ] do
     get "list", on: :collection
     resources :achievements, only: [ :index ]
   end

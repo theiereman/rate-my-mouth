@@ -4,6 +4,7 @@ import { RecipeType } from "../types";
 import { Rating } from "@mui/material";
 import { Badge, Card } from "../../../components/ui";
 import DifficultyBadge from "./DifficultyBadge";
+import UserLink from "../../User/components/UserLink";
 
 interface RecipeProps {
   recipe: RecipeType;
@@ -38,9 +39,9 @@ export default function Recipe({ recipe }: RecipeProps) {
                   className="text-primary-400"
                 />
               </div>
-              <p className="text-sm text-neutral-600">
-                par <span className="font-medium">{recipe.user.username}</span>
-              </p>
+              <span className="text-sm">
+                par <UserLink user={recipe.user} />
+              </span>
             </div>
 
             <div className="flex flex-wrap gap-3 mb-3">

@@ -5,6 +5,7 @@ import { Card, Badge, LinkButton } from "../../../components/ui";
 import { usePage } from "@inertiajs/react";
 import { PageProps } from "../../../types";
 import DifficultyBadge from "./DifficultyBadge";
+import UserLink from "../../User/components/UserLink";
 
 export default function Recipe({
   recipe,
@@ -26,9 +27,9 @@ export default function Recipe({
               {recipe.name}
             </h1>
             <div className="flex items-center gap-3">
-              <p className="text-neutral-600">
-                Par <span className="font-medium">{recipe.user.username}</span>
-              </p>
+              <span className="text-neutral-600">
+                Par <UserLink user={recipe.user} />
+              </span>
               {recipe.url && (
                 <a
                   href={recipe.url}
