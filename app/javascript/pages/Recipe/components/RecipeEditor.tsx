@@ -5,7 +5,6 @@ import { Card, Input, Button, Badge } from "../../../components/ui";
 import {
   DndContext,
   closestCenter,
-  KeyboardSensor,
   PointerSensor,
   useSensor,
   useSensors,
@@ -15,7 +14,6 @@ import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 import {
   arrayMove,
   SortableContext,
-  sortableKeyboardCoordinates,
   useSortable,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
@@ -26,16 +24,21 @@ type DetectionType = "ingredient" | "instruction" | "unknown";
 
 // Composant pour un élément glissable (ingrédient ou instruction)
 interface SortableItemProps {
-  id: string;
-  index: number;
+  form: InertiaFormProps<RecipeFormType>;
+  item: string;
+  itemIndex: number;
   type: "ingredient" | "instruction";
-  children: React.ReactNode;
-  onDelete: (e: any) => void;
 }
 
-function SortableItem({ id, type, children, onDelete }: SortableItemProps) {
+//TODO: cleanup the mess in that component
+
+function SortableItem({ type, item, itemIndex, form }: SortableItemProps) {
+  const id = `${type}-${itemIndex}`;
+
   const { attributes, listeners, setNodeRef, transform, isDragging } =
     useSortable({ id });
+
+  const [active, setActive] = useState(false);
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -48,24 +51,75 @@ function SortableItem({ id, type, children, onDelete }: SortableItemProps) {
       ? "border-primary-100 bg-primary-50 hover:bg-primary-100"
       : "border-secondary-200 bg-secondary-100 hover:bg-secondary-200";
 
+  const deleteItem = (index: number, type: "ingredient" | "instruction") => {
+    if (type === "ingredient") {
+      form.setData(
+        "ingredients",
+        form.data.ingredients?.filter((_, i) => i !== index) ?? null
+      );
+    } else {
+      form.setData(
+        "instructions",
+        form.data.instructions?.filter((_, i) => i !== index) ?? null
+      );
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (type === "ingredient") {
+      const newIngredients = [...form.data.ingredients!];
+      newIngredients[itemIndex] = e.target.value;
+      form.setData("ingredients", newIngredients);
+    } else {
+      const newInstructions = [...form.data.instructions!];
+      newInstructions[itemIndex] = e.target.value;
+      form.setData("instructions", newInstructions);
+    }
+  };
+
+  const handleClick = () => {
+    if (isDragging) return;
+    setActive(true);
+  };
+
+  const handleDelete = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    deleteItem(itemIndex, type);
+  };
+
+  const handleBlur = () => {
+    if (item.trim() === "") {
+      deleteItem(itemIndex, type);
+    }
+    setActive(false);
+  };
+
   return (
     <li
       ref={setNodeRef}
       style={style}
       {...attributes}
-      className={`flex items-center gap-2 ${
-        type === "instruction" ? "flex-1" : ""
-      }`}
+      className={`flex items-center gap-2`}
     >
       <div
         className={`flex-1 flex items-start justify-between p-2 rounded-lg border transition-colors cursor-grab ${bgColorClass}`}
         {...listeners}
       >
-        {children}
+        <input
+          type="text"
+          value={item}
+          disabled={isDragging}
+          onClick={handleClick}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          className={`${
+            active ? "bg-white focus:ring-2" : "ring-0"
+          } text-neutral-800 w-full self-center bg-transparent border-none rounded-sm`}
+        />
         <Button
           variant="ghost"
           size="sm"
-          onClick={onDelete}
+          onClick={handleDelete}
           className="text-red-600 hover:text-red-700"
         >
           <span className="material-symbols-outlined">delete</span>
@@ -89,9 +143,6 @@ export default function RecipeEditor({
       activationConstraint: {
         distance: 8, // Minimum distance before drag starts (in pixels)
       },
-    }),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
     })
   );
 
@@ -320,20 +371,6 @@ export default function RecipeEditor({
     setInputText("");
   };
 
-  const deleteItem = (index: number, type: "ingredient" | "instruction") => {
-    if (type === "ingredient") {
-      form.setData(
-        "ingredients",
-        form.data.ingredients?.filter((_, i) => i !== index) ?? null
-      );
-    } else {
-      form.setData(
-        "instructions",
-        form.data.instructions?.filter((_, i) => i !== index) ?? null
-      );
-    }
-  };
-
   // Gestion du drag and drop pour les ingrédients
   const handleDragEndIngredients = (event: DragEndEvent) => {
     const { active, over } = event;
@@ -476,7 +513,9 @@ export default function RecipeEditor({
               </h2>
               {form.data.ingredients && form.data.ingredients.length > 1 && (
                 <p className="text-xs text-neutral-500 mt-1 flex items-center gap-1">
-                  <span className="material-symbols-outlined">pan_tool</span>
+                  <span className="material-symbols-outlined material-icon--sm">
+                    pan_tool
+                  </span>
                   Glissez-déposez pour réorganiser les ingrédients
                 </p>
               )}
@@ -506,18 +545,11 @@ export default function RecipeEditor({
                       {(form.data.ingredients || []).map((item, index) => (
                         <SortableItem
                           key={`ingredient-${index}`}
-                          id={`ingredient-${index}`}
-                          index={index}
+                          item={item}
                           type="ingredient"
-                          onDelete={(e) => {
-                            e.preventDefault();
-                            deleteItem(index, "ingredient");
-                          }}
-                        >
-                          <span className="text-neutral-800 self-center">
-                            {item}
-                          </span>
-                        </SortableItem>
+                          itemIndex={index}
+                          form={form}
+                        />
                       ))}
                     </ul>
                   </SortableContext>
@@ -535,7 +567,9 @@ export default function RecipeEditor({
               </h2>
               {form.data.instructions && form.data.instructions.length > 1 && (
                 <p className="text-xs text-neutral-500 mt-1 flex items-center gap-1">
-                  <span className="material-symbols-outlined">pan_tool</span>
+                  <span className="material-symbols-outlined material-icon--sm">
+                    pan_tool
+                  </span>
                   Glissez-déposez pour réorganiser les instructions
                 </p>
               )}
@@ -564,16 +598,11 @@ export default function RecipeEditor({
                       {(form.data.instructions || []).map((item, index) => (
                         <SortableItem
                           key={`instruction-${index}`}
-                          id={`instruction-${index}`}
-                          index={index}
+                          item={item}
                           type="instruction"
-                          onDelete={(e) => {
-                            e.preventDefault();
-                            deleteItem(index, "instruction");
-                          }}
-                        >
-                          <p className="text-neutral-700 self-center">{item}</p>
-                        </SortableItem>
+                          itemIndex={index}
+                          form={form}
+                        />
                       ))}
                     </ol>
                   </SortableContext>

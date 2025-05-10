@@ -20,11 +20,11 @@ body {
 }
 
 .material-icon--sm {
-  font-size: 1em;
+  font-size: 1.2em !important;
 }
 
 .material-icon--lg {
-  font-size: 3em;
+  font-size: 3em !important;
 }
 
 .material-icon--fill {
