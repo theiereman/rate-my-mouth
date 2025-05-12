@@ -10,12 +10,35 @@ import ThemeSelector from "../components/theme/ThemeSelector";
 export default function Layout({ children }: { children: React.ReactNode }) {
   const { flash } = usePage<PageProps>().props;
   const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [toastType, setToastType] = useState<
+    "error" | "success" | "info" | "warning"
+  >("error");
 
   useEffect(() => {
+    // Check for different types of flash messages
     if (flash.alert) {
+      setToastMessage(flash.alert);
+      setToastType("error");
+      setShowToast(true);
+    } else if (flash.success) {
+      setToastMessage(flash.success);
+      setToastType("success");
+      setShowToast(true);
+    } else if (flash.info) {
+      setToastMessage(flash.info);
+      setToastType("info");
+      setShowToast(true);
+    } else if (flash.warning) {
+      setToastMessage(flash.warning);
+      setToastType("warning");
+      setShowToast(true);
+    } else if (flash.notice) {
+      setToastMessage(flash.notice);
+      setToastType("success");
       setShowToast(true);
     }
-  }, [flash.alert]);
+  }, [flash.alert, flash.success, flash.info, flash.warning, flash.notice]);
 
   return (
     <>
@@ -40,10 +63,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
         <main className="flex-grow">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in">
-            {showToast && flash.alert && (
+            {showToast && (
               <Toast
-                message={flash.alert}
-                type="error"
+                message={toastMessage}
+                type={toastType}
                 onClose={() => setShowToast(false)}
               />
             )}
@@ -53,7 +76,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
         <footer className=" py-4">
           <p className="text-neutral-500 text-sm ms-2">
-            © {new Date().getFullYear()} RateMyMouth. Tous droits réservés.
+            © {new Date().getFullYear()} RateMyMouth. All rights reserved.
           </p>
         </footer>
       </div>
