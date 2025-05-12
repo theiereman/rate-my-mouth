@@ -62,6 +62,14 @@ export default function Recipe({ recipe }: RecipeProps) {
               <DifficultyBadge
                 difficulty={recipe.difficulty_value}
               ></DifficultyBadge>
+
+              {recipe.tags &&
+                recipe.tags.length > 0 &&
+                recipe.tags.map((tag) => (
+                  <Badge key={tag.id} variant="primary" size="sm">
+                    {tag.name}
+                  </Badge>
+                ))}
             </div>
 
             <div className="text-xs text-neutral-500 flex flex-wrap gap-2">

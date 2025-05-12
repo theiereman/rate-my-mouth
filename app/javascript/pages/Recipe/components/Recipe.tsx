@@ -73,6 +73,14 @@ export default function Recipe({
             {recipe.instructions?.length || 0} étapes
           </Badge>
           <DifficultyBadge difficulty={recipe.difficulty_value} />
+
+          {recipe.tags &&
+            recipe.tags.length > 0 &&
+            recipe.tags.map((tag) => (
+              <Badge key={tag.id} variant="primary" size="md">
+                {tag.name}
+              </Badge>
+            ))}
         </div>
 
         <div className="text-neutral-600">{recipe.description}</div>

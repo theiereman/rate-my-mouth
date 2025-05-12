@@ -1,5 +1,6 @@
 import { CommentType } from "../Comments/types";
 import { RatingType } from "../Ratings/types";
+import { TagType } from "../Tag/types";
 import { UserType } from "../User/types";
 
 export interface RecipeType {
@@ -18,6 +19,7 @@ export interface RecipeType {
   comments: CommentType[];
   ratings: RatingType[];
   user: UserType;
+  tags?: TagType[];
 }
 
 export type RecipeFormType = {
@@ -28,4 +30,5 @@ export type RecipeFormType = {
   description: string;
   number_of_servings: number;
   difficulty: number;
+  tags_attributes?: { id?: number; name: string }[];
 };

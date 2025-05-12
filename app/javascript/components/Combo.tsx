@@ -6,6 +6,7 @@ interface ComboProps {
   value: number | null;
   values: ComboValue[];
   onSelectedValue: (value: ComboValue | null) => void;
+  onSearchValueChange?: (value: string) => void;
   placeholder?: string;
   label?: string;
   className?: string;
@@ -24,6 +25,7 @@ export default function Combo({
   values,
   value = null,
   onSelectedValue,
+  onSearchValueChange,
   placeholder = "Sélectionner...",
   label = "",
   className = "",
@@ -55,6 +57,7 @@ export default function Combo({
   // Handle search input change
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
+    onSearchValueChange && onSearchValueChange(value);
     setSearchValue(value);
     filterValues(value);
   };

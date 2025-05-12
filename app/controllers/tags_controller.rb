@@ -3,10 +3,9 @@ class TagsController < ApplicationController
 
   # GET /tags
   def index
-    @tags = Tag.all
-    render json: @tags.map do |tag|
-      serialize_tag(tag)
-    end
+    @tags = Tag.all.sort { |a, b| b.number_of_recipes <=> a.number_of_recipes }
+
+    render json: @tags.map { |tag| serialize_tag(tag) }
   end
 
   # POST /tags
@@ -27,8 +26,6 @@ class TagsController < ApplicationController
     end
 
     def serialize_tag(tag)
-      tag.as_json(only: [
-        :id, :name
-      ])
+      tag.as_json(methods: [ :number_of_recipes ])
     end
 end

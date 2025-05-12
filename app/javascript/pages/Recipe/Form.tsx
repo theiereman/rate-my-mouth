@@ -3,6 +3,7 @@ import { FormEvent } from "react";
 import { RecipeFormType, RecipeType } from "./types";
 import RecipeEditor from "./components/RecipeEditor";
 import { Button, Input, Card, Combo, TextArea } from "../../components";
+import TagsSelector from "../Tag/components/TagsSelector";
 
 interface FormProps {
   recipe: RecipeType;
@@ -19,6 +20,8 @@ export default function Form({ recipe, onSubmit, submitText }: FormProps) {
     number_of_servings: recipe.number_of_servings || 4,
     difficulty: recipe.difficulty_value || 0,
     description: recipe.description || "",
+    tags_attributes:
+      recipe.tags?.map((tag) => ({ id: tag.id, name: tag.name })) || [],
   });
   const { data, setData, errors, processing } = form;
 
@@ -102,6 +105,14 @@ export default function Form({ recipe, onSubmit, submitText }: FormProps) {
               setData("difficulty", value?.value ?? 0)
             }
             value={data.difficulty}
+          />
+
+          <TagsSelector
+            label="Tags"
+            placeholder="Rechercher ou créer un tag..."
+            initialTags={data.tags_attributes}
+            onTagsSelected={(tags) => setData("tags_attributes", tags)}
+            maxTags={3}
           />
         </Card.Body>
       </Card>
