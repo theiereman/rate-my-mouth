@@ -1,0 +1,28 @@
+<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px; background-color: #f9fafb;">
+  <div style="text-align: center; margin-bottom: 20px;">
+    <h1 style="color: #0ea5e9; font-size: 24px; margin-bottom: 10px;">Rate My Mouth</h1>
+    <div style="height: 2px; background-color: #e5e7eb; margin: 20px 0;"></div>
+  </div>
+
+  <p style="font-size: 16px; color: #374151; margin-bottom: 20px;">Bonjour <%= @recipe_owner.username %>,</p>
+
+  <p style="font-size: 16px; color: #374151; margin-bottom: 20px;">
+    <strong><%= @rater.username %></strong> a noté votre recette "<%= @recipe.name %>".
+  </p>
+
+  <div style="background-color: #f3f4f6; border-left: 4px solid #0ea5e9; padding: 15px; margin: 20px 0; border-radius: 0 4px 4px 0; text-align: center;">
+    <p style="font-size: 16px; color: #4b5563; margin: 0;">
+      Note: <strong style="font-size: 24px; color: #0ea5e9;"><%= @rating.value %>/5</strong>
+    </p>
+  </div>
+
+  <div style="text-align: center; margin: 30px 0;">
+    <a href="<%= recipe_url(@recipe) %>" style="display: inline-block; background-color: #0ea5e9; color: white; text-decoration: none; padding: 12px 24px; border-radius: 6px; font-weight: bold;">
+      Voir la note
+    </a>
+  </div>
+
+  <div style="text-align: center; margin-top: 30px; color: #6b7280; font-size: 14px;">
+    <p>© <%= Date.today.year %> Rate My Mouth. Tous droits réservés.</p>
+  </div>
+</div>
