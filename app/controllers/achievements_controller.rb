@@ -9,6 +9,7 @@ class AchievementsController < ApplicationController
         key: rule.key,
         name: rule.name,
         description: rule.description,
+        secret: rule.secret,
         unlocked: user_achievements.include?(rule.key.to_s)
       }
     end

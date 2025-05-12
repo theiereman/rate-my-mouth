@@ -15,7 +15,7 @@ export default function AchievementCard({ achievement }: AchievementCardProps) {
           : "border-neutral-200 opacity-70"
       }`}
     >
-      <div className="flex items-start gap-3">
+      <div className="flex items-center gap-3">
         <div
           className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center ${
             achievement.unlocked
@@ -24,7 +24,11 @@ export default function AchievementCard({ achievement }: AchievementCardProps) {
           }`}
         >
           <span className="material-symbols-outlined">
-            {achievement.unlocked ? "emoji_events" : "lock"}
+            {achievement.unlocked
+              ? "emoji_events"
+              : achievement.secret
+              ? "question_mark"
+              : "lock"}
           </span>
         </div>
         <div className="flex-1">
@@ -40,7 +44,11 @@ export default function AchievementCard({ achievement }: AchievementCardProps) {
               </Badge>
             )}
           </div>
-          <p className="text-sm text-neutral-600">{achievement.description}</p>
+          {(!achievement.secret || achievement.unlocked) && (
+            <p className="text-sm text-neutral-600">
+              {achievement.description}
+            </p>
+          )}
         </div>
       </div>
     </Card>

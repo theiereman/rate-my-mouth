@@ -1,14 +1,15 @@
 class AchievementRules
   class Rule
-    attr_reader :key, :name, :description, :triggers, :condition, :target_user
+    attr_reader :key, :name, :description, :triggers, :condition, :target_user, :secret
 
-    def initialize(key:, name:, description:, triggers:, condition:, target_user:)
+    def initialize(key:, name:, description:, triggers:, condition:, target_user:, secret:)
       @key = key
       @name = name
       @description = description
       @triggers = normalize_triggers(triggers)
       @condition = condition
       @target_user = target_user
+      @secret = secret
     end
 
     def satisfied?(event_name, record)
@@ -51,14 +52,15 @@ class AchievementRules
     instance_eval(&block)
   end
 
-  def self.rule(key:, name:, description:, triggers:, condition:, target_user: nil)
+  def self.rule(key:, name:, description:, triggers:, condition:, target_user: nil, secret: false)
     @rules << Rule.new(
       key: key,
       name: name,
       description: description,
       triggers: triggers,
       condition: condition,
-      target_user: target_user
+      target_user: target_user,
+      secret: secret
     )
   end
 end
@@ -151,4 +153,31 @@ AchievementRules.define do
   #      description: "Créer une recette avec au maximum 2 ingrédients et 3 étapes",
   #      triggers: { "Recipe" => :created },
   #      condition: ->(recipe) { recipe.user.recipes.any? { |r| p r.ingredients.size <= 2 && r.instructions.size <= 3 } }
+
+  rule key: :birthday,
+       name: "Etoile de service",
+       description: "Créer une recette exactement un an après la création de votre compte",
+       triggers: { "Recipe" => :created },
+       condition: ->(recipe) { recipe.user.recipes.where(created_at: recipe.user.created_at.beginning_of_day..recipe.user.created_at.end_of_day + 1.year).count >= 1 }
+
+  rule key: :romantic,
+       name: "Romantique",
+       description: "Créer une recette le jour de la Saint-Valentin",
+       triggers: { "Recipe" => :created },
+       condition: ->(recipe) { recipe.user.recipes.where(created_at: Date.new(2024, 2, 14).beginning_of_day..Date.new(2024, 2, 14).end_of_day).count >= 1 }
+
+  rule key: :marathonian,
+       name: "Marathonien",
+       description: "Créer 5 recettes en une seule journée",
+       triggers: { "Recipe" => :created },
+       condition: ->(recipe) { recipe.user.recipes.where(created_at: recipe.created_at.beginning_of_day..recipe.created_at.end_of_day).count >= 5  }
+
+  # Secret success : for code explorers
+  # This achievement is unlocked by visiting a special URL that is hidden in the source code
+  rule key: :code_explorer,
+       name: "H4ck3r",
+       description: "Trouver le secret caché dans le code source",
+       secret: true,
+       triggers: { "User" => :custom_event },
+       condition: ->(user) { true } # The condition is handled by the special controller
 end
