@@ -1,7 +1,7 @@
 import { InertiaFormProps } from "@inertiajs/react";
 import { useState, useEffect } from "react";
 import { RecipeFormType } from "../types";
-import { Card, Input, Button, Badge } from "../../../components/ui";
+import { Card, Input, Button, Badge } from "../../../components";
 import {
   DndContext,
   closestCenter,

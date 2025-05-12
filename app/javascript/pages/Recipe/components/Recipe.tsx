@@ -1,7 +1,7 @@
 import { Rating } from "@mui/material";
 import { RecipeType } from "../types";
 import Ingredients from "../Ingredients/components/Ingredients";
-import { Card, Badge, LinkButton } from "../../../components/ui";
+import { Card, Badge, LinkButton } from "../../../components";
 import { usePage } from "@inertiajs/react";
 import { PageProps } from "../../../types";
 import DifficultyBadge from "./DifficultyBadge";

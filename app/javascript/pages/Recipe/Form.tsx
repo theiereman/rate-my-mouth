@@ -2,7 +2,7 @@ import { InertiaFormProps, useForm } from "@inertiajs/react";
 import { FormEvent } from "react";
 import { RecipeFormType, RecipeType } from "./types";
 import RecipeEditor from "./components/RecipeEditor";
-import { Button, Input, Card, Combo, TextArea } from "../../components/ui";
+import { Button, Input, Card, Combo, TextArea } from "../../components";
 
 interface FormProps {
   recipe: RecipeType;

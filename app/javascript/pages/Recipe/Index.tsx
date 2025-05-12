@@ -1,8 +1,8 @@
 import { Head, router } from "@inertiajs/react";
 import { RecipeType } from "./types";
 import RecipeShort from "./components/RecipeShort";
-import UserSelector from "../../components/users/UserSelector";
-import { LinkButton, Input } from "../../components/ui";
+import UserSelector from "../User/components/UserSelector";
+import { LinkButton, Input } from "../../components";
 import { useEffect, useMemo, useState } from "react";
 import { debounce } from "lodash";
 

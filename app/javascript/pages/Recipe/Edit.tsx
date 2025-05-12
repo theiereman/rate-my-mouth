@@ -1,7 +1,7 @@
 import { Head } from "@inertiajs/react";
 import Form from "./Form";
 import { RecipeType } from "./types";
-import { LinkButton } from "../../components/ui";
+import { LinkButton } from "../../components";
 
 interface EditProps {
   recipe: RecipeType;

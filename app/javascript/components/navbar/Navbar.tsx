@@ -1,6 +1,6 @@
 import { Link } from "@inertiajs/react";
 import { useState } from "react";
-import { LinkButton } from "../ui";
+import { LinkButton } from "..";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);

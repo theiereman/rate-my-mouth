@@ -1,7 +1,7 @@
 import { CommentableType, CommentType } from "./types";
 import CommentForm from "./CommentForm";
 import Comment from "./Comment";
-import { Card } from "../../components/ui";
+import { Card } from "../../components";
 
 export default function Comments({
   comments,

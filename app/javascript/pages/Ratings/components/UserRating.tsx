@@ -2,7 +2,7 @@ import Rating from "@mui/material/Rating";
 import { RatingType } from "../types";
 import { router } from "@inertiajs/react";
 import { useState } from "react";
-import { Badge } from "../../../components/ui";
+import { Badge } from "../../../components";
 
 export default function UserRating({
   recipeId,

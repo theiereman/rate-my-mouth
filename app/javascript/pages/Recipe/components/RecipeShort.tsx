@@ -2,7 +2,7 @@ import { Link } from "@inertiajs/react";
 import { formatDate } from "../../../helpers/dateHelper";
 import { RecipeType } from "../types";
 import { Rating } from "@mui/material";
-import { Badge, Card } from "../../../components/ui";
+import { Badge, Card } from "../../../components";
 import DifficultyBadge from "./DifficultyBadge";
 import UserLink from "../../User/components/UserLink";
 

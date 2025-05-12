@@ -1,6 +1,6 @@
 import { useForm, Link } from "@inertiajs/react";
 import { FormEvent, useState, useEffect } from "react";
-import { Input, Button } from "../../components/ui";
+import { Input, Button } from "../../components";
 import { PageProps } from "../../types";
 import { RegisterFormData } from "./types";
 import AuthLayout from "./AuthLayout";

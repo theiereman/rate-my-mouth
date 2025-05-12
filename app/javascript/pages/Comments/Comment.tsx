@@ -1,6 +1,6 @@
 import { formatDateTime } from "../../helpers/dateHelper";
 import { CommentType } from "./types";
-import { Avatar } from "../../components/ui";
+import { Avatar } from "../../components";
 
 export default function Comment({ comment }: { comment: CommentType }) {
   return (

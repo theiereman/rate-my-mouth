@@ -1,5 +1,5 @@
-import { Badge } from "../../../components/ui";
-import { BadgeVariant } from "../../../components/ui/Badge";
+import { Badge } from "../../../components";
+import { BadgeVariant } from "../../../components/Badge";
 
 const getVariantValue = (difficulty: number): BadgeVariant => {
   switch (difficulty) {

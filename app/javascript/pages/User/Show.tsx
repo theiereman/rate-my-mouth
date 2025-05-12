@@ -2,7 +2,7 @@ import { Head } from "@inertiajs/react";
 import { UserType, AchievementType } from "./types";
 import UserProfile from "./components/UserProfile";
 import AchievementsList from "./components/AchievementsList";
-import { LinkButton } from "../../components/ui";
+import { LinkButton } from "../../components";
 import { useEffect, useState } from "react";
 import axios from "axios";
 

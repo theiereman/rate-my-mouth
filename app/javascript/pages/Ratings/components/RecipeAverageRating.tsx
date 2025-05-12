@@ -1,6 +1,6 @@
 import { Rating } from "@mui/material";
 import { RecipeType } from "../../Recipe/types";
-import { Badge } from "../../../components/ui";
+import { Badge } from "../../../components";
 
 export default function RecipeAverageRating({
   recipe,

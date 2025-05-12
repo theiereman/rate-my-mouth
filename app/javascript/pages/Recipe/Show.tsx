@@ -5,7 +5,7 @@ import { RatingType } from "../Ratings/types";
 import Recipe from "./components/Recipe";
 import { CommentableType } from "../Comments/types";
 import RecipeRatingDetails from "../Ratings/components/RecipeRatingDetails";
-import { LinkButton } from "../../components/ui";
+import { LinkButton } from "../../components";
 
 interface ShowProps {
   recipe: RecipeType;
