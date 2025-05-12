@@ -158,13 +158,13 @@ AchievementRules.define do
        name: "Etoile de service",
        description: "Créer une recette exactement un an après la création de votre compte",
        triggers: { "Recipe" => :created },
-       condition: ->(recipe) { recipe.user.recipes.where(created_at: recipe.user.created_at.beginning_of_day..recipe.user.created_at.end_of_day + 1.year).count >= 1 }
+       condition: ->(recipe) { recipe.created_at.to_date == recipe.user.created_at.to_date.advance(years: 1) }
 
   rule key: :romantic,
        name: "Romantique",
        description: "Créer une recette le jour de la Saint-Valentin",
        triggers: { "Recipe" => :created },
-       condition: ->(recipe) { recipe.user.recipes.where(created_at: Date.new(2024, 2, 14).beginning_of_day..Date.new(2024, 2, 14).end_of_day).count >= 1 }
+       condition: ->(recipe) { recipe.created_at.to_date == Date.new(2024, 2, 14) }
 
   rule key: :marathonian,
        name: "Marathonien",
