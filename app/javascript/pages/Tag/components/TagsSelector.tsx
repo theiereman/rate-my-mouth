@@ -11,17 +11,23 @@ interface TagAttribute {
 
 interface TagsSelectorProps {
   onTagsSelected: (tags: TagAttribute[]) => void;
+  label?: string;
+  placeholder?: string;
   className?: string;
   initialTagIds?: number[];
   initialTags?: TagAttribute[];
   maxTags?: number;
+  createNewTags?: boolean;
 }
 
 export default function TagsSelector({
+  label = "Tags",
+  placeholder = "Sélectionner des tags...",
   onTagsSelected,
   className = "",
   initialTags = [],
   maxTags = 3,
+  createNewTags = true,
 }: TagsSelectorProps) {
   const [tags, setTags] = useState<TagType[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -71,6 +77,7 @@ export default function TagsSelector({
   }, []);
 
   const createNewTagOption = useMemo(() => {
+    if (!createNewTags) return null;
     if (!searchValue.trim()) return null;
 
     const tagExists = tags.some(
@@ -166,9 +173,9 @@ export default function TagsSelector({
             ? "Chargement des tags..."
             : selectedTags.length >= maxTags
             ? "Nombre maximum de tags atteint"
-            : "Rechercher ou créer des tags..."
+            : placeholder
         }
-        label={`Tags (max. ${maxTags})`}
+        label={label && `${label} (max. ${maxTags})`}
         disabled={isLoading || selectedTags.length >= maxTags}
         erasable={false}
         className="w-full"

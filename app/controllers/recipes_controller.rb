@@ -13,16 +13,8 @@ class RecipesController < ApplicationController
   end
 
   def search
-    @recipes = Recipe
-      .where("name LIKE ?", "%#{params[:query]}%")
-      .order(created_at: :desc)
-      .then do |recipes|
-        if params[:user_id]
-          recipes.where(user_id: params[:user_id])
-        else
-          recipes
-        end
-      end
+    @recipes = Recipe.all.order(created_at: :desc)
+    @recipes = Recipe.filter(params.slice(:name, :user_id, :tags_ids))
 
     render inertia: "Recipe/Index", props: {
       recipes: @recipes.map do |recipe|

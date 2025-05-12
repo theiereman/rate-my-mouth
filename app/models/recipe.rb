@@ -1,5 +1,17 @@
 class Recipe < ApplicationRecord
   include Achievable
+  include Filterable
+
+  scope :filter_by_name, ->(name) { where("recipes.name LIKE ?", "%#{name}%") }
+  scope :filter_by_user_id, ->(user_id) { where(user_id: user_id) }
+  scope :filter_by_tags_ids, ->(tag_ids) {
+    tag_ids = Array(tag_ids)
+    joins(:tags)
+    .where(tags: { id: tag_ids })
+    .group("recipes.id")
+    .having("COUNT(DISTINCT tags.id) = ?", tag_ids.size)
+    .distinct
+  }
 
   attribute :difficulty, :integer
   enum :difficulty, easy: 0, medium: 1, hard: 2
@@ -60,5 +72,11 @@ class Recipe < ApplicationRecord
 
   def difficulty_value
     Recipe.difficulties[self[:difficulty]]
+  end
+
+  private
+
+  def filtering_params
+    params.slice(:name, :user_id, :tag_ids)
   end
 end
