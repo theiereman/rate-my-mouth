@@ -1,6 +1,6 @@
 import { RatingType } from "../types";
 import RatingDisplay from "./RatingDisplay";
-import { Avatar } from "../../../components/ui";
+import { Avatar } from "../../../components";
 
 export default function LastRatings({
   ratings,

@@ -13,16 +13,8 @@ class RecipesController < ApplicationController
   end
 
   def search
-    @recipes = Recipe
-      .where("name LIKE ?", "%#{params[:query]}%")
-      .order(created_at: :desc)
-      .then do |recipes|
-        if params[:user_id]
-          recipes.where(user_id: params[:user_id])
-        else
-          recipes
-        end
-      end
+    @recipes = Recipe.all.order(created_at: :desc)
+    @recipes = Recipe.filter(params.slice(:name, :user_id, :tags_ids))
 
     render inertia: "Recipe/Index", props: {
       recipes: @recipes.map do |recipe|
@@ -57,7 +49,6 @@ class RecipesController < ApplicationController
 
   # POST /recipes
   def create
-    p recipe_params
     @recipe = Recipe.new(recipe_params)
     @recipe.user = current_user
 
@@ -91,10 +82,15 @@ class RecipesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def recipe_params
-      params.expect(recipe: [ :name, :description, :url, :number_of_servings, :difficulty, ingredients: [], instructions: [] ])
+      params.require(:recipe).permit(
+        :name, :description, :url, :number_of_servings, :difficulty,
+        ingredients: [],
+        instructions: [],
+        tags_attributes: [ :id, :name ]
+      )
     end
 
     def recipe_as_json(recipe = @recipe)
-      recipe.as_json(include: [ :user, comments: { include: :user }, ratings: { include: :user } ], methods: [ :average_rating, :difficulty_value ])
+      recipe.as_json(include: [ :user, :tags, comments: { include: :user }, ratings: { include: :user } ], methods: [ :average_rating, :difficulty_value ])
     end
 end

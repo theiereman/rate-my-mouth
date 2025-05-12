@@ -39,7 +39,7 @@ const getVariantClasses = (variant: BadgeVariant) => {
     case "info":
       return "bg-blue-100 text-blue-800";
     case "neutral":
-      return "bg-neutral-100 text-neutral-800";
+      return "bg-neutral-200 text-neutral-800";
     default:
       return "bg-primary-100 text-primary-800";
   }
@@ -77,12 +77,16 @@ export const Badge = ({
 
   return (
     <span
-      className={`flex items-center font-medium whitespace-nowrap ${variantClasses} ${sizeClasses} ${roundedClasses} ${cursorClass} ${className}`}
+      className={`flex justify-center items-center font-medium whitespace-nowrap ${variantClasses} ${sizeClasses} ${roundedClasses} ${cursorClass} ${className}`}
       onClick={onClick}
     >
-      {icon && iconPosition === "left" && <span className="mr-1">{icon}</span>}
+      {icon && iconPosition === "left" && (
+        <div className="mr-1 flex align-center">{icon}</div>
+      )}
       {children}
-      {icon && iconPosition === "right" && <span className="ml-1">{icon}</span>}
+      {icon && iconPosition === "right" && (
+        <div className="ml-1 flex align-center">{icon}</div>
+      )}
     </span>
   );
 };

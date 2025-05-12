@@ -1,10 +1,11 @@
 import { Head, router } from "@inertiajs/react";
 import { RecipeType } from "./types";
 import RecipeShort from "./components/RecipeShort";
-import UserSelector from "../../components/users/UserSelector";
-import { LinkButton, Input } from "../../components/ui";
+import UserSelector from "../User/components/UserSelector";
+import { LinkButton, Input } from "../../components";
 import { useEffect, useMemo, useState } from "react";
 import { debounce } from "lodash";
+import TagsSelector from "../Tag/components/TagsSelector";
 
 interface IndexProps {
   recipes: RecipeType[];
@@ -13,15 +14,21 @@ interface IndexProps {
 export default function Index({ recipes }: IndexProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
+  const [selectedTagIds, setSelectedTagIds] = useState<number[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const search = (query?: string, user_id?: number | null) => {
+  const search = (
+    name?: string,
+    user_id?: number | null,
+    tags_ids?: number[]
+  ) => {
     setIsLoading(true);
 
-    const params: { query?: string; user_id?: number } = {};
+    const params: { name?: string; user_id?: number; tags_ids?: number[] } = {};
 
-    if (query?.trim()) params.query = query;
+    if (name?.trim()) params.name = name;
     if (user_id) params.user_id = user_id;
+    if (tags_ids && tags_ids.length > 0) params.tags_ids = tags_ids;
 
     router.get("/recipes/search", params, {
       preserveState: true,
@@ -42,12 +49,19 @@ export default function Index({ recipes }: IndexProps) {
   const handleSearch = (query: string) => {
     setIsLoading(true);
     setSearchQuery(query);
-    debouncedSearch(query, selectedUserId);
+    debouncedSearch(query, selectedUserId, selectedTagIds);
   };
 
   const handleUserSelected = (userId: number | null) => {
     setSelectedUserId(userId);
-    search(searchQuery, userId);
+    search(searchQuery, userId, selectedTagIds);
+  };
+
+  const handleTagsSelected = (tags: { id?: number; name: string }[]) => {
+    const tagIds = tags.map((tag) => tag.id).filter(Boolean) as number[];
+    console.log(tagIds);
+    setSelectedTagIds(tagIds);
+    search(searchQuery, selectedUserId, tagIds);
   };
 
   return (
@@ -106,6 +120,12 @@ export default function Index({ recipes }: IndexProps) {
             />
 
             <UserSelector onUserSelected={handleUserSelected} />
+            <TagsSelector
+              maxTags={Infinity}
+              label=""
+              createNewTags={false}
+              onTagsSelected={handleTagsSelected}
+            />
           </div>
         </div>
 

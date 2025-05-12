@@ -3,7 +3,7 @@ import { RatingType } from "../types";
 import UserRating from "./UserRating";
 import LastRatings from "./LastRatings";
 import RecipeAverageRating from "./RecipeAverageRating";
-import { Card } from "../../../components/ui";
+import { Card } from "../../../components";
 
 export default function RecipeRatingDetails({
   recipe,

@@ -2,9 +2,8 @@ import { Link } from "@inertiajs/react";
 import { formatDate } from "../../../helpers/dateHelper";
 import { RecipeType } from "../types";
 import { Rating } from "@mui/material";
-import { Badge, Card } from "../../../components/ui";
+import { Badge, Card } from "../../../components";
 import DifficultyBadge from "./DifficultyBadge";
-import UserLink from "../../User/components/UserLink";
 
 interface RecipeProps {
   recipe: RecipeType;
@@ -62,6 +61,14 @@ export default function Recipe({ recipe }: RecipeProps) {
               <DifficultyBadge
                 difficulty={recipe.difficulty_value}
               ></DifficultyBadge>
+
+              {recipe.tags &&
+                recipe.tags.length > 0 &&
+                recipe.tags.map((tag) => (
+                  <Badge key={tag.id} variant="neutral" size="sm">
+                    {tag.name}
+                  </Badge>
+                ))}
             </div>
 
             <div className="text-xs text-neutral-500 flex flex-wrap gap-2">

@@ -1,5 +1,5 @@
 import { UserType } from "../types";
-import { Badge, Card } from "../../../components/ui";
+import { Badge, Card } from "../../../components";
 import { formatDate } from "../../../helpers/dateHelper";
 
 interface UserProfileProps {

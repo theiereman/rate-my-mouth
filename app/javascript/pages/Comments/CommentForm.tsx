@@ -2,7 +2,7 @@ import { useForm } from "@inertiajs/react";
 import { CommentableType } from "./types";
 import { COMMENTS_PLACEHOLDERS } from "../../helpers/commentsPlaceholders";
 import { useState, useEffect } from "react";
-import { Button, Input } from "../../components/ui";
+import { Button, Input } from "../../components";
 
 export default function CommentForm({
   commentableType,

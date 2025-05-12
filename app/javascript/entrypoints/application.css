@@ -23,6 +23,10 @@ body {
   font-size: 1.2em !important;
 }
 
+.material-icon--md {
+  font-size: 1.6em !important;
+}
+
 .material-icon--lg {
   font-size: 3em !important;
 }

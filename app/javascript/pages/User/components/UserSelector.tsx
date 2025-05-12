@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import Combo, { ComboValue } from "../ui/Combo";
+import Combo, { ComboValue } from "../../../components/Combo";
 
 interface User {
   id: number;

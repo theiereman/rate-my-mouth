@@ -1,6 +1,6 @@
 import { AchievementType } from "../types";
 import AchievementCard from "./AchievementCard";
-import { Card } from "../../../components/ui";
+import { Card } from "../../../components";
 
 interface AchievementsListProps {
   achievements: AchievementType[];

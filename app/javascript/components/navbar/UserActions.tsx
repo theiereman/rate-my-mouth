@@ -1,6 +1,6 @@
 import { Link, usePage } from "@inertiajs/react";
 import { PageProps } from "../../types";
-import ProfilePicPlaceholder from "../shared/ProfilePicPlaceholder";
+import ProfilePicPlaceholder from "../ProfilePicPlaceholder";
 import { useState, useRef, useEffect } from "react";
 
 export default function UserActions() {

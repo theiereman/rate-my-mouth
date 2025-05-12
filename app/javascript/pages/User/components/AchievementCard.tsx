@@ -1,5 +1,5 @@
 import { AchievementType } from "../types";
-import { Card, Badge } from "../../../components/ui";
+import { Card, Badge } from "../../../components";
 
 interface AchievementCardProps {
   achievement: AchievementType;
