@@ -3,9 +3,9 @@ import { useState, useEffect } from "react";
 import Navbar from "../components/navbar/Navbar";
 import HomeButton from "../components/navbar/HomeButton";
 import UserActions from "../components/navbar/UserActions";
-import Toast from "../components/Toast";
 import { PageProps } from "../types";
 import ThemeSelector from "../components/theme/ThemeSelector";
+import { Footer, Toast } from "../components";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const { flash } = usePage<PageProps>().props;
@@ -74,11 +74,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </div>
         </main>
 
-        <footer className=" py-4">
-          <p className="text-neutral-500 text-sm ms-2">
-            © {new Date().getFullYear()} RateMyMouth. All rights reserved.
-          </p>
-        </footer>
+        <Footer></Footer>
       </div>
     </>
   );
