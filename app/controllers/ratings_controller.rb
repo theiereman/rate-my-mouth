@@ -8,7 +8,7 @@ class RatingsController < ApplicationController
       @rating.user = current_user
 
       if @rating.save
-        redirect_to @recipe, notice: "Note ajoutée avec succès."
+        redirect_to @recipe
       else
         redirect_to @recipe, alert: "Erreur lors de l'ajout de la note."
       end

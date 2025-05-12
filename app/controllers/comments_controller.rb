@@ -7,7 +7,7 @@ class CommentsController < ApplicationController
     @comment.user = current_user
 
     if @comment.save
-      redirect_to @commentable, notice: "Commentaire ajouté avec succès."
+      redirect_to @commentable
     else
       redirect_to @commentable, alert: "Erreur lors de l'ajout du commentaire."
     end
@@ -15,7 +15,7 @@ class CommentsController < ApplicationController
 
   def update
     if @comment.user == current_user && @comment.update(comment_params)
-      redirect_to @commentable, notice: "Commentaire modifié avec succès."
+      redirect_to @commentable
     else
       redirect_to @commentable, alert: "Erreur lors de la modification du commentaire."
     end
@@ -24,7 +24,7 @@ class CommentsController < ApplicationController
   def destroy
     if @comment.user == current_user
       @comment.destroy
-      redirect_to @commentable, notice: "Commentaire supprimé avec succès."
+      redirect_to @commentable
     else
       redirect_to @commentable, alert: "Vous n'êtes pas autorisé à supprimer ce commentaire."
     end
