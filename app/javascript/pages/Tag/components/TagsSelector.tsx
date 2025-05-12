@@ -11,8 +11,6 @@ interface TagAttribute {
 
 interface TagsSelectorProps {
   onTagsSelected: (tags: TagAttribute[]) => void;
-  label?: string;
-  placeholder?: string;
   className?: string;
   initialTagIds?: number[];
   initialTags?: TagAttribute[];
@@ -21,10 +19,7 @@ interface TagsSelectorProps {
 
 export default function TagsSelector({
   onTagsSelected,
-  label = "Tags",
-  placeholder = "Rechercher ou créer un tag...",
   className = "",
-  initialTagIds = [],
   initialTags = [],
   maxTags = 3,
 }: TagsSelectorProps) {
@@ -33,40 +28,37 @@ export default function TagsSelector({
   const [error, setError] = useState<string | null>(null);
   const [selectedTags, setSelectedTags] = useState<TagType[]>([]);
   const [searchValue, setSearchValue] = useState("");
-  const [filteredTags, setFilteredTags] = useState<TagType[]>([]);
 
-  // Charger la liste des tags
+  const filteredTags: ComboValue[] = tags
+    .filter((tag) => !selectedTags.some((selected) => selected.id === tag.id))
+    .filter((tag) =>
+      tag.name.toLowerCase().includes(searchValue.toLowerCase().trim())
+    )
+    .map<ComboValue>((tag) => {
+      return {
+        value: tag.id,
+        label: `${tag.name} (${tag.number_of_recipes})`,
+      };
+    });
+
+  //loading existing tags from database
   useEffect(() => {
     const fetchTags = async () => {
       try {
         setIsLoading(true);
         const response = await axios.get("/tags");
         setTags(response.data);
-        setFilteredTags(response.data);
 
-        // Si des tags initiaux sont fournis, les utiliser
-        if (initialTags.length > 0) {
-          // Convertir les initialTags en objets TagType complets
-          const initialTagObjects = initialTags.map((tagAttr) => {
-            // Si le tag a un ID, essayer de trouver le tag complet dans la liste
-            if (tagAttr.id) {
-              const existingTag = response.data.find(
-                (t: TagType) => t.id === tagAttr.id
-              );
-              if (existingTag) return existingTag;
-            }
-            // Sinon, créer un objet TagType à partir du nom
-            return { id: tagAttr.id, name: tagAttr.name } as TagType;
-          });
-          setSelectedTags(initialTagObjects);
-        }
-        // Sinon, si des IDs initiaux sont fournis, trouver les tags correspondants
-        else if (initialTagIds.length > 0) {
-          const initialTagsById = response.data.filter((tag: TagType) =>
-            initialTagIds.includes(tag.id)
-          );
-          setSelectedTags(initialTagsById);
-        }
+        const initialTagObjects = initialTags.map((tagAttr) => {
+          if (tagAttr.id) {
+            const existingTag = response.data.find(
+              (t: TagType) => t.id === tagAttr.id
+            );
+            if (existingTag) return existingTag;
+          }
+          return { id: tagAttr.id, name: tagAttr.name } as TagType;
+        });
+        setSelectedTags(initialTagObjects);
       } catch (err) {
         setError("Erreur lors du chargement des tags");
         console.error(err);
@@ -78,30 +70,16 @@ export default function TagsSelector({
     fetchTags();
   }, []);
 
-  // Formater les tags pour l'affichage dans la combo
-  const tagOptions: ComboValue[] = filteredTags
-    .filter((tag) => !selectedTags.some((selected) => selected.id === tag.id))
-    .map<ComboValue>((tag) => {
-      return {
-        value: tag.id,
-        label: `${tag.name} (${tag.number_of_recipes} recettes)`,
-      };
-    });
-
-  // Option pour créer un nouveau tag si la recherche ne correspond à aucun tag existant
   const createNewTagOption = useMemo(() => {
-    console.log(searchValue);
     if (!searchValue.trim()) return null;
 
-    // Vérifier si le tag existe déjà
     const tagExists = tags.some(
       (tag) => tag.name.toLowerCase() === searchValue.toLowerCase()
     );
 
-    // Si le tag n'existe pas, ajouter l'option pour le créer
     if (!tagExists) {
       return {
-        value: -1, // Valeur temporaire pour indiquer un nouveau tag
+        value: -1,
         label: `Créer "${searchValue}"`,
       };
     }
@@ -109,11 +87,10 @@ export default function TagsSelector({
     return null;
   }, [searchValue, tags]);
 
-  // Combiner les options existantes avec l'option de création
   const allOptions =
     createNewTagOption == null
-      ? tagOptions
-      : [...tagOptions, createNewTagOption];
+      ? filteredTags
+      : [createNewTagOption, ...filteredTags];
 
   // Gérer la sélection d'un tag
   const handleTagSelected = (selectedValue: ComboValue | null) => {
@@ -161,7 +138,6 @@ export default function TagsSelector({
 
     // Réinitialiser la recherche
     setSearchValue("");
-    setFilteredTags(tags);
   };
 
   // Supprimer un tag sélectionné
@@ -181,17 +157,32 @@ export default function TagsSelector({
     <div className={className}>
       {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
 
-      {/* Afficher les tags sélectionnés */}
+      <Combo
+        values={allOptions}
+        onSelectedValue={handleTagSelected}
+        onSearchValueChange={setSearchValue}
+        placeholder={
+          isLoading
+            ? "Chargement des tags..."
+            : selectedTags.length >= maxTags
+            ? "Nombre maximum de tags atteint"
+            : "Rechercher ou créer des tags..."
+        }
+        label={`Tags (max. ${maxTags})`}
+        disabled={isLoading || selectedTags.length >= maxTags}
+        erasable={false}
+        className="w-full"
+      />
+
       {selectedTags.length > 0 && (
-        <div className="flex flex-wrap gap-2 mb-2">
+        <div className="flex flex-wrap gap-2 mt-2">
           {selectedTags.map((tag) => (
             <Badge
               key={tag.id}
               variant="primary"
-              className="px-2 py-1"
               icon={
                 <span
-                  className="material-symbols-outlined cursor-pointer text-sm"
+                  className="material-symbols-outlined cursor-pointer material-icon--md"
                   onClick={() => removeTag(tag.id)}
                 >
                   close
@@ -203,25 +194,6 @@ export default function TagsSelector({
             </Badge>
           ))}
         </div>
-      )}
-
-      {/* Afficher le message sur le nombre maximum de tags */}
-      {selectedTags.length >= maxTags ? (
-        <p className="text-neutral-500 text-sm mb-2">
-          Nombre maximum de tags atteint ({maxTags})
-        </p>
-      ) : (
-        <Combo
-          className="flex-1"
-          values={allOptions}
-          onSelectedValue={handleTagSelected}
-          onSearchValueChange={setSearchValue}
-          placeholder={isLoading ? "Chargement des tags..." : placeholder}
-          label={label}
-          value={null}
-          disabled={isLoading || selectedTags.length >= maxTags}
-          erasable={false}
-        />
       )}
     </div>
   );

@@ -3,7 +3,7 @@ import { debounce } from "lodash";
 import Input from "./Input";
 
 interface ComboProps {
-  value: number | null;
+  value?: number | null;
   values: ComboValue[];
   onSelectedValue: (value: ComboValue | null) => void;
   onSearchValueChange?: (value: string) => void;

@@ -14,6 +14,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   inputClassName?: string;
   helperTextClassName?: string;
   errorClassName?: string;
+  disabled?: boolean;
 }
 
 const getVariantClasses = (variant: string, hasError: boolean) => {
@@ -53,6 +54,7 @@ export const Input = ({
   inputClassName = "",
   helperTextClassName = "",
   errorClassName = "",
+  disabled = false,
   ...props
 }: InputProps) => {
   const hasError = !!error;
@@ -63,7 +65,9 @@ export const Input = ({
   const iconPaddingRight = rightIcon ? "pr-10" : "";
 
   return (
-    <div className={`w-full ${containerClassName}`}>
+    <div
+      className={`w-full ${containerClassName} ${disabled ? "opacity-60" : ""}`}
+    >
       {label && (
         <label
           htmlFor={props.id}

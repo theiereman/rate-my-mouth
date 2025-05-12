@@ -4,7 +4,6 @@ import { RecipeType } from "../types";
 import { Rating } from "@mui/material";
 import { Badge, Card } from "../../../components";
 import DifficultyBadge from "./DifficultyBadge";
-import UserLink from "../../User/components/UserLink";
 
 interface RecipeProps {
   recipe: RecipeType;
@@ -66,7 +65,7 @@ export default function Recipe({ recipe }: RecipeProps) {
               {recipe.tags &&
                 recipe.tags.length > 0 &&
                 recipe.tags.map((tag) => (
-                  <Badge key={tag.id} variant="primary" size="sm">
+                  <Badge key={tag.id} variant="neutral" size="sm">
                     {tag.name}
                   </Badge>
                 ))}

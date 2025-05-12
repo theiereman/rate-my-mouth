@@ -79,41 +79,42 @@ export default function Form({ recipe, onSubmit, submitText }: FormProps) {
             helperText="Si cette recette provient d'un site web, vous pouvez indiquer l'URL ici"
           />
 
-          <Input
-            mandatory
-            label="Nombre de personnes"
-            helperText="Quantité de personnes pour lesquelles cette recette est prévue"
-            type="number"
-            name="number_of_servings"
-            id="number_of_servings"
-            value={data.number_of_servings}
-            onChange={(e) =>
-              setData("number_of_servings", parseInt(e.target.value))
-            }
-            error={errors.number_of_servings}
-          />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-start">
+            <Input
+              mandatory
+              label="Nombre de personnes"
+              type="number"
+              name="number_of_servings"
+              id="number_of_servings"
+              value={data.number_of_servings}
+              onChange={(e) =>
+                setData("number_of_servings", parseInt(e.target.value))
+              }
+              error={errors.number_of_servings}
+            />
 
-          <Combo
-            mandatory
-            label="Difficulté"
-            values={[
-              { value: 0, label: "Facile" },
-              { value: 1, label: "Moyen" },
-              { value: 2, label: "Difficile" },
-            ]}
-            onSelectedValue={(value) =>
-              setData("difficulty", value?.value ?? 0)
-            }
-            value={data.difficulty}
-          />
+            <Combo
+              mandatory
+              label="Difficulté"
+              values={[
+                { value: 0, label: "Facile" },
+                { value: 1, label: "Moyen" },
+                { value: 2, label: "Difficile" },
+              ]}
+              onSelectedValue={(value) =>
+                setData("difficulty", value?.value ?? 0)
+              }
+              value={data.difficulty}
+              className="w-full"
+            />
 
-          <TagsSelector
-            label="Tags"
-            placeholder="Rechercher ou créer un tag..."
-            initialTags={data.tags_attributes}
-            onTagsSelected={(tags) => setData("tags_attributes", tags)}
-            maxTags={3}
-          />
+            <TagsSelector
+              initialTags={data.tags_attributes}
+              onTagsSelected={(tags) => setData("tags_attributes", tags)}
+              maxTags={3}
+              className="w-full"
+            />
+          </div>
         </Card.Body>
       </Card>
 
