@@ -25,4 +25,7 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   root "recipes#index"
+
+  # Route secrète pour les explorateurs de code source
+  get "source_explorer/:secret_key", to: "source_explorer#unlock_secret", as: :source_explorer
 end

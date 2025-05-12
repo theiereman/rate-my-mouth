@@ -3,6 +3,7 @@ export interface AchievementType {
   name: string;
   description: string;
   unlocked: boolean;
+  secret: boolean;
 }
 
 export interface UserType {

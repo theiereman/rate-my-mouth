@@ -1,6 +1,17 @@
 @import "tailwindcss";
 @config "./tailwind.config.js";
 
+/*
+ * Congratulations for exploring the source code!
+ *
+ * You've found a clue to unlock a hidden achievement.
+ * Visit the following URL to unlock the "Code Explorer" achievement:
+ *
+ * /source_explorer/curious_minds_find_hidden_treasures
+ *
+ * Happy exploring!
+ */
+
 :root {
   /* Default theme values - will be overridden by ThemeContext */
   --primary-hue: 230;

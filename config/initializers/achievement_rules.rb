@@ -1,13 +1,15 @@
 class AchievementRules
   class Rule
-    attr_reader :key, :name, :description, :triggers, :condition
+    attr_reader :key, :name, :description, :triggers, :condition, :target_user, :secret
 
-    def initialize(key:, name:, description:, triggers:, condition:)
+    def initialize(key:, name:, description:, triggers:, condition:, target_user:, secret:)
       @key = key
       @name = name
       @description = description
       @triggers = normalize_triggers(triggers)
       @condition = condition
+      @target_user = target_user
+      @secret = secret
     end
 
     def satisfied?(event_name, record)
@@ -50,13 +52,15 @@ class AchievementRules
     instance_eval(&block)
   end
 
-  def self.rule(key:, name:, description:, triggers:, condition:)
+  def self.rule(key:, name:, description:, triggers:, condition:, target_user: nil, secret: false)
     @rules << Rule.new(
       key: key,
       name: name,
       description: description,
       triggers: triggers,
-      condition: condition
+      condition: condition,
+      target_user: target_user,
+      secret: secret
     )
   end
 end
@@ -117,4 +121,63 @@ AchievementRules.define do
 
          false
        }
+
+  rule key: :bad_reputation,
+       name: "Mauvaise réputation",
+       description: "Avoir une note moyenne inférieure à 2 (sur un total d'au moins 10 recettes)",
+       triggers: { "Rating" => :created },
+       target_user: ->(rating) { rating.recipe.user },
+       condition: ->(rating) { rating.recipe.user.recipes.count >= 10 && rating.recipe.user.recipes.joins(:ratings).average("ratings.value").to_f < 2.0 }
+
+  rule key: :feast,
+       name: "Joyeux festin",
+       description: "Créer une recette avec des quantités pour 10 personnes (ou plus)",
+       triggers: { "Recipe" => :created },
+       condition: ->(recipe) { recipe.user.recipes.where("number_of_servings >= 10").count >= 1 }
+
+  rule key: :spammer,
+       name: "Forceur",
+       description: "Ajouter 10 commentaires sur la même recette",
+       triggers: { "Comment" => :created },
+       condition: ->(recipe) { recipe.user.comments.on_recipes.group(:commentable_id).count.any? { |_, count| count >= 10 } }
+
+  # NOTE: rails is currently having issue with the ingredients and instructions attributes because stored as nil when empty array (serialized string)
+  # rule key: :chemist,
+  #      name: "Chimiste",
+  #      description: "Créer une recette avec au minimum 20 ingrédients et 15 étapes",
+  #      triggers: { "Recipe" => :created },
+  #      condition: ->(recipe) { recipe.user.recipes.any? { |r| p r.ingredients.size >= 20 && r.instructions.size >= 15 } }
+  #
+  ## rule key: :low_effort,
+  #      name: "Flemmard",
+  #      description: "Créer une recette avec au maximum 2 ingrédients et 3 étapes",
+  #      triggers: { "Recipe" => :created },
+  #      condition: ->(recipe) { recipe.user.recipes.any? { |r| p r.ingredients.size <= 2 && r.instructions.size <= 3 } }
+
+  rule key: :birthday,
+       name: "Etoile de service",
+       description: "Créer une recette exactement un an après la création de votre compte",
+       triggers: { "Recipe" => :created },
+       condition: ->(recipe) { recipe.user.recipes.where(created_at: recipe.user.created_at.beginning_of_day..recipe.user.created_at.end_of_day + 1.year).count >= 1 }
+
+  rule key: :romantic,
+       name: "Romantique",
+       description: "Créer une recette le jour de la Saint-Valentin",
+       triggers: { "Recipe" => :created },
+       condition: ->(recipe) { recipe.user.recipes.where(created_at: Date.new(2024, 2, 14).beginning_of_day..Date.new(2024, 2, 14).end_of_day).count >= 1 }
+
+  rule key: :marathonian,
+       name: "Marathonien",
+       description: "Créer 5 recettes en une seule journée",
+       triggers: { "Recipe" => :created },
+       condition: ->(recipe) { recipe.user.recipes.where(created_at: recipe.created_at.beginning_of_day..recipe.created_at.end_of_day).count >= 5  }
+
+  # Secret success : for code explorers
+  # This achievement is unlocked by visiting a special URL that is hidden in the source code
+  rule key: :code_explorer,
+       name: "H4ck3r",
+       description: "Trouver le secret caché dans le code source",
+       secret: true,
+       triggers: { "User" => :custom_event },
+       condition: ->(user) { true } # The condition is handled by the special controller
 end
