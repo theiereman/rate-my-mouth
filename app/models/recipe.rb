@@ -7,6 +7,7 @@ class Recipe < ApplicationRecord
   has_many :comments, as: :commentable, dependent: :destroy
   has_many :ratings, dependent: :destroy
   belongs_to :user
+  has_and_belongs_to_many :tags
 
   validates :name, presence: true
   validates :number_of_servings, presence: true, numericality: { only_integer: true, greater_than: 0 }
