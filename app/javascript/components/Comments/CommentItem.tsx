@@ -6,7 +6,7 @@ export default function CommentItem({ comment }: { comment: CommentType }) {
   return (
     <div className="py-6 flex flex-col gap-2 items-start">
       <div className="flex gap-3">
-        <UserAvatar name={comment.user.username} size="md" />
+        <UserAvatar user={comment.user} size="md" />
         <div className="flex flex-col">
           <p className=" text-neutral-800">{comment.user.username}</p>
           <p className="text-xs text-neutral-500">

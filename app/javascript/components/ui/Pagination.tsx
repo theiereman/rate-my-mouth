@@ -12,9 +12,6 @@ export interface PagyMetadata {
 }
 
 export default function Pagination({ pagy }: { pagy: PagyMetadata }) {
-  console.log(pagy.page);
-  console.log(pagy.page === 1);
-
   return (
     <div className="flex gap-2 justify-center items-center">
       <LinkButton

@@ -1,11 +1,10 @@
+import { UserType } from "../User/types";
+
 export interface CommentType {
   id: number;
   content: string;
   created_at: string;
-  user: {
-    id: number;
-    username: string;
-  };
+  user: UserType;
 }
 
 export enum CommentableType {

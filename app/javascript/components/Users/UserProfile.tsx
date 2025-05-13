@@ -1,12 +1,30 @@
 import { UserType } from "@customTypes/user.types";
 import { Badge, Card } from "@components/ui";
 import { formatDate } from "@helpers/date-helper";
+import { router } from "@inertiajs/react";
+import UserAvatar from "@components/Users/UserAvatar";
 
 interface UserProfileProps {
   user: UserType;
 }
 
 export default function UserProfile({ user }: UserProfileProps) {
+  const handleAvatarClick = () => {
+    // Open file picker
+    const fileInput = document.createElement("input");
+    fileInput.type = "file";
+    fileInput.accept = "image/*";
+    fileInput.onchange = (event) => {
+      const selectedFile = (event.target as HTMLInputElement).files?.[0];
+      if (selectedFile) {
+        router.patch(`/users/${user.id}`, {
+          user: { avatar: selectedFile },
+        });
+      }
+    };
+    fileInput.click();
+  };
+
   return (
     <Card>
       <Card.Header>
@@ -19,11 +37,7 @@ export default function UserProfile({ user }: UserProfileProps) {
       </Card.Header>
       <Card.Body className="flex flex-col gap-4">
         <div className="flex gap-4 items-center">
-          <div className="flex-shrink-0 w-20 h-20 bg-primary-100 rounded-full flex items-center justify-center text-primary-500">
-            <span className="material-symbols-outlined material-icon--lg">
-              person
-            </span>
-          </div>
+          <UserAvatar user={user} size="xl" onClick={handleAvatarClick} />
           <div className="flex-1">
             <h3 className="text-lg font-medium text-neutral-800 mb-1">
               {user.username}

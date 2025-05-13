@@ -1,10 +1,10 @@
+import { UserType } from "@customTypes/user.types";
+
 type AvatarSize = "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
 type AvatarStatus = "online" | "offline" | "away" | "busy" | "none";
 
 interface AvatarProps {
-  src?: string;
-  alt?: string;
-  name?: string;
+  user: UserType;
   size?: AvatarSize;
   status?: AvatarStatus;
   statusPosition?: "top-right" | "bottom-right";
@@ -32,59 +32,6 @@ const getSizeClasses = (size: AvatarSize) => {
   }
 };
 
-const getStatusClasses = (status: AvatarStatus) => {
-  switch (status) {
-    case "online":
-      return "bg-green-500";
-    case "offline":
-      return "bg-neutral-400";
-    case "away":
-      return "bg-yellow-500";
-    case "busy":
-      return "bg-red-500";
-    case "none":
-      return "hidden";
-    default:
-      return "hidden";
-  }
-};
-
-const getStatusSizeClasses = (size: AvatarSize) => {
-  switch (size) {
-    case "xs":
-      return "w-1.5 h-1.5";
-    case "sm":
-      return "w-2 h-2";
-    case "md":
-      return "w-2.5 h-2.5";
-    case "lg":
-      return "w-3 h-3";
-    case "xl":
-      return "w-3.5 h-3.5";
-    case "2xl":
-      return "w-4 h-4";
-    default:
-      return "w-2.5 h-2.5";
-  }
-};
-
-const getRoundedClasses = (rounded: string) => {
-  switch (rounded) {
-    case "full":
-      return "rounded-full";
-    case "lg":
-      return "rounded-lg";
-    case "md":
-      return "rounded-md";
-    case "sm":
-      return "rounded-sm";
-    case "none":
-      return "rounded-none";
-    default:
-      return "rounded-full";
-  }
-};
-
 const getInitials = (name: string) => {
   if (!name) return "";
 
@@ -97,48 +44,30 @@ const getInitials = (name: string) => {
 };
 
 export const UserAvatar = ({
-  src,
-  alt = "",
-  name = "",
+  user,
   size = "md",
-  status = "none",
-  statusPosition = "bottom-right",
-  rounded = "full",
   className = "",
   onClick,
 }: AvatarProps) => {
   const sizeClasses = getSizeClasses(size);
-  const statusClasses = getStatusClasses(status);
-  const statusSizeClasses = getStatusSizeClasses(size);
-  const roundedClasses = getRoundedClasses(rounded);
   const cursorClass = onClick ? "cursor-pointer" : "";
 
-  const statusPositionClasses = {
-    "top-right": "top-0 right-0 transform translate-x-1/4 -translate-y-1/4",
-    "bottom-right":
-      "bottom-0 right-0 transform translate-x-1/4 translate-y-1/4",
-  };
+  console.log("Avatar component rendered with user:", user);
 
   return (
-    <div className={`relative inline-block ${className}`} onClick={onClick}>
-      {src ? (
+    <div className={`${className}`} onClick={onClick}>
+      {user.avatar_url ? (
         <img
-          src={src}
-          alt={alt || name}
-          className={`${sizeClasses} ${roundedClasses} ${cursorClass} object-cover`}
+          src={user.avatar_url}
+          alt={user.username}
+          className={`${sizeClasses} ${cursorClass} rounded-full object-cover`}
         />
       ) : (
         <div
-          className={`${sizeClasses} ${roundedClasses} ${cursorClass} bg-primary-100 text-primary-800 flex items-center justify-center font-medium`}
+          className={`${sizeClasses} ${cursorClass} rounded-full bg-primary-100 text-primary-800 flex items-center justify-center font-medium`}
         >
-          {getInitials(name)}
+          {getInitials(user.username)}
         </div>
-      )}
-
-      {status !== "none" && (
-        <span
-          className={`absolute ${statusPositionClasses[statusPosition]} ${statusClasses} ${statusSizeClasses} ${roundedClasses} ring-2 ring-white`}
-        ></span>
       )}
     </div>
   );

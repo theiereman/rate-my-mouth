@@ -8,6 +8,8 @@ class User < ApplicationRecord
   has_many :ratings, dependent: :destroy
   has_many :user_achievements, dependent: :destroy
 
+  has_one_attached :avatar
+
   validates :username, presence: true, uniqueness: true
 
   def number_of_recipes
@@ -20,5 +22,9 @@ class User < ApplicationRecord
 
   def number_of_ratings
     ratings.count
+  end
+
+  def avatar_url
+    avatar.attached? ? Rails.application.routes.url_helpers.rails_blob_path(avatar, only_path: true) : nil
   end
 end
