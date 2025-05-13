@@ -3,23 +3,14 @@ class RecipesController < ApplicationController
 
   # GET /recipes
   def index
-    @recipes = Recipe.all.order(created_at: :desc)
+    @recipes = Recipe.filter(params.slice(:name, :user_id, :tags_ids)).order(created_at: :desc)
+    @pagy, @recipes = pagy(@recipes) # pagination to the results
 
     render inertia: "Recipe/Index", props: {
       recipes: @recipes.map do |recipe|
         recipe_as_json recipe
-      end
-    }
-  end
-
-  def search
-    @recipes = Recipe.all.order(created_at: :desc)
-    @recipes = Recipe.filter(params.slice(:name, :user_id, :tags_ids))
-
-    render inertia: "Recipe/Index", props: {
-      recipes: @recipes.map do |recipe|
-        recipe_as_json recipe
-      end
+      end,
+      pagy: pagy_metadata(@pagy)
     }
   end
 

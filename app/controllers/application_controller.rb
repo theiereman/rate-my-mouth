@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::Base
+  include Pagy::Backend
+
   allow_browser versions: :modern
   inertia_share flash: -> { flash.to_hash }
   before_action :authenticate_user!, unless: :health_check_request?

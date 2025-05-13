@@ -17,7 +17,6 @@ Rails.application.routes.draw do
 
   resources :recipes, concerns: [ :commentable ] do
     resources :ratings, only: [ :create ]
-    get "search", on: :collection
   end
 
   resources :tags, only: [ :index, :create ]

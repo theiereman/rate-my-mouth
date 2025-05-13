@@ -2,20 +2,24 @@ import { Head, router } from "@inertiajs/react";
 import { RecipeType } from "./types";
 import RecipeShort from "./components/RecipeShort";
 import UserSelector from "../User/components/UserSelector";
-import { LinkButton, Input } from "../../components";
+import { LinkButton, Input, Pagination } from "../../components";
 import { useEffect, useMemo, useState } from "react";
 import { debounce } from "lodash";
 import TagsSelector from "../Tag/components/TagsSelector";
+import { PagyMetadata } from "../../components/Pagination";
 
 interface IndexProps {
   recipes: RecipeType[];
+  pagy: PagyMetadata;
 }
 
-export default function Index({ recipes }: IndexProps) {
+export default function Index({ recipes, pagy }: IndexProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
   const [selectedTagIds, setSelectedTagIds] = useState<number[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+
+  console.log(pagy);
 
   const search = (
     name?: string,
@@ -30,7 +34,7 @@ export default function Index({ recipes }: IndexProps) {
     if (user_id) params.user_id = user_id;
     if (tags_ids && tags_ids.length > 0) params.tags_ids = tags_ids;
 
-    router.get("/recipes/search", params, {
+    router.get("/recipes", params, {
       preserveState: true,
       preserveScroll: true,
       onSuccess: () => setIsLoading(false),
@@ -149,6 +153,8 @@ export default function Index({ recipes }: IndexProps) {
           </div>
         )}
       </div>
+
+      {pagy && <Pagination pagy={pagy}></Pagination>}
     </>
   );
 }

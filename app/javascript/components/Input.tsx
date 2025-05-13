@@ -65,9 +65,7 @@ export const Input = ({
   const iconPaddingRight = rightIcon ? "pr-10" : "";
 
   return (
-    <div
-      className={`w-full ${containerClassName} ${disabled ? "opacity-60" : ""}`}
-    >
+    <div className={`${containerClassName} ${disabled ? "opacity-60" : ""}`}>
       {label && (
         <label
           htmlFor={props.id}

@@ -20,6 +20,7 @@ interface LinkButtonProps {
   as?: "a" | "button";
   data?: Record<string, any>;
   preserveScroll?: boolean;
+  preserveState?: boolean;
   variant?: ButtonVariant;
   size?: ButtonSize;
   isLoading?: boolean;
@@ -114,6 +115,7 @@ export const LinkButton = ({
   as = "a",
   data,
   preserveScroll = false,
+  preserveState = false,
   variant = "primary",
   size = "md",
   isLoading = false,
@@ -131,36 +133,21 @@ export const LinkButton = ({
   const variantClasses = getVariantClasses(variant);
   const sizeClasses = getSizeClasses(size);
   const widthClass = fullWidth ? "w-full" : "";
-  const disabledClass =
-    disabled || isLoading ? "opacity-60 cursor-not-allowed" : "";
 
-  if (disabled) {
-    return (
-      <button
-        className={`${baseClasses} ${variantClasses} ${sizeClasses} ${widthClass} ${disabledClass} ${className}`}
-        disabled
-        {...props}
-      >
-        {icon && iconPosition === "left" && (
-          <span className="mr-2 flex">{icon}</span>
-        )}
-        {children}
-        {icon && iconPosition === "right" && (
-          <span className="ml-2 flex">{icon}</span>
-        )}
-      </button>
-    );
-  }
+  const isDisabled = disabled || isLoading;
+  const disabledClass = isDisabled ? "opacity-60 cursor-not-allowed" : "";
 
   return (
     <Link
       href={href}
       method={method}
-      as={as}
+      as="button"
       data={data}
       preserveScroll={preserveScroll}
+      preserveState={preserveState}
       onBefore={onBefore}
-      className={`${baseClasses} ${variantClasses} ${sizeClasses} ${widthClass} ${className}`}
+      className={`${baseClasses} ${variantClasses} ${sizeClasses} ${widthClass} ${disabledClass} ${className}`}
+      disabled={isDisabled}
       {...props}
     >
       {icon && iconPosition === "left" && (
