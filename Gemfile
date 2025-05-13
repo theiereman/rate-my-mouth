@@ -74,3 +74,6 @@ gem "tailwindcss-rails", "~> 4.2"
 
 # pagination
 gem "pagy", "~> 9.3"
+
+# S3 bucket storage for Active Storage
+gem "aws-sdk-s3", require: false
