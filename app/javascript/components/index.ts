@@ -7,3 +7,4 @@ export { default as TextArea } from "./TextArea";
 export { default as Combo } from "./Combo";
 export { default as Footer } from "./Footer";
 export { default as Toast } from "./Toast";
+export { default as Pagination } from "./Pagination";
