@@ -55,7 +55,14 @@ export const UserAvatar = ({
   console.log("Avatar component rendered with user:", user);
 
   return (
-    <div className={`${className}`} onClick={onClick}>
+    <div className={`relative ${className} group`} onClick={onClick}>
+      {onClick && (
+        <div
+          className={`${sizeClasses} absolute top-0 right-0 hidden group-hover:flex cursor-pointer text-primary-600 bg-white opacity-60 z-10 items-center justify-center`}
+        >
+          <span className="material-symbols-outlined">edit</span>
+        </div>
+      )}
       {user.avatar_url ? (
         <img
           src={user.avatar_url}
