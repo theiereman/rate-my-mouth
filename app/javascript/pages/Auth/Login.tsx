@@ -1,9 +1,9 @@
 import { useForm, Link } from "@inertiajs/react";
 import { FormEvent, useState, useEffect } from "react";
-import { Input, Button } from "../../components";
-import { PageProps } from "../../types";
+import { Input, Button } from "@components/ui";
+import { PageProps } from "../../types/usepage-props.types";
 import { LoginFormData } from "./types";
-import AuthLayout from "./AuthLayout";
+import AuthLayout from "../../layouts/AuthLayout";
 
 export default function Login({ flash }: PageProps) {
   const [showAlert, setShowAlert] = useState(false);

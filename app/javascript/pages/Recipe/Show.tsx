@@ -1,10 +1,10 @@
 import { Head } from "@inertiajs/react";
-import { RecipeType } from "./types";
-import Comments from "../Comments/Comments";
-import { RatingType } from "../Ratings/types";
-import Recipe from "./components/Recipe";
-import { CommentableType } from "../Comments/types";
-import RecipeRatingDetails from "../Ratings/components/RecipeRatingDetails";
+import { RecipeType } from "../../types/recipe.types";
+import Comments from "../../components/Comments/CommentList";
+import { RatingType } from "../../types/rating.types";
+import Recipe from "../../components/Recipes/RecipeItem";
+import { CommentableType } from "../../types/comment.types";
+import RecipeRatingDetails from "../../components/Ratings/Recipes/RecipeRatingDetails";
 import { LinkButton } from "../../components";
 
 interface ShowProps {

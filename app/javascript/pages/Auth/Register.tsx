@@ -1,9 +1,9 @@
 import { useForm, Link } from "@inertiajs/react";
 import { FormEvent, useState, useEffect } from "react";
 import { Input, Button } from "../../components";
-import { PageProps } from "../../types";
+import { PageProps } from "../../types/usepage-props.types";
 import { RegisterFormData } from "./types";
-import AuthLayout from "./AuthLayout";
+import AuthLayout from "../../layouts/AuthLayout";
 
 export default function Register({ flash }: PageProps) {
   const [showAlert, setShowAlert] = useState(false);

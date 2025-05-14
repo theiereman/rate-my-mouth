@@ -1,12 +1,12 @@
 import { Head, router } from "@inertiajs/react";
-import { RecipeType } from "./types";
-import RecipeShort from "./components/RecipeShort";
-import UserSelector from "../User/components/UserSelector";
-import { LinkButton, Input, Pagination } from "../../components";
+import { RecipeType } from "@customTypes/recipe.types";
+import RecipeShort from "@components/Recipes/RecipeShortItem";
+import UserSelector from "@components/Users/UserSelector";
+import { LinkButton, Input, Pagination } from "@components/ui";
 import { useEffect, useMemo, useState } from "react";
 import { debounce } from "lodash";
-import TagsSelector from "../Tag/components/TagsSelector";
-import { PagyMetadata } from "../../components/Pagination";
+import TagsSelector from "@components/Tags/TagsSelector";
+import { PagyMetadata } from "@components/ui/Pagination";
 
 interface IndexProps {
   recipes: RecipeType[];

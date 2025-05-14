@@ -22,6 +22,15 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
+
+    "baseUrl": "./",
+    "paths": {
+      "@components/*": ["./app/javascript/components/*"],
+      "@customTypes/*": ["./app/javascript/types/*"],
+      "@helpers/*": ["./app/javascript/helpers/*"],
+      "@const/*": ["./app/javascript/const/*"],
+      "@contexts/*": ["./app/javascript/contexts/*"]
+    }
   },
   "include": ["app/javascript"]
 }

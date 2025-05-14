@@ -1,6 +1,6 @@
 import { Link, usePage } from "@inertiajs/react";
-import { PageProps } from "../../types";
-import ProfilePicPlaceholder from "../ProfilePicPlaceholder";
+import { PageProps } from "@customTypes/usepage-props.types";
+import ProfilePicPlaceholder from "@components/ui/ProfilePicPlaceholder";
 
 export default function UserActions() {
   const { current_user } = usePage<PageProps>().props;
