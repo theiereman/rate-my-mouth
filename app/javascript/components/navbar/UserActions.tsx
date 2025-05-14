@@ -1,6 +1,6 @@
 import { Link, usePage } from "@inertiajs/react";
-import UserAvatar from "@components/Users/UserAvatar";
 import { PageProps } from "@customTypes/usepage-props.types";
+import UserAvatar from "@components/Users/UserAvatar";
 
 export default function UserActions() {
   const { current_user } = usePage<PageProps>().props;

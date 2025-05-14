@@ -1,7 +1,6 @@
 import { UserType } from "@customTypes/user.types";
 import { Badge, Card } from "@components/ui";
 import { formatDate } from "@helpers/date-helper";
-import { router } from "@inertiajs/react";
 import UserAvatar from "@components/Users/UserAvatar";
 
 interface UserProfileProps {
