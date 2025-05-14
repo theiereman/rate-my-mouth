@@ -1,16 +1,15 @@
-import { useToast } from "@contexts/ToastProvider";
 import { UserType } from "@customTypes/user.types";
 import { router } from "@inertiajs/react";
 import { useFilePicker } from "use-file-picker";
+import { FileSizeValidator } from "use-file-picker/validators";
+import { useToast } from "@contexts/ToastProvider";
+import { FILE_PICKER_ERROR_MESSAGES } from "@helpers/filepickerHelper";
 
 type AvatarSize = "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
-type AvatarStatus = "online" | "offline" | "away" | "busy" | "none";
 
 interface AvatarProps {
   user: UserType;
   size?: AvatarSize;
-  status?: AvatarStatus;
-  statusPosition?: "top-right" | "bottom-right";
   rounded?: "full" | "lg" | "md" | "sm" | "none";
   className?: string;
   allowAvatarChange?: boolean;
@@ -58,9 +57,18 @@ export const UserAvatar = ({
     accept: [".jpg", ".jpeg", ".png"],
     readAs: "Text",
     multiple: false,
-    onFilesRejected: () => {
-      showToast("Erreur lors de la selection de l'image. Veuillez réessayer.", {
-        type: "error",
+    validators: [
+      new FileSizeValidator({ minFileSize: 0, maxFileSize: 5 * 1024 * 1024 }),
+    ],
+    onFilesRejected: (data) => {
+      data.errors.forEach((error) => {
+        showToast(
+          FILE_PICKER_ERROR_MESSAGES[error.reason] ||
+            "Erreur lors de la selection de l'image.",
+          {
+            type: "error",
+          }
+        );
       });
     },
     onFilesSuccessfullySelected: ({ plainFiles }) => {

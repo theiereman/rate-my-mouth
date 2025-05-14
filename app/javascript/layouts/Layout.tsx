@@ -3,7 +3,7 @@ import HomeButton from "../components/navbar/HomeButton";
 import UserActions from "../components/navbar/UserActions";
 import { PageProps } from "@customTypes/usepage-props.types";
 import ThemeSelector from "../components/theme/ThemeSelector";
-import { Footer, Toast } from "@components/ui";
+import { Footer } from "@components/ui";
 import { useToast } from "../contexts/ToastProvider";
 import { usePage } from "@inertiajs/react";
 import { useEffect } from "react";
