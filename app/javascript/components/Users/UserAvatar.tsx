@@ -1,4 +1,7 @@
+import { useToast } from "@contexts/ToastProvider";
 import { UserType } from "@customTypes/user.types";
+import { router } from "@inertiajs/react";
+import { useFilePicker } from "use-file-picker";
 
 type AvatarSize = "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
 type AvatarStatus = "online" | "offline" | "away" | "busy" | "none";
@@ -10,7 +13,7 @@ interface AvatarProps {
   statusPosition?: "top-right" | "bottom-right";
   rounded?: "full" | "lg" | "md" | "sm" | "none";
   className?: string;
-  onClick?: () => void;
+  allowAvatarChange?: boolean;
 }
 
 const getSizeClasses = (size: AvatarSize) => {
@@ -47,17 +50,34 @@ export const UserAvatar = ({
   user,
   size = "md",
   className = "",
-  onClick,
+  allowAvatarChange = false,
 }: AvatarProps) => {
-  const sizeClasses = getSizeClasses(size);
-  const cursorClass = onClick ? "cursor-pointer" : "";
+  const { showToast } = useToast();
 
-  console.log("Avatar component rendered with user:", user);
+  const { openFilePicker } = useFilePicker({
+    accept: [".jpg", ".jpeg", ".png"],
+    readAs: "Text",
+    multiple: false,
+    onFilesRejected: () => {
+      showToast("Erreur lors de la selection de l'image. Veuillez réessayer.", {
+        type: "error",
+      });
+    },
+    onFilesSuccessfullySelected: ({ plainFiles }) => {
+      router.patch(`/users/${user.id}`, {
+        user: { avatar: plainFiles[0] },
+      });
+    },
+  });
+
+  const sizeClasses = getSizeClasses(size);
+  const cursorClass = allowAvatarChange ? "cursor-pointer" : "";
 
   return (
-    <div className={`relative ${className} group`} onClick={onClick}>
-      {onClick && (
+    <div className={`relative ${className} group`}>
+      {allowAvatarChange == true && (
         <div
+          onClick={openFilePicker}
           className={`${sizeClasses} absolute top-0 right-0 hidden group-hover:flex cursor-pointer text-primary-600 bg-white opacity-60 z-10 items-center justify-center`}
         >
           <span className="material-symbols-outlined">edit</span>

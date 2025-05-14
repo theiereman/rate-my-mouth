@@ -8,7 +8,9 @@ class User < ApplicationRecord
   has_many :ratings, dependent: :destroy
   has_many :user_achievements, dependent: :destroy
 
-  has_one_attached :avatar
+  has_one_attached :avatar do |attachable|
+    attachable.variant :thumb, resize_to_limit: [ 100, 100 ], preprocessed: true
+  end
 
   validates :username, presence: true, uniqueness: true
 
@@ -25,6 +27,10 @@ class User < ApplicationRecord
   end
 
   def avatar_url
-    avatar.attached? ? Rails.application.routes.url_helpers.rails_blob_path(avatar, only_path: true) : nil
+    if avatar.attached?
+      Rails.application.routes.url_helpers.rails_blob_path(avatar.variant(:thumb), only_path: true)
+    else
+      nil
+    end
   end
 end

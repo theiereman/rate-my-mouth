@@ -9,22 +9,6 @@ interface UserProfileProps {
 }
 
 export default function UserProfile({ user }: UserProfileProps) {
-  const handleAvatarClick = () => {
-    // Open file picker
-    const fileInput = document.createElement("input");
-    fileInput.type = "file";
-    fileInput.accept = "image/*";
-    fileInput.onchange = (event) => {
-      const selectedFile = (event.target as HTMLInputElement).files?.[0];
-      if (selectedFile) {
-        router.patch(`/users/${user.id}`, {
-          user: { avatar: selectedFile },
-        });
-      }
-    };
-    fileInput.click();
-  };
-
   return (
     <Card>
       <Card.Header>
@@ -37,7 +21,7 @@ export default function UserProfile({ user }: UserProfileProps) {
       </Card.Header>
       <Card.Body className="flex flex-col gap-4">
         <div className="flex gap-4 items-center">
-          <UserAvatar user={user} size="xl" onClick={handleAvatarClick} />
+          <UserAvatar user={user} size="xl" allowAvatarChange />
           <div className="flex-1">
             <h3 className="text-lg font-medium text-neutral-800 mb-1">
               {user.username}

@@ -1,4 +1,4 @@
-import { Head, usePage } from "@inertiajs/react";
+import { Head } from "@inertiajs/react";
 import { UserType } from "@customTypes/user.types";
 import UserProfile from "@components/Users/UserProfile";
 import AchievementsList from "@components/Achievements/AchievementsList";
@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { AchievementType } from "@customTypes/achievement.types";
 import UserPreferences from "@components/Users/UserPreferences";
-import { PageProps } from "@customTypes/usepage-props.types";
+import { useUserIsCurrentUser } from "@hooks/useUserIsCurrentUser";
 
 interface ShowProps {
   user: UserType;
@@ -17,9 +17,7 @@ interface AchievementsData {
 }
 
 export default function Show({ user }: ShowProps) {
-  const { current_user } = usePage<PageProps>().props;
-
-  const isCurrentUser = current_user.username === user.username;
+  const { isCurrentUser } = useUserIsCurrentUser(user);
 
   const [achievementsData, setAchievementsData] =
     useState<AchievementsData | null>(null);
