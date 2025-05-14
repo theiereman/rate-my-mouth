@@ -4,7 +4,7 @@ import ProfilePicPlaceholder from "../ProfilePicPlaceholder";
 import { useState, useRef, useEffect } from "react";
 
 export default function UserActions() {
-  const { user } = usePage<PageProps>().props;
+  const { current_user } = usePage<PageProps>().props;
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -33,9 +33,9 @@ export default function UserActions() {
       >
         <div className="hidden sm:block text-right">
           <p className="text-sm font-medium text-neutral-700">
-            {user.username}
+            {current_user.username}
           </p>
-          <p className="text-xs text-neutral-500">{user.email}</p>
+          <p className="text-xs text-neutral-500">{current_user.email}</p>
         </div>
         <ProfilePicPlaceholder className="transition-transform hover:scale-105" />
       </button>

@@ -14,7 +14,7 @@ export default function Recipe({
   recipe: RecipeType;
   showRating?: boolean;
 }) {
-  const { user } = usePage<PageProps>().props;
+  const { current_user } = usePage<PageProps>().props;
 
   return (
     <div className="animate-fade-in">
@@ -129,7 +129,7 @@ export default function Recipe({
           </Card.Body>
         </Card>
 
-        {recipe.user.username === user.username && (
+        {recipe.user.username === current_user.username && (
           <div className="w-full justify-end flex gap-2">
             <LinkButton
               href={`/recipes/${recipe.id}/edit`}

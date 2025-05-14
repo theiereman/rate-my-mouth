@@ -6,10 +6,10 @@ class ApplicationController < ActionController::Base
   before_action :authenticate_user!, unless: :health_check_request?
   before_action :configure_permitted_parameters, if: :devise_controller?
 
-  inertia_share do
+  inertia_share if: :user_signed_in? do
     {
-      user: current_user
-    } if user_signed_in?
+      current_user: current_user
+    }
   end
 
   protected
