@@ -42,13 +42,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <>
-      <Head>
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
-        />
-      </Head>
-
       <div className="flex flex-col min-h-screen bg-neutral-50">
         <header className="sticky top-0 z-10 bg-white shadow-sm border-b border-neutral-200">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
