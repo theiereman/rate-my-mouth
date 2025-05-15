@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { RecipeType } from "@customTypes/recipe.types";
 
-export default function IngredientItem({ recipe }: { recipe: RecipeType }) {
+export default function IngredientList({ recipe }: { recipe: RecipeType }) {
   const [numberOfServings, setNumberOfServings] = useState(
     recipe.number_of_servings
   );
@@ -55,7 +55,7 @@ export default function IngredientItem({ recipe }: { recipe: RecipeType }) {
           </button>
         </div>
       </div>
-      <ul className="list-disc pl-5">
+      <ul className="list-disc pl-5 pt-2">
         {updatedIngredients?.map((ingredient, index) => (
           <li key={index}>{ingredient}</li>
         ))}

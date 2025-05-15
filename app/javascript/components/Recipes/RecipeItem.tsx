@@ -5,7 +5,7 @@ import { usePage } from "@inertiajs/react";
 import { PageProps } from "@customTypes/usepage-props.types";
 import DifficultyBadge from "@components/Recipes/RecipeDifficulty";
 import UserLink from "@components/Users/UserLink";
-import IngredientItem from "@components/Recipes/Ingredients/IngredientItem";
+import IngredientList from "@components/Recipes/Ingredients/IngredientList";
 
 export default function RecipeItem({
   recipe,
@@ -15,6 +15,8 @@ export default function RecipeItem({
   showRating?: boolean;
 }) {
   const { current_user } = usePage<PageProps>().props;
+
+  console.log(recipe.description);
 
   return (
     <div className="animate-fade-in">
@@ -62,7 +64,11 @@ export default function RecipeItem({
           )}
         </div>
 
-        <div className="flex flex-wrap gap-2 mb-6">
+        <pre className="text-neutral-600 italic font-sans mb-4">
+          {recipe.description}
+        </pre>
+
+        <div className="flex flex-wrap gap-2 mb-2">
           <Badge variant="accent" size="md">
             {recipe.number_of_servings} portions
           </Badge>
@@ -85,11 +91,9 @@ export default function RecipeItem({
             ))}
           </div>
         )}
-
-        <div className="text-neutral-600">{recipe.description}</div>
       </div>
 
-      <Card variant="outlined" padding="sm">
+      <Card variant="outlined">
         <Card variant="flat" className="h-fit">
           <Card.Header>
             <h2 className="text-xl font-semibold text-neutral-800 flex items-center gap-2">
@@ -100,7 +104,7 @@ export default function RecipeItem({
             </h2>
           </Card.Header>
           <Card.Body className="space-y-2">
-            <IngredientItem recipe={recipe} />
+            <IngredientList recipe={recipe} />
           </Card.Body>
         </Card>
 
