@@ -7,6 +7,11 @@ class CommentsController < ApplicationController
     @comment.user = current_user
 
     if @comment.save
+      # Envoyer une notification par email si le commentaire est sur une recette
+      if @commentable.is_a?(Recipe) && @commentable.user != current_user
+        NotificationMailer.with(comment: @comment).new_comment_notification.deliver_later
+      end
+
       redirect_to @commentable
     else
       redirect_to @commentable, alert: "Erreur lors de l'ajout du commentaire."

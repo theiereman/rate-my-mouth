@@ -8,12 +8,12 @@ Rails.application.routes.draw do
     resources :comments, only: [ :create, :update, :destroy ]
   end
 
-  resources :users, only: [] do
+  resources :users, only: [ :show, :update ] do
     get "list", on: :collection
     resources :achievements, only: [ :index ]
   end
-  get "users/:username", to: "users#show"
-  get "my_profile", to: "users#my_profile"
+
+  get "my_profile", to: "users#my_profile", as: :my_profile
 
   resources :recipes, concerns: [ :commentable ] do
     resources :ratings, only: [ :create ]

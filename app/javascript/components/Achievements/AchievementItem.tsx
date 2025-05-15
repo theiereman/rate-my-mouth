@@ -8,8 +8,8 @@ interface AchievementCardProps {
 export default function AchievementItem({ achievement }: AchievementCardProps) {
   return (
     <Card
-      variant="outlined"
-      className={`transition-all duration-300 ${
+      variant="flat"
+      className={`transition-all duration-300 p-0! ${
         achievement.unlocked
           ? "border-primary-300"
           : "border-neutral-200 opacity-70"

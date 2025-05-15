@@ -17,7 +17,7 @@ export default function AchievementsList({
   );
 
   return (
-    <Card variant="flat" className="animate-fade-in">
+    <Card className="animate-fade-in">
       <Card.Header>
         <h2 className="text-xl font-semibold text-neutral-800 flex items-center gap-2">
           <span className="material-symbols-outlined text-primary-600">

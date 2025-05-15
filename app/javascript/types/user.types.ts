@@ -2,6 +2,7 @@ export interface UserType {
   id: number;
   username: string;
   email?: string;
+  notification_preference: boolean;
   created_at: string;
   number_of_recipes: number;
   number_of_comments: number;
