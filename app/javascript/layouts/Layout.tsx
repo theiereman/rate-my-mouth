@@ -1,13 +1,13 @@
-import { Head, usePage } from "@inertiajs/react";
+import { usePage } from "@inertiajs/react";
 import { useState, useEffect } from "react";
-import Navbar from "../components/navbar/Navbar";
-import HomeButton from "../components/navbar/HomeButton";
-import UserActions from "../components/navbar/UserActions";
-import { PageProps } from "../types/usepage-props.types";
-import ThemeSelector from "../components/theme/ThemeSelector";
-import { Footer, Toast } from "../components";
+import Navbar from "@components/navbar/Navbar";
+import HomeButton from "@components/navbar/HomeButton";
+import UserActions from "@components/navbar/UserActions";
+import { PageProps } from "@customTypes/usepage-props.types";
+import { Footer, Toast } from "@components/ui";
+import ThemeSelector from "@components/theme/ThemeSelector";
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export function Layout({ children }: { children: React.ReactNode }) {
   const { flash } = usePage<PageProps>().props;
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
@@ -49,7 +49,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <HomeButton className="me-6" />
               <Navbar />
               <UserActions />
-              <ThemeSelector></ThemeSelector>
+              <ThemeSelector />
             </div>
           </div>
         </header>

@@ -1,7 +1,7 @@
-import { CommentType } from "./comment.types";
-import { RatingType } from "./rating.types";
-import { TagType } from "./tag.types";
-import { UserType } from "./user.types";
+import { CommentType } from "@customTypes/comment.types";
+import { RatingType } from "@customTypes/rating.types";
+import { TagType } from "@customTypes/tag.types";
+import { UserType } from "@customTypes/user.types";
 
 export interface RecipeType {
   id: number;

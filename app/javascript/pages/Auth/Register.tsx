@@ -1,15 +1,18 @@
 import { useForm, Link } from "@inertiajs/react";
 import { FormEvent, useState, useEffect } from "react";
-import { Input, Button } from "../../components";
-import { PageProps } from "../../types/usepage-props.types";
-import { RegisterFormData } from "./types";
-import AuthLayout from "../../layouts/AuthLayout";
+import { Input, Button } from "@components/ui";
+import { PageProps } from "@customTypes/usepage-props.types";
+import AuthLayout from "@layouts/AuthLayout";
 
 export default function Register({ flash }: PageProps) {
   const [showAlert, setShowAlert] = useState(false);
-  const [minimumPasswordLength, setMinimumPasswordLength] = useState(6);
 
-  const form = useForm<RegisterFormData>({
+  const form = useForm<{
+    email: string;
+    username: string;
+    password: string;
+    password_confirmation: string;
+  }>({
     email: "",
     username: "",
     password: "",
@@ -74,7 +77,7 @@ export default function Register({ flash }: PageProps) {
 
           <div className="mb-4">
             <Input
-              label={`Mot de passe (${minimumPasswordLength} caractères minimum)`}
+              label={`Mot de passe (6 caractères minimum)`}
               type="password"
               id="password"
               name="password"

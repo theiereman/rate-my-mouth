@@ -1,6 +1,6 @@
 import { Rating } from "@mui/material";
-import { RecipeType } from "../../../types/recipe.types";
-import { Badge } from "../../../components";
+import { RecipeType } from "@customTypes/recipe.types";
+import { Badge, BadgeVariant } from "@components/ui";
 
 export default function RecipeRatingAverage({
   recipe,
@@ -22,7 +22,7 @@ export default function RecipeRatingAverage({
   };
 
   // Fonction pour obtenir une couleur basée sur la note moyenne
-  const getRatingColor = (rating: number): string => {
+  const getRatingColor = (rating: number): BadgeVariant => {
     if (rating >= 4.0) return "success";
     if (rating >= 3.0) return "primary";
     if (rating >= 2.0) return "warning";

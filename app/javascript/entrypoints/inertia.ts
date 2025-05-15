@@ -1,8 +1,8 @@
 import { createInertiaApp } from "@inertiajs/react";
 import { createElement, ReactNode } from "react";
 import { createRoot } from "react-dom/client";
-import Layout from "../layouts/Layout";
-import { ThemeProvider } from "../contexts/ThemeContext";
+import { ThemeProvider } from "@contexts/ThemeContext";
+import { Layout } from "@layouts/Layout";
 
 // Temporary type definition, until @inertiajs/react provides one
 type ResolvedComponent = {

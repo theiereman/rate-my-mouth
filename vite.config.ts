@@ -8,6 +8,8 @@ export default defineConfig({
   plugins: [react(), tailwindcss(), RubyPlugin()],
   resolve: {
     alias: {
+      "@layouts": path.resolve(__dirname, "./app/javascript/layouts"),
+      "@pages": path.resolve(__dirname, "./app/javascript/pages"),
       "@components": path.resolve(__dirname, "./app/javascript/components"),
       "@customTypes": path.resolve(__dirname, "./app/javascript/types"),
       "@helpers": path.resolve(__dirname, "./app/javascript/helpers"),

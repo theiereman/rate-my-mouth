@@ -25,6 +25,8 @@
 
     "baseUrl": "./",
     "paths": {
+      "@layouts/*": ["./app/javascript/layouts/*"],
+      "@pages/*": ["./app/javascript/pages/*"],
       "@components/*": ["./app/javascript/components/*"],
       "@customTypes/*": ["./app/javascript/types/*"],
       "@helpers/*": ["./app/javascript/helpers/*"],

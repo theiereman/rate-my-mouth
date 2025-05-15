@@ -1,9 +1,8 @@
-import { RecipeType } from "../../../types/recipe.types";
-import { RatingType } from "../../../types/rating.types";
-import UserRating from "../Form/RatingForm";
-import LastRatings from "../RatingList";
-import RecipeAverageRating from "./RecipeRatingAverage";
-import { Card } from "../../../components";
+import { RecipeType } from "@customTypes/recipe.types";
+import { RatingType } from "@customTypes/rating.types";
+import RatingForm from "@components/Ratings/Form/RatingForm";
+import RatingList from "@components/Ratings/RatingList";
+import { Card } from "@components/ui";
 
 export default function RecipeRatingDetails({
   recipe,
@@ -23,9 +22,9 @@ export default function RecipeRatingDetails({
         </h2>
       </Card.Header>
       <Card.Body className="space-y-6">
-        <UserRating recipeId={recipe.id} rating={userRating} />
+        <RatingForm recipeId={recipe.id} rating={userRating} />
         <div className="h-px bg-neutral-200"></div>
-        <LastRatings count={5} ratings={recipe.ratings} />
+        <RatingList count={5} ratings={recipe.ratings} />
       </Card.Body>
     </Card>
   );

@@ -63,9 +63,7 @@ export default function Navbar() {
               <li key={item.name}>
                 <Link
                   href={item.href}
-                  className={`${
-                    item.disabled ? "opacity-50" : ""
-                  } block px-4 py-2 text-neutral-600 hover:text-primary-600 hover:bg-neutral-50 rounded-md transition-colors duration-200`}
+                  className={`block px-4 py-2 text-neutral-600 hover:text-primary-600 hover:bg-neutral-50 rounded-md transition-colors duration-200`}
                   onClick={() => setIsOpen(false)}
                 >
                   {item.name}

@@ -1,4 +1,4 @@
-import { LinkButton } from "./Button";
+import { LinkButton } from "@components/ui";
 
 export interface PagyMetadata {
   first_url: string;

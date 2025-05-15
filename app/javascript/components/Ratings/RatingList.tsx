@@ -1,5 +1,5 @@
 import { RatingType } from "@customTypes/rating.types";
-import RatingDisplay from "./RatingItem";
+import RatingItem from "@components/Ratings/RatingItem";
 import UserAvatar from "@components/Users/UserAvatar";
 
 export default function RatingList({
@@ -43,7 +43,7 @@ export default function RatingList({
                     a noté {rating.value.toFixed(1)}/5
                   </span>
                 </div>
-                <RatingDisplay rating={rating} />
+                <RatingItem rating={rating} />
               </div>
             </li>
           ))}

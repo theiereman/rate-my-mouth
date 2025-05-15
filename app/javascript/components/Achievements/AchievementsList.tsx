@@ -1,6 +1,6 @@
 import { AchievementType } from "@customTypes/achievement.types";
-import AchievementCard from "./AchievementItem";
 import { Card } from "@components/ui";
+import AchievementItem from "@components/Achievements/AchievementItem";
 
 interface AchievementsListProps {
   achievements: AchievementType[];
@@ -34,7 +34,7 @@ export default function AchievementsList({
           {unlockedAchievements.length > 0 ? (
             <div className="grid grid-cols-1 gap-4">
               {unlockedAchievements.map((achievement) => (
-                <AchievementCard
+                <AchievementItem
                   key={achievement.key}
                   achievement={achievement}
                 />
@@ -56,7 +56,7 @@ export default function AchievementsList({
           {lockedAchievements.length > 0 ? (
             <div className="grid grid-cols-1 gap-4">
               {lockedAchievements.map((achievement) => (
-                <AchievementCard
+                <AchievementItem
                   key={achievement.key}
                   achievement={achievement}
                 />

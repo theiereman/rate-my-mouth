@@ -1,9 +1,9 @@
 import { InertiaFormProps, useForm } from "@inertiajs/react";
 import { FormEvent } from "react";
 import { RecipeFormType, RecipeType } from "@customTypes/recipe.types";
-import RecipeEditor from "./RecipeIngredientInstructionsForm";
 import { Button, Input, Card, Combo, TextArea } from "@components/ui";
 import TagsSelector from "@components/Tags/TagsSelector";
+import RecipeIngredientInstructionsForm from "@components/Recipes/Form/RecipeIngredientInstructionsForm";
 
 interface FormProps {
   recipe: RecipeType;
@@ -118,7 +118,7 @@ export default function Form({ recipe, onSubmit, submitText }: FormProps) {
         </Card.Body>
       </Card>
 
-      <RecipeEditor form={form} />
+      <RecipeIngredientInstructionsForm form={form} />
 
       <div className="mt-8 flex justify-end">
         <Button

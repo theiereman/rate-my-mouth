@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 import { debounce } from "lodash";
-import Input from "./Input";
+import { Input } from "@components/ui";
 
 interface ComboProps {
   value?: number | null;

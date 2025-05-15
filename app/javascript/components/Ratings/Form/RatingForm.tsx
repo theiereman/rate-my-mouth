@@ -66,7 +66,7 @@ export default function RatingForm({
           precision={0.5}
           value={rating?.value ?? null}
           onChange={handleChange}
-          onChangeActive={(event, newHover) => {
+          onChangeActive={(_, newHover) => {
             setHover(newHover);
           }}
           size="large"

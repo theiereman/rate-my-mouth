@@ -1,11 +1,11 @@
 import { Head } from "@inertiajs/react";
-import { RecipeType } from "../../types/recipe.types";
-import Comments from "../../components/Comments/CommentList";
-import { RatingType } from "../../types/rating.types";
-import Recipe from "../../components/Recipes/RecipeItem";
-import { CommentableType } from "../../types/comment.types";
-import RecipeRatingDetails from "../../components/Ratings/Recipes/RecipeRatingDetails";
-import { LinkButton } from "../../components";
+import { RecipeType } from "@customTypes/recipe.types";
+import { RatingType } from "@customTypes/rating.types";
+import Recipe from "@components/Recipes/RecipeItem";
+import { CommentableType } from "@customTypes/comment.types";
+import RecipeRatingDetails from "@components/Ratings/Recipes/RecipeRatingDetails";
+import { LinkButton } from "@components/ui";
+import CommentList from "@components/Comments/CommentList";
 
 interface ShowProps {
   recipe: RecipeType;
@@ -36,7 +36,7 @@ export default function Show({ recipe, userRating }: ShowProps) {
           <RecipeRatingDetails recipe={recipe} userRating={userRating} />
         </div>
 
-        <Comments
+        <CommentList
           comments={recipe.comments}
           commentableId={recipe.id}
           commentableType={CommentableType.recipe}
