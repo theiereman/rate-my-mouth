@@ -1,7 +1,7 @@
 import { Head } from "@inertiajs/react";
-import Form from "./Form";
-import { RecipeType } from "./types";
-import { LinkButton } from "../../components";
+import RecipeForm from "@components/Recipes/Form/RecipeForm";
+import { RecipeType } from "@customTypes/recipe.types";
+import { LinkButton } from "@components/ui";
 
 interface EditProps {
   recipe: RecipeType;
@@ -28,7 +28,7 @@ export default function Edit({ recipe }: EditProps) {
           Modification de la recette
         </h1>
 
-        <Form
+        <RecipeForm
           recipe={recipe}
           onSubmit={(form) => {
             form.transform((data) => ({ recipe: data }));

@@ -1,6 +1,6 @@
 import { Link } from "@inertiajs/react";
 import { useState } from "react";
-import { LinkButton } from "..";
+import { LinkButton } from "@components/ui";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -63,9 +63,7 @@ export default function Navbar() {
               <li key={item.name}>
                 <Link
                   href={item.href}
-                  className={`${
-                    item.disabled ? "opacity-50" : ""
-                  } block px-4 py-2 text-neutral-600 hover:text-primary-600 hover:bg-neutral-50 rounded-md transition-colors duration-200`}
+                  className={`block px-4 py-2 text-neutral-600 hover:text-primary-600 hover:bg-neutral-50 rounded-md transition-colors duration-200`}
                   onClick={() => setIsOpen(false)}
                 >
                   {item.name}

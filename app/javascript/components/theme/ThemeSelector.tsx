@@ -1,5 +1,5 @@
-import CustomThemeSelector from "./CustomThemeSelector";
-import PredefinedThemeSelector from "./PredefinedThemeSelector";
+import CustomThemeSelector from "@components/theme/CustomThemeSelector";
+import PredefinedThemeSelector from "@components/theme/PredefinedThemeSelector";
 
 export default function ThemeSelector() {
   return (

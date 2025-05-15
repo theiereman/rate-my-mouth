@@ -3,6 +3,7 @@
   "type": "module",
   "devDependencies": {
     "@types/lodash": "^4.17.16",
+    "@types/node": "^22.15.18",
     "vite": "^5.4.19",
     "vite-plugin-ruby": "^5.1.1"
   },

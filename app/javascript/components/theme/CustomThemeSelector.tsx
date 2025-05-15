@@ -3,7 +3,7 @@ import {
   themeColorsFromHue,
   ThemeColors,
   useTheme,
-} from "../../contexts/ThemeContext";
+} from "@contexts/ThemeContext";
 
 export default function CustomThemeSelector({
   onColorChange,

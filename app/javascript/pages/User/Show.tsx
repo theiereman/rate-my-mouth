@@ -1,10 +1,10 @@
 import { Head } from "@inertiajs/react";
-import { UserType, AchievementType } from "./types";
-import UserProfile from "./components/UserProfile";
-import AchievementsList from "./components/AchievementsList";
-import { LinkButton } from "../../components";
+import { UserType } from "@customTypes/user.types";
+import UserProfile from "@components/Users/UserProfile";
+import AchievementsList from "@components/Achievements/AchievementsList";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { AchievementType } from "@customTypes/achievement.types";
 
 interface ShowProps {
   user: UserType;
