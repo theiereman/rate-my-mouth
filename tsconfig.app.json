@@ -31,7 +31,8 @@
       "@customTypes/*": ["./app/javascript/types/*"],
       "@helpers/*": ["./app/javascript/helpers/*"],
       "@const/*": ["./app/javascript/const/*"],
-      "@contexts/*": ["./app/javascript/contexts/*"]
+      "@contexts/*": ["./app/javascript/contexts/*"],
+      "@hooks/*": ["./app/javascript/hooks/*"]
     }
   },
   "include": ["app/javascript"]

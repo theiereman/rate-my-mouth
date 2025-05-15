@@ -15,6 +15,7 @@ export default defineConfig({
       "@helpers": path.resolve(__dirname, "./app/javascript/helpers"),
       "@const": path.resolve(__dirname, "./app/javascript/const"),
       "@contexts": path.resolve(__dirname, "./app/javascript/contexts"),
+      "@hooks": path.resolve(__dirname, "./app/javascript/hooks"),
     },
   },
 });
