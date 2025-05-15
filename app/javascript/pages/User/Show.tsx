@@ -1,21 +1,26 @@
-import { Head } from "@inertiajs/react";
+import { Head, usePage } from "@inertiajs/react";
 import { UserType } from "@customTypes/user.types";
 import UserProfile from "@components/Users/UserProfile";
 import AchievementsList from "@components/Achievements/AchievementsList";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { AchievementType } from "@customTypes/achievement.types";
+import UserPreferences from "@components/Users/UserPreferences";
+import { PageProps } from "@customTypes/usepage-props.types";
 
 interface ShowProps {
   user: UserType;
-  flash: { notice?: string };
 }
 
 interface AchievementsData {
   achievements: AchievementType[];
 }
 
-export default function Show({ user, flash }: ShowProps) {
+export default function Show({ user }: ShowProps) {
+  const { current_user } = usePage<PageProps>().props;
+
+  const isCurrentUser = current_user.username === user.username;
+
   const [achievementsData, setAchievementsData] =
     useState<AchievementsData | null>(null);
   const [loadingAchievements, setLoadingAchievements] = useState(true);
@@ -39,14 +44,10 @@ export default function Show({ user, flash }: ShowProps) {
     <>
       <Head title={`Profil de ${user.username}`} />
 
-      {flash.notice && (
-        <div className="mb-4 bg-green-50 p-4 rounded-lg text-green-700">
-          {flash.notice}
-        </div>
-      )}
-
       <div className="mx-auto flex flex-col gap-8">
         <UserProfile user={user} />
+
+        {isCurrentUser && <UserPreferences user={user} />}
 
         {loadingAchievements ? (
           <div className="text-center py-8">

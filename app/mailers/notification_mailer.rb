@@ -12,7 +12,8 @@ class NotificationMailer < ApplicationMailer
     @recipe_owner = @recipe.user
     @commenter = @comment.user
 
-    # return if @recipe_owner.id == @commenter.id # Ne pas notifier si l'utilisateur commente sa propre recette
+    return unless @recipe_owner.notification_preference == true
+    return if @recipe_owner.id == @commenter.id # Ne pas notifier si l'utilisateur commente sa propre recette
 
     mail(
       to: @recipe_owner.email,
@@ -27,7 +28,8 @@ class NotificationMailer < ApplicationMailer
     @recipe_owner = @recipe.user
     @rater = @rating.user
 
-    # return if @recipe_owner.id == @rater.id # Ne pas notifier si l'utilisateur note sa propre recette
+    return unless @recipe_owner.notification_preference == true
+    return if @recipe_owner.id == @rater.id # Ne pas notifier si l'utilisateur note sa propre recette
 
     mail(
       to: @recipe_owner.email,

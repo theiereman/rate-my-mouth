@@ -124,12 +124,12 @@ export default function Index({ recipes, pagy }: IndexProps) {
             />
 
             <UserSelector onUserSelected={handleUserSelected} />
-            <TagsSelector
+            {/* <TagsSelector
               maxTags={Infinity}
               label=""
               createNewTags={false}
               onTagsSelected={handleTagsSelected}
-            />
+            /> */}
           </div>
         </div>
 
