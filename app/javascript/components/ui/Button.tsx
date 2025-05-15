@@ -4,23 +4,8 @@ import { Link } from "@inertiajs/react";
 type ButtonVariant = "primary" | "secondary" | "accent" | "outline" | "ghost";
 type ButtonSize = "xs" | "sm" | "md" | "lg" | "xl";
 
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: ButtonVariant;
-  size?: ButtonSize;
-  isLoading?: boolean;
-  icon?: React.ReactNode;
-  iconPosition?: "left" | "right";
-  fullWidth?: boolean;
-  className?: string;
-}
-
-interface LinkButtonProps {
-  href: string;
-  method?: "get" | "post" | "put" | "patch" | "delete";
-  as?: "a" | "button";
-  data?: Record<string, any>;
-  preserveScroll?: boolean;
-  preserveState?: boolean;
+// Interface commune pour les propriétés partagées
+interface CommonButtonProps {
   variant?: ButtonVariant;
   size?: ButtonSize;
   isLoading?: boolean;
@@ -29,8 +14,24 @@ interface LinkButtonProps {
   fullWidth?: boolean;
   className?: string;
   disabled?: boolean;
+  children?: React.ReactNode;
+}
+
+// Omit 'children' de ButtonHTMLAttributes pour éviter le conflit avec CommonButtonProps
+interface ButtonProps
+  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "children">,
+    CommonButtonProps {
   children: React.ReactNode;
+}
+
+interface LinkButtonProps extends CommonButtonProps {
+  href: string;
+  method?: "get" | "post" | "put" | "patch" | "delete";
+  data?: Record<string, any>;
+  preserveScroll?: boolean;
+  preserveState?: boolean;
   onBefore?: () => void;
+  children: React.ReactNode;
 }
 
 const getVariantClasses = (variant: ButtonVariant) => {
@@ -67,6 +68,60 @@ const getSizeClasses = (size: ButtonSize) => {
   }
 };
 
+const baseClasses =
+  "inline-flex items-center justify-center font-medium rounded-lg transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 hover:cursor-pointer";
+
+// Fonction utilitaire pour générer les classes CSS communes - ne nécessite pas children
+type ButtonClassesProps = Omit<
+  CommonButtonProps,
+  "children" | "icon" | "iconPosition"
+>;
+
+const getButtonClasses = ({
+  variant = "primary",
+  size = "md",
+  fullWidth = false,
+  isLoading = false,
+  disabled = false,
+  className = "",
+}: ButtonClassesProps) => {
+  const variantClasses = getVariantClasses(variant);
+  const sizeClasses = getSizeClasses(size);
+  const widthClass = fullWidth ? "w-full" : "";
+  const disabledClass =
+    disabled || isLoading ? "opacity-60 cursor-not-allowed" : "";
+
+  return {
+    className: `${baseClasses} ${variantClasses} ${sizeClasses} ${widthClass} ${disabledClass} ${className}`,
+    isDisabled: disabled || isLoading,
+  };
+};
+
+// Composant pour rendre le contenu du bouton
+const ButtonContent = ({
+  icon,
+  iconPosition = "left",
+  isLoading = false,
+  children,
+}: Pick<CommonButtonProps, "icon" | "iconPosition" | "isLoading"> & {
+  children: React.ReactNode;
+}) => (
+  <>
+    {isLoading && (
+      <span className="material-symbols-outlined text-white-600 animate-spin mr-2">
+        progress_activity
+      </span>
+    )}
+    {icon && iconPosition === "left" && !isLoading && (
+      <span className="mr-2 flex">{icon}</span>
+    )}
+    {!isLoading && children}
+    {icon && iconPosition === "right" && (
+      <span className="ml-2 flex">{icon}</span>
+    )}
+  </>
+);
+
 export const Button = ({
   variant = "primary",
   size = "md",
@@ -79,32 +134,23 @@ export const Button = ({
   children,
   ...props
 }: ButtonProps) => {
-  const baseClasses =
-    "inline-flex items-center justify-center font-medium rounded-lg transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 hover:cursor-pointer";
-  const variantClasses = getVariantClasses(variant);
-  const sizeClasses = getSizeClasses(size);
-  const widthClass = fullWidth ? "w-full" : "";
-  const disabledClass =
-    disabled || isLoading ? "opacity-60 cursor-not-allowed" : "";
+  const { className: buttonClassName, isDisabled } = getButtonClasses({
+    variant,
+    size,
+    fullWidth,
+    isLoading,
+    disabled,
+    className,
+  });
 
   return (
-    <button
-      className={`${baseClasses} ${variantClasses} ${sizeClasses} ${widthClass} ${disabledClass} ${className}`}
-      disabled={disabled || isLoading}
-      {...props}
-    >
-      {isLoading && (
-        <span className="material-symbols-outlined text-white-600 animate-spin mr-2">
-          progress_activity
-        </span>
-      )}
-      {icon && iconPosition === "left" && !isLoading && (
-        <span className="mr-2 flex">{icon}</span>
-      )}
-      {!isLoading && children}
-      {icon && iconPosition === "right" && (
-        <span className="ml-2 flex">{icon}</span>
-      )}
+    <button className={buttonClassName} disabled={isDisabled} {...props}>
+      <ButtonContent
+        icon={icon}
+        iconPosition={iconPosition}
+        isLoading={isLoading}
+        children={children}
+      />
     </button>
   );
 };
@@ -112,7 +158,6 @@ export const Button = ({
 export const LinkButton = ({
   href,
   method = "get",
-  as = "a",
   data,
   preserveScroll = false,
   preserveState = false,
@@ -128,14 +173,14 @@ export const LinkButton = ({
   onBefore,
   ...props
 }: LinkButtonProps) => {
-  const baseClasses =
-    "inline-flex items-center justify-center font-medium rounded-lg transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500";
-  const variantClasses = getVariantClasses(variant);
-  const sizeClasses = getSizeClasses(size);
-  const widthClass = fullWidth ? "w-full" : "";
-
-  const isDisabled = disabled || isLoading;
-  const disabledClass = isDisabled ? "opacity-60 cursor-not-allowed" : "";
+  const { className: buttonClassName, isDisabled } = getButtonClasses({
+    variant,
+    size,
+    fullWidth,
+    isLoading,
+    disabled,
+    className,
+  });
 
   return (
     <Link
@@ -146,19 +191,16 @@ export const LinkButton = ({
       preserveScroll={preserveScroll}
       preserveState={preserveState}
       onBefore={onBefore}
-      className={`${baseClasses} ${variantClasses} ${sizeClasses} ${widthClass} ${disabledClass} ${className}`}
+      className={buttonClassName}
       disabled={isDisabled}
       {...props}
     >
-      {icon && iconPosition === "left" && (
-        <span className="mr-2 flex">{icon}</span>
-      )}
-      {children}
-      {icon && iconPosition === "right" && (
-        <span className="ml-2 flex">{icon}</span>
-      )}
+      <ButtonContent
+        icon={icon}
+        iconPosition={iconPosition}
+        isLoading={isLoading}
+        children={children}
+      />
     </Link>
   );
 };
-
-export default Button;

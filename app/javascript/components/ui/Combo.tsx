@@ -167,3 +167,5 @@ export function Combo({
     </div>
   );
 }
+
+export default Combo;

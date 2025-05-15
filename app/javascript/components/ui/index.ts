@@ -1,8 +1,8 @@
 export { Badge } from "./Badge";
 export type { BadgeVariant } from "./Badge";
-export { default as Button, LinkButton } from "./Button";
+export { Button, LinkButton } from "./Button";
 export { default as Card } from "./Card";
-export { Combo } from "./Combo";
+export { default as Combo } from "./Combo";
 export type { ComboValue } from "./Combo";
 export { default as Footer } from "./Footer";
 export { default as Input } from "./Input";
