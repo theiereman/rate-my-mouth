@@ -7,12 +7,14 @@ import { Card } from "@components/ui";
 export default function RecipeRatingDetails({
   recipe,
   userRating,
+  className,
 }: {
   recipe: RecipeType;
   userRating: RatingType;
+  className?: string;
 }) {
   return (
-    <Card variant="outlined" className="h-fit">
+    <Card variant="outlined" className={`${className}`}>
       <Card.Header>
         <h2 className="text-xl font-semibold text-neutral-800 flex items-center gap-2">
           <span className="material-symbols-outlined text-primary-600">

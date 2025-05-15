@@ -1,7 +1,7 @@
 import { Head } from "@inertiajs/react";
 import { RecipeType } from "@customTypes/recipe.types";
 import { RatingType } from "@customTypes/rating.types";
-import Recipe from "@components/Recipes/RecipeItem";
+import RecipeItem from "@components/Recipes/RecipeItem";
 import { CommentableType } from "@customTypes/comment.types";
 import RecipeRatingDetails from "@components/Ratings/Recipes/RecipeRatingDetails";
 import { LinkButton } from "@components/ui";
@@ -17,29 +17,19 @@ export default function Show({ recipe, userRating }: ShowProps) {
     <>
       <Head title={`${recipe.name} de ${recipe.user.username}`} />
 
-      <div className="mb-4 flex flex-wrap items-center justify-between gap-4">
-        <div className="flex items-center gap-2">
-          <LinkButton
-            href="/recipes"
-            variant="ghost"
-            size="sm"
-            icon={<span className="material-symbols-outlined">arrow_back</span>}
-          >
-            Retour aux recettes
-          </LinkButton>
-        </div>
-      </div>
+      <RecipeItem recipe={recipe} />
 
-      <div className="mx-auto flex flex-col">
-        <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-8">
-          <Recipe recipe={recipe} showRating={true} />
-          <RecipeRatingDetails recipe={recipe} userRating={userRating} />
-        </div>
-
+      <div className="flex flex-col lg:flex-row gap-6 mt-6">
         <CommentList
+          className="flex-2"
           comments={recipe.comments}
           commentableId={recipe.id}
           commentableType={CommentableType.recipe}
+        />
+        <RecipeRatingDetails
+          className="flex-1"
+          recipe={recipe}
+          userRating={userRating}
         />
       </div>
     </>

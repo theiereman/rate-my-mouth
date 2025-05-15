@@ -1,22 +1,13 @@
 import { Rating } from "@mui/material";
 import { RecipeType } from "@customTypes/recipe.types";
 import { Card, Badge, LinkButton } from "@components/ui";
-import { usePage } from "@inertiajs/react";
-import { PageProps } from "@customTypes/usepage-props.types";
 import DifficultyBadge from "@components/Recipes/RecipeDifficulty";
 import UserLink from "@components/Users/UserLink";
 import IngredientList from "@components/Recipes/Ingredients/IngredientList";
+import { useUserIsCurrentUser } from "@hooks/useUserIsCurrentUser";
 
-export default function RecipeItem({
-  recipe,
-  showRating = false,
-}: {
-  recipe: RecipeType;
-  showRating?: boolean;
-}) {
-  const { current_user } = usePage<PageProps>().props;
-
-  console.log(recipe.description);
+export default function RecipeItem({ recipe }: { recipe: RecipeType }) {
+  const { isCurrentUser } = useUserIsCurrentUser(recipe.user);
 
   return (
     <div className="animate-fade-in">
@@ -46,8 +37,8 @@ export default function RecipeItem({
             </div>
           </div>
 
-          {showRating && (
-            <div className="flex gap-2 items-center">
+          <div className="flex md:items-end flex-col gap-2">
+            <div className="flex flex-1 gap-2 items-center">
               <Rating
                 value={recipe.average_rating}
                 readOnly
@@ -61,36 +52,64 @@ export default function RecipeItem({
                 {recipe.ratings.length} avis
               </Badge>
             </div>
-          )}
+
+            {isCurrentUser && (
+              <div className="flex gap-2">
+                <LinkButton
+                  href={`/recipes/${recipe.id}/edit`}
+                  variant="outline"
+                  size="xs"
+                  icon={<span className="material-symbols-outlined">edit</span>}
+                >
+                  Modifier
+                </LinkButton>
+                <LinkButton
+                  href={`/recipes/${recipe.id}`}
+                  method="delete"
+                  variant="outline"
+                  size="xs"
+                  onBefore={() =>
+                    confirm("Êtes-vous sûr de vouloir supprimer cette recette?")
+                  }
+                  icon={
+                    <span className="material-symbols-outlined">delete</span>
+                  }
+                >
+                  Supprimer
+                </LinkButton>
+              </div>
+            )}
+          </div>
         </div>
 
-        <pre className="text-neutral-600 italic font-sans mb-4">
+        <pre className="text-neutral-600 italic font-sans mb-4 text-wrap">
           {recipe.description}
         </pre>
 
-        <div className="flex flex-wrap gap-2 mb-2">
-          <Badge variant="accent" size="md">
-            {recipe.number_of_servings} portions
-          </Badge>
-          <Badge variant="secondary" size="md">
-            {recipe.ingredients?.length || 0} ingrédients
-          </Badge>
-          <Badge variant="primary" size="md">
-            {recipe.instructions?.length || 0} étapes
-          </Badge>
-          <DifficultyBadge difficulty={recipe.difficulty_value} />
-        </div>
-
-        {recipe.tags && recipe.tags.length > 0 && (
-          <div id="tags" className="flex gap-2">
-            <h2 className="text-sm italic">Tags : </h2>
-            {recipe.tags.map((tag) => (
-              <Badge key={tag.id} variant="neutral" size="md">
-                {tag.name}
-              </Badge>
-            ))}
+        <div className="flex flex-col md:flex-row gap-4">
+          <div id="badges" className="flex-1 flex flex-wrap gap-2">
+            <Badge variant="accent" size="md">
+              {recipe.number_of_servings} portions
+            </Badge>
+            <Badge variant="secondary" size="md">
+              {recipe.ingredients?.length || 0} ingrédients
+            </Badge>
+            <Badge variant="primary" size="md">
+              {recipe.instructions?.length || 0} étapes
+            </Badge>
+            <DifficultyBadge difficulty={recipe.difficulty_value} />
           </div>
-        )}
+          {recipe.tags && recipe.tags.length > 0 && (
+            <div id="tags" className="flex flex-wrap items-start gap-2">
+              <h2 className="text-sm italic">Tags : </h2>
+              {recipe.tags.map((tag) => (
+                <Badge key={tag.id} variant="neutral" size="md">
+                  {tag.name}
+                </Badge>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
       <Card variant="outlined">
@@ -132,31 +151,6 @@ export default function RecipeItem({
             </ol>
           </Card.Body>
         </Card>
-
-        {recipe.user.username === current_user.username && (
-          <div className="w-full justify-end flex gap-2">
-            <LinkButton
-              href={`/recipes/${recipe.id}/edit`}
-              variant="outline"
-              size="sm"
-              icon={<span className="material-symbols-outlined">edit</span>}
-            >
-              Modifier
-            </LinkButton>
-            <LinkButton
-              href={`/recipes/${recipe.id}`}
-              method="delete"
-              variant="outline"
-              size="sm"
-              onBefore={() =>
-                confirm("Êtes-vous sûr de vouloir supprimer cette recette?")
-              }
-              icon={<span className="material-symbols-outlined">delete</span>}
-            >
-              Supprimer
-            </LinkButton>
-          </div>
-        )}
       </Card>
     </div>
   );

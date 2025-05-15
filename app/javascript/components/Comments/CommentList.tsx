@@ -7,10 +7,12 @@ export default function CommentList({
   comments,
   commentableType,
   commentableId,
+  className,
 }: {
   comments: CommentType[];
   commentableType?: CommentableType;
   commentableId?: number;
+  className?: string;
 }) {
   const sortedComments = [...comments].sort(
     (a, b) =>
@@ -18,7 +20,7 @@ export default function CommentList({
   );
 
   return (
-    <Card variant="outlined" className="mt-8">
+    <Card variant="outlined" className={className}>
       <Card.Header>
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold text-neutral-800 flex items-center gap-2">
@@ -34,7 +36,7 @@ export default function CommentList({
       </Card.Header>
 
       {commentableId && commentableType && (
-        <div className="px-6 py-4 border-b border-neutral-200">
+        <div className="pb-4 border-b border-neutral-200">
           <CommentForm
             commentableId={commentableId}
             commentableType={commentableType}
@@ -46,7 +48,7 @@ export default function CommentList({
         {sortedComments.length > 0 ? (
           <ul className="divide-y divide-neutral-200">
             {sortedComments.map((comment) => (
-              <li key={comment.id} className="px-6">
+              <li key={comment.id}>
                 <Comment comment={comment} />
               </li>
             ))}

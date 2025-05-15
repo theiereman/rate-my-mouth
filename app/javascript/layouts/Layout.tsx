@@ -55,7 +55,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         </header>
 
         <main className="flex-grow">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in">
             {showToast && (
               <Toast
                 message={toastMessage}

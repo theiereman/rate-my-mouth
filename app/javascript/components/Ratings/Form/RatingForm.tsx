@@ -60,7 +60,7 @@ export default function RatingForm({
         )}
       </div>
 
-      <div className="flex flex-col items-center sm:flex-row sm:items-center gap-2">
+      <div className="flex items-center gap-2">
         <Rating
           name="user-rating"
           precision={0.5}

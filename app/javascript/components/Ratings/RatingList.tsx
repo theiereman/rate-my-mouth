@@ -1,6 +1,7 @@
 import { RatingType } from "@customTypes/rating.types";
 import RatingItem from "@components/Ratings/RatingItem";
 import UserAvatar from "@components/Users/UserAvatar";
+import { formatDateTime } from "@helpers/date-helper";
 
 export default function RatingList({
   ratings,
@@ -31,16 +32,16 @@ export default function RatingList({
             >
               <UserAvatar
                 name={rating.user.username}
-                size="sm"
+                size="md"
                 className="flex-shrink-0"
               />
               <div className="flex-1">
-                <div className="flex flex-col sm:flex-row sm:items-center gap-1">
+                <div className="flex sm:flex-row items-center gap-1 mb-1">
                   <span className="font-medium text-sm text-neutral-800">
                     {rating.user.username}
                   </span>
                   <span className="text-xs text-neutral-500">
-                    a noté {rating.value.toFixed(1)}/5
+                    {formatDateTime(rating.created_at)}
                   </span>
                 </div>
                 <RatingItem rating={rating} />
