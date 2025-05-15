@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { RecipeType } from "@customTypes/recipe.types";
+import QuantitySelector from "./QuantitySelector";
 
 export default function IngredientList({ recipe }: { recipe: RecipeType }) {
   const [numberOfServings, setNumberOfServings] = useState(
@@ -17,7 +18,8 @@ export default function IngredientList({ recipe }: { recipe: RecipeType }) {
 
   //extract every number inside ingredients and multiply them by the number of servings
   const updatedIngredients = recipe.ingredients?.map((ingredient) => {
-    const regex = /(\d+(\.\d+)?)/g;
+    // Regex mise à jour pour exclure les nombres précédés directement par une lettre
+    const regex = /(?<![a-zA-Z])(\d+(\.\d+)?)/g;
     const numbers = ingredient.match(regex);
     if (numbers) {
       const updatedIngredient = ingredient.replace(regex, (match) => {
@@ -37,23 +39,14 @@ export default function IngredientList({ recipe }: { recipe: RecipeType }) {
     <div>
       <div className="flex gap-2">
         <h2 className="font-semibold">
-          Ingredients pour {numberOfServings} personne
-          {numberOfServings > 1 ? "s" : ""} :
+          Ingredients pour {numberOfServings}{" "}
+          <QuantitySelector
+            onValueIncrease={handleIncrease}
+            onValueDecrease={handleDecrease}
+          />{" "}
+          personne
+          {numberOfServings > 1 ? "s" : ""}
         </h2>
-        <div id="quantity">
-          <button
-            className="bg-gray-200 px-2 rounded-bl-lg rounded-tl-lg hover:bg-gray-300 hover:cursor-pointer"
-            onClick={handleDecrease}
-          >
-            -
-          </button>
-          <button
-            className="bg-gray-200 px-2 rounded-br-lg rounded-tr-lg hover:bg-gray-300 hover:cursor-pointer"
-            onClick={handleIncrease}
-          >
-            +
-          </button>
-        </div>
       </div>
       <ul className="list-disc pl-5 pt-2">
         {updatedIngredients?.map((ingredient, index) => (

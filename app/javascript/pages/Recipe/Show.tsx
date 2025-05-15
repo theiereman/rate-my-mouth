@@ -4,7 +4,6 @@ import { RatingType } from "@customTypes/rating.types";
 import RecipeItem from "@components/Recipes/RecipeItem";
 import { CommentableType } from "@customTypes/comment.types";
 import RecipeRatingDetails from "@components/Ratings/Recipes/RecipeRatingDetails";
-import { LinkButton } from "@components/ui";
 import CommentList from "@components/Comments/CommentList";
 
 interface ShowProps {
@@ -19,7 +18,7 @@ export default function Show({ recipe, userRating }: ShowProps) {
 
       <RecipeItem recipe={recipe} />
 
-      <div className="flex flex-col lg:flex-row gap-6 mt-6">
+      <div className="flex flex-col lg:flex-row gap-4 mt-4">
         <CommentList
           className="flex-2"
           comments={recipe.comments}

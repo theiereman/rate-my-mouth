@@ -43,7 +43,7 @@ export default function UserPreferences({ user }: { user: UserType }) {
             <Toggle
               checked={values.notification_preference}
               onChange={handleNotificationPreferenceChange}
-              label="Notifications par e-mail"
+              label="Activer les notifications par e-mail"
               helperText="Recevoir des notifications par e-mail pour les nouvelles recettes et les commentaires."
             />
           </div>

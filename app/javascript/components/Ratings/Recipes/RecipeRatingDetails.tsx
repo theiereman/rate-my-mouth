@@ -14,7 +14,7 @@ export default function RecipeRatingDetails({
   className?: string;
 }) {
   return (
-    <Card variant="outlined" className={`${className}`}>
+    <Card className={`${className} h-fit`}>
       <Card.Header>
         <h2 className="text-xl font-semibold text-neutral-800 flex items-center gap-2">
           <span className="material-symbols-outlined text-primary-600">

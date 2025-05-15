@@ -20,16 +20,13 @@ export default function RatingList({
   return (
     <div>
       <h3 className="font-medium text-neutral-800 mb-3">
-        Dernières évaluations
+        Les {count} dernières évaluations
       </h3>
 
       {sortedRatings.length > 0 ? (
         <ul className="space-y-4">
           {sortedRatings.map((rating) => (
-            <li
-              key={rating.id}
-              className="flex items-start gap-3 animate-fade-in"
-            >
+            <li key={rating.id} className="flex items-start gap-3">
               <UserAvatar
                 name={rating.user.username}
                 size="md"

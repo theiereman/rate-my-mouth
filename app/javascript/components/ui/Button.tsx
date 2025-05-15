@@ -1,7 +1,14 @@
 import React, { ButtonHTMLAttributes } from "react";
 import { Link } from "@inertiajs/react";
 
-type ButtonVariant = "primary" | "secondary" | "accent" | "outline" | "ghost";
+type ButtonVariant =
+  | "primary"
+  | "secondary"
+  | "accent"
+  | "gray"
+  | "outline"
+  | "ghost"
+  | "error";
 type ButtonSize = "xs" | "sm" | "md" | "lg" | "xl";
 
 // Interface commune pour les propriétés partagées
@@ -42,10 +49,14 @@ const getVariantClasses = (variant: ButtonVariant) => {
       return "bg-secondary-600 hover:bg-secondary-700 text-white shadow-sm";
     case "accent":
       return "bg-accent-600 hover:bg-accent-700 text-white shadow-sm";
+    case "gray":
+      return "bg-gray-300 hover:bg-gray-400 text-neutral-700 shadow-sm";
     case "outline":
       return "bg-white border border-neutral-300 text-neutral-700 hover:border-primary-500 hover:text-primary-600 hover:bg-primary-50";
     case "ghost":
       return "bg-transparent text-neutral-700 hover:text-neutral-800";
+    case "error":
+      return "bg-error-600 hover:bg-error-700 text-white shadow-sm";
     default:
       return "bg-primary-600 hover:bg-primary-700 text-white shadow-sm";
   }
@@ -69,7 +80,7 @@ const getSizeClasses = (size: ButtonSize) => {
 };
 
 const baseClasses =
-  "inline-flex items-center justify-center font-medium rounded-lg transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 hover:cursor-pointer";
+  "inline-flex items-center justify-center font-medium rounded-lg transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500";
 
 // Fonction utilitaire pour générer les classes CSS communes - ne nécessite pas children
 type ButtonClassesProps = Omit<
@@ -88,8 +99,7 @@ const getButtonClasses = ({
   const variantClasses = getVariantClasses(variant);
   const sizeClasses = getSizeClasses(size);
   const widthClass = fullWidth ? "w-full" : "";
-  const disabledClass =
-    disabled || isLoading ? "opacity-60 cursor-not-allowed" : "";
+  const disabledClass = disabled || isLoading ? "opacity-60" : "cursor-pointer";
 
   return {
     className: `${baseClasses} ${variantClasses} ${sizeClasses} ${widthClass} ${disabledClass} ${className}`,

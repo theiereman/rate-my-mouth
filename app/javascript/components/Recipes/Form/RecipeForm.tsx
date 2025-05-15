@@ -1,7 +1,14 @@
 import { InertiaFormProps, useForm } from "@inertiajs/react";
 import { FormEvent } from "react";
 import { RecipeFormType, RecipeType } from "@customTypes/recipe.types";
-import { Button, Input, Card, Combo, TextArea } from "@components/ui";
+import {
+  Button,
+  Input,
+  Card,
+  Combo,
+  TextArea,
+  LinkButton,
+} from "@components/ui";
 import TagsSelector from "@components/Tags/TagsSelector";
 import RecipeIngredientInstructionsForm from "@components/Recipes/Form/RecipeIngredientInstructionsForm";
 
@@ -32,7 +39,7 @@ export default function Form({ recipe, onSubmit, submitText }: FormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="contents">
-      <Card variant="outlined">
+      <Card>
         <Card.Header>
           <h2 className="text-xl font-semibold text-neutral-800 flex items-center gap-1">
             <span className="material-symbols-outlined text-primary-600">
@@ -120,7 +127,10 @@ export default function Form({ recipe, onSubmit, submitText }: FormProps) {
 
       <RecipeIngredientInstructionsForm form={form} />
 
-      <div className="mt-8 flex justify-end">
+      <div className="flex gap-2 justify-end">
+        <LinkButton variant="gray" href={`/recipes/${recipe.id}`}>
+          Annuler
+        </LinkButton>
         <Button
           type="submit"
           variant="primary"

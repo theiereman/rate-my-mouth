@@ -4,7 +4,7 @@ import { CommentType } from "@customTypes/comment.types";
 
 export default function CommentItem({ comment }: { comment: CommentType }) {
   return (
-    <div className="py-4 animate-fade-in flex flex-col gap-2 items-start">
+    <div className="py-6 flex flex-col gap-2 items-start">
       <div className="flex gap-3">
         <UserAvatar name={comment.user.username} size="md" />
         <div className="flex flex-col">

@@ -13,7 +13,6 @@ export default function RecipeShortItem({ recipe }: RecipeProps) {
   return (
     <Link href={`/recipes/${recipe.id}`} className="block">
       <Card
-        variant="outlined"
         className="transition-all duration-300 hover:shadow-md hover:border-primary-300 overflow-hidden"
         hover
       >

@@ -330,7 +330,7 @@ export default function RecipeIngredientInstructionsForm({
 
   return (
     <>
-      <Card variant="outlined">
+      <Card>
         <Card.Header>
           <h2 className="text-xl font-semibold text-neutral-800 flex items-center gap-1">
             <span className="material-symbols-outlined text-primary-600">

@@ -42,7 +42,7 @@ const getVariantClasses = (variant: string) => {
 export const Card = ({
   children,
   className = "",
-  variant = "default",
+  variant = "outlined",
   hover = false,
   onClick,
 }: CardProps) => {
@@ -53,7 +53,7 @@ export const Card = ({
 
   return (
     <div
-      className={`p-5 rounded-lg ${variantClasses} ${hoverClasses} ${className}`}
+      className={`p-5 rounded-lg ${variantClasses} ${hoverClasses} ${className} animate-fade-in`}
       onClick={onClick}
     >
       {children}

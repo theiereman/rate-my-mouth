@@ -8,7 +8,7 @@ interface UserProfileProps {
 
 export default function UserProfile({ user }: UserProfileProps) {
   return (
-    <Card variant="outlined" className="animate-fade-in">
+    <Card>
       <Card.Header>
         <h2 className="text-xl font-semibold text-neutral-800 flex items-center gap-2">
           <span className="material-symbols-outlined text-primary-600">

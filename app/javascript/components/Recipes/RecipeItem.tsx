@@ -10,8 +10,8 @@ export default function RecipeItem({ recipe }: { recipe: RecipeType }) {
   const { isCurrentUser } = useUserIsCurrentUser(recipe.user);
 
   return (
-    <div className="animate-fade-in">
-      <div className="mb-8">
+    <Card variant="flat" className="p-0!">
+      <div className="mb-4">
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-4">
           <div>
             <h1 className="text-3xl font-bold text-neutral-800 mb-2">
@@ -86,7 +86,7 @@ export default function RecipeItem({ recipe }: { recipe: RecipeType }) {
           {recipe.description}
         </pre>
 
-        <div className="flex flex-col md:flex-row gap-4">
+        <div className="flex flex-col gap-4">
           <div id="badges" className="flex-1 flex flex-wrap gap-2">
             <Badge variant="accent" size="md">
               {recipe.number_of_servings} portions
@@ -112,8 +112,8 @@ export default function RecipeItem({ recipe }: { recipe: RecipeType }) {
         </div>
       </div>
 
-      <Card variant="outlined">
-        <Card variant="flat" className="h-fit">
+      <Card className="space-y-8 lg:space-y-0 lg:flex gap-4">
+        <Card variant="flat" className="flex-1 p-0!">
           <Card.Header>
             <h2 className="text-xl font-semibold text-neutral-800 flex items-center gap-2">
               <span className="material-symbols-outlined text-primary-600">
@@ -123,11 +123,19 @@ export default function RecipeItem({ recipe }: { recipe: RecipeType }) {
             </h2>
           </Card.Header>
           <Card.Body className="space-y-2">
-            <IngredientList recipe={recipe} />
+            {recipe.ingredients && recipe.ingredients?.length > 0 ? (
+              <IngredientList recipe={recipe} />
+            ) : (
+              <div className="text-center py-4 bg-neutral-50 rounded-lg border border-neutral-100">
+                <p className="text-sm text-neutral-600">
+                  Aucun ingrédient n&apos;a été ajouté à cette recette.
+                </p>
+              </div>
+            )}
           </Card.Body>
         </Card>
 
-        <Card variant="flat" className="h-fit">
+        <Card variant="flat" className="flex-2 p-0!">
           <Card.Header>
             <h2 className="text-xl font-semibold text-neutral-800 flex items-center gap-2">
               <span className="material-symbols-outlined text-primary-600">
@@ -138,20 +146,28 @@ export default function RecipeItem({ recipe }: { recipe: RecipeType }) {
           </Card.Header>
           <Card.Body>
             <ol className="space-y-4 list-none pl-0">
-              {recipe.instructions?.map((instruction, index) => (
-                <li key={index} className="flex gap-3 group">
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center font-medium group-hover:bg-primary-200 transition-colors">
-                    {index + 1}
-                  </div>
-                  <div className="flex-1 pt-1">
-                    <p className="text-neutral-700">{instruction}</p>
-                  </div>
-                </li>
-              ))}
+              {recipe.instructions && recipe.instructions?.length > 0 ? (
+                recipe.instructions?.map((instruction, index) => (
+                  <li key={index} className="flex gap-3 group">
+                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center font-medium transition-colors">
+                      {index + 1}
+                    </div>
+                    <div className="flex-1 pt-1">
+                      <p className="text-neutral-700">{instruction}</p>
+                    </div>
+                  </li>
+                ))
+              ) : (
+                <div className="text-center py-4 bg-neutral-50 rounded-lg border border-neutral-100">
+                  <p className="text-sm text-neutral-600">
+                    Aucune instruction n&apos;a été ajouté à cette recette.
+                  </p>
+                </div>
+              )}
             </ol>
           </Card.Body>
         </Card>
       </Card>
-    </div>
+    </Card>
   );
 }
