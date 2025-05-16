@@ -28,6 +28,7 @@ export default function RecipeShortItem({ recipe }: RecipeProps) {
                 </h3>
                 <Rating
                   size="small"
+                  precision={0.5}
                   value={recipe.average_rating}
                   readOnly
                   className="text-primary-400"
