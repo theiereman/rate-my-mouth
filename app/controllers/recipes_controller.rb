@@ -83,12 +83,12 @@ class RecipesController < ApplicationController
 
     def recipe_as_json(recipe = @recipe)
       recipe.as_json(include: {
-        user: { only: :username },
+        user: { only: [ :id, :username ]  },
         tags: {},
         comments: {
           include: {
             user: {
-              only: [ :username ],
+              only: [ :id, :username ],
               methods: [ :avatar_url ]
             }
           }
@@ -96,7 +96,7 @@ class RecipesController < ApplicationController
         ratings: {
           include: {
             user: {
-              only: [ :username ],
+              only: [ :id, :username ],
               methods: [ :avatar_url ]
             }
           }
