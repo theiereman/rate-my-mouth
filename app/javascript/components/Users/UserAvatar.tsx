@@ -72,7 +72,7 @@ export const UserAvatar = ({
       });
     },
     onFilesSuccessfullySelected: ({ plainFiles }) => {
-      router.patch(`/users/${user.id}`, {
+      router.patch(`/users/${user.id}/update_avatar`, {
         user: { avatar: plainFiles[0] },
       });
     },

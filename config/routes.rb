@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   resources :users, only: [ :show, :update ] do
     get "list", on: :collection
     resources :achievements, only: [ :index ]
+    patch "update_avatar", on: :member
   end
 
   get "my_profile", to: "users#my_profile", as: :my_profile

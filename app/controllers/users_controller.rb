@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: %i[ show update ]
+  before_action :set_user, only: %i[ show update update_avatar ]
 
   # GET /users/list.json
   def list
@@ -19,6 +19,13 @@ class UsersController < ApplicationController
     else
       redirect_to user_path(@user), alert: "Erreur lors de la mise à jour de l'utilisateur"
     end
+  end
+
+  def update_avatar
+    @user.avatar.purge if @user.avatar.attached?
+    @user.avatar.attach(user_params[:avatar])
+
+    redirect_to user_path(@user), notice: "Avatar mis à jour avec succès"
   end
 
   def my_profile
