@@ -1,7 +1,6 @@
+import { UserType } from "./user.types";
+
 export interface PageProps {
-  current_user: {
-    username: string;
-    email: string;
-  };
+  current_user: UserType;
   [key: string]: any;
 }

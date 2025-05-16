@@ -13,6 +13,8 @@ class Recipe < ApplicationRecord
     .distinct
   }
 
+  has_one_attached :thumbnail
+
   attribute :difficulty, :integer
   enum :difficulty, easy: 0, medium: 1, hard: 2
 
@@ -72,6 +74,14 @@ class Recipe < ApplicationRecord
 
   def difficulty_value
     Recipe.difficulties[self[:difficulty]]
+  end
+
+  def thumbnail_url
+    if thumbnail.attached?
+      Rails.application.routes.url_helpers.rails_blob_path(thumbnail, only_path: true)
+    else
+      nil
+    end
   end
 
   private

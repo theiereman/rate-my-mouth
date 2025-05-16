@@ -1,6 +1,6 @@
 import { Link, usePage } from "@inertiajs/react";
 import { PageProps } from "@customTypes/usepage-props.types";
-import ProfilePicPlaceholder from "@components/ui/ProfilePicPlaceholder";
+import UserAvatar from "@components/Users/UserAvatar";
 
 export default function UserActions() {
   const { current_user } = usePage<PageProps>().props;
@@ -14,7 +14,7 @@ export default function UserActions() {
           </p>
           <p className="text-xs text-neutral-500">{current_user.email}</p>
         </div>
-        <ProfilePicPlaceholder className="transition-transform group-hover:scale-105" />
+        <UserAvatar user={current_user} />
       </button>
 
       <div className="hidden group-hover:block absolute right-0 bg-white rounded-md shadow-lg py-1 z-10">

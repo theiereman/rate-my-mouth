@@ -129,14 +129,12 @@ export default function Toast({
         className="ml-auto -mx-1.5 -my-1.5 rounded-lg p-1.5 inline-flex items-center justify-center h-8 w-8 text-neutral-400 hover:text-neutral-900 focus:outline-none"
         onClick={() => {
           setIsLeaving(true);
-          setTimeout(() => {
-            setIsVisible(false);
-            onClose();
-          }, 300);
+          setIsVisible(false);
+          onClose();
         }}
       >
         <span className="sr-only">Fermer</span>
-        <span className="material-symbols-outlined text-primary-600">
+        <span className="material-symbols-outlined text-primary-600 cursor-pointer">
           close
         </span>
       </button>

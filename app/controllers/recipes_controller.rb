@@ -74,7 +74,7 @@ class RecipesController < ApplicationController
     # Only allow a list of trusted parameters through.
     def recipe_params
       params.require(:recipe).permit(
-        :name, :description, :url, :number_of_servings, :difficulty,
+        :name, :description, :url, :number_of_servings, :difficulty, :thumbnail,
         ingredients: [],
         instructions: [],
         tags_attributes: [ :id, :name ]
@@ -82,6 +82,25 @@ class RecipesController < ApplicationController
     end
 
     def recipe_as_json(recipe = @recipe)
-      recipe.as_json(include: [ :user, :tags, comments: { include: :user }, ratings: { include: :user } ], methods: [ :average_rating, :difficulty_value ])
+      recipe.as_json(include: {
+        user: { only: [ :id, :username ]  },
+        tags: {},
+        comments: {
+          include: {
+            user: {
+              only: [ :id, :username ],
+              methods: [ :avatar_url ]
+            }
+          }
+        },
+        ratings: {
+          include: {
+            user: {
+              only: [ :id, :username ],
+              methods: [ :avatar_url ]
+            }
+          }
+        }
+      }, methods: [ :average_rating, :difficulty_value, :thumbnail_url ])
     end
 end

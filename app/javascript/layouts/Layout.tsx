@@ -1,44 +1,31 @@
-import { usePage } from "@inertiajs/react";
-import { useState, useEffect } from "react";
-import Navbar from "@components/navbar/Navbar";
-import HomeButton from "@components/navbar/HomeButton";
-import UserActions from "@components/navbar/UserActions";
+import Navbar from "../components/navbar/Navbar";
+import HomeButton from "../components/navbar/HomeButton";
+import UserActions from "../components/navbar/UserActions";
 import { PageProps } from "@customTypes/usepage-props.types";
-import { Footer, Toast } from "@components/ui";
-import ThemeSelector from "@components/theme/ThemeSelector";
+import ThemeSelector from "../components/theme/ThemeSelector";
+import { Footer } from "@components/ui";
+import { useToast } from "../contexts/ToastProvider";
+import { usePage } from "@inertiajs/react";
+import { useEffect } from "react";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const { flash } = usePage<PageProps>().props;
-  const [showToast, setShowToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState("");
-  const [toastType, setToastType] = useState<
-    "error" | "success" | "info" | "warning"
-  >("error");
+  const { showToast } = useToast();
 
   useEffect(() => {
     // Check for different types of flash messages
     if (flash.alert) {
-      setToastMessage(flash.alert);
-      setToastType("error");
-      setShowToast(true);
+      showToast(flash.alert, { type: "error" });
     } else if (flash.success) {
-      setToastMessage(flash.success);
-      setToastType("success");
-      setShowToast(true);
+      showToast(flash.success, { type: "success" });
     } else if (flash.info) {
-      setToastMessage(flash.info);
-      setToastType("info");
-      setShowToast(true);
+      showToast(flash.info, { type: "info" });
     } else if (flash.warning) {
-      setToastMessage(flash.warning);
-      setToastType("warning");
-      setShowToast(true);
+      showToast(flash.warning, { type: "warning" });
     } else if (flash.notice) {
-      setToastMessage(flash.notice);
-      setToastType("success");
-      setShowToast(true);
+      showToast(flash.notice, { type: "success" });
     }
-  }, [flash.alert, flash.success, flash.info, flash.warning, flash.notice]);
+  }, [flash]);
 
   return (
     <>
@@ -55,14 +42,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         </header>
 
         <main className="flex-grow">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in">
-            {showToast && (
-              <Toast
-                message={toastMessage}
-                type={toastType}
-                onClose={() => setShowToast(false)}
-              />
-            )}
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in">
             {children}
           </div>
         </main>

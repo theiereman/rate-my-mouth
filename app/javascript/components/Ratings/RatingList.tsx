@@ -28,7 +28,7 @@ export default function RatingList({
           {sortedRatings.map((rating) => (
             <li key={rating.id} className="flex items-start gap-3">
               <UserAvatar
-                name={rating.user.username}
+                user={rating.user}
                 size="md"
                 className="flex-shrink-0"
               />

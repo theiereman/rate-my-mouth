@@ -1,16 +1,18 @@
+import { UserType } from "@customTypes/user.types";
+import { router } from "@inertiajs/react";
+import { useFilePicker } from "use-file-picker";
+import { FileSizeValidator } from "use-file-picker/validators";
+import { useToast } from "@contexts/ToastProvider";
+import { FILE_PICKER_ERROR_MESSAGES } from "@helpers/filepickerHelper";
+
 type AvatarSize = "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
-type AvatarStatus = "online" | "offline" | "away" | "busy" | "none";
 
 interface AvatarProps {
-  src?: string;
-  alt?: string;
-  name?: string;
+  user: UserType;
   size?: AvatarSize;
-  status?: AvatarStatus;
-  statusPosition?: "top-right" | "bottom-right";
   rounded?: "full" | "lg" | "md" | "sm" | "none";
   className?: string;
-  onClick?: () => void;
+  allowAvatarChange?: boolean;
 }
 
 const getSizeClasses = (size: AvatarSize) => {
@@ -32,59 +34,6 @@ const getSizeClasses = (size: AvatarSize) => {
   }
 };
 
-const getStatusClasses = (status: AvatarStatus) => {
-  switch (status) {
-    case "online":
-      return "bg-green-500";
-    case "offline":
-      return "bg-neutral-400";
-    case "away":
-      return "bg-yellow-500";
-    case "busy":
-      return "bg-red-500";
-    case "none":
-      return "hidden";
-    default:
-      return "hidden";
-  }
-};
-
-const getStatusSizeClasses = (size: AvatarSize) => {
-  switch (size) {
-    case "xs":
-      return "w-1.5 h-1.5";
-    case "sm":
-      return "w-2 h-2";
-    case "md":
-      return "w-2.5 h-2.5";
-    case "lg":
-      return "w-3 h-3";
-    case "xl":
-      return "w-3.5 h-3.5";
-    case "2xl":
-      return "w-4 h-4";
-    default:
-      return "w-2.5 h-2.5";
-  }
-};
-
-const getRoundedClasses = (rounded: string) => {
-  switch (rounded) {
-    case "full":
-      return "rounded-full";
-    case "lg":
-      return "rounded-lg";
-    case "md":
-      return "rounded-md";
-    case "sm":
-      return "rounded-sm";
-    case "none":
-      return "rounded-none";
-    default:
-      return "rounded-full";
-  }
-};
-
 const getInitials = (name: string) => {
   if (!name) return "";
 
@@ -97,48 +46,63 @@ const getInitials = (name: string) => {
 };
 
 export const UserAvatar = ({
-  src,
-  alt = "",
-  name = "",
+  user,
   size = "md",
-  status = "none",
-  statusPosition = "bottom-right",
-  rounded = "full",
   className = "",
-  onClick,
+  allowAvatarChange = false,
 }: AvatarProps) => {
-  const sizeClasses = getSizeClasses(size);
-  const statusClasses = getStatusClasses(status);
-  const statusSizeClasses = getStatusSizeClasses(size);
-  const roundedClasses = getRoundedClasses(rounded);
-  const cursorClass = onClick ? "cursor-pointer" : "";
+  const { showToast } = useToast();
 
-  const statusPositionClasses = {
-    "top-right": "top-0 right-0 transform translate-x-1/4 -translate-y-1/4",
-    "bottom-right":
-      "bottom-0 right-0 transform translate-x-1/4 translate-y-1/4",
-  };
+  const { openFilePicker } = useFilePicker({
+    accept: [".jpg", ".jpeg", ".png"],
+    readAs: "Text",
+    multiple: false,
+    validators: [
+      new FileSizeValidator({ minFileSize: 0, maxFileSize: 5 * 1024 * 1024 }),
+    ],
+    onFilesRejected: (data) => {
+      data.errors.forEach((error) => {
+        showToast(
+          FILE_PICKER_ERROR_MESSAGES[error.reason] ||
+            "Erreur lors de la selection de l'image.",
+          {
+            type: "error",
+          }
+        );
+      });
+    },
+    onFilesSuccessfullySelected: ({ plainFiles }) => {
+      router.patch(`/users/${user.id}`, {
+        user: { avatar: plainFiles[0] },
+      });
+    },
+  });
+
+  const sizeClasses = getSizeClasses(size);
+  const cursorClass = allowAvatarChange ? "cursor-pointer" : "";
 
   return (
-    <div className={`relative inline-block ${className}`} onClick={onClick}>
-      {src ? (
+    <div className={`relative ${className} group`}>
+      {allowAvatarChange == true && (
+        <div
+          onClick={openFilePicker}
+          className={`${sizeClasses} absolute top-0 right-0 hidden group-hover:flex cursor-pointer text-primary-600 bg-white opacity-60 z-10 items-center justify-center`}
+        >
+          <span className="material-symbols-outlined">edit</span>
+        </div>
+      )}
+      {user.avatar_url ? (
         <img
-          src={src}
-          alt={alt || name}
-          className={`${sizeClasses} ${roundedClasses} ${cursorClass} object-cover`}
+          src={user.avatar_url}
+          alt={user.username}
+          className={`${sizeClasses} ${cursorClass} rounded-full object-cover`}
         />
       ) : (
         <div
-          className={`${sizeClasses} ${roundedClasses} ${cursorClass} bg-primary-100 text-primary-800 flex items-center justify-center font-medium`}
+          className={`${sizeClasses} ${cursorClass} rounded-full bg-primary-100 text-primary-800 flex items-center justify-center font-medium`}
         >
-          {getInitials(name)}
+          {getInitials(user.username)}
         </div>
-      )}
-
-      {status !== "none" && (
-        <span
-          className={`absolute ${statusPositionClasses[statusPosition]} ${statusClasses} ${statusSizeClasses} ${roundedClasses} ring-2 ring-white`}
-        ></span>
       )}
     </div>
   );

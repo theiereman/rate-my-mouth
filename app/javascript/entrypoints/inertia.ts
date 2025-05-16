@@ -3,6 +3,7 @@ import { createElement, ReactNode } from "react";
 import { createRoot } from "react-dom/client";
 import { ThemeProvider } from "@contexts/ThemeContext";
 import { Layout } from "@layouts/Layout";
+import { ToastProvider } from "@contexts/ToastProvider";
 
 // Temporary type definition, until @inertiajs/react provides one
 type ResolvedComponent = {
@@ -28,7 +29,11 @@ createInertiaApp({
   setup({ el, App, props }) {
     if (el) {
       createRoot(el).render(
-        createElement(ThemeProvider, null, createElement(App, props))
+        createElement(
+          ToastProvider,
+          null,
+          createElement(ThemeProvider, null, createElement(App, props))
+        )
       );
     } else {
       console.error(

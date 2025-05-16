@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
 
   inertia_share if: :user_signed_in? do
     {
-      current_user: current_user
+      current_user: current_user.as_json(only: [ :username, :email ], methods: [ :avatar_url ])
     }
   end
 

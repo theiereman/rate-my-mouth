@@ -8,6 +8,10 @@ class User < ApplicationRecord
   has_many :ratings, dependent: :destroy
   has_many :user_achievements, dependent: :destroy
 
+  has_one_attached :avatar do |attachable|
+    attachable.variant :thumb, resize_to_limit: [ 100, 100 ], preprocessed: true
+  end
+
   validates :username, presence: true, uniqueness: true
 
   def number_of_recipes
@@ -20,5 +24,13 @@ class User < ApplicationRecord
 
   def number_of_ratings
     ratings.count
+  end
+
+  def avatar_url
+    if avatar.attached?
+      Rails.application.routes.url_helpers.rails_blob_path(avatar.variant(:thumb), only_path: true)
+    else
+      nil
+    end
   end
 end

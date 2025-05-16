@@ -4,6 +4,7 @@ export interface UserType {
   email?: string;
   notification_preference: boolean;
   created_at: string;
+  avatar_url?: string;
   number_of_recipes: number;
   number_of_comments: number;
   number_of_ratings: number;
