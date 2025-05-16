@@ -13,6 +13,7 @@ export interface RecipeType {
   instructions: string[] | null;
   description: string;
   difficulty_value: number;
+  thumbnail_url?: string;
   average_rating: number;
   created_at: string;
   updated_at: string;

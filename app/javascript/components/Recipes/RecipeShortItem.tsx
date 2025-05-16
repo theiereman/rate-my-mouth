@@ -4,6 +4,7 @@ import { RecipeType } from "@customTypes/recipe.types";
 import { Rating } from "@mui/material";
 import { Badge, Card } from "@components/ui";
 import DifficultyBadge from "@components/Recipes/RecipeDifficulty";
+import RecipeThumbnail from "@components/Recipes/RecipeThumbnail";
 
 interface RecipeProps {
   recipe: RecipeType;
@@ -17,12 +18,7 @@ export default function RecipeShortItem({ recipe }: RecipeProps) {
         hover
       >
         <div className="flex flex-col sm:flex-row gap-4">
-          {/* Recipe image placeholder */}
-          <div className="w-full sm:w-32 h-32 bg-primary-100 rounded-md flex items-center justify-center text-primary-500">
-            <span className="material-symbols-outlined material-icon--lg">
-              restaurant
-            </span>
-          </div>
+          <RecipeThumbnail recipe={recipe} size="sm" />
 
           <div className="flex-1">
             <div className="flex flex-col mb-3">

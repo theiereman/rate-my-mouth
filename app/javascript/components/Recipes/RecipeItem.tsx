@@ -5,12 +5,17 @@ import DifficultyBadge from "@components/Recipes/RecipeDifficulty";
 import UserLink from "@components/Users/UserLink";
 import IngredientList from "@components/Recipes/Ingredients/IngredientList";
 import { useUserIsCurrentUser } from "@hooks/useUserIsCurrentUser";
+import RecipeThumbnail from "@components/Recipes/RecipeThumbnail";
 
 export default function RecipeItem({ recipe }: { recipe: RecipeType }) {
   const { isCurrentUser } = useUserIsCurrentUser(recipe.user);
 
   return (
     <Card variant="flat" className="p-0!">
+      {recipe.thumbnail_url && (
+        <RecipeThumbnail recipe={recipe} size="md" className="mb-4" />
+      )}
+
       <div className="mb-4">
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-4">
           <div>

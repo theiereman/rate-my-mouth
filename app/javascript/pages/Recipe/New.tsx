@@ -2,6 +2,7 @@ import { Head } from "@inertiajs/react";
 import Form from "@components/Recipes/Form/RecipeForm";
 import { RecipeType } from "@customTypes/recipe.types";
 import { LinkButton } from "@components/ui";
+import RecipeThumbnail from "@components/Recipes/RecipeThumbnail";
 
 interface NewProps {
   recipe: RecipeType;
@@ -31,6 +32,13 @@ export default function New({ recipe }: NewProps) {
           <p className="text-neutral-600">
             Partagez votre recette avec la communauté
           </p>
+        </div>
+
+        <div className="mb-2">
+          <h2 className="text-lg font-medium text-neutral-800 mb-3">
+            Miniature de la recette
+          </h2>
+          <RecipeThumbnail recipe={recipe} allowThumbnailChange={true} />
         </div>
 
         <Form
