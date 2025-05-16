@@ -7,6 +7,5 @@ export type { ComboValue } from "./Combo";
 export { default as Footer } from "./Footer";
 export { default as Input } from "./Input";
 export { default as Pagination } from "./Pagination";
-export { default as ProfilePicPlaceholder } from "./ProfilePicPlaceholder";
 export { default as TextArea } from "./TextArea";
 export { default as Toast } from "./Toast";

@@ -1,5 +1,5 @@
+import { Toast } from "@components/ui";
 import { createContext, useContext, useState, ReactNode } from "react";
-import Toast from "../components/Toast";
 
 type ToastType = "error" | "success" | "info" | "warning";
 type ToastPosition =
