@@ -11,6 +11,7 @@ import {
 } from "@components/ui";
 import TagsSelector from "@components/Tags/TagsSelector";
 import RecipeIngredientInstructionsForm from "@components/Recipes/Form/RecipeIngredientInstructionsForm";
+import RecipeThumbnail from "../RecipeThumbnail";
 
 interface FormProps {
   recipe: RecipeType;
@@ -29,6 +30,7 @@ export default function Form({ recipe, onSubmit, submitText }: FormProps) {
     description: recipe.description || "",
     tags_attributes:
       recipe.tags?.map((tag) => ({ id: tag.id, name: tag.name })) || [],
+    thumbnail: undefined,
   });
   const { data, setData, errors, processing } = form;
 
@@ -39,6 +41,19 @@ export default function Form({ recipe, onSubmit, submitText }: FormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="contents">
+      <div className="mb-2">
+        <h2 className="text-lg font-medium text-neutral-800 mb-3">
+          Miniature de la recette
+        </h2>
+        <RecipeThumbnail
+          thumbnailUrl={data.thumbnail || recipe.thumbnail_url}
+          allowThumbnailChange={true}
+          onThumbnailSelected={(file) => {
+            setData("thumbnail", file);
+          }}
+        />
+      </div>
+
       <Card>
         <Card.Header>
           <h2 className="text-xl font-semibold text-neutral-800 flex items-center gap-1">

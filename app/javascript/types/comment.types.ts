@@ -1,4 +1,4 @@
-import { UserType } from "../User/types";
+import { UserType } from "@customTypes/user.types";
 
 export interface CommentType {
   id: number;

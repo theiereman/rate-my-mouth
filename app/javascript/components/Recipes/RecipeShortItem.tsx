@@ -18,7 +18,7 @@ export default function RecipeShortItem({ recipe }: RecipeProps) {
         hover
       >
         <div className="flex flex-col sm:flex-row gap-4">
-          <RecipeThumbnail recipe={recipe} size="sm" />
+          <RecipeThumbnail thumbnailUrl={recipe.thumbnail_url} size="sm" />
 
           <div className="flex-1">
             <div className="flex flex-col mb-3">

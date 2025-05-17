@@ -29,6 +29,20 @@ class Recipe < ApplicationRecord
   serialize :ingredients, coder: JSON
   serialize :instructions, coder: JSON
 
+  def difficulty=(value)
+    if value.is_a?(String) && value.to_i.to_s == value
+      # Convert numeric string to integer
+      value = value.to_i
+    end
+
+    if value.is_a?(Integer)
+      # Map integer to enum value
+      value = { 0 => :easy, 1 => :medium, 2 => :hard }[value] || :easy
+    end
+
+    super(value)
+  end
+
   # Accepter les nested attributes pour les tags
   # Pour une association HABTM, nous devons gérer manuellement la création/association des tags
   def tags_attributes=(attributes)
