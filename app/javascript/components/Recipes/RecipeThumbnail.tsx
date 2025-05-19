@@ -4,34 +4,30 @@ import { useToast } from "@contexts/ToastProvider";
 import { FILE_PICKER_ERROR_MESSAGES } from "@helpers/filepickerHelper";
 import { useState } from "react";
 
-type ThumbnailSize = "sm" | "md" | "lg" | "xl";
+type ThumbnailFormat = "square" | "full";
 
 interface ThumbnailProps {
   thumbnailUrl?: string;
-  size?: ThumbnailSize;
+  format?: ThumbnailFormat;
   className?: string;
   allowThumbnailChange?: boolean;
   onThumbnailSelected?: (file: File | null) => void;
 }
 
-const getSizeClasses = (size: ThumbnailSize) => {
+const getFormatClasses = (size: ThumbnailFormat) => {
   switch (size) {
-    case "sm":
-      return "w-32 h-32";
-    case "md":
+    case "square":
+      return "w-full md:w-32 h-32 md:h-full";
+    case "full":
       return "w-full h-64";
-    case "lg":
-      return "w-full h-80";
-    case "xl":
-      return "w-full h-96";
     default:
-      return "w-full h-64";
+      return "w-32 h-32";
   }
 };
 
 export const RecipeThumbnail = ({
   thumbnailUrl,
-  size = "md",
+  format = "full",
   className = "",
   onThumbnailSelected,
 }: ThumbnailProps) => {
@@ -62,7 +58,7 @@ export const RecipeThumbnail = ({
     },
   });
 
-  const sizeClasses = getSizeClasses(size);
+  const formatClasses = getFormatClasses(format);
   const cursorClass = !onThumbnailSelected ? "" : "cursor-pointer";
 
   return (
@@ -98,11 +94,11 @@ export const RecipeThumbnail = ({
         <img
           src={url}
           alt="Miniature de la recette"
-          className={`${sizeClasses} ${cursorClass} object-cover`}
+          className={`${formatClasses} ${cursorClass} object-cover`}
         />
       ) : (
         <div
-          className={`${sizeClasses} ${cursorClass} bg-primary-100 flex items-center justify-center text-primary-500`}
+          className={`${formatClasses} ${cursorClass} bg-primary-100 flex items-center justify-center text-primary-500`}
         >
           <span className="material-symbols-outlined material-icon--lg">
             restaurant

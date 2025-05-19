@@ -13,11 +13,7 @@ export default function RecipeItem({ recipe }: { recipe: RecipeType }) {
   return (
     <Card variant="flat" className="p-0!">
       {recipe.thumbnail_url && (
-        <RecipeThumbnail
-          thumbnailUrl={recipe.thumbnail_url}
-          size="md"
-          className="mb-4"
-        />
+        <RecipeThumbnail thumbnailUrl={recipe.thumbnail_url} className="mb-4" />
       )}
 
       <div className="mb-4">

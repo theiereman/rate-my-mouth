@@ -73,13 +73,12 @@ export default function Index({ recipes, pagy }: IndexProps) {
       <Head title="Recettes" />
 
       <div className="mb-8">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
+        <div className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center mb-6">
           <div>
-            <h1 className="text-3xl font-bold text-neutral-800 mb-2">
-              Recettes
-            </h1>
+            <h1 className="text-3xl font-bold text-neutral-800">Recettes</h1>
             <p className="text-neutral-600">
-              Découvrez et partagez des recettes délicieuses
+              Découvrez les dernièrse recettes et partagez vos recettes
+              favorites !
             </p>
           </div>
 
@@ -87,7 +86,7 @@ export default function Index({ recipes, pagy }: IndexProps) {
             href="/recipes/new"
             variant="primary"
             size="lg"
-            className=""
+            className="w-full sm:w-auto"
             icon={
               <span className="material-symbols-outlined current-color">
                 add

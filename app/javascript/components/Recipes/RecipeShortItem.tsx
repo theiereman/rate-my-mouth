@@ -17,29 +17,31 @@ export default function RecipeShortItem({ recipe }: RecipeProps) {
         className="transition-all duration-300 hover:shadow-md hover:border-primary-300 overflow-hidden"
         hover
       >
-        <div className="flex flex-col sm:flex-row gap-4">
-          <RecipeThumbnail thumbnailUrl={recipe.thumbnail_url} size="sm" />
+        <div className="flex flex-col h-full sm:flex-row gap-4">
+          <RecipeThumbnail
+            thumbnailUrl={recipe.thumbnail_url}
+            format="square"
+          />
 
-          <div className="flex-1">
-            <div className="flex flex-col mb-3">
-              <div className="flex items-center gap-2">
-                <h3 className="text-lg font-medium text-neutral-800">
-                  {recipe.name}
-                </h3>
-                <Rating
-                  size="small"
-                  precision={0.5}
-                  value={recipe.average_rating}
-                  readOnly
-                  className="text-primary-400"
-                />
-              </div>
+          <div className="flex-1 flex flex-col gap-3">
+            <div className="flex flex-col">
+              <h3 className="text-lg font-medium text-neutral-800 line-clamp-1">
+                {recipe.name}
+              </h3>
               <span className="text-sm text-neutral-600">
                 par {recipe.user.username}
               </span>
             </div>
 
-            <div className="flex flex-wrap gap-3 mb-3">
+            <Rating
+              size="small"
+              precision={0.5}
+              value={recipe.average_rating}
+              readOnly
+              className="text-primary-400"
+            />
+
+            <div className="flex flex-wrap gap-3">
               <Badge variant="primary" className="gap-1">
                 <span className="material-symbols-outlined material-icon--sm material-icon--fill">
                   comment
@@ -54,6 +56,9 @@ export default function RecipeShortItem({ recipe }: RecipeProps) {
                 {recipe.ratings.length} note
                 {recipe.ratings.length > 1 ? "s" : ""}
               </Badge>
+            </div>
+
+            <div className="flex flex-wrap gap-3">
               <DifficultyBadge
                 difficulty={recipe.difficulty_value}
               ></DifficultyBadge>
