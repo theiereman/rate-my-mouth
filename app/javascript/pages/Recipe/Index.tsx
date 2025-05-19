@@ -19,8 +19,6 @@ export default function Index({ recipes, pagy }: IndexProps) {
   const [selectedTagIds, setSelectedTagIds] = useState<number[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  console.log(pagy);
-
   const search = (
     name?: string,
     user_id?: number | null,
@@ -63,7 +61,6 @@ export default function Index({ recipes, pagy }: IndexProps) {
 
   const handleTagsSelected = (tags: { id?: number; name: string }[]) => {
     const tagIds = tags.map((tag) => tag.id).filter(Boolean) as number[];
-    console.log(tagIds);
     setSelectedTagIds(tagIds);
     search(searchQuery, selectedUserId, tagIds);
   };

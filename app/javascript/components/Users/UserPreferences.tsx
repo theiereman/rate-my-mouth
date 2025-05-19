@@ -9,8 +9,6 @@ export default function UserPreferences({ user }: { user: UserType }) {
     notification_preference: user.notification_preference,
   });
 
-  console.log(user.id);
-
   const handleNotificationPreferenceChange = (
     e: ChangeEvent<HTMLInputElement>
   ) => {
