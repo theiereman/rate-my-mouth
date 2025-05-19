@@ -32,5 +32,5 @@ export type RecipeFormType = {
   number_of_servings: number;
   difficulty: number;
   tags_attributes?: { id?: number; name: string }[];
-  thumbnail?: string | null;
+  thumbnail?: string | null | undefined;
 };

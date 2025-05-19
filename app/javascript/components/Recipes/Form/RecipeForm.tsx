@@ -49,7 +49,7 @@ export default function Form({ recipe, onSubmit, submitText }: FormProps) {
           thumbnailUrl={data.thumbnail || recipe.thumbnail_url}
           allowThumbnailChange={true}
           onThumbnailSelected={(file) => {
-            setData("thumbnail", file);
+            setData("thumbnail", file as unknown as string);
           }}
         />
       </div>

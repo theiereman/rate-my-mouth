@@ -44,7 +44,7 @@ export const RecipeThumbnail = ({
     onFilesRejected: (data) => {
       data.errors.forEach((error) => {
         showToast(
-          FILE_PICKER_ERROR_MESSAGES[error.reason] ||
+          FILE_PICKER_ERROR_MESSAGES[(error as any).reason] ||
             "Erreur lors de la sélection de l'image.",
           {
             type: "error",
