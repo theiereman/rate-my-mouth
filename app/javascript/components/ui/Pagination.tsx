@@ -11,9 +11,15 @@ export interface PagyMetadata {
   limit: number;
 }
 
-export default function Pagination({ pagy }: { pagy: PagyMetadata }) {
+export default function Pagination({
+  pagy,
+  className,
+}: {
+  pagy: PagyMetadata;
+  className?: string;
+}) {
   return (
-    <div className="flex gap-2 justify-center items-center">
+    <div className={`flex gap-2 justify-center items-center ${className}`}>
       <LinkButton
         preserveState
         size="xs"
