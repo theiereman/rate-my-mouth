@@ -22,6 +22,9 @@ Rails.application.routes.draw do
 
   resources :tags, only: [ :index, :create ]
 
+  resource :leaderboard, only: [ :show ]
+  resolve("Leaderboard") { [ :leaderboard ] }
+
   get "up" => "rails/health#show", as: :rails_health_check
 
   root "recipes#index"

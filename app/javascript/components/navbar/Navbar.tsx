@@ -7,33 +7,31 @@ export default function Navbar() {
 
   const navItems = [
     { name: "Recettes", href: "/recipes" },
-    // { name: "Populaires (wip)", href: "#", disabled: true },
-    // { name: "Nouveautés (wip)", href: "#", disabled: true },
+    { name: "Classement", href: "/leaderboard" },
   ];
 
   return (
     <nav className="flex-1 flex">
-      {/* Desktop navigation */}
-      <ul className="hidden md:flex gap-8 items-center">
+      <div className="hidden md:flex">
         <LinkButton
           href="/recipes/new"
           variant="primary"
           size="sm"
-          className="hidden md:block"
+          className="hidden md:block me-4"
         >
           Nouvelle recette
         </LinkButton>
-        {/* {navItems.map((item) => (
-          <li key={item.name}>
-            <Link
-              href={item.href}
-              className={`text-neutral-600 hover:text-primary-600 font-medium transition-colors duration-200 py-2 border-b-2 border-transparent hover:border-primary-600`}
-            >
-              {item.name}
-            </Link>
-          </li>
-        ))} */}
-      </ul>
+        {navItems.map((item) => (
+          <LinkButton
+            key={item.name}
+            href={item.href}
+            variant="ghost"
+            className="hidden md:block"
+          >
+            {item.name}
+          </LinkButton>
+        ))}
+      </div>
 
       {/* Mobile navigation button */}
       <div className="md:hidden">
