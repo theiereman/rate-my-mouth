@@ -37,10 +37,9 @@ export default function Navbar() {
       <div className="md:hidden">
         <button
           type="button"
-          className="text-neutral-600 hover:text-primary-600"
+          className="text-neutral-600 hover:text-primary-600 flex"
           onClick={() => setIsOpen(!isOpen)}
         >
-          <span className="sr-only">Ouvrir le menu</span>
           {isOpen ? (
             <span className="material-symbols-outlined text-primary-600">
               close

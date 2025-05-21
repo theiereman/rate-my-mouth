@@ -19,11 +19,11 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="flex justify-between p-3 text-neutral-500 text-sm">
+    <footer className="flex flex-col md:flex-row justify-between p-3 text-neutral-500 text-sm">
       <p>© {new Date().getFullYear()} RateMyMouth. All rights reserved.</p>
 
-      <div id="details" className="flex-1 hidden md:flex">
-        <nav className={`flex-1 flex justify-center gap-2`}>
+      <div id="details" className="flex-1 flex flex-col md:flex-row">
+        <nav className={`flex-1 flex md:justify-center gap-2`}>
           {links.map((link) => (
             <a
               key={link.name}
