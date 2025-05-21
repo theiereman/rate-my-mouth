@@ -53,7 +53,7 @@ export const Card = ({
 
   return (
     <div
-      className={`p-5 rounded-lg ${variantClasses} ${hoverClasses} ${className} animate-fade-in`}
+      className={`flex flex-col p-5 rounded-lg ${variantClasses} ${hoverClasses} ${className} animate-fade-in`}
       onClick={onClick}
     >
       {children}
@@ -66,7 +66,7 @@ export const CardHeader = ({ children, className = "" }: CardHeaderProps) => {
 };
 
 export const CardBody = ({ children, className = "" }: CardBodyProps) => {
-  return <div className={className}>{children}</div>;
+  return <div className={`size-full ${className}`}>{children}</div>;
 };
 
 export const CardFooter = ({ children, className = "" }: CardFooterProps) => {

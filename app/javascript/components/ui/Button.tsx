@@ -38,6 +38,7 @@ interface LinkButtonProps extends CommonButtonProps {
   preserveScroll?: boolean;
   preserveState?: boolean;
   onBefore?: () => void;
+  onSuccess?: () => void;
   children: React.ReactNode;
 }
 
@@ -117,18 +118,25 @@ const ButtonContent = ({
   children: React.ReactNode;
 }) => (
   <>
-    {isLoading && (
-      <span className="material-symbols-outlined text-white-600 animate-spin mr-2">
-        progress_activity
-      </span>
-    )}
-    {icon && iconPosition === "left" && !isLoading && (
-      <span className="mr-2 flex">{icon}</span>
-    )}
-    {!isLoading && children}
-    {icon && iconPosition === "right" && (
-      <span className="ml-2 flex">{icon}</span>
-    )}
+    {icon &&
+      iconPosition === "left" &&
+      (isLoading ? (
+        <span className="material-symbols-outlined text-white-600 animate-spin mr-2">
+          progress_activity
+        </span>
+      ) : (
+        <span className="mr-2 flex">{icon}</span>
+      ))}
+    {children}
+    {icon &&
+      iconPosition === "right" &&
+      (isLoading ? (
+        <span className="material-symbols-outlined text-white-600 animate-spin ml-2">
+          progress_activity
+        </span>
+      ) : (
+        <span className="ml-2 flex">{icon}</span>
+      ))}
   </>
 );
 
@@ -181,6 +189,7 @@ export const LinkButton = ({
   disabled,
   children,
   onBefore,
+  onSuccess,
   ...props
 }: LinkButtonProps) => {
   const { className: buttonClassName, isDisabled } = getButtonClasses({
@@ -201,6 +210,7 @@ export const LinkButton = ({
       preserveScroll={preserveScroll}
       preserveState={preserveState}
       onBefore={onBefore}
+      onSuccess={onSuccess}
       className={buttonClassName}
       disabled={isDisabled}
       {...props}

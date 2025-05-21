@@ -5,6 +5,8 @@ import RecipeItem from "@components/Recipes/RecipeItem";
 import { CommentableType } from "@customTypes/comment.types";
 import RecipeRatingDetails from "@components/Ratings/Recipes/RecipeRatingDetails";
 import CommentList from "@components/Comments/CommentList";
+import Timer from "@components/tools/Timer";
+import Tools from "@components/tools/Tools";
 
 interface ShowProps {
   recipe: RecipeType;
@@ -13,12 +15,14 @@ interface ShowProps {
 
 export default function Show({ recipe, userRating }: ShowProps) {
   return (
-    <>
+    <main className="flex flex-col gap-4">
       <Head title={`${recipe.name} de ${recipe.user.username}`} />
 
       <RecipeItem recipe={recipe} />
 
-      <div className="flex flex-col lg:flex-row gap-4 mt-4">
+      <Tools recipeId={recipe.id} />
+
+      <div className="flex flex-col lg:flex-row gap-4">
         <CommentList
           className="flex-2"
           comments={recipe.comments}
@@ -31,6 +35,6 @@ export default function Show({ recipe, userRating }: ShowProps) {
           userRating={userRating}
         />
       </div>
-    </>
+    </main>
   );
 }
