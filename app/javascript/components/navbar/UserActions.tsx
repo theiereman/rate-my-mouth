@@ -2,17 +2,23 @@ import { usePage } from "@inertiajs/react";
 import { PageProps } from "@customTypes/usepage-props.types";
 import UserAvatar from "@components/Users/UserAvatar";
 import { LinkButton } from "@components/ui";
+import { usePopupElement } from "@hooks/usePopupElement";
 
 export default function UserActions() {
+  const { ref, isOpen } = usePopupElement();
   const { current_user } = usePage<PageProps>().props;
 
   return (
-    <div className="relative group">
+    <div ref={ref} className="relative group">
       <button className="flex items-center space-x-3 focus:outline-none cursor-pointer transition-transform group-hover:scale-105">
         <UserAvatar user={current_user} />
       </button>
 
-      <div className="hidden text-end group-hover:block absolute right-0 bg-white rounded-md shadow-lg z-10">
+      <div
+        className={`${
+          !isOpen ? "hidden" : "block"
+        } text-end absolute right-0 bg-white rounded-md shadow-lg z-10`}
+      >
         <div className="px-4 py-2">
           <p className="text-sm font-medium text-neutral-700">
             {current_user.username}
