@@ -53,7 +53,7 @@ export const Card = ({
 
   return (
     <div
-      className={`p-5 rounded-lg ${variantClasses} ${hoverClasses} ${className} animate-fade-in`}
+      className={`flex flex-col p-5 rounded-lg ${variantClasses} ${hoverClasses} ${className} animate-fade-in`}
       onClick={onClick}
     >
       {children}
