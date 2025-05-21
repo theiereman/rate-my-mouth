@@ -5,8 +5,6 @@ interface TextAreaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   label?: string;
   helperText?: string;
   error?: string;
-  leftIcon?: React.ReactNode;
-  rightIcon?: React.ReactNode;
   variant?: "default" | "filled" | "outlined";
   className?: string;
   containerClassName?: string;
@@ -48,8 +46,6 @@ export const TextArea = ({
   label = "",
   helperText = "",
   error = "",
-  leftIcon,
-  rightIcon,
   variant = "default",
   className = "",
   containerClassName = "",
@@ -63,9 +59,7 @@ export const TextArea = ({
   const hasError = !!error;
   const variantClasses = getVariantClasses(variant, hasError);
   const baseTextAreaClasses =
-    "block rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-opacity-50 transition-colors duration-200";
-  const iconPaddingLeft = leftIcon ? "pl-10" : "";
-  const iconPaddingRight = rightIcon ? "pr-10" : "";
+    "block rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-opacity-50 duration-200";
 
   return (
     <div className={`w-full ${containerClassName}`}>
@@ -78,27 +72,15 @@ export const TextArea = ({
           {mandatory && <span className="text-red-500"> *</span>}
         </label>
       )}
-      <div className="relative">
-        {leftIcon && (
-          <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-neutral-500">
-            {leftIcon}
-          </div>
-        )}
-        <textarea
-          className={`${baseTextAreaClasses} ${variantClasses} ${iconPaddingLeft} ${iconPaddingRight} w-full ${textareaClassName}`}
-          aria-invalid={hasError}
-          aria-describedby={
-            props.id ? `${props.id}-helper-text ${props.id}-error` : undefined
-          }
-          rows={rows}
-          {...props}
-        />
-        {rightIcon && (
-          <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-neutral-500">
-            {rightIcon}
-          </div>
-        )}
-      </div>
+      <textarea
+        className={`${baseTextAreaClasses} ${variantClasses} w-full ${textareaClassName}`}
+        aria-invalid={hasError}
+        aria-describedby={
+          props.id ? `${props.id}-helper-text ${props.id}-error` : undefined
+        }
+        rows={rows}
+        {...props}
+      />
       {helperText && !error && (
         <p
           id={props.id ? `${props.id}-helper-text` : undefined}

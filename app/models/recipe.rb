@@ -20,6 +20,8 @@ class Recipe < ApplicationRecord
 
   has_many :comments, as: :commentable, dependent: :destroy
   has_many :ratings, dependent: :destroy
+  has_many :notes, dependent: :destroy
+
   belongs_to :user
   has_and_belongs_to_many :tags
 

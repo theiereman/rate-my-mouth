@@ -1,7 +1,8 @@
 import { Card } from "@components/ui";
 import Timer from "./Timer";
+import Notes from "./Notes";
 
-export default function Tools() {
+export default function Tools({ recipeId }: { recipeId: number }) {
   return (
     <Card>
       <Card.Header>
@@ -14,6 +15,7 @@ export default function Tools() {
       </Card.Header>
       <Card.Body className="grid md:grid-cols-2 gap-2">
         <Timer />
+        <Notes recipeId={recipeId} />
       </Card.Body>
     </Card>
   );

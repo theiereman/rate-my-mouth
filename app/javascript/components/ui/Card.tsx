@@ -66,7 +66,7 @@ export const CardHeader = ({ children, className = "" }: CardHeaderProps) => {
 };
 
 export const CardBody = ({ children, className = "" }: CardBodyProps) => {
-  return <div className={className}>{children}</div>;
+  return <div className={`size-full ${className}`}>{children}</div>;
 };
 
 export const CardFooter = ({ children, className = "" }: CardFooterProps) => {

@@ -20,7 +20,7 @@ export default function Show({ recipe, userRating }: ShowProps) {
 
       <RecipeItem recipe={recipe} />
 
-      <Tools />
+      <Tools recipeId={recipe.id} />
 
       <div className="flex flex-col lg:flex-row gap-4">
         <CommentList

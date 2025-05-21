@@ -18,6 +18,10 @@ Rails.application.routes.draw do
 
   resources :recipes, concerns: [ :commentable ] do
     resources :ratings, only: [ :create ]
+    resources :notes, only: [] do
+      get "show_for_user", on: :collection
+      patch "update_for_user", on: :collection
+    end
   end
 
   resources :tags, only: [ :index, :create ]
