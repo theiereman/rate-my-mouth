@@ -25,18 +25,15 @@ export default function Toast({
   const [isLeaving, setIsLeaving] = useState(false);
 
   useEffect(() => {
-    // Enter animation
     setIsVisible(true);
 
     const timer = setTimeout(() => {
-      // Exit animation
       setIsLeaving(true);
 
-      // Wait for animation to complete before removing from DOM
       setTimeout(() => {
         setIsVisible(false);
         onClose();
-      }, 300); // Match the duration of the exit animation
+      }, 300);
     }, duration);
 
     return () => {
@@ -44,7 +41,6 @@ export default function Toast({
     };
   }, [duration, onClose]);
 
-  // Position classes
   const positionClasses = {
     "top-right": "top-4 right-4",
     "top-left": "top-4 left-4",
@@ -54,7 +50,6 @@ export default function Toast({
     "bottom-center": "bottom-4 left-1/2 transform -translate-x-1/2",
   };
 
-  // Type classes
   const getTypeClasses = () => {
     switch (type) {
       case "error":
@@ -70,7 +65,6 @@ export default function Toast({
     }
   };
 
-  // Icon based on type
   const getIcon = () => {
     switch (type) {
       case "error":
@@ -134,7 +128,7 @@ export default function Toast({
         }}
       >
         <span className="sr-only">Fermer</span>
-        <span className="material-symbols-outlined text-primary-600 cursor-pointer">
+        <span className="material-symbols-outlined text-neutral-600 cursor-pointer">
           close
         </span>
       </button>

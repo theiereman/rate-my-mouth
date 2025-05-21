@@ -8,6 +8,11 @@ class UsersController < ApplicationController
   end
 
   def show
+    if @user == current_user
+      redirect_to my_profile_path
+      return
+    end
+
     render inertia: "User/Show", props: {
       user: user_as_json
     }
