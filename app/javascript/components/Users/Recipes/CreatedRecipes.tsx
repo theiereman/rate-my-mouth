@@ -1,14 +1,13 @@
 import { RecipeType } from "@customTypes/recipe.types";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Card, Input, Pagination } from "@components/ui";
 import RecipeShortItem from "@components/Recipes/RecipeShortItem";
-import { PagyMetadata } from "@components/ui/Pagination";
 import { useToast } from "@contexts/ToastProvider";
+import EmptyPlaceholder from "@components/ui/EmptyPlaceholder";
+import { Card, LinkButton } from "@components/ui";
 
 export default function CreatedRecipes({ userId }: { userId: number }) {
   const [recipes, setRecipes] = useState<RecipeType[]>([]);
-  const [pagination, setPagination] = useState<PagyMetadata | null>(null);
   const [loadingRecipes, setLoadingRecipes] = useState(true);
 
   const { showToast } = useToast();
@@ -28,7 +27,6 @@ export default function CreatedRecipes({ userId }: { userId: number }) {
           },
         });
         setRecipes(response.data.recipes);
-        setPagination(response.data.pagy);
       } catch (error) {
         showToast("Impossible de récupérer les recettes", {
           type: "error",
@@ -57,17 +55,28 @@ export default function CreatedRecipes({ userId }: { userId: number }) {
               <span className="material-symbols-outlined text-primary-600">
                 article
               </span>
-              Recettes
+              Dernières recettes
             </h2>
           </Card.Header>
           <Card.Body className="flex flex-col gap-8">
-            <div className="grid grid-cols-1 gap-4">
-              {recipes.length > 0 &&
-                recipes.map((recipe) => (
-                  <RecipeShortItem key={recipe.id} recipe={recipe} />
-                ))}
-            </div>
-            {pagination && <Pagination pagy={pagination}></Pagination>}
+            {recipes.length > 0 ? (
+              <>
+                <div className="grid grid-cols-1 gap-4">
+                  {recipes.length > 0 &&
+                    recipes.map((recipe) => (
+                      <RecipeShortItem key={recipe.id} recipe={recipe} />
+                    ))}
+                </div>
+                <LinkButton
+                  className="mx-auto"
+                  href={`/recipes?user_id=${userId}`}
+                >
+                  Voir plus de recettes de cet utilisateur
+                </LinkButton>
+              </>
+            ) : (
+              <EmptyPlaceholder text="Aucune recette créée pour le moment" />
+            )}
           </Card.Body>
         </Card>
       )}

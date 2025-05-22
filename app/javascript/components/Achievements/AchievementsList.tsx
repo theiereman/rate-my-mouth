@@ -1,6 +1,7 @@
 import { AchievementType } from "@customTypes/achievement.types";
 import { Card } from "@components/ui";
 import AchievementItem from "@components/Achievements/AchievementItem";
+import EmptyPlaceholder from "@components/ui/EmptyPlaceholder";
 
 interface AchievementsListProps {
   achievements: AchievementType[];
@@ -41,11 +42,7 @@ export default function AchievementsList({
               ))}
             </div>
           ) : (
-            <div className="text-center py-4 bg-neutral-50 rounded-lg border border-neutral-100">
-              <p className="text-sm text-neutral-600">
-                Aucun succès débloqué pour le moment
-              </p>
-            </div>
+            <EmptyPlaceholder text="Aucun succès débloqué pour le moment" />
           )}
         </div>
 
