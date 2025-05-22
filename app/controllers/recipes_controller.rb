@@ -4,14 +4,22 @@ class RecipesController < ApplicationController
   # GET /recipes
   def index
     @recipes = Recipe.filter(params.slice(:name, :user_id, :tags_ids)).order(created_at: :desc)
-    @pagy, @recipes = pagy(@recipes) # pagination to the results
+    @pagy, @recipes = pagy(@recipes, limit: params[:limit] || 20)
 
-    render inertia: "Recipe/Index", props: {
-      recipes: @recipes.map do |recipe|
-        recipe_as_json recipe
-      end,
-      pagy: pagy_metadata(@pagy)
-    }
+    respond_to do |format|
+      format.html {
+        render inertia: "Recipe/Index", props: {
+          recipes: @recipes.map do |recipe|
+            recipe_as_json recipe
+          end,
+          pagy: pagy_metadata(@pagy)
+        }
+      }
+      format.json { render json: {
+        recipes: @recipes.map { |recipe| recipe.as_json(methods: [ :average_rating, :difficulty_value, :thumbnail_url ]) },
+        pagy: pagy_metadata(@pagy)
+      }}
+    end
   end
 
   # GET /recipes/1
