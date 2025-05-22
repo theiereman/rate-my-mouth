@@ -26,7 +26,7 @@ export default function UserSelector({
   const [users, setUsers] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [selectedUser, setSelectedUser] = useState<number | null>(null);
+  const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
 
   // Charger la liste des utilisateurs
   useEffect(() => {
@@ -42,7 +42,7 @@ export default function UserSelector({
             (user: User) => user.id === initialUserId
           );
           if (initialUser) {
-            setSelectedUser(initialUser);
+            setSelectedUserId(initialUser.id);
           }
         }
       } catch (err) {
@@ -63,7 +63,7 @@ export default function UserSelector({
 
   // Gérer la sélection d'un utilisateur
   const handleUserSelected = (selectedValue: ComboValue | null) => {
-    setSelectedUser(selectedValue?.value ?? null);
+    setSelectedUserId(selectedValue?.value ?? null);
     onUserSelected(selectedValue?.value ?? null);
   };
 
@@ -76,7 +76,7 @@ export default function UserSelector({
         onSelectedValue={handleUserSelected}
         placeholder={isLoading ? "Chargement des utilisateurs..." : placeholder}
         label={label}
-        value={selectedUser}
+        value={selectedUserId}
         disabled={isLoading || users.length === 0}
         erasable
       />

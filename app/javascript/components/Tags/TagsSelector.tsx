@@ -13,7 +13,6 @@ interface TagsSelectorProps {
   label?: string;
   placeholder?: string;
   className?: string;
-  initialTagIds?: number[];
   initialTags?: TagAttribute[];
   maxTags?: number;
   createNewTags?: boolean;
@@ -53,17 +52,6 @@ export default function TagsSelector({
         setIsLoading(true);
         const response = await axios.get("/tags");
         setTags(response.data);
-
-        const initialTagObjects = initialTags.map((tagAttr) => {
-          if (tagAttr.id) {
-            const existingTag = response.data.find(
-              (t: TagType) => t.id === tagAttr.id
-            );
-            if (existingTag) return existingTag;
-          }
-          return { id: tagAttr.id, name: tagAttr.name } as TagType;
-        });
-        setSelectedTags(initialTagObjects);
       } catch (err) {
         setError("Erreur lors du chargement des tags");
         console.error(err);
@@ -74,6 +62,17 @@ export default function TagsSelector({
 
     fetchTags();
   }, []);
+
+  useEffect(() => {
+    const initialTagObjects = initialTags.map((tagAttr) => {
+      if (tagAttr.id) {
+        const existingTag = tags.find((t: TagType) => t.id === tagAttr.id);
+        if (existingTag) return existingTag;
+      }
+      return { id: tagAttr.id, name: tagAttr.name } as TagType;
+    });
+    setSelectedTags(initialTagObjects);
+  }, [tags]);
 
   const createNewTagOption = useMemo(() => {
     if (!createNewTags) return null;
