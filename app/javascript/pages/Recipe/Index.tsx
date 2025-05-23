@@ -1,4 +1,4 @@
-import { Head, router } from "@inertiajs/react";
+import { router } from "@inertiajs/react";
 import { RecipeType } from "@customTypes/recipe.types";
 import RecipeShort from "@components/Recipes/RecipeShortItem";
 import UserSelector from "@components/Users/UserSelector";
@@ -19,6 +19,20 @@ export default function Index({ recipes, pagy }: IndexProps) {
   const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
   const [selectedTagIds, setSelectedTagIds] = useState<number[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    // Récupérer les paramètres de l'URL
+    const params = new URLSearchParams(window.location.search);
+
+    const query = params.get("name") || "";
+    const userId = params.get("user_id");
+    const tags = params.getAll("tags_ids[]");
+
+    // Initialiser les états avec les valeurs des paramètres
+    setSearchQuery(query);
+    setSelectedUserId(userId ? parseInt(userId, 10) : null);
+    setSelectedTagIds(tags.map((tag) => parseInt(tag)));
+  }, []);
 
   const search = (
     name?: string,
@@ -42,7 +56,6 @@ export default function Index({ recipes, pagy }: IndexProps) {
   };
 
   const debouncedSearch = useMemo(() => debounce(search, 500), []);
-
   useEffect(() => {
     return () => {
       debouncedSearch.cancel();
@@ -109,11 +122,15 @@ export default function Index({ recipes, pagy }: IndexProps) {
             }
           />
 
-          <UserSelector onUserSelected={handleUserSelected} />
+          <UserSelector
+            initialUserId={selectedUserId ?? undefined}
+            onUserSelected={handleUserSelected}
+          />
           <TagsSelector
             maxTags={Infinity}
             label=""
             createNewTags={false}
+            initialTags={selectedTagIds.map((id) => ({ id, name: "" }))}
             onTagsSelected={handleTagsSelected}
           />
         </div>

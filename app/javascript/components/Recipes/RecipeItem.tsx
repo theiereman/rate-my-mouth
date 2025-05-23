@@ -6,6 +6,7 @@ import UserLink from "@components/Users/UserLink";
 import IngredientList from "@components/Recipes/Ingredients/IngredientList";
 import { useUserIsCurrentUser } from "@hooks/useUserIsCurrentUser";
 import RecipeThumbnail from "@components/Recipes/RecipeThumbnail";
+import EmptyPlaceholder from "@components/ui/EmptyPlaceholder";
 
 export default function RecipeItem({ recipe }: { recipe: RecipeType }) {
   const { isCurrentUser } = useUserIsCurrentUser(recipe.user);
@@ -131,11 +132,9 @@ export default function RecipeItem({ recipe }: { recipe: RecipeType }) {
             {recipe.ingredients && recipe.ingredients?.length > 0 ? (
               <IngredientList recipe={recipe} />
             ) : (
-              <div className="text-center py-4 bg-neutral-50 rounded-lg border border-neutral-100">
-                <p className="text-sm text-neutral-600">
-                  Aucun ingrédient n&apos;a été ajouté à cette recette.
-                </p>
-              </div>
+              <EmptyPlaceholder
+                text={`Aucun ingrédient n'a été ajouté à cette recette.`}
+              />
             )}
           </Card.Body>
         </Card>
@@ -163,11 +162,9 @@ export default function RecipeItem({ recipe }: { recipe: RecipeType }) {
                   </li>
                 ))
               ) : (
-                <div className="text-center py-4 bg-neutral-50 rounded-lg border border-neutral-100">
-                  <p className="text-sm text-neutral-600">
-                    Aucune instruction n&apos;a été ajouté à cette recette.
-                  </p>
-                </div>
+                <EmptyPlaceholder
+                  text={`Aucune instruction n'a été ajouté à cette recette.`}
+                />
               )}
             </ol>
           </Card.Body>

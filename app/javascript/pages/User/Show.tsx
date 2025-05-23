@@ -7,27 +7,23 @@ import axios from "axios";
 import { AchievementType } from "@customTypes/achievement.types";
 import UserPreferences from "@components/Users/UserPreferences";
 import { useUserIsCurrentUser } from "@hooks/useUserIsCurrentUser";
+import CreatedRecipes from "@components/Users/Recipes/CreatedRecipes";
 
 interface ShowProps {
   user: UserType;
 }
 
-interface AchievementsData {
-  achievements: AchievementType[];
-}
-
 export default function Show({ user }: ShowProps) {
   const { isCurrentUser } = useUserIsCurrentUser(user);
 
-  const [achievementsData, setAchievementsData] =
-    useState<AchievementsData | null>(null);
+  const [achievements, setAchievements] = useState<AchievementType[]>([]);
   const [loadingAchievements, setLoadingAchievements] = useState(true);
 
   useEffect(() => {
     const fetchAchievements = async () => {
       try {
         const response = await axios.get(`/users/${user.id}/achievements`);
-        setAchievementsData(response.data);
+        setAchievements(response.data.achievements);
       } catch (error) {
         console.error("Impossible de récupérer les succès:", error);
       } finally {
@@ -47,6 +43,8 @@ export default function Show({ user }: ShowProps) {
 
         {isCurrentUser && <UserPreferences user={user} />}
 
+        <CreatedRecipes userId={user.id} />
+
         {loadingAchievements ? (
           <div className="text-center py-8">
             <span className="material-symbols-outlined animate-spin text-primary-600 text-4xl">
@@ -55,9 +53,9 @@ export default function Show({ user }: ShowProps) {
             <p className="mt-2 text-neutral-600">Chargement des succès...</p>
           </div>
         ) : (
-          achievementsData && (
+          achievements && (
             <>
-              <AchievementsList achievements={achievementsData.achievements} />
+              <AchievementsList achievements={achievements} />
             </>
           )
         )}
