@@ -87,7 +87,7 @@ export default function Show({ users, type = "recipes" }: LeaderboardProps) {
                   </span>
                 </span>
                 <UserAvatar user={user} size="md" className="flex-shrink-0" />
-                <UserLink className="flex-1" user={user} />
+                <UserLink className="flex-1" user={user} showTitle />
                 <Badge variant="primary" size="md">
                   {`${getBadgeValue(user)} ${typeTitle}`}
                 </Badge>

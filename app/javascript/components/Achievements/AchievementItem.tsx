@@ -1,11 +1,18 @@
-import { Card, Badge } from "@components/ui";
+import { Card, Badge, LinkButton } from "@components/ui";
 import { AchievementType } from "@customTypes/achievement.types";
+import { UserType } from "@customTypes/user.types";
 
 interface AchievementCardProps {
   achievement: AchievementType;
+  user: UserType;
 }
 
-export default function AchievementItem({ achievement }: AchievementCardProps) {
+export default function AchievementItem({
+  achievement,
+  user,
+}: AchievementCardProps) {
+  const isSelectedAchievement = user.title === achievement.name;
+
   return (
     <Card
       variant="flat"
@@ -32,12 +39,30 @@ export default function AchievementItem({ achievement }: AchievementCardProps) {
           </span>
         </div>
         <div className="flex-1">
-          <div className="flex items-center justify-between mb-1">
-            <h3 className="font-medium text-neutral-800">{achievement.name}</h3>
+          <div className="flex items-center gap-2">
+            <h3 className="text-neutral-800">{achievement.name}</h3>
+            {achievement.unlocked &&
+              (isSelectedAchievement ? (
+                <Badge variant="primary" size="sm">
+                  Titre actuel
+                </Badge>
+              ) : (
+                <LinkButton
+                  method="patch"
+                  size="xs"
+                  preserveState
+                  href={`/users/${user.id}/select_achievement_as_title?key=${achievement.key}`}
+                >
+                  Sélectionner comme titre
+                </LinkButton>
+              ))}
+            <div className="flex-1"></div>
             {achievement.unlocked ? (
-              <Badge variant="success" size="sm">
-                Débloqué
-              </Badge>
+              <>
+                <Badge variant="success" size="sm">
+                  Débloqué
+                </Badge>
+              </>
             ) : (
               <Badge variant="neutral" size="sm">
                 À débloquer

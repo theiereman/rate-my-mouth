@@ -9,11 +9,7 @@ import UserPreferences from "@components/Users/UserPreferences";
 import { useUserIsCurrentUser } from "@hooks/useUserIsCurrentUser";
 import CreatedRecipes from "@components/Users/Recipes/CreatedRecipes";
 
-interface ShowProps {
-  user: UserType;
-}
-
-export default function Show({ user }: ShowProps) {
+export default function Show({ user }: { user: UserType }) {
   const { isCurrentUser } = useUserIsCurrentUser(user);
 
   const [achievements, setAchievements] = useState<AchievementType[]>([]);
@@ -35,31 +31,29 @@ export default function Show({ user }: ShowProps) {
   }, [user.id]);
 
   return (
-    <>
+    <div className="space-y-4">
       <Head title={`Profil de ${user.username}`} />
 
-      <div className="mx-auto flex flex-col gap-4">
-        <UserProfile user={user} />
+      <UserProfile user={user} />
 
-        {isCurrentUser && <UserPreferences user={user} />}
+      {isCurrentUser && <UserPreferences user={user} />}
 
-        <CreatedRecipes userId={user.id} />
+      <CreatedRecipes userId={user.id} />
 
-        {loadingAchievements ? (
-          <div className="text-center py-8">
-            <span className="material-symbols-outlined animate-spin text-primary-600 text-4xl">
-              progress_activity
-            </span>
-            <p className="mt-2 text-neutral-600">Chargement des succès...</p>
-          </div>
-        ) : (
-          achievements && (
-            <>
-              <AchievementsList achievements={achievements} />
-            </>
-          )
-        )}
-      </div>
-    </>
+      {loadingAchievements ? (
+        <div className="text-center py-8">
+          <span className="material-symbols-outlined animate-spin text-primary-600 text-4xl">
+            progress_activity
+          </span>
+          <p className="mt-2 text-neutral-600">Chargement des succès...</p>
+        </div>
+      ) : (
+        achievements && (
+          <>
+            <AchievementsList achievements={achievements} user={user} />
+          </>
+        )
+      )}
+    </div>
   );
 }

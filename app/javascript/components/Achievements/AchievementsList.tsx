@@ -2,13 +2,16 @@ import { AchievementType } from "@customTypes/achievement.types";
 import { Card } from "@components/ui";
 import AchievementItem from "@components/Achievements/AchievementItem";
 import EmptyPlaceholder from "@components/ui/EmptyPlaceholder";
+import { UserType } from "@customTypes/user.types";
 
 interface AchievementsListProps {
   achievements: AchievementType[];
+  user: UserType;
 }
 
 export default function AchievementsList({
   achievements,
+  user,
 }: AchievementsListProps) {
   const unlockedAchievements = achievements.filter(
     (achievement) => achievement.unlocked
@@ -37,6 +40,7 @@ export default function AchievementsList({
               {unlockedAchievements.map((achievement) => (
                 <AchievementItem
                   key={achievement.key}
+                  user={user}
                   achievement={achievement}
                 />
               ))}
@@ -56,6 +60,7 @@ export default function AchievementsList({
                 <AchievementItem
                   key={achievement.key}
                   achievement={achievement}
+                  user={user}
                 />
               ))}
             </div>
