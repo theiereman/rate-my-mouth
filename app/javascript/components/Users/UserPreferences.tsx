@@ -17,12 +17,19 @@ export default function UserPreferences({ user }: { user: UserType }) {
       ...prev,
       notification_preference: value,
     }));
-    router.patch(`/users/${user.id}`, {
-      user: {
-        ...values,
-        notification_preference: value,
+    router.patch(
+      `/users/${user.id}`,
+      {
+        user: {
+          ...values,
+          notification_preference: value,
+        },
       },
-    });
+      {
+        preserveScroll: true,
+        preserveState: true,
+      }
+    );
   };
 
   return (

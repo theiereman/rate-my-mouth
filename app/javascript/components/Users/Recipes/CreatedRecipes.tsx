@@ -20,7 +20,7 @@ export default function CreatedRecipes({ userId }: { userId: number }) {
           url: `/recipes`,
           params: {
             user_id: userId,
-            limit: 5,
+            limit: 3,
           },
           headers: {
             Accept: "application/json",

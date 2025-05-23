@@ -69,21 +69,21 @@ end
 AchievementRules.define do
   # Single model, single action
   rule key: :first_recipe,
-       name: "Première recette",
+       name: "Cuisinier novice",
        description: "Créer votre première recette",
        triggers: { "Recipe" => :created },
        condition: ->(recipe) { recipe.user.recipes.count >= 1 }
 
   # Single model, single action
   rule key: :first_comment,
-       name: "Premier commentaire",
+       name: "Commentateur novice",
        description: "Créer votre premier commentaire",
        triggers: { "Comment" => :created },
        condition: ->(comment) { comment.user.comments.count >= 1 }
 
   # Single model, single action
   rule key: :first_rating,
-       name: "Première note",
+       name: "Critique novice",
        description: "Créer votre première note",
        triggers: { "Rating" => :created },
        condition: ->(rating) { rating.user.ratings.count >= 1 }
@@ -104,7 +104,7 @@ AchievementRules.define do
 
   # Example of multiple models triggering the same achievement
   rule key: :food_critique,
-       name: "Critique gastronomique",
+       name: "Critique culinaire",
        description: "Ajouter une critique complete (note et commentaire) sur 10 recettes",
        triggers: {
          "Rating" => :created,
