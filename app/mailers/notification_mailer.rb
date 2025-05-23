@@ -1,5 +1,5 @@
 class NotificationMailer < ApplicationMailer
-  default from: "contact@dotsncircles.com"
+  default from: email_address_with_name("contact@dotsncircles.com", "Rate My Mouth")
 
   def test(email)
     mail(to: email, subject: "Hello World!")
