@@ -60,11 +60,7 @@ export default function AchievementsList({
               ))}
             </div>
           ) : (
-            <div className="text-center py-4 bg-neutral-50 rounded-lg border border-neutral-100">
-              <p className="text-sm text-neutral-600">
-                Tous les succès ont été débloqués !
-              </p>
-            </div>
+            <EmptyPlaceholder text="Tous les succès ont été débloqués !" />
           )}
         </div>
       </Card.Body>

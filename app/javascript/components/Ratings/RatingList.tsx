@@ -2,6 +2,7 @@ import { RatingType } from "@customTypes/rating.types";
 import RatingItem from "@components/Ratings/RatingItem";
 import UserAvatar from "@components/Users/UserAvatar";
 import { formatDateTime } from "@helpers/date-helper";
+import EmptyPlaceholder from "@components/ui/EmptyPlaceholder";
 
 export default function RatingList({
   ratings,
@@ -47,11 +48,7 @@ export default function RatingList({
           ))}
         </ul>
       ) : (
-        <div className="text-center py-4 bg-neutral-50 rounded-lg border border-neutral-100">
-          <p className="text-sm text-neutral-600">
-            Aucune évaluation pour le moment
-          </p>
-        </div>
+        <EmptyPlaceholder text="Aucune évaluation pour le moment" />
       )}
     </div>
   );
