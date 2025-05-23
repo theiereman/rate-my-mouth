@@ -110,6 +110,7 @@ export default function Timer() {
           type="number"
           value={hours}
           onChange={(e) => setHours(Math.max(0, Number(e.target.value)))}
+          onFocus={(e) => e.target.select()}
           disabled={isRunning}
         />
         <Input
@@ -121,6 +122,7 @@ export default function Timer() {
           onChange={(e) =>
             setMinutes(Math.max(0, Math.min(59, Number(e.target.value))))
           }
+          onFocus={(e) => e.target.select()}
           disabled={isRunning}
         />
         <Input
@@ -132,6 +134,7 @@ export default function Timer() {
           onChange={(e) =>
             setSeconds(Math.max(0, Math.min(59, Number(e.target.value))))
           }
+          onFocus={(e) => e.target.select()}
           disabled={isRunning}
         />
       </div>
