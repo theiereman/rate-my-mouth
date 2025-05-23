@@ -33,7 +33,7 @@ export default function Notes({ recipeId }: { recipeId: number }) {
           <span className="material-symbols-outlined text-primary-600">
             notes
           </span>
-          Notes
+          Notes perso.
         </h2>
         <LinkButton
           onBefore={() => setIsLoading(true)}

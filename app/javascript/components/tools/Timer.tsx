@@ -1,5 +1,6 @@
 import { Button, Card, Input } from "@components/ui";
 import { useState, useRef } from "react";
+import alarmSound from "../../assets/sounds/alert.wav";
 
 export default function Timer() {
   const [hours, setHours] = useState(0);
@@ -9,7 +10,7 @@ export default function Timer() {
   const [isPaused, setIsPaused] = useState(false);
   const [isOver, setIsOver] = useState(false);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const audio = useRef(new Audio("/assets/sounds/alert.wav"));
+  const audio = useRef(new Audio(alarmSound));
 
   const totalSeconds = () => hours * 3600 + minutes * 60 + seconds;
 
