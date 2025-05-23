@@ -31,54 +31,46 @@ class Recipe < ApplicationRecord
   serialize :ingredients, coder: JSON
   serialize :instructions, coder: JSON
 
+  # FIXME: temp hack to make it work when you pass the thumbnail as recipe_param
+  # it breaks the whole params hash and make value change type etc, please send help
   def difficulty=(value)
     if value.is_a?(String) && value.to_i.to_s == value
-      # Convert numeric string to integer
       value = value.to_i
     end
 
     if value.is_a?(Integer)
-      # Map integer to enum value
       value = { 0 => :easy, 1 => :medium, 2 => :hard }[value] || :easy
     end
 
     super(value)
   end
 
-  # Accepter les nested attributes pour les tags
-  # Pour une association HABTM, nous devons gérer manuellement la création/association des tags
   def tags_attributes=(attributes)
-    # Supprimer les tags existants si on reçoit un tableau vide
     self.tags.clear
 
-    # Traiter chaque attribut de tag
+    # FIXME: temp hack to make it work when you pass the thumbnail as recipe_param
+    # it breaks the whole params hash and make value change type etc, please send help
+    attributes = attributes.values if attributes.is_a?(Hash)
+
     attributes.each do |tag_params|
-      # Ignorer les entrées vides
       next if tag_params[:name].blank?
 
-      # Si un ID est fourni, essayer de trouver le tag existant
       if tag_params[:id].present?
         begin
           tag = Tag.find(tag_params[:id])
           self.tags << tag unless self.tags.include?(tag)
         rescue ActiveRecord::RecordNotFound
-          # Si le tag n'existe pas, chercher par nom ou créer un nouveau
           find_or_create_tag_by_name(tag_params[:name])
         end
       else
-        # Pas d'ID, chercher par nom ou créer un nouveau
         find_or_create_tag_by_name(tag_params[:name])
       end
     end
   end
 
-  # Trouver un tag existant par nom ou en créer un nouveau
   def find_or_create_tag_by_name(name)
-    # Chercher un tag existant avec le même nom (insensible à la casse)
     tag = Tag.where("lower(name) = ?", name.downcase).first_or_initialize(name: name)
-    # Sauvegarder si c'est un nouveau tag
     tag.save if tag.new_record?
-    # Associer le tag à la recette s'il n'est pas déjà associé
     self.tags << tag unless self.tags.include?(tag)
     tag
   end
