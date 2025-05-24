@@ -12,9 +12,9 @@ Rails.application.routes.draw do
     get "list", on: :collection
     resources :achievements, only: [ :index ]
     patch "update_avatar", on: :member
-    patch "select_achievement_as_title", on: :member
   end
 
+  patch "select_achievement_as_title", to: "achievements#select_achievement_as_title", as: :select_achievement_as_title
   get "my_profile", to: "users#my_profile", as: :my_profile
 
   resources :recipes, concerns: [ :commentable ] do

@@ -1,6 +1,7 @@
 import { Card, Badge, LinkButton } from "@components/ui";
 import { AchievementType } from "@customTypes/achievement.types";
 import { UserType } from "@customTypes/user.types";
+import { useUserIsCurrentUser } from "@hooks/useUserIsCurrentUser";
 
 interface AchievementCardProps {
   achievement: AchievementType;
@@ -12,6 +13,7 @@ export default function AchievementItem({
   user,
 }: AchievementCardProps) {
   const isSelectedAchievement = user.title === achievement.name;
+  const { isCurrentUser } = useUserIsCurrentUser(user);
 
   return (
     <Card
@@ -42,6 +44,7 @@ export default function AchievementItem({
           <div className="flex items-center gap-2">
             <h3 className="text-neutral-800">{achievement.name}</h3>
             {achievement.unlocked &&
+              isCurrentUser &&
               (isSelectedAchievement ? (
                 <Badge variant="primary" size="sm">
                   Titre actuel
@@ -51,7 +54,7 @@ export default function AchievementItem({
                   method="patch"
                   size="xs"
                   preserveState
-                  href={`/users/${user.id}/select_achievement_as_title?key=${achievement.key}`}
+                  href={`/select_achievement_as_title?key=${achievement.key}`}
                 >
                   Sélectionner comme titre
                 </LinkButton>
