@@ -23,10 +23,8 @@ export default function RecipeItem({ recipe }: { recipe: RecipeType }) {
             <h1 className="text-3xl font-bold text-neutral-800 mb-2">
               {recipe.name}
             </h1>
-            <div className="flex items-center gap-3">
-              <span className="text-neutral-600">
-                Par <UserLink user={recipe.user} />
-              </span>
+            <div className="flex flex-col gap-3">
+              <UserLink prefix="par" user={recipe.user} />
               {recipe.url && (
                 <a
                   href={recipe.url}

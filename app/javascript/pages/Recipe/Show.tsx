@@ -5,7 +5,6 @@ import RecipeItem from "@components/Recipes/RecipeItem";
 import { CommentableType } from "@customTypes/comment.types";
 import RecipeRatingDetails from "@components/Ratings/Recipes/RecipeRatingDetails";
 import CommentList from "@components/Comments/CommentList";
-import Timer from "@components/tools/Timer";
 import Tools from "@components/tools/Tools";
 
 interface ShowProps {
