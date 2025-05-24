@@ -10,11 +10,6 @@ class RatingsController < ApplicationController
       @rating.user = current_user
 
       if @rating.save
-        # Envoyer une notification par email pour une nouvelle note
-        if @recipe.user != current_user
-          NotificationMailer.with(rating: @rating).new_rating_notification.deliver_later
-        end
-
         redirect_to @recipe
       else
         redirect_to @recipe, alert: "Erreur lors de l'ajout de la note."

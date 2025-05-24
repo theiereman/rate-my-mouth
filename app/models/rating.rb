@@ -1,5 +1,6 @@
 class Rating < ApplicationRecord
   include Achievable
+  include Notificationable
 
   belongs_to :user
   belongs_to :recipe

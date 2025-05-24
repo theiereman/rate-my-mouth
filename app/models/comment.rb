@@ -1,5 +1,6 @@
 class Comment < ApplicationRecord
   include Achievable
+  include Notificationable
 
   belongs_to :commentable, polymorphic: true
   belongs_to :user
