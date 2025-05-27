@@ -1,5 +1,6 @@
 class Tag < ApplicationRecord
-  has_and_belongs_to_many :recipes
+  has_many :recipe_tags, dependent: :destroy
+  has_many :recipes, through: :recipe_tags
 
   validates :name, presence: true, uniqueness: { case_sensitive: false }
 
