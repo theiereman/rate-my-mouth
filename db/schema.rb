@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_27_072523) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_27_074545) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -91,6 +91,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_27_072523) do
     t.integer "number_of_servings", default: 4, null: false
     t.integer "difficulty", default: 0, null: false
     t.text "description"
+    t.integer "comments_count", default: 0, null: false
     t.index ["user_id"], name: "index_recipes_on_user_id"
   end
 
@@ -121,6 +122,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_27_072523) do
     t.datetime "remember_created_at"
     t.boolean "notification_preference", default: true, null: false
     t.string "title"
+    t.integer "recipes_count", default: 0, null: false
+    t.integer "comments_count", default: 0, null: false
+    t.integer "ratings_count", default: 0, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

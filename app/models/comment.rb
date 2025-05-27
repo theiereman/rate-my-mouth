@@ -2,8 +2,8 @@ class Comment < ApplicationRecord
   include Achievable
   include Notificationable
 
-  belongs_to :commentable, polymorphic: true
-  belongs_to :user
+  belongs_to :commentable, polymorphic: true, counter_cache: true
+  belongs_to :user, counter_cache: true
 
   validates :content, presence: true
 

@@ -53,7 +53,7 @@ class UsersController < ApplicationController
       user
       .as_json(
         only: [ :id, :username, :title, :notification_preference, :created_at ],
-        methods: [ :number_of_recipes, :number_of_comments, :number_of_ratings, :avatar_url ]
+        methods: [ :avatar_url ]
       )
     end
 end
