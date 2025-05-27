@@ -41,7 +41,7 @@ export default function TagsSelector({
     .map<ComboValue>((tag) => {
       return {
         value: tag.id,
-        label: `${tag.name} (${tag.number_of_recipes})`,
+        label: `${tag.name} (${tag.recipes_count})`,
       };
     });
 
