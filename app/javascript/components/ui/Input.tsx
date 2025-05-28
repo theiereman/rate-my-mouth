@@ -15,6 +15,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   helperTextClassName?: string;
   errorClassName?: string;
   disabled?: boolean;
+  ref?: React.Ref<HTMLInputElement>;
 }
 
 const getVariantClasses = (variant: string, hasError: boolean) => {
@@ -55,6 +56,7 @@ export const Input = ({
   helperTextClassName = "",
   errorClassName = "",
   disabled = false,
+  ref,
   ...props
 }: InputProps) => {
   const hasError = !!error;
@@ -82,6 +84,7 @@ export const Input = ({
           </div>
         )}
         <input
+          ref={ref}
           className={`${baseInputClasses} ${variantClasses} ${iconPaddingLeft} ${iconPaddingRight} w-full ${inputClassName}`}
           aria-invalid={hasError}
           aria-describedby={

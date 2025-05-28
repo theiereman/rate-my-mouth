@@ -12,6 +12,7 @@ import {
 import TagsSelector from "@components/Tags/TagsSelector";
 import RecipeIngredientInstructionsForm from "@components/Recipes/Form/RecipeIngredientInstructionsForm";
 import RecipeThumbnail from "../RecipeThumbnail";
+import RecipeContentSubform from "../NewForm/RecipeContentSubform";
 
 interface FormProps {
   recipe: RecipeType;
@@ -141,6 +142,8 @@ export default function Form({ recipe, onSubmit, submitText }: FormProps) {
       </Card>
 
       <RecipeIngredientInstructionsForm form={form} />
+
+      <RecipeContentSubform />
 
       <div className="flex gap-2 justify-end">
         <LinkButton variant="gray" href={`/recipes/${recipe.id}`}>

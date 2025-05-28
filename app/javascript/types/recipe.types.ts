@@ -34,3 +34,15 @@ export type RecipeFormType = {
   tags_attributes?: { id?: number; name: string }[];
   thumbnail?: string | null | undefined;
 };
+
+//ingredients / instructions forms
+export type ItemType = "ingredient" | "instruction";
+export interface RecipeItem {
+  type: ItemType;
+  value: string;
+}
+export interface ItemCategory {
+  name: string;
+  type: ItemType;
+  items: RecipeItem[];
+}
