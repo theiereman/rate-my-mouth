@@ -1,26 +1,20 @@
 import { Badge, Button, Card } from "@components/ui";
 import EmptyPlaceholder from "@components/ui/EmptyPlaceholder";
 import { ItemCategory, ItemType } from "@customTypes/recipe.types";
-import { useState } from "react";
 import CategoryItem from "./CategoryItem";
-
-type CategoryWithColor = ItemCategory & { color: string };
 
 export default function CategoryContainer({
   type,
-  initialCategories = [],
+  categories,
+  onCategoryChange,
+  onCategoryDelete,
 }: {
   type: ItemType;
-  initialCategories?: ItemCategory[];
+  categories: ItemCategory[];
+  onCategoryChange: (newCategories: ItemCategory[]) => void;
+  onCategoryDelete: (categoryIndex: number) => void;
 }) {
-  const [categories, setCategories] = useState<CategoryWithColor[]>(
-    initialCategories.map((category) => ({
-      ...category,
-      color: `hsl(${Math.floor(Math.random() * 360)}, 50%, 90%)`,
-    }))
-  );
-
-  const totalItems = initialCategories.reduce(
+  const totalItems = categories.reduce(
     (acc, category) => acc + category.items.length,
     0
   );
@@ -29,19 +23,16 @@ export default function CategoryContainer({
     const updatedCategories = categories.map((category, index) =>
       index === categoryIndex ? { ...category, name: newName } : category
     );
-    setCategories(updatedCategories);
+    onCategoryChange(updatedCategories);
   };
 
   const handleCategoryDelete = (categoryIndex: number) => {
-    const updatedCategories = categories.filter(
-      (_, index) => index !== categoryIndex
-    );
-    setCategories(updatedCategories);
+    onCategoryDelete(categoryIndex);
   };
 
   const handleAddCategoryClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    setCategories([
+    onCategoryChange([
       ...categories,
       {
         name: `Catégorie ${categories.length + 1}`,
@@ -81,7 +72,7 @@ export default function CategoryContainer({
           ))
         )}
         <Button onClick={handleAddCategoryClick} variant="outline" fullWidth>
-          Ajouter une catégorie
+          Ajouter une sous-catégorie
         </Button>
       </Card.Body>
     </Card>

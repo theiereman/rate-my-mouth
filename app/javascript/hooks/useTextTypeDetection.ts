@@ -1,11 +1,10 @@
 import { ACTION_VERBS, INGREDIENT_PATTERNS } from "@const/text-detection";
+import { ItemType } from "@customTypes/recipe.types";
 import { useEffect, useState } from "react";
-
-type DetectionType = "ingredient" | "instruction" | "unknown";
 
 export function useTextTypeDetection() {
   const [inputText, setInputText] = useState<string>("");
-  const [detectedType, setDetectedType] = useState<DetectionType>("unknown");
+  const [detectedType, setDetectedType] = useState<ItemType>(undefined);
 
   // Fonction pour détecter si le texte est un ingrédient
   const isIngredient = (text: string): boolean => {
@@ -46,7 +45,7 @@ export function useTextTypeDetection() {
   // Mettre à jour le type détecté quand le texte change
   useEffect(() => {
     if (!inputText.trim()) {
-      setDetectedType("unknown");
+      setDetectedType(undefined);
       return;
     }
 
@@ -57,7 +56,7 @@ export function useTextTypeDetection() {
     } else if (isInstruction(text)) {
       setDetectedType("instruction");
     } else {
-      setDetectedType("unknown");
+      setDetectedType(undefined);
     }
   }, [inputText]);
 

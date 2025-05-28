@@ -36,7 +36,7 @@ export type RecipeFormType = {
 };
 
 //ingredients / instructions forms
-export type ItemType = "ingredient" | "instruction";
+export type ItemType = "ingredient" | "instruction" | undefined;
 export interface RecipeItem {
   type: ItemType;
   value: string;
@@ -44,5 +44,6 @@ export interface RecipeItem {
 export interface ItemCategory {
   name: string;
   type: ItemType;
+  color?: string;
   items: RecipeItem[];
 }

@@ -19,6 +19,8 @@ export default function CategoryItem({
   const [editName, setEditName] = useState(name);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  const defaultCategory = name === "";
+
   useEffect(() => {
     if (isEditing && inputRef.current) {
       inputRef.current.focus();
@@ -27,7 +29,7 @@ export default function CategoryItem({
   }, [isEditing]);
 
   const handleTitleClick = () => {
-    if (onNameChange) {
+    if (onNameChange && !defaultCategory) {
       setIsEditing(true);
     }
   };
@@ -85,22 +87,24 @@ export default function CategoryItem({
         <div className="flex justify-between items-start">
           <h3
             className={`text-neutral-600 text-sm mb-2 ${
-              onNameChange
+              onNameChange && !defaultCategory
                 ? "cursor-pointer hover:text-neutral-800 transition-colors"
                 : ""
             }`}
             onClick={handleTitleClick}
             title={onNameChange ? "Cliquer pour modifier le nom" : undefined}
           >
-            {`${name} (${items.length})`}
+            {`${name || "Sans catégorie"} (${items.length})`}
           </h3>
-          <Button
-            variant="ghost"
-            className="p-0! text-red-600 hover:text-red-700"
-            onClick={handleDelete}
-          >
-            <span className="material-symbols-outlined">delete</span>
-          </Button>
+          {!defaultCategory && (
+            <Button
+              variant="ghost"
+              className="p-0! text-red-600 hover:text-red-700"
+              onClick={handleDelete}
+            >
+              <span className="material-symbols-outlined">delete</span>
+            </Button>
+          )}
         </div>
       )}
       {items.length === 0 ? (
