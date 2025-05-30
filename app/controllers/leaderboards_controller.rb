@@ -13,7 +13,7 @@ class LeaderboardsController < ApplicationController
 
     render inertia: "Leaderboard/Show", props: {
       users: @users.map do |user|
-        user.as_json(only: [ :id, :username, :title ], methods: [ :number_of_comments, :number_of_ratings, :number_of_recipes, :avatar_url ])
+        user.as_json(only: [ :id, :username, :title, :recipes_count, :comments_count, :ratings_count ], methods: [ :avatar_url ])
       end,
       type: params[:type] || "recipes"
     }

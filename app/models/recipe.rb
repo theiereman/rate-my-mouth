@@ -22,8 +22,9 @@ class Recipe < ApplicationRecord
   has_many :ratings, dependent: :destroy
   has_many :notes, dependent: :destroy
 
-  belongs_to :user
-  has_and_belongs_to_many :tags
+  belongs_to :user, counter_cache: true
+  has_many :recipe_tags, dependent: :destroy
+  has_many :tags, through: :recipe_tags
 
   validates :name, presence: true
   validates :number_of_servings, presence: true, numericality: { only_integer: true, greater_than: 0 }

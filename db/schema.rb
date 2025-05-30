@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_23_142317) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_27_074545) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -70,6 +70,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_23_142317) do
     t.index ["user_id"], name: "index_ratings_on_user_id"
   end
 
+  create_table "recipe_tags", force: :cascade do |t|
+    t.integer "recipe_id", null: false
+    t.integer "tag_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["recipe_id", "tag_id"], name: "index_recipe_tags_on_recipe_id_and_tag_id", unique: true
+    t.index ["recipe_id"], name: "index_recipe_tags_on_recipe_id"
+    t.index ["tag_id"], name: "index_recipe_tags_on_tag_id"
+  end
+
   create_table "recipes", force: :cascade do |t|
     t.string "name"
     t.string "url"
@@ -81,20 +91,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_23_142317) do
     t.integer "number_of_servings", default: 4, null: false
     t.integer "difficulty", default: 0, null: false
     t.text "description"
+    t.integer "comments_count", default: 0, null: false
     t.index ["user_id"], name: "index_recipes_on_user_id"
-  end
-
-  create_table "recipes_tags", id: false, force: :cascade do |t|
-    t.integer "recipe_id", null: false
-    t.integer "tag_id", null: false
-    t.index ["recipe_id", "tag_id"], name: "index_recipes_tags_on_recipe_id_and_tag_id"
-    t.index ["tag_id", "recipe_id"], name: "index_recipes_tags_on_tag_id_and_recipe_id"
   end
 
   create_table "tags", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "recipes_count", default: 0, null: false
   end
 
   create_table "user_achievements", force: :cascade do |t|
@@ -117,6 +122,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_23_142317) do
     t.datetime "remember_created_at"
     t.boolean "notification_preference", default: true, null: false
     t.string "title"
+    t.integer "recipes_count", default: 0, null: false
+    t.integer "comments_count", default: 0, null: false
+    t.integer "ratings_count", default: 0, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
@@ -128,6 +136,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_23_142317) do
   add_foreign_key "notes", "users"
   add_foreign_key "ratings", "recipes"
   add_foreign_key "ratings", "users"
+  add_foreign_key "recipe_tags", "recipes"
+  add_foreign_key "recipe_tags", "tags"
   add_foreign_key "recipes", "users"
   add_foreign_key "user_achievements", "users"
 end

@@ -36,13 +36,13 @@ export default function Show({ users, type = "recipes" }: LeaderboardProps) {
   const getBadgeValue = (user: UserType) => {
     switch (type) {
       case "recipes":
-        return user.number_of_recipes;
+        return user.recipes_count;
       case "comments":
-        return user.number_of_comments;
+        return user.comments_count;
       case "ratings":
-        return user.number_of_ratings;
+        return user.ratings_count;
       default:
-        return user.number_of_recipes;
+        return user.recipes_count;
     }
   };
 
