@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 
 interface CardProps {
   children: React.ReactNode;
@@ -27,22 +27,15 @@ interface CardFooterProps {
 
 const getVariantClasses = (variant: string) => {
   switch (variant) {
-    case "default":
-      return "bg-white shadow-md";
-    case "elevated":
-      return "bg-white shadow-lg";
     case "outlined":
-      return "bg-white border border-neutral-200";
+      return "border border-neutral-300";
     case "flat":
       return "bg-transparent";
-    default:
-      return "bg-white shadow-md";
   }
 };
 
 export const Card = ({
   children,
-  className = "",
   variant = "outlined",
   hover = false,
   onClick,
@@ -53,13 +46,33 @@ export const Card = ({
     ? "transition-transform duration-200 hover:scale-[1.01] cursor-pointer"
     : "";
 
+  const getRandomRotation = useMemo(() => {
+    const rotation = Math.random();
+    return rotation < 0.5
+      ? Math.random() * 0.7 + 0.3
+      : Math.random() * -0.7 - 0.3;
+  }, []);
+
   return (
-    <div
-      ref={ref}
-      className={`flex flex-col p-5 rounded-lg ${variantClasses} ${hoverClasses} ${className} animate-fade-in`}
-      onClick={onClick}
-    >
-      {children}
+    <div className={`group/card relative ${hoverClasses} `}>
+      <div
+        className={`${
+          hover ? "group-hover/card:border-neutral-400" : ""
+        } flex flex-col p-5 rounded-lg ${variantClasses} animate-fade-in`}
+        onClick={onClick}
+      >
+        {variant === "outlined" && (
+          <div
+            className={`${
+              hover ? "group-hover/card:border-neutral-400" : ""
+            } absolute top-0 -left-1 w-full h-full rounded-lg pointer-events-none ${variantClasses} animate-fade-in`}
+            style={{
+              transform: `rotate(${getRandomRotation}deg)`,
+            }}
+          />
+        )}
+        {children}
+      </div>
     </div>
   );
 };

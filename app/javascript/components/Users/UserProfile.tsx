@@ -37,9 +37,12 @@ export default function UserProfile({ user }: { user: UserType }) {
           </div>
         </div>
         <div className="flex flex-wrap gap-2">
-          <Badge variant="primary">{user.comments_count} commentaires</Badge>
-          <Badge variant="secondary">{user.recipes_count} recettes</Badge>
-          <Badge variant="accent">{user.ratings_count} évaluations</Badge>
+          <Badge
+            text={`${user.comments_count} commentaires`}
+            variant="primary"
+          />
+          <Badge text={`${user.recipes_count} recettes`} variant="secondary" />
+          <Badge text={`${user.ratings_count} évaluations`} variant="accent" />
         </div>
       </Card.Body>
     </Card>

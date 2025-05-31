@@ -51,12 +51,10 @@ export default function RatingForm({
 
   return (
     <div className={`${className}`}>
-      <div className="flex items-center justify-between mb-2">
+      <div className="flex items-center gap-2 mb-2">
         <h3 className="font-medium text-neutral-800">Votre évaluation</h3>
         {rating?.value && (
-          <Badge variant="primary" size="sm">
-            {rating.value.toFixed(1)}
-          </Badge>
+          <Badge text={rating.value.toFixed(1)} variant="primary" />
         )}
       </div>
 

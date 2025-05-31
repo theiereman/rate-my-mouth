@@ -30,7 +30,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <div className="flex flex-col min-h-screen bg-background">
-        <header className="sticky top-0 z-10 bg-background">
+        <header className="sticky top-0 z-50 bg-background">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center h-16 gap-2">
               <HomeButton className="me-6" />
