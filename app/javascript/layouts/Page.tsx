@@ -6,6 +6,7 @@ interface PageProps {
   additionnalHeaderContent?: React.ReactNode;
   title: string;
   subtitle: string;
+  className?: string;
 }
 
 export default function Page({
@@ -13,9 +14,10 @@ export default function Page({
   additionnalHeaderContent,
   title,
   subtitle,
+  className = "",
 }: PageProps) {
   return (
-    <>
+    <div className={className}>
       <Head title={title} />
 
       <div className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center mb-6">
@@ -30,6 +32,6 @@ export default function Page({
       </div>
 
       {children}
-    </>
+    </div>
   );
 }
