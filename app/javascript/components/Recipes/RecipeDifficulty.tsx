@@ -19,15 +19,24 @@ export default function RecipeDifficulty({
 }: {
   difficulty: number;
 }) {
+  const getBadgeText = (difficulty: number): string => {
+    switch (difficulty) {
+      case 0:
+        return "facile";
+      case 1:
+        return "moyen";
+      case 2:
+        return "difficile";
+      default:
+        return "Inconnu";
+    }
+  };
+
   return (
-    <Badge variant={getVariantValue(difficulty)} size="md" {...props}>
-      {difficulty === 0
-        ? "facile"
-        : difficulty === 1
-        ? "moyen"
-        : difficulty === 2
-        ? "difficile"
-        : "Inconnu"}
-    </Badge>
+    <Badge
+      text={getBadgeText(difficulty)}
+      variant={getVariantValue(difficulty)}
+      {...props}
+    />
   );
 }

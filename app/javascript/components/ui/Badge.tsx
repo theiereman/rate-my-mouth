@@ -1,4 +1,8 @@
-import React from "react";
+import React, { useMemo } from "react";
+
+import badge1 from "../../assets/images/badge_1.svg";
+import badge2 from "../../assets/images/badge_2.svg";
+import badge3 from "../../assets/images/badge_3.svg";
 
 export type BadgeVariant =
   | "primary"
@@ -11,8 +15,21 @@ export type BadgeVariant =
   | "neutral";
 type BadgeSize = "xs" | "sm" | "md" | "lg";
 
+const badgeBackgrounds = {
+  1: badge1,
+  2: badge2,
+  3: badge3,
+};
+
+const getRandomBackground = () => {
+  const backgroundNumbers = [1, 2, 3] as const;
+  return backgroundNumbers[
+    Math.floor(Math.random() * backgroundNumbers.length)
+  ];
+};
+
 interface BadgeProps {
-  children: React.ReactNode;
+  text: string;
   variant?: BadgeVariant;
   size?: BadgeSize;
   rounded?: boolean;
@@ -21,29 +38,6 @@ interface BadgeProps {
   className?: string;
   onClick?: () => void;
 }
-
-const getVariantClasses = (variant: BadgeVariant) => {
-  switch (variant) {
-    case "primary":
-      return "bg-primary-100 text-primary-800";
-    case "secondary":
-      return "bg-secondary-100 text-secondary-800";
-    case "accent":
-      return "bg-accent-100 text-accent-800";
-    case "success":
-      return "bg-green-100 text-green-800";
-    case "warning":
-      return "bg-yellow-100 text-yellow-800";
-    case "error":
-      return "bg-red-100 text-red-800";
-    case "info":
-      return "bg-blue-100 text-blue-800";
-    case "neutral":
-      return "bg-neutral-200 text-neutral-800";
-    default:
-      return "bg-primary-100 text-primary-800";
-  }
-};
 
 const getSizeClasses = (size: BadgeSize) => {
   switch (size) {
@@ -60,33 +54,73 @@ const getSizeClasses = (size: BadgeSize) => {
   }
 };
 
+const getBadgeBackgroundClasses = (variant: BadgeVariant) => {
+  switch (variant) {
+    case "primary":
+      return "bg-primary-500";
+    case "secondary":
+      return "bg-secondary-500";
+    case "accent":
+      return "bg-accent-500";
+    case "success":
+      return "bg-valid-500";
+    case "warning":
+      return "bg-warning-500";
+    case "error":
+      return "bg-error-500";
+    case "info":
+      return "bg-blue-500";
+    case "neutral":
+      return "bg-neutral-400";
+    default:
+      return "bg-primary-500";
+  }
+};
+
 export const Badge = ({
-  children,
+  text,
   variant = "primary",
-  size = "sm",
-  rounded = true,
+  size = "md",
   icon,
   iconPosition = "left",
   className = "",
   onClick,
 }: BadgeProps) => {
-  const variantClasses = getVariantClasses(variant);
+  const selectedBackground = useMemo(() => {
+    return getRandomBackground();
+  }, []);
+
+  const backgroundClasses = getBadgeBackgroundClasses(variant);
   const sizeClasses = getSizeClasses(size);
-  const roundedClasses = rounded ? "rounded-full" : "rounded";
   const cursorClass = onClick ? "cursor-pointer" : "";
+
+  const backgroundStyle = {
+    mask: `url(${badgeBackgrounds[selectedBackground]}) no-repeat center`,
+    WebkitMask: `url(${badgeBackgrounds[selectedBackground]}) no-repeat center`,
+    maskSize: "contain",
+    WebkitMaskSize: "contain",
+    opacity: 0.5,
+  };
 
   return (
     <span
-      className={`flex justify-center items-center font-medium whitespace-nowrap ${variantClasses} ${sizeClasses} ${roundedClasses} ${cursorClass} ${className}`}
+      className={`relative flex justify-center items-center whitespace-nowrap ${sizeClasses}${cursorClass} ${className}`}
       onClick={onClick}
     >
-      {icon && iconPosition === "left" && (
-        <div className="mr-1 flex align-center">{icon}</div>
-      )}
-      {children}
-      {icon && iconPosition === "right" && (
-        <div className="ml-1 flex align-center">{icon}</div>
-      )}
+      <div
+        className={`absolute inset-0 ${backgroundClasses}`}
+        style={backgroundStyle}
+        aria-hidden="true"
+      />
+      <span className={`relative flex items-center text-black`}>
+        {icon && iconPosition === "left" && (
+          <div className="mr-1 flex align-center">{icon}</div>
+        )}
+        <span className="font-black">{text}</span>
+        {icon && iconPosition === "right" && (
+          <div className="ml-1 flex align-center">{icon}</div>
+        )}
+      </span>
     </span>
   );
 };

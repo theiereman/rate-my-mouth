@@ -35,13 +35,17 @@ export default function RecipeRatingAverage({
         <h3 className="font-medium text-neutral-800">Note moyenne</h3>
         <div className="flex items-center gap-2">
           {recipe.average_rating > 0 && (
-            <Badge variant={getRatingColor(recipe.average_rating)} size="sm">
-              {recipe.average_rating.toFixed(1)}
-            </Badge>
+            <Badge
+              text={recipe.average_rating.toFixed(1)}
+              variant={getRatingColor(recipe.average_rating)}
+              size="sm"
+            />
           )}
-          <Badge variant="neutral" size="sm">
-            {recipe.ratings.length} avis
-          </Badge>
+          <Badge
+            text={`${recipe.ratings.length} avis`}
+            variant="neutral"
+            size="sm"
+          />
         </div>
       </div>
 

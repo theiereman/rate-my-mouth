@@ -176,7 +176,7 @@ function ItemList({
       <Card.Header>
         <h2 className="text-xl font-semibold text-neutral-800 flex gap-2">
           {title}
-          <Badge variant={badgeVariant}>{items?.length || 0}</Badge>
+          <Badge text={`${items?.length || 0}`} variant={badgeVariant} />
         </h2>
         {items && items.length > 1 && (
           <p className="text-xs text-neutral-500 mt-1 flex items-center gap-1">
@@ -349,13 +349,6 @@ export default function RecipeIngredientInstructionsForm({
                   onChange={(e) => setInputText(e.target.value)}
                   onKeyDown={handleKeyDown}
                   placeholder="Ex: 2 oeufs, cuire la viande pendant 1h, etc."
-                  className={
-                    detectedType === "ingredient"
-                      ? "border-primary-500 bg-primary-50"
-                      : detectedType === "instruction"
-                      ? "border-secondary-500 bg-secondary-50"
-                      : ""
-                  }
                 />
               </div>
 
@@ -386,20 +379,20 @@ export default function RecipeIngredientInstructionsForm({
             </div>
 
             {inputText.trim() && (
-              <div className="mt-2">
+              <div className="mt-1">
                 {detectedType === "ingredient" ? (
-                  <Badge variant="primary" size="md">
+                  <p className="text-sm text-primary-600">
                     Détecté comme ingrédient - Appuyez sur Entrée pour ajouter
-                  </Badge>
+                  </p>
                 ) : detectedType === "instruction" ? (
-                  <Badge variant="secondary" size="md">
+                  <p className="text-sm text-secondary-600">
                     Détecté comme instruction - Appuyez sur Entrée pour ajouter
-                  </Badge>
+                  </p>
                 ) : (
-                  <Badge variant="neutral" size="md">
+                  <p className="text-sm text-neutral-600">
                     Type non détecté - Appuyez sur Entrée ou utilisez les
                     boutons
-                  </Badge>
+                  </p>
                 )}
               </div>
             )}

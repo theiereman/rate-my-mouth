@@ -52,9 +52,10 @@ export default function RecipeItem({ recipe }: { recipe: RecipeType }) {
               <span className="text-lg font-medium text-neutral-700">
                 {recipe.average_rating.toFixed(1)}
               </span>
-              <Badge variant="primary" size="sm">
-                {recipe.ratings.length} avis
-              </Badge>
+              <Badge
+                text={`${recipe.ratings_count} avis`}
+                variant="primary"
+              ></Badge>
             </div>
 
             {isCurrentUser && (
@@ -92,24 +93,33 @@ export default function RecipeItem({ recipe }: { recipe: RecipeType }) {
 
         <div className="flex flex-col gap-4">
           <div id="badges" className="flex-1 flex flex-wrap gap-2">
-            <Badge variant="accent" size="md">
-              {recipe.number_of_servings} portions
-            </Badge>
-            <Badge variant="secondary" size="md">
-              {recipe.ingredients?.length || 0} ingrédients
-            </Badge>
-            <Badge variant="primary" size="md">
-              {recipe.instructions?.length || 0} étapes
-            </Badge>
+            <Badge
+              text={`${recipe.number_of_servings} portions`}
+              variant="accent"
+              size="md"
+            />
+            <Badge
+              text={`${recipe.ingredients?.length || 0} ingrédients`}
+              variant="secondary"
+              size="md"
+            />
+            <Badge
+              text={`${recipe.instructions?.length || 0} étapes`}
+              variant="primary"
+              size="md"
+            />
             <DifficultyBadge difficulty={recipe.difficulty_value} />
           </div>
           {recipe.tags && recipe.tags.length > 0 && (
             <div id="tags" className="flex flex-wrap items-start gap-2">
               <h2 className="text-sm italic">Tags : </h2>
               {recipe.tags.map((tag) => (
-                <Badge key={tag.id} variant="neutral" size="md">
-                  {tag.name}
-                </Badge>
+                <Badge
+                  text={tag.name}
+                  key={tag.id}
+                  variant="neutral"
+                  size="md"
+                />
               ))}
             </div>
           )}

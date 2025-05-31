@@ -46,9 +46,7 @@ export default function AchievementItem({
             {achievement.unlocked &&
               isCurrentUser &&
               (isSelectedAchievement ? (
-                <Badge variant="primary" size="sm">
-                  Titre actuel
-                </Badge>
+                <Badge text="Titre actuel" variant="primary" size="sm" />
               ) : (
                 <LinkButton
                   method="patch"
@@ -62,14 +60,10 @@ export default function AchievementItem({
             <div className="flex-1"></div>
             {achievement.unlocked ? (
               <>
-                <Badge variant="success" size="sm">
-                  Débloqué
-                </Badge>
+                <Badge text="Débloqué" variant="success" size="sm" />
               </>
             ) : (
-              <Badge variant="neutral" size="sm">
-                À débloquer
-              </Badge>
+              <Badge text="À débloquer" variant="neutral" size="sm" />
             )}
           </div>
           {(!achievement.secret || achievement.unlocked) && (
