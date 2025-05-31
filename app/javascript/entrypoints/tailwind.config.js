@@ -5,8 +5,14 @@ export default {
     "./app/javascript/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
+    fontFamily: {
+      sans: ["Quicksand", "system-ui", "sans-serif"],
+      serif: ["LoveYaLikeASister", "Georgia", "serif"],
+      mono: ["JetBrains Mono", "monospace"],
+    },
     extend: {
       colors: {
+        background: "#FFFEFB",
         gray: {
           50: "oklch(0.984 0.003 247.858)",
           100: "oklch(0.968 0.007 247.896)",
@@ -111,11 +117,6 @@ export default {
           900: "oklch(0.208 0.042 265.755)",
           950: "oklch(0.129 0.042 264.695)",
         },
-      },
-      fontFamily: {
-        sans: ["Inter", "system-ui", "sans-serif"],
-        serif: ["Merriweather", "Georgia", "serif"],
-        mono: ["JetBrains Mono", "monospace"],
       },
       borderRadius: {
         sm: "0.25rem",
