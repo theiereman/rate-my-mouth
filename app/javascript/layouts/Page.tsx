@@ -20,7 +20,9 @@ export default function Page({
 
       <div className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center mb-6">
         <div>
-          <h1 className="text-3xl font-bold text-neutral-800">{title}</h1>
+          <h1 className="text-3xl font-bold text-neutral-800 font-serif">
+            {title}
+          </h1>
           <p className="text-neutral-600">{subtitle}</p>
         </div>
 
