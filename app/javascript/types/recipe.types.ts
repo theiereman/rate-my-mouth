@@ -21,6 +21,7 @@ export interface RecipeType {
   ratings: RatingType[];
   user: UserType;
   tags?: TagType[];
+  ratings_count: number;
 }
 
 export type RecipeFormType = {
