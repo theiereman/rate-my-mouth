@@ -2,6 +2,7 @@ import { useForm, Link } from "@inertiajs/react";
 import { FormEvent, useState, useEffect } from "react";
 import { Input, Button } from "@components/ui";
 import AuthLayout from "@layouts/AuthLayout";
+import logo from "../../assets/images/logo_full.svg";
 
 export default function Login({ flash }: PageProps) {
   const [showAlert, setShowAlert] = useState(false);
@@ -36,11 +37,9 @@ export default function Login({ flash }: PageProps) {
 
   const content = (
     <div className="h-full flex flex-col justify-center items-center">
-      <h1 className="text-2xl font-bold m-10 text-primary-600">
-        Rate My Mouth
-      </h1>
-      <div className="w-[400px] border border-neutral-200 bg-neutral-50 p-5 rounded-lg shadow-sm">
-        <h1 className="text-center text-xl font-medium mb-4 text-neutral-800">
+      <img src={logo} alt="" className="w-72 h-72" />
+      <div className="w-[400px] m-12">
+        <h1 className="text-2xl font-medium mb-4 text-neutral-800 font-serif">
           Identifiez-vous
         </h1>
 
