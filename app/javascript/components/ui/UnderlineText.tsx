@@ -11,6 +11,7 @@ type StrokeVariant = 1 | 2 | 3 | 4 | 5 | "random";
 interface UnderlineTextProps {
   children: ReactNode;
   stroke?: StrokeVariant;
+  offset?: number;
 }
 
 const strokes = {
@@ -29,6 +30,7 @@ const getRandomStroke = () => {
 export const UnderlineText = ({
   children,
   stroke = "random",
+  offset = 0,
 }: UnderlineTextProps) => {
   const selectedStroke = useMemo(() => {
     return stroke === "random" ? getRandomStroke() : stroke;
@@ -41,14 +43,17 @@ export const UnderlineText = ({
   };
 
   return (
-    <span className={`relative`}>
-      <span className="relative z-10">{children}</span>
+    <div className="relative inline-block">
+      <span className="z-10">{children}</span>
       <div
-        className={`absolute left-0 bottom-2 w-full h-3 pointer-events-none bg-primary-500`}
-        style={{ ...strokeStyle }}
+        className={`absolute left-0 w-full h-3 pointer-events-none bg-primary-500`}
+        style={{
+          ...strokeStyle,
+          bottom: `${offset}px`,
+        }}
         aria-hidden="true"
       />
-    </span>
+    </div>
   );
 };
 

@@ -2,7 +2,7 @@ import { router } from "@inertiajs/react";
 import { RecipeType } from "@customTypes/recipe.types";
 import RecipeShort from "@components/Recipes/RecipeShortItem";
 import UserSelector from "@components/Users/UserSelector";
-import { LinkButton, Input, Pagination } from "@components/ui";
+import { LinkButton, Input, Pagination, UnderlineText } from "@components/ui";
 import { useEffect, useMemo, useState } from "react";
 import { debounce } from "lodash";
 import TagsSelector from "@components/Tags/TagsSelector";
@@ -98,9 +98,9 @@ export default function Index({ recipes, pagy }: IndexProps) {
         </LinkButton>
       }
     >
-      <div>
+      <div className="space-y-2">
         <h1 className="text-xl font-semibold text-neutral-800 font-serif">
-          Filtres
+          <UnderlineText offset={-2}>Filtres</UnderlineText>
         </h1>
 
         <div className="grid grid-cols-1 md:grid-cols-3 mx-4 gap-4">

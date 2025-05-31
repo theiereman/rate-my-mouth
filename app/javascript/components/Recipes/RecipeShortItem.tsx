@@ -12,7 +12,7 @@ interface RecipeProps {
 export default function RecipeShortItem({ recipe }: RecipeProps) {
   return (
     <Link href={`/recipes/${recipe.id}`} className="block">
-      <Card hover>
+      <Card variant="outlined" hover>
         <div className="flex flex-col h-full sm:flex-row gap-4">
           <RecipeThumbnail
             thumbnailUrl={recipe.thumbnail_url}
