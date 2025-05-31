@@ -1,6 +1,6 @@
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 import { useState } from "react";
-import { LinkButton } from "@components/ui";
+import { LinkButton, UnderlineText } from "@components/ui";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -10,27 +10,36 @@ export default function Navbar() {
     { name: "Classement", href: "/leaderboard" },
   ];
 
+  const { url } = usePage();
+
   return (
-    <nav className="flex-1 flex">
+    <nav className="flex-1 flex font-serif">
       <div className="hidden md:flex">
-        <LinkButton
-          href="/recipes/new"
-          variant="primary"
-          size="sm"
-          className="hidden md:block me-4"
-        >
-          Nouvelle recette
-        </LinkButton>
-        {navItems.map((item) => (
-          <LinkButton
-            key={item.name}
-            href={item.href}
-            variant="ghost"
-            className="hidden md:block"
-          >
-            {item.name}
-          </LinkButton>
-        ))}
+        {navItems.map((item) =>
+          item.href === url ? (
+            <UnderlineText>
+              <LinkButton
+                key={item.name}
+                href={item.href}
+                variant="ghost"
+                size="xl"
+                className="hidden md:block px-4! hover:scale-105! transition-transform! focus:ring-0! focus:ring-offset-0!"
+              >
+                {item.name}
+              </LinkButton>
+            </UnderlineText>
+          ) : (
+            <LinkButton
+              key={item.name}
+              href={item.href}
+              variant="ghost"
+              size="xl"
+              className="hidden md:block px-4! hover:scale-105! transition-transform! focus:ring-0! focus:ring-offset-0!"
+            >
+              {item.name}
+            </LinkButton>
+          )
+        )}
       </div>
 
       {/* Mobile navigation button */}
