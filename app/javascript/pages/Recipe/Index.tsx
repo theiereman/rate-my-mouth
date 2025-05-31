@@ -81,6 +81,7 @@ export default function Index({ recipes, pagy }: IndexProps) {
 
   return (
     <Page
+      className="space-y-8"
       title="Recettes"
       subtitle="Découvrez les dernières recettes et partagez vos recettes favorites !"
       additionnalHeaderContent={
@@ -97,18 +98,12 @@ export default function Index({ recipes, pagy }: IndexProps) {
         </LinkButton>
       }
     >
-      <div
-        id="filters"
-        className="border rounded-lg p-4 my-6 border-neutral-200"
-      >
-        <h1 className="text-xl font-semibold text-neutral-800 mb-2">
+      <div>
+        <h1 className="text-xl font-semibold text-neutral-800 font-serif">
           Filtres
-          <p className="text-sm font-normal text-neutral-500 ">
-            Additionnez les filtres entre eux pour affiner la recherche
-          </p>
         </h1>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 mx-4 gap-4">
           <Input
             placeholder="Rechercher une recette..."
             onChange={(e) => handleSearch(e.target.value)}
