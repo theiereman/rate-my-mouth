@@ -30,13 +30,13 @@ const getVariantClasses = (variant: string) => {
     case "outlined":
       return "border border-neutral-300";
     case "flat":
-      return "bg-transparent";
+      return "bg-transparent p-0!";
   }
 };
 
 export const Card = ({
   children,
-  variant = "outlined",
+  variant = "flat",
   hover = false,
   onClick,
   ref,

@@ -17,7 +17,7 @@ export default function Navbar() {
       <div className="hidden md:flex">
         {navItems.map((item) =>
           item.href === url ? (
-            <UnderlineText>
+            <UnderlineText offset={6} key={item.name}>
               <LinkButton
                 key={item.name}
                 href={item.href}
