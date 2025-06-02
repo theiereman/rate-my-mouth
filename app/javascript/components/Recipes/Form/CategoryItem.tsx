@@ -2,8 +2,8 @@ import { Button, Input } from "@components/ui";
 import EmptyPlaceholder from "@components/ui/EmptyPlaceholder";
 import { ItemType, RecipeItem } from "@customTypes/recipe.types";
 import { useState, useRef, useEffect } from "react";
-import RecipeContentItem from "./RecipeContentItem";
 import { useDroppable } from "@dnd-kit/core";
+import RecipeContentItem from "./RecipeContentItem";
 
 export default function CategoryItem({
   name,

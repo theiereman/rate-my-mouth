@@ -11,7 +11,7 @@ import {
 } from "@components/ui";
 import TagsSelector from "@components/Tags/TagsSelector";
 import RecipeThumbnail from "../RecipeThumbnail";
-import RecipeContentSubform from "../NewForm/RecipeContentSubform";
+import RecipeContentSubform from "./RecipeContentSubform";
 
 interface FormProps {
   recipe: RecipeType;
