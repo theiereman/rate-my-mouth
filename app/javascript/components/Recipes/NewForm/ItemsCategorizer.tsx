@@ -8,14 +8,18 @@ import { useDroppable } from "@dnd-kit/core";
 export default function ItemsCategorizer({
   type,
   items,
+  onItemUpdate,
+  onItemDelete,
 }: {
   type: ItemType;
   items: RecipeItem[];
+  onItemUpdate?: (id: string, value: string) => void;
+  onItemDelete?: (id: string) => void;
 }) {
   const [emptyCategories, setEmptyCategories] = useState<ItemCategory[]>([]);
 
   const { isOver, over, setNodeRef } = useDroppable({
-    id: type,
+    id: type || "",
     data: {
       name: "",
       type,
@@ -82,6 +86,8 @@ export default function ItemsCategorizer({
                 type={type}
                 color={category.color}
                 items={items.filter((item) => item.category === category.name)}
+                onItemUpdate={onItemUpdate}
+                onItemDelete={onItemDelete}
               />
             ))
         )}

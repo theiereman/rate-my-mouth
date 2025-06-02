@@ -12,6 +12,8 @@ export default function CategoryItem({
   color,
   onNameChange,
   onDelete,
+  onItemUpdate,
+  onItemDelete,
 }: {
   name: string;
   type: ItemType;
@@ -19,6 +21,8 @@ export default function CategoryItem({
   color?: string;
   onNameChange?: (newName: string) => void;
   onDelete?: () => void;
+  onItemUpdate?: (id: string, value: string) => void;
+  onItemDelete?: (id: string) => void;
 }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editName, setEditName] = useState(name);
@@ -134,7 +138,12 @@ export default function CategoryItem({
       ) : (
         <ul className="list-disc pl-5">
           {items.map((item) => (
-            <RecipeContentItem key={item.id} item={item} />
+            <RecipeContentItem
+              key={item.id}
+              item={item}
+              onUpdate={onItemUpdate}
+              onDelete={onItemDelete}
+            />
           ))}
         </ul>
       )}

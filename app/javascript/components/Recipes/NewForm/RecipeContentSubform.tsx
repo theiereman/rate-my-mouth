@@ -3,7 +3,14 @@ import ItemsCategorizer from "./ItemsCategorizer";
 import { useTextTypeDetection } from "@hooks/useTextTypeDetection";
 import { useState } from "react";
 import { ItemType, RecipeItem } from "@customTypes/recipe.types";
-import { DndContext, DragEndEvent } from "@dnd-kit/core";
+import {
+  closestCenter,
+  DndContext,
+  DragEndEvent,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
 
 export default function RecipeContentSubform() {
   const [ingredients, setIngredients] = useState<RecipeItem[]>([]);
@@ -14,6 +21,8 @@ export default function RecipeContentSubform() {
   const { inputText, setInputText, detectedType } = useTextTypeDetection();
 
   const addItem = (text: string, type: ItemType) => {
+    if (!text.trim()) return;
+
     if (type === "ingredient") {
       setIngredients([
         ...ingredients,
@@ -100,6 +109,20 @@ export default function RecipeContentSubform() {
     }
   };
 
+  const updateItem = (id: string, value: string) => {
+    setIngredients((prev) =>
+      prev.map((item) => (item.id === id ? { ...item, value } : item))
+    );
+    setInstructions((prev) =>
+      prev.map((item) => (item.id === id ? { ...item, value } : item))
+    );
+  };
+
+  const deleteItem = (id: string) => {
+    setIngredients((prev) => prev.filter((item) => item.id !== id));
+    setInstructions((prev) => prev.filter((item) => item.id !== id));
+  };
+
   return (
     <Card className="space-y-4">
       <div className="flex gap-2 w-full">
@@ -137,9 +160,27 @@ export default function RecipeContentSubform() {
         </Button>
       </div>
       <div className="flex gap-4">
-        <DndContext onDragEnd={handleDragEnd}>
-          <ItemsCategorizer items={ingredients} type="ingredient" />
-          <ItemsCategorizer items={instructions} type="instruction" />
+        <DndContext
+          onDragEnd={handleDragEnd}
+          sensors={useSensors(
+            useSensor(PointerSensor, {
+              activationConstraint: { distance: 8 },
+            })
+          )}
+          collisionDetection={closestCenter}
+        >
+          <ItemsCategorizer
+            items={ingredients}
+            type="ingredient"
+            onItemUpdate={updateItem}
+            onItemDelete={deleteItem}
+          />
+          <ItemsCategorizer
+            items={instructions}
+            type="instruction"
+            onItemUpdate={updateItem}
+            onItemDelete={deleteItem}
+          />
         </DndContext>
       </div>
     </Card>
