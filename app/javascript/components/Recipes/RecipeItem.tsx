@@ -147,24 +147,64 @@ export default function RecipeItem({ recipe }: { recipe: RecipeType }) {
             </h2>
           </Card.Header>
           <Card.Body>
-            <ol className="space-y-4 list-none pl-0">
-              {recipe.instructions && recipe.instructions?.length > 0 ? (
-                recipe.instructions?.map((instruction, index) => (
-                  <li key={index} className="flex gap-3 group">
-                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center font-medium transition-colors">
-                      {index + 1}
-                    </div>
-                    <div className="flex-1 pt-1">
-                      <p className="text-neutral-700">{instruction}</p>
-                    </div>
-                  </li>
-                ))
-              ) : (
-                <EmptyPlaceholder
-                  text={`Aucune instruction n'a été ajouté à cette recette.`}
-                />
-              )}
-            </ol>
+            {recipe.instructions && recipe.instructions?.length > 0 ? (
+              (() => {
+                // Grouper les instructions par catégorie
+                const groupedInstructions = recipe.instructions.reduce(
+                  (groups, instruction) => {
+                    const category = instruction.category || "Instructions";
+                    if (!groups[category]) {
+                      groups[category] = [];
+                    }
+                    groups[category].push(instruction);
+                    return groups;
+                  },
+                  {} as Record<string, typeof recipe.instructions>
+                );
+
+                return (
+                  <div className="space-y-6">
+                    {Object.entries(groupedInstructions).map(
+                      ([category, instructions]) => (
+                        <div
+                          className="flex flex-col items-start"
+                          key={category}
+                        >
+                          {category !== "Instructions" && (
+                            <div className="mb-3">
+                              <Badge variant="primary" size="sm">
+                                {category}
+                              </Badge>
+                            </div>
+                          )}
+                          <ol className="space-y-4 list-none pl-0">
+                            {instructions.map((instruction, index) => (
+                              <li
+                                key={instruction.id || index}
+                                className="flex gap-3 group"
+                              >
+                                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center font-medium transition-colors">
+                                  {index + 1}
+                                </div>
+                                <div className="flex-1 pt-1">
+                                  <p className="text-neutral-700">
+                                    {instruction.name}
+                                  </p>
+                                </div>
+                              </li>
+                            ))}
+                          </ol>
+                        </div>
+                      )
+                    )}
+                  </div>
+                );
+              })()
+            ) : (
+              <EmptyPlaceholder
+                text={`Aucune instruction n'a été ajouté à cette recette.`}
+              />
+            )}
           </Card.Body>
         </Card>
       </Card>

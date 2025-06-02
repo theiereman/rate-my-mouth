@@ -83,8 +83,8 @@ class RecipesController < ApplicationController
     def recipe_params
       params.require(:recipe).permit(
         :name, :description, :url, :number_of_servings, :difficulty, :thumbnail,
-        ingredients: [],
-        instructions: [],
+        ingredients_attributes: [ :id, :name, :category, :_destroy ],
+        instructions_attributes: [ :id, :name, :category, :_destroy ],
         tags_attributes: [ :id, :name ]
       )
     end
@@ -93,6 +93,8 @@ class RecipesController < ApplicationController
       recipe.as_json(include: {
         user: { only: [ :id, :username ]  },
         tags: {},
+        ingredients: {},
+        instructions: {},
         comments: {
           include: {
             user: {

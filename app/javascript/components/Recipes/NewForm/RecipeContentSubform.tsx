@@ -1,8 +1,13 @@
 import { Badge, Button, Card, Input } from "@components/ui";
 import ItemsCategorizer from "./ItemsCategorizer";
 import { useTextTypeDetection } from "@hooks/useTextTypeDetection";
-import { useState } from "react";
-import { ItemType, RecipeItem } from "@customTypes/recipe.types";
+import { useState, useEffect } from "react";
+import {
+  ItemType,
+  RecipeItem,
+  IngredientType,
+  InstructionType,
+} from "@customTypes/recipe.types";
 import {
   DndContext,
   DragEndEvent,
@@ -12,7 +17,30 @@ import {
   useSensors,
 } from "@dnd-kit/core";
 
-export default function RecipeContentSubform() {
+interface RecipeContentSubformProps {
+  initialIngredients?: IngredientType[];
+  initialInstructions?: InstructionType[];
+  onDataChange?: (data: {
+    ingredients_attributes: {
+      id?: number;
+      name: string;
+      category: string;
+      _destroy?: boolean;
+    }[];
+    instructions_attributes: {
+      id?: number;
+      name: string;
+      category: string;
+      _destroy?: boolean;
+    }[];
+  }) => void;
+}
+
+export default function RecipeContentSubform({
+  initialIngredients = [],
+  initialInstructions = [],
+  onDataChange,
+}: RecipeContentSubformProps) {
   const [ingredients, setIngredients] = useState<RecipeItem[]>([]);
   const [instructions, setInstructions] = useState<RecipeItem[]>([]);
 
@@ -20,7 +48,61 @@ export default function RecipeContentSubform() {
     Map<ItemType, string>
   >(new Map());
 
+  // Initialiser les données depuis les props
+  useEffect(() => {
+    const initialIngredientsItems: RecipeItem[] = initialIngredients.map(
+      (ingredient) => ({
+        id: ingredient.id?.toString() || Date.now().toString(),
+        type: "ingredient" as ItemType,
+        value: ingredient.name,
+        category: ingredient.category || "",
+        dbId: ingredient.id, // Garder l'ID de la base de données pour les mises à jour
+      })
+    );
+
+    const initialInstructionsItems: RecipeItem[] = initialInstructions.map(
+      (instruction) => ({
+        id: instruction.id?.toString() || Date.now().toString(),
+        type: "instruction" as ItemType,
+        value: instruction.name,
+        category: instruction.category || "",
+        dbId: instruction.id, // Garder l'ID de la base de données pour les mises à jour
+      })
+    );
+
+    setIngredients(initialIngredientsItems);
+    setInstructions(initialInstructionsItems);
+  }, [initialIngredients, initialInstructions]);
+
+  // Notifier le parent des changements
+  useEffect(() => {
+    if (onDataChange) {
+      const ingredientsAttributes = ingredients.map((item) => ({
+        id: item.dbId,
+        name: item.value,
+        category: item.category,
+        _destroy: item._destroy || false,
+      }));
+
+      const instructionsAttributes = instructions.map((item) => ({
+        id: item.dbId,
+        name: item.value,
+        category: item.category,
+        _destroy: item._destroy || false,
+      }));
+
+      onDataChange({
+        ingredients_attributes: ingredientsAttributes,
+        instructions_attributes: instructionsAttributes,
+      });
+    }
+  }, [ingredients, instructions, onDataChange]);
+
   const items = ingredients.concat(instructions);
+
+  // Filtrer les éléments non supprimés pour l'affichage
+  const visibleIngredients = ingredients.filter((item) => !item._destroy);
+  const visibleInstructions = instructions.filter((item) => !item._destroy);
 
   const { inputText, setInputText, detectedType } = useTextTypeDetection();
 
@@ -128,8 +210,38 @@ export default function RecipeContentSubform() {
   };
 
   const deleteItem = (id: string) => {
-    setIngredients((prev) => prev.filter((item) => item.id !== id));
-    setInstructions((prev) => prev.filter((item) => item.id !== id));
+    // Pour les éléments existants (avec dbId), on les marque comme _destroy
+    // Pour les nouveaux éléments, on les supprime directement
+    const ingredientToDelete = ingredients.find((item) => item.id === id);
+    const instructionToDelete = instructions.find((item) => item.id === id);
+
+    if (ingredientToDelete) {
+      if (ingredientToDelete.dbId) {
+        // Élément existant : on le marque comme détruit mais on le garde pour le formulaire
+        setIngredients((prev) =>
+          prev.map((item) =>
+            item.id === id ? { ...item, _destroy: true } : item
+          )
+        );
+      } else {
+        // Nouvel élément : on le supprime directement
+        setIngredients((prev) => prev.filter((item) => item.id !== id));
+      }
+    }
+
+    if (instructionToDelete) {
+      if (instructionToDelete.dbId) {
+        // Élément existant : on le marque comme détruit mais on le garde pour le formulaire
+        setInstructions((prev) =>
+          prev.map((item) =>
+            item.id === id ? { ...item, _destroy: true } : item
+          )
+        );
+      } else {
+        // Nouvel élément : on le supprime directement
+        setInstructions((prev) => prev.filter((item) => item.id !== id));
+      }
+    }
   };
 
   const handleCategoryNameChange = (
@@ -266,7 +378,7 @@ export default function RecipeContentSubform() {
           )}
         >
           <ItemsCategorizer
-            items={ingredients}
+            items={visibleIngredients}
             type="ingredient"
             onItemUpdate={updateItem}
             onItemDelete={deleteItem}
@@ -278,7 +390,7 @@ export default function RecipeContentSubform() {
             }
           />
           <ItemsCategorizer
-            items={instructions}
+            items={visibleInstructions}
             type="instruction"
             onItemUpdate={updateItem}
             onItemDelete={deleteItem}
