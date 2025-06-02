@@ -57,7 +57,6 @@ export default function RecipeContentSubform() {
       const item = items.find((item) => item.id === itemId);
 
       if (item) {
-        // Create a copy of the item to avoid mutations
         const updatedItem = {
           ...item,
           category: categName,

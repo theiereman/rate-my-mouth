@@ -3,6 +3,7 @@ import EmptyPlaceholder from "@components/ui/EmptyPlaceholder";
 import { ItemCategory, ItemType, RecipeItem } from "@customTypes/recipe.types";
 import CategoryItem from "./CategoryItem";
 import { useState } from "react";
+import { useDroppable } from "@dnd-kit/core";
 
 export default function ItemsCategorizer({
   type,
@@ -12,6 +13,14 @@ export default function ItemsCategorizer({
   items: RecipeItem[];
 }) {
   const [emptyCategories, setEmptyCategories] = useState<ItemCategory[]>([]);
+
+  const { isOver, over, setNodeRef } = useDroppable({
+    id: type,
+    data: {
+      name: "",
+      type,
+    },
+  });
 
   const categories = items.reduce((acc, item) => {
     const category = acc.find((cat) => cat.name === item.category);
@@ -44,7 +53,13 @@ export default function ItemsCategorizer({
   };
 
   return (
-    <Card className="flex-1 p-0!" variant="flat">
+    <Card
+      ref={setNodeRef}
+      className={`flex-1 p-0! ${
+        isOver && over?.id === type ? "border-2 border-primary-500" : ""
+      }`}
+      variant="flat"
+    >
       <Card.Header className="flex gap-2">
         <h2 className="text-xl font-semibold text-neutral-800 flex items-center gap-1">
           {type === "ingredient" ? "Ingrédients" : "Instructions"}
