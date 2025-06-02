@@ -123,6 +123,19 @@ export default function RecipeContentSubform() {
     setInstructions((prev) => prev.filter((item) => item.id !== id));
   };
 
+  const handleCategoryNameChange = (oldName: string, newName: string) => {
+    setIngredients((prev) =>
+      prev.map((item) =>
+        item.category === oldName ? { ...item, category: newName } : item
+      )
+    );
+    setInstructions((prev) =>
+      prev.map((item) =>
+        item.category === oldName ? { ...item, category: newName } : item
+      )
+    );
+  };
+
   return (
     <Card className="space-y-4">
       <div className="flex gap-2 w-full">
@@ -174,12 +187,14 @@ export default function RecipeContentSubform() {
             type="ingredient"
             onItemUpdate={updateItem}
             onItemDelete={deleteItem}
+            onCategoryNameChange={handleCategoryNameChange}
           />
           <ItemsCategorizer
             items={instructions}
             type="instruction"
             onItemUpdate={updateItem}
             onItemDelete={deleteItem}
+            onCategoryNameChange={handleCategoryNameChange}
           />
         </DndContext>
       </div>

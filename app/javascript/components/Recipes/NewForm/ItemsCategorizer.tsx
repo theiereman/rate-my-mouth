@@ -10,11 +10,13 @@ export default function ItemsCategorizer({
   items,
   onItemUpdate,
   onItemDelete,
+  onCategoryNameChange,
 }: {
   type: ItemType;
   items: RecipeItem[];
   onItemUpdate?: (id: string, value: string) => void;
   onItemDelete?: (id: string) => void;
+  onCategoryNameChange?: (name: string, newName: string) => void;
 }) {
   const [emptyCategories, setEmptyCategories] = useState<ItemCategory[]>([]);
 
@@ -56,6 +58,15 @@ export default function ItemsCategorizer({
     ]);
   };
 
+  const handleCategoryNameChange = (oldName: string, newName: string) => {
+    setEmptyCategories((prev) =>
+      prev.map((cat) =>
+        cat.name === oldName ? { ...cat, name: newName } : cat
+      )
+    );
+    onCategoryNameChange && onCategoryNameChange(oldName, newName);
+  };
+
   return (
     <Card
       ref={setNodeRef}
@@ -88,6 +99,9 @@ export default function ItemsCategorizer({
                 items={items.filter((item) => item.category === category.name)}
                 onItemUpdate={onItemUpdate}
                 onItemDelete={onItemDelete}
+                onNameChange={(newName) =>
+                  handleCategoryNameChange(category.name, newName)
+                }
               />
             ))
         )}
