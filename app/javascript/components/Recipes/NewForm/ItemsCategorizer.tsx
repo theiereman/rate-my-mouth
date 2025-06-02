@@ -51,7 +51,21 @@ export default function ItemsCategorizer({
 
   const handleAddCategoryClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    const newCategoryName = `Catégorie ${allCategories.length + 1}`;
+
+    // Trouver le plus grand indice existant dans les noms de catégories
+    let maxIndex = 0;
+    allCategories.forEach((cat) => {
+      const match = cat.name.match(/^Catégorie (\d+)$/);
+      if (match) {
+        const index = parseInt(match[1], 10);
+        if (index > maxIndex) {
+          maxIndex = index;
+        }
+      }
+    });
+
+    const newCategoryName = `Catégorie ${maxIndex + 1}`;
+
     setEmptyCategories([
       ...emptyCategories,
       {

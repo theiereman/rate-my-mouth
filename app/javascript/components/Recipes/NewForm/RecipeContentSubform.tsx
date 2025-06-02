@@ -96,7 +96,7 @@ export default function RecipeContentSubform({
         instructions_attributes: instructionsAttributes,
       });
     }
-  }, [ingredients, instructions, onDataChange]);
+  }, [ingredients, instructions]);
 
   const items = ingredients.concat(instructions);
 
