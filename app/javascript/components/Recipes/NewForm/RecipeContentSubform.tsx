@@ -1,4 +1,4 @@
-import { Button, Card, Input } from "@components/ui";
+import { Badge, Button, Card, Input } from "@components/ui";
 import ItemsCategorizer from "./ItemsCategorizer";
 import { useTextTypeDetection } from "@hooks/useTextTypeDetection";
 import { useState } from "react";
@@ -7,6 +7,7 @@ import {
   DndContext,
   DragEndEvent,
   PointerSensor,
+  TouchSensor,
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
@@ -179,7 +180,7 @@ export default function RecipeContentSubform() {
 
   return (
     <Card className="space-y-4">
-      <div className="flex gap-2 w-full">
+      <div className="flex flex-col sm:flex-row gap-2 w-full">
         <Input
           value={inputText}
           onChange={(e) => setInputText(e.target.value)}
@@ -194,31 +195,73 @@ export default function RecipeContentSubform() {
               : ""
           }
         ></Input>
-        <Button
-          variant="primary"
-          onClick={(e) => {
-            e.preventDefault();
-            addItem(inputText, "ingredient");
-          }}
-        >
-          Ingredient
-        </Button>
-        <Button
-          variant="secondary"
-          onClick={(e) => {
-            e.preventDefault();
-            addItem(inputText, "instruction");
-          }}
-        >
-          Instruction
-        </Button>
+
+        <div className="flex gap-2 justify-end">
+          <Button
+            variant="primary"
+            onClick={(e) => {
+              e.preventDefault();
+              addItem(inputText, "ingredient");
+            }}
+          >
+            <span className="material-symbols-outlined">add</span>
+            Ingredient
+          </Button>
+          <Button
+            variant="secondary"
+            onClick={(e) => {
+              e.preventDefault();
+              addItem(inputText, "instruction");
+            }}
+          >
+            <span className="material-symbols-outlined">add</span>
+            Instruction
+          </Button>
+        </div>
       </div>
-      <div className="flex gap-4">
+      {inputText.trim() && (
+        <>
+          {detectedType === "ingredient" ? (
+            <Badge variant="primary" size="md">
+              Détecté comme ingrédient - Appuyez sur Entrée pour ajouter
+            </Badge>
+          ) : (
+            <Badge variant="secondary" size="md">
+              Détecté comme instruction - Appuyez sur Entrée pour ajouter
+            </Badge>
+          )}
+        </>
+      )}
+      <ul className="text-sm text-neutral-600">
+        <li className="flex items-start gap-2">
+          <span className="material-symbols-outlined text-primary-600">
+            check
+          </span>
+          <span>
+            Les <strong>ingrédients</strong> contiennent généralement des
+            quantités (ex: "2 oeufs", "200g de farine", "une pincée de sel")
+          </span>
+        </li>
+        <li className="flex items-start gap-2">
+          <span className="material-symbols-outlined text-secondary-600">
+            check
+          </span>
+          <span>
+            Les <strong>instructions</strong> commencent souvent par un verbe
+            d'action (ex: "Mélanger les ingrédients", "Cuire pendant 10
+            minutes")
+          </span>
+        </li>
+      </ul>
+      <div className="flex flex-col md:flex-row gap-4">
         <DndContext
           onDragEnd={handleDragEnd}
           sensors={useSensors(
             useSensor(PointerSensor, {
               activationConstraint: { distance: 8 },
+            }),
+            useSensor(TouchSensor, {
+              activationConstraint: { delay: 250, tolerance: 5 },
             })
           )}
         >

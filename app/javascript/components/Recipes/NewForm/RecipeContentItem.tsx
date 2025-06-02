@@ -88,7 +88,7 @@ export default function RecipeContentItem({
 
   return (
     <div
-      className={`flex-1 flex items-start justify-between p-1 rounded-lg border transition-colors cursor-grab ${bgColorClass}`}
+      className={`flex-1 flex items-start justify-between p-1 rounded-lg border transition-colors cursor-grab touch-manipulation ${bgColorClass}`}
       ref={setNodeRef}
       style={style}
       {...listeners}
