@@ -1,16 +1,21 @@
 import { Button, Input } from "@components/ui";
 import EmptyPlaceholder from "@components/ui/EmptyPlaceholder";
+import { ItemType, RecipeItem } from "@customTypes/recipe.types";
 import { useState, useRef, useEffect } from "react";
+import RecipeContentItem from "./RecipeContentItem";
+import { useDroppable } from "@dnd-kit/core";
 
 export default function CategoryItem({
   name,
+  type,
   items,
   color,
   onNameChange,
   onDelete,
 }: {
   name: string;
-  items: string[];
+  type: ItemType;
+  items: RecipeItem[];
   color?: string;
   onNameChange?: (newName: string) => void;
   onDelete?: () => void;
@@ -18,6 +23,14 @@ export default function CategoryItem({
   const [isEditing, setIsEditing] = useState(false);
   const [editName, setEditName] = useState(name);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const { isOver, setNodeRef } = useDroppable({
+    id: `${name}-${type}`,
+    data: {
+      name,
+      type,
+    },
+  });
 
   const defaultCategory = name === "";
 
@@ -71,7 +84,13 @@ export default function CategoryItem({
   };
 
   return (
-    <div className="rounded-lg p-2" style={{ backgroundColor: color }}>
+    <div
+      ref={setNodeRef}
+      className={`rounded-lg p-2 ${
+        isOver ? "border-2 border-primary-500" : ""
+      }`}
+      style={{ backgroundColor: color }}
+    >
       {isEditing ? (
         <Input
           ref={inputRef}
@@ -114,8 +133,8 @@ export default function CategoryItem({
         />
       ) : (
         <ul className="list-disc pl-5">
-          {items.map((item, index) => (
-            <li key={index}>{item}</li>
+          {items.map((item) => (
+            <RecipeContentItem key={item.id} item={item} />
           ))}
         </ul>
       )}

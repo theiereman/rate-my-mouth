@@ -1,78 +1,39 @@
 import { Button, Card, Input } from "@components/ui";
-import CategoryContainer from "./CategoryContainer";
+import ItemsCategorizer from "./ItemsCategorizer";
 import { useTextTypeDetection } from "@hooks/useTextTypeDetection";
 import { useState } from "react";
-import { ItemCategory, ItemType } from "@customTypes/recipe.types";
+import { ItemType, RecipeItem } from "@customTypes/recipe.types";
+import { DndContext, DragEndEvent } from "@dnd-kit/core";
 
 export default function RecipeContentSubform() {
-  const [ingredientCategories, setIngredientCategories] = useState<
-    ItemCategory[]
-  >([]);
-  const [instructionsCategories, setInstructionsCategories] = useState<
-    ItemCategory[]
-  >([]);
+  const [ingredients, setIngredients] = useState<RecipeItem[]>([]);
+  const [instructions, setInstructions] = useState<RecipeItem[]>([]);
+
+  const items = ingredients.concat(instructions);
 
   const { inputText, setInputText, detectedType } = useTextTypeDetection();
 
-  const getDefaultCategory = (type: ItemType) => {
-    const categories =
-      type === "ingredient"
-        ? [...ingredientCategories]
-        : [...instructionsCategories];
-    return (
-      categories.find((cat) => cat.name === "" && cat.type === type) || {
-        name: "",
-        type: type,
-        color: "#f3f4f6",
-        items: [],
-      }
-    );
-  };
-
-  const handleCategoryDelete = (type: ItemType, index: number) => {
-    const categories =
-      type === "ingredient"
-        ? [...ingredientCategories]
-        : [...instructionsCategories];
-
-    const defaultCategory = getDefaultCategory(type);
-    defaultCategory.items.push(...categories[index].items);
-
-    const updatedCategories = categories.filter((_, i) => i !== index);
-
+  const addItem = (text: string, type: ItemType) => {
     if (type === "ingredient") {
-      setIngredientCategories(updatedCategories);
+      setIngredients([
+        ...ingredients,
+        {
+          id: Date.now().toString(),
+          type: "ingredient",
+          value: text,
+          category: "",
+        },
+      ]);
     } else {
-      setInstructionsCategories(updatedCategories);
-    }
-  };
-
-  const addItemToDefaultCategory = (text: string, type: ItemType) => {
-    text = text.trim();
-    if (!text) return;
-
-    const categories =
-      type === "ingredient"
-        ? [...ingredientCategories]
-        : [...instructionsCategories];
-    let defaultCategory = categories.find(
-      (cat) => cat.name === "" && cat.type === type
-    );
-
-    if (!defaultCategory) {
-      defaultCategory = getDefaultCategory(type);
-      categories.push(defaultCategory);
-    }
-
-    defaultCategory.items.push({
-      type: type,
-      value: text,
-    });
-
-    if (type === "instruction") {
-      setInstructionsCategories(categories);
-    } else {
-      setIngredientCategories(categories);
+      setInstructions([
+        ...instructions,
+        {
+          id: Date.now().toString(),
+          type: "instruction",
+          value: text,
+          category: "",
+        },
+      ]);
     }
 
     setInputText("");
@@ -80,7 +41,63 @@ export default function RecipeContentSubform() {
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      addItemToDefaultCategory(inputText, detectedType);
+      addItem(inputText, detectedType);
+    }
+  };
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (over) {
+      const categName = over.data.current?.name;
+      const categType = over.data.current?.type as ItemType;
+
+      const itemId = active.id;
+      const itemType = active.data.current?.type as ItemType;
+      const item = items.find((item) => item.id === itemId);
+
+      if (item) {
+        // Create a copy of the item to avoid mutations
+        const updatedItem = {
+          ...item,
+          category: categName,
+          type: categType, // Update the type to match the target category
+        };
+
+        // Remove item from its current list
+        if (itemType === "ingredient") {
+          setIngredients((prev) => prev.filter((i) => i.id !== itemId));
+        } else {
+          setInstructions((prev) => prev.filter((i) => i.id !== itemId));
+        }
+
+        // Add item to the target list
+        if (categType === "ingredient") {
+          setIngredients((prev) => {
+            // Check if item already exists in target list (shouldn't happen, but safety check)
+            const existingItemIndex = prev.findIndex((i) => i.id === itemId);
+            if (existingItemIndex >= 0) {
+              // Update existing item
+              return prev.map((i) => (i.id === itemId ? updatedItem : i));
+            } else {
+              // Add new item
+              return [...prev, updatedItem];
+            }
+          });
+        } else {
+          setInstructions((prev) => {
+            // Check if item already exists in target list (shouldn't happen, but safety check)
+            const existingItemIndex = prev.findIndex((i) => i.id === itemId);
+            if (existingItemIndex >= 0) {
+              // Update existing item
+              return prev.map((i) => (i.id === itemId ? updatedItem : i));
+            } else {
+              // Add new item
+              return [...prev, updatedItem];
+            }
+          });
+        }
+      }
     }
   };
 
@@ -105,7 +122,7 @@ export default function RecipeContentSubform() {
           variant="primary"
           onClick={(e) => {
             e.preventDefault();
-            addItemToDefaultCategory(inputText, "ingredient");
+            addItem(inputText, "ingredient");
           }}
         >
           Ingredient
@@ -114,29 +131,17 @@ export default function RecipeContentSubform() {
           variant="secondary"
           onClick={(e) => {
             e.preventDefault();
-            addItemToDefaultCategory(inputText, "instruction");
+            addItem(inputText, "instruction");
           }}
         >
           Instruction
         </Button>
       </div>
       <div className="flex gap-4">
-        <CategoryContainer
-          categories={ingredientCategories}
-          onCategoryChange={setIngredientCategories}
-          onCategoryDelete={(index) => {
-            handleCategoryDelete("ingredient", index);
-          }}
-          type="ingredient"
-        ></CategoryContainer>
-        <CategoryContainer
-          categories={instructionsCategories}
-          onCategoryChange={setInstructionsCategories}
-          onCategoryDelete={(index) => {
-            handleCategoryDelete("instruction", index);
-          }}
-          type="instruction"
-        ></CategoryContainer>
+        <DndContext onDragEnd={handleDragEnd}>
+          <ItemsCategorizer items={ingredients} type="ingredient" />
+          <ItemsCategorizer items={instructions} type="instruction" />
+        </DndContext>
       </div>
     </Card>
   );
