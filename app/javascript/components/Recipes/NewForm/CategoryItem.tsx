@@ -107,36 +107,33 @@ export default function CategoryItem({
           containerClassName="mb-2"
         />
       ) : (
-        <div className="flex justify-between items-start">
-          <h3
-            className={`text-neutral-600 text-sm mb-2 ${
-              onNameChange && !defaultCategory
-                ? "cursor-pointer hover:text-neutral-800 transition-colors"
-                : ""
-            }`}
-            onClick={handleTitleClick}
-            title={onNameChange ? "Cliquer pour modifier le nom" : undefined}
-          >
-            {`${name || "Sans catégorie"} (${items.length})`}
-          </h3>
-          {!defaultCategory && (
+        !defaultCategory && (
+          <div className="flex justify-between items-start">
+            <h3
+              className={`text-neutral-600 text-sm mb-2 line-clamp-1 text-ellipsis ${
+                onNameChange && !defaultCategory
+                  ? "cursor-pointer hover:text-neutral-800 transition-colors"
+                  : ""
+              }`}
+              onClick={handleTitleClick}
+              title={onNameChange ? "Cliquer pour modifier le nom" : undefined}
+            >
+              {`${name || "Sans catégorie"} (${items.length})`}
+            </h3>
             <Button
               variant="ghost"
-              className="p-0! text-red-600 hover:text-red-700"
+              className="p-0! text-red-600 opacity-40 hover:text-red-700 hover:opacity-100"
               onClick={handleDelete}
             >
-              <span className="material-symbols-outlined">delete</span>
+              Supprimer
             </Button>
-          )}
-        </div>
+          </div>
+        )
       )}
       {items.length === 0 ? (
-        <EmptyPlaceholder
-          variant="outline"
-          text="Aucun élément dans cette catégorie"
-        />
+        <EmptyPlaceholder text="Aucun élément dans cette catégorie" />
       ) : (
-        <ul className="list-disc pl-5">
+        <div className="space-y-2">
           {items.map((item) => (
             <RecipeContentItem
               key={item.id}
@@ -145,7 +142,7 @@ export default function CategoryItem({
               onDelete={onItemDelete}
             />
           ))}
-        </ul>
+        </div>
       )}
     </div>
   );

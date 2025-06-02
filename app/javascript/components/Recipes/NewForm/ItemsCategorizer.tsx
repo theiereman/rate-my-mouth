@@ -11,12 +11,14 @@ export default function ItemsCategorizer({
   onItemUpdate,
   onItemDelete,
   onCategoryNameChange,
+  onCategoryDelete,
 }: {
   type: ItemType;
   items: RecipeItem[];
   onItemUpdate?: (id: string, value: string) => void;
   onItemDelete?: (id: string) => void;
   onCategoryNameChange?: (name: string, newName: string) => void;
+  onCategoryDelete?: (name: string) => void;
 }) {
   const [emptyCategories, setEmptyCategories] = useState<ItemCategory[]>([]);
 
@@ -67,6 +69,11 @@ export default function ItemsCategorizer({
     onCategoryNameChange && onCategoryNameChange(oldName, newName);
   };
 
+  const handleCategoryDelete = (name: string) => {
+    setEmptyCategories((prev) => prev.filter((cat) => cat.name !== name));
+    onCategoryDelete && onCategoryDelete(name);
+  };
+
   return (
     <Card
       ref={setNodeRef}
@@ -84,8 +91,12 @@ export default function ItemsCategorizer({
       <Card.Body className="space-y-2">
         {allCategories.length === 0 ? (
           <EmptyPlaceholder
-            text="Aucun élément ajouté"
-            subtext="Utiliser le champs ci-dessus pour en ajouter de nouveaux."
+            text={
+              type == "ingredient"
+                ? "Aucun ingrédient ajouté"
+                : `Aucune instruction ajoutée`
+            }
+            subtext="Utiliser le champs ci-dessus pour en ajouter."
           />
         ) : (
           allCategories
@@ -102,6 +113,7 @@ export default function ItemsCategorizer({
                 onNameChange={(newName) =>
                   handleCategoryNameChange(category.name, newName)
                 }
+                onDelete={() => handleCategoryDelete(category.name)}
               />
             ))
         )}

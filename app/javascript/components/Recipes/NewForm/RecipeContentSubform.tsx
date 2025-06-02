@@ -4,7 +4,6 @@ import { useTextTypeDetection } from "@hooks/useTextTypeDetection";
 import { useState } from "react";
 import { ItemType, RecipeItem } from "@customTypes/recipe.types";
 import {
-  closestCenter,
   DndContext,
   DragEndEvent,
   PointerSensor,
@@ -15,6 +14,10 @@ import {
 export default function RecipeContentSubform() {
   const [ingredients, setIngredients] = useState<RecipeItem[]>([]);
   const [instructions, setInstructions] = useState<RecipeItem[]>([]);
+
+  const [lastUsedCategory, setLastUsedCategory] = useState<
+    Map<ItemType, string>
+  >(new Map());
 
   const items = ingredients.concat(instructions);
 
@@ -30,7 +33,7 @@ export default function RecipeContentSubform() {
           id: Date.now().toString(),
           type: "ingredient",
           value: text,
-          category: "",
+          category: lastUsedCategory.get("ingredient") || "",
         },
       ]);
     } else {
@@ -40,7 +43,7 @@ export default function RecipeContentSubform() {
           id: Date.now().toString(),
           type: "instruction",
           value: text,
-          category: "",
+          category: lastUsedCategory.get("instruction") || "",
         },
       ]);
     }
@@ -72,7 +75,12 @@ export default function RecipeContentSubform() {
           type: categType, // Update the type to match the target category
         };
 
-        // Remove item from its current list
+        //set last used category depending on type
+        setLastUsedCategory((prev) => {
+          prev.set(categType, categName);
+          return new Map(prev);
+        });
+
         if (itemType === "ingredient") {
           setIngredients((prev) => prev.filter((i) => i.id !== itemId));
         } else {
@@ -123,17 +131,50 @@ export default function RecipeContentSubform() {
     setInstructions((prev) => prev.filter((item) => item.id !== id));
   };
 
-  const handleCategoryNameChange = (oldName: string, newName: string) => {
-    setIngredients((prev) =>
-      prev.map((item) =>
-        item.category === oldName ? { ...item, category: newName } : item
-      )
-    );
-    setInstructions((prev) =>
-      prev.map((item) =>
-        item.category === oldName ? { ...item, category: newName } : item
-      )
-    );
+  const handleCategoryNameChange = (
+    oldName: string,
+    newName: string,
+    type: ItemType
+  ) => {
+    setLastUsedCategory((prev) => {
+      prev.set(type, newName);
+      return new Map(prev);
+    });
+
+    if (type === "ingredient") {
+      setIngredients((prev) =>
+        prev.map((item) =>
+          item.category === oldName ? { ...item, category: newName } : item
+        )
+      );
+    } else {
+      setInstructions((prev) =>
+        prev.map((item) =>
+          item.category === oldName ? { ...item, category: newName } : item
+        )
+      );
+    }
+  };
+
+  const handleCategoryDelete = (name: string, type: ItemType) => {
+    setLastUsedCategory((prev) => {
+      prev.set(type, "");
+      return new Map(prev);
+    });
+
+    if (type === "ingredient") {
+      setIngredients((prev) =>
+        prev.map((item) =>
+          item.category === name ? { ...item, category: "" } : item
+        )
+      );
+    } else {
+      setInstructions((prev) =>
+        prev.map((item) =>
+          item.category === name ? { ...item, category: "" } : item
+        )
+      );
+    }
   };
 
   return (
@@ -180,21 +221,30 @@ export default function RecipeContentSubform() {
               activationConstraint: { distance: 8 },
             })
           )}
-          collisionDetection={closestCenter}
         >
           <ItemsCategorizer
             items={ingredients}
             type="ingredient"
             onItemUpdate={updateItem}
             onItemDelete={deleteItem}
-            onCategoryNameChange={handleCategoryNameChange}
+            onCategoryNameChange={(name, newName) =>
+              handleCategoryNameChange(name, newName, "ingredient")
+            }
+            onCategoryDelete={(name) =>
+              handleCategoryDelete(name, "ingredient")
+            }
           />
           <ItemsCategorizer
             items={instructions}
             type="instruction"
             onItemUpdate={updateItem}
             onItemDelete={deleteItem}
-            onCategoryNameChange={handleCategoryNameChange}
+            onCategoryNameChange={(name, newName) =>
+              handleCategoryNameChange(name, newName, "instruction")
+            }
+            onCategoryDelete={(name) =>
+              handleCategoryDelete(name, "instruction")
+            }
           />
         </DndContext>
       </div>

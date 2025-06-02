@@ -62,6 +62,13 @@ export default function RecipeContentItem({
     updateItem(e.target.value);
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      textareaRef.current?.blur();
+    }
+  };
+
   const handleClick = () => {
     if (isDragging) return;
     setActive(true);
@@ -81,7 +88,7 @@ export default function RecipeContentItem({
 
   return (
     <div
-      className={`flex-1 flex items-start justify-between p-2 rounded-lg border transition-colors cursor-grab ${bgColorClass}`}
+      className={`flex-1 flex items-start justify-between p-1 rounded-lg border transition-colors cursor-grab ${bgColorClass}`}
       ref={setNodeRef}
       style={style}
       {...listeners}
@@ -94,6 +101,7 @@ export default function RecipeContentItem({
         onClick={handleClick}
         onChange={handleChange}
         onBlur={handleBlur}
+        onKeyDown={handleKeyDown}
         rows={1}
         className={`${
           active ? "bg-white focus:ring-2" : "ring-0"
