@@ -16,6 +16,7 @@ import {
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
+import { v4 as uuidv4 } from "uuid";
 
 interface RecipeContentSubformProps {
   initialIngredients?: IngredientType[];
@@ -53,7 +54,7 @@ export default function RecipeContentSubform({
   useEffect(() => {
     const initialIngredientsItems: RecipeItem[] = initialIngredients.map(
       (ingredient) => ({
-        id: ingredient.id?.toString() || Date.now().toString(),
+        id: uuidv4(),
         type: "ingredient" as ItemType,
         value: ingredient.name,
         category: ingredient.category || "",
@@ -63,7 +64,7 @@ export default function RecipeContentSubform({
 
     const initialInstructionsItems: RecipeItem[] = initialInstructions.map(
       (instruction) => ({
-        id: instruction.id?.toString() || Date.now().toString(),
+        id: uuidv4(),
         type: "instruction" as ItemType,
         value: instruction.name,
         category: instruction.category || "",
@@ -155,9 +156,10 @@ export default function RecipeContentSubform({
       if (item) {
         const updatedItem = {
           ...item,
-          dbId: undefined,
           category: categName,
           type: categType, // Update the type to match the target category
+          // Remove dbId when changing categories
+          dbId: categType === itemType ? item.dbId : undefined,
         };
 
         //set last used category depending on type
@@ -167,13 +169,21 @@ export default function RecipeContentSubform({
         });
 
         if (itemType === "ingredient") {
-          setIngredients((prev) =>
-            prev.map((i) => (i.id === itemId ? { ...i, _destroy: true } : i))
-          );
+          if (item.dbId) {
+            setIngredients((prev) =>
+              prev.map((i) => (i.id === itemId ? { ...i, _destroy: true } : i))
+            );
+          } else {
+            setIngredients((prev) => prev.filter((i) => i.id !== itemId));
+          }
         } else {
-          setInstructions((prev) =>
-            prev.map((i) => (i.id === itemId ? { ...i, _destroy: true } : i))
-          );
+          if (item.dbId) {
+            setInstructions((prev) =>
+              prev.map((i) => (i.id === itemId ? { ...i, _destroy: true } : i))
+            );
+          } else {
+            setInstructions((prev) => prev.filter((i) => i.id !== itemId));
+          }
         }
 
         // Add item to the target list

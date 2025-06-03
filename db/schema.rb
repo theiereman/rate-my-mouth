@@ -107,6 +107,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_02_145804) do
     t.integer "number_of_servings", default: 4, null: false
     t.integer "difficulty", default: 0, null: false
     t.text "description"
+    t.integer "comments_count", default: 0, null: false
+    t.integer "ratings_count", default: 0, null: false
     t.index ["user_id"], name: "index_recipes_on_user_id"
   end
 

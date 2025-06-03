@@ -44,9 +44,6 @@ export default function Form({ recipe, onSubmit, submitText }: FormProps) {
   });
   const { data, setData, errors, processing } = form;
 
-  console.log(form.data);
-  console.log(recipe);
-
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     onSubmit(form);
