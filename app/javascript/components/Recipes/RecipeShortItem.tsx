@@ -43,28 +43,25 @@ export default function RecipeShortItem({ recipe }: RecipeProps) {
               className="text-primary-400"
             />
 
-            {(recipe.comments || recipe.ratings) && (
-              <div className="flex flex-wrap gap-3">
-                {recipe.comments && (
-                  <Badge variant="primary" className="gap-1">
-                    <span className="material-symbols-outlined material-icon--sm material-icon--fill">
-                      comment
-                    </span>
-                    {recipe.comments.length} commentaire
-                    {recipe.comments.length > 1 ? "s" : ""}
-                  </Badge>
-                )}
-                {recipe.ratings && (
-                  <Badge variant="primary" className="gap-1">
-                    <span className="material-symbols-outlined material-icon--sm material-icon--fill">
-                      star
-                    </span>
-                    {recipe.ratings.length} note
-                    {recipe.ratings.length > 1 ? "s" : ""}
-                  </Badge>
-                )}
-              </div>
-            )}
+            <div className="flex flex-wrap gap-3">
+              <Badge variant="primary" className="gap-1">
+                <span className="material-symbols-outlined material-icon--sm material-icon--fill">
+                  comment
+                </span>
+                {`${recipe.comments_count} commentaire${
+                  recipe.comments_count > 1 ? "s" : ""
+                }`}
+              </Badge>
+
+              <Badge variant="primary" className="gap-1">
+                <span className="material-symbols-outlined material-icon--sm material-icon--fill">
+                  star
+                </span>
+                {`${recipe.ratings_count} note${
+                  recipe.ratings_count > 1 ? "s" : ""
+                }`}
+              </Badge>
+            </div>
 
             <div className="flex flex-wrap gap-3">
               <DifficultyBadge

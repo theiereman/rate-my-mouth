@@ -1,5 +1,4 @@
-import { useState, useEffect, useRef, useMemo } from "react";
-import { debounce } from "lodash";
+import { useState, useEffect, useRef } from "react";
 import { Input } from "@components/ui";
 
 interface ComboProps {
@@ -14,6 +13,7 @@ interface ComboProps {
   variant?: "default" | "filled" | "outlined";
   erasable?: boolean;
   mandatory?: boolean;
+  disableFiltering?: boolean;
 }
 
 export interface ComboValue {
@@ -33,43 +33,35 @@ export function Combo({
   erasable = false,
   variant = "default",
   mandatory = false,
+  disableFiltering = false,
 }: ComboProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [filteredValues, setFilteredValues] = useState<ComboValue[]>(values);
-  const [isLoading, setIsLoading] = useState(false);
   const comboRef = useRef<HTMLDivElement>(null);
 
-  // Filter values when search input changes
-  const filterValues = useMemo(
-    () =>
-      debounce((query: string) => {
-        setIsLoading(true);
-        const filtered = values.filter((value) =>
-          value.label.toLowerCase().includes(query.toLowerCase())
-        );
-        setFilteredValues(filtered);
-        setIsLoading(false);
-      }, 300),
-    [values]
-  );
-
-  // Handle search input change
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    onSearchValueChange && onSearchValueChange(value);
     setSearchValue(value);
-    filterValues(value);
+
+    if (onSearchValueChange) {
+      onSearchValueChange(value);
+    }
+
+    const filtered = disableFiltering
+      ? values
+      : values.filter((val) =>
+          val.label.toLowerCase().includes(value.toLowerCase())
+        );
+    setFilteredValues(filtered);
   };
 
-  // Handle option selection
   const handleSelect = (value: ComboValue | null) => {
     setSearchValue("");
     setIsOpen(false);
     onSelectedValue(value);
   };
 
-  // Handle click outside to close dropdown
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
@@ -83,30 +75,12 @@ export function Combo({
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
-      if (filterValues && filterValues.cancel) {
-        filterValues.cancel();
-      }
     };
-  }, []); // Enlever filterValues des dépendances pour éviter la boucle
+  }, []);
 
-  // Initialize filtered values
   useEffect(() => {
     setFilteredValues(values);
   }, [values]);
-
-  // Toggle dropdown icon
-  const dropdownIcon = (
-    <span className="material-symbols-outlined">keyboard_arrow_down</span>
-  );
-
-  // Loading icon
-  const loadingIcon = isLoading ? (
-    <span className="material-symbols-outlined text-primary-600 animate-spin">
-      progress_activity
-    </span>
-  ) : (
-    dropdownIcon
-  );
 
   return (
     <div className="flex items-end gap-1">
@@ -125,7 +99,11 @@ export function Combo({
           }
           onChange={handleSearchChange}
           onClick={() => !disabled && setIsOpen(true)}
-          rightIcon={loadingIcon}
+          rightIcon={
+            <span className="material-symbols-outlined">
+              keyboard_arrow_down
+            </span>
+          }
           variant={variant}
           disabled={disabled}
           className="cursor-pointer"

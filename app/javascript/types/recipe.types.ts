@@ -33,6 +33,8 @@ export interface RecipeType {
   ratings: RatingType[];
   user: UserType;
   tags?: TagType[];
+  comments_count: number;
+  ratings_count: number;
 }
 
 export type RecipeFormType = {
