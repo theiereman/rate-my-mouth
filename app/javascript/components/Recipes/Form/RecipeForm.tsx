@@ -44,6 +44,9 @@ export default function Form({ recipe, onSubmit, submitText }: FormProps) {
   });
   const { data, setData, errors, processing } = form;
 
+  console.log(form.data);
+  console.log(recipe);
+
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     onSubmit(form);
@@ -151,8 +154,20 @@ export default function Form({ recipe, onSubmit, submitText }: FormProps) {
       </Card>
 
       <RecipeContentSubform
-        initialIngredients={recipe.ingredients || []}
-        initialInstructions={recipe.instructions || []}
+        initialIngredients={
+          data.ingredients_attributes.map((ing) => ({
+            id: ing.id || 0,
+            name: ing.name,
+            category: ing.category,
+          })) || []
+        }
+        initialInstructions={
+          data.instructions_attributes.map((inst) => ({
+            id: inst.id || 0,
+            name: inst.name,
+            category: inst.category,
+          })) || []
+        }
         onDataChange={(contentData) => {
           setData("ingredients_attributes", contentData.ingredients_attributes);
           setData(

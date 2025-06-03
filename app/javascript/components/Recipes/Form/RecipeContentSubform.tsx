@@ -73,7 +73,7 @@ export default function RecipeContentSubform({
 
     setIngredients(initialIngredientsItems);
     setInstructions(initialInstructionsItems);
-  }, [initialIngredients, initialInstructions]);
+  }, []);
 
   // Notifier le parent des changements
   useEffect(() => {
