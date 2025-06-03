@@ -21,16 +21,19 @@ class Recipe < ApplicationRecord
   has_many :comments, as: :commentable, dependent: :destroy
   has_many :ratings, dependent: :destroy
   has_many :notes, dependent: :destroy
+  has_many :ingredients, dependent: :destroy
+  has_many :instructions, dependent: :destroy
 
   belongs_to :user, counter_cache: true
   has_many :recipe_tags, dependent: :destroy
   has_many :tags, through: :recipe_tags
 
+  # Nested attributes pour les formulaires
+  accepts_nested_attributes_for :ingredients, allow_destroy: true, reject_if: :all_blank
+  accepts_nested_attributes_for :instructions, allow_destroy: true, reject_if: :all_blank
+
   validates :name, presence: true
   validates :number_of_servings, presence: true, numericality: { only_integer: true, greater_than: 0 }
-
-  serialize :ingredients, coder: JSON
-  serialize :instructions, coder: JSON
 
   # FIXME: temp hack to make it work when you pass the thumbnail as recipe_param
   # it breaks the whole params hash and make value change type etc, please send help

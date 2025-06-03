@@ -83,9 +83,11 @@ export function Combo({
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
-      filterValues.cancel();
+      if (filterValues && filterValues.cancel) {
+        filterValues.cancel();
+      }
     };
-  }, [filterValues]);
+  }, []); // Enlever filterValues des dépendances pour éviter la boucle
 
   // Initialize filtered values
   useEffect(() => {

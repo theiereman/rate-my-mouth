@@ -10,8 +10,8 @@ import {
   LinkButton,
 } from "@components/ui";
 import TagsSelector from "@components/Tags/TagsSelector";
-import RecipeIngredientInstructionsForm from "@components/Recipes/Form/RecipeIngredientInstructionsForm";
 import RecipeThumbnail from "../RecipeThumbnail";
+import RecipeContentSubform from "./RecipeContentSubform";
 
 interface FormProps {
   recipe: RecipeType;
@@ -22,8 +22,18 @@ interface FormProps {
 export default function Form({ recipe, onSubmit, submitText }: FormProps) {
   const form = useForm<RecipeFormType>({
     name: recipe.name || "",
-    ingredients: recipe.ingredients || [],
-    instructions: recipe.instructions || [],
+    ingredients_attributes:
+      recipe.ingredients?.map((ing) => ({
+        id: ing.id,
+        name: ing.name,
+        category: ing.category || "",
+      })) || [],
+    instructions_attributes:
+      recipe.instructions?.map((inst) => ({
+        id: inst.id,
+        name: inst.name,
+        category: inst.category || "",
+      })) || [],
     url: recipe.url || "",
     number_of_servings: recipe.number_of_servings || 4,
     difficulty: recipe.difficulty_value || 0,
@@ -140,7 +150,29 @@ export default function Form({ recipe, onSubmit, submitText }: FormProps) {
         </Card.Body>
       </Card>
 
-      <RecipeIngredientInstructionsForm form={form} />
+      <RecipeContentSubform
+        initialIngredients={
+          data.ingredients_attributes.map((ing) => ({
+            id: ing.id || 0,
+            name: ing.name,
+            category: ing.category,
+          })) || []
+        }
+        initialInstructions={
+          data.instructions_attributes.map((inst) => ({
+            id: inst.id || 0,
+            name: inst.name,
+            category: inst.category,
+          })) || []
+        }
+        onDataChange={(contentData) => {
+          setData("ingredients_attributes", contentData.ingredients_attributes);
+          setData(
+            "instructions_attributes",
+            contentData.instructions_attributes
+          );
+        }}
+      />
 
       <div className="flex gap-2 justify-end">
         <LinkButton variant="gray" href={`/recipes/${recipe.id}`}>

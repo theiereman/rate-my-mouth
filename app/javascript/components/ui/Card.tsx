@@ -7,6 +7,7 @@ interface CardProps {
   rounded?: "none" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | "full";
   hover?: boolean;
   onClick?: () => void;
+  ref?: React.Ref<HTMLDivElement>;
 }
 
 interface CardHeaderProps {
@@ -45,6 +46,7 @@ export const Card = ({
   variant = "outlined",
   hover = false,
   onClick,
+  ref,
 }: CardProps) => {
   const variantClasses = getVariantClasses(variant);
   const hoverClasses = hover
@@ -53,6 +55,7 @@ export const Card = ({
 
   return (
     <div
+      ref={ref}
       className={`flex flex-col p-5 rounded-lg ${variantClasses} ${hoverClasses} ${className} animate-fade-in`}
       onClick={onClick}
     >

@@ -1,11 +1,10 @@
 import { ACTION_VERBS, INGREDIENT_PATTERNS } from "@const/text-detection";
+import { ItemType } from "@customTypes/recipe.types";
 import { useEffect, useState } from "react";
-
-type DetectionType = "ingredient" | "instruction" | "unknown";
 
 export function useTextTypeDetection() {
   const [inputText, setInputText] = useState<string>("");
-  const [detectedType, setDetectedType] = useState<DetectionType>("unknown");
+  const [detectedType, setDetectedType] = useState<ItemType>(undefined);
 
   // Fonction pour détecter si le texte est un ingrédient
   const isIngredient = (text: string): boolean => {
@@ -35,29 +34,29 @@ export function useTextTypeDetection() {
       );
 
     // Vérifier si le texte est une phrase complète
-    const isFullSentence = text.split(/\s+/).length > 3 && text.length > 15;
+    const isFullSentence = text.split(/\s+/).length > 5;
 
     return (
-      (containsActionVerb && (startsWithVerb || isFullSentence)) ||
-      (startsWithVerb && (containsTimeIndicator || isFullSentence))
+      startsWithVerb ||
+      containsActionVerb ||
+      containsTimeIndicator ||
+      isFullSentence
     );
   };
 
   // Mettre à jour le type détecté quand le texte change
   useEffect(() => {
     if (!inputText.trim()) {
-      setDetectedType("unknown");
+      setDetectedType(undefined);
       return;
     }
 
     const text = inputText.trim();
 
-    if (isIngredient(text)) {
-      setDetectedType("ingredient");
-    } else if (isInstruction(text)) {
+    if (isInstruction(text)) {
       setDetectedType("instruction");
     } else {
-      setDetectedType("unknown");
+      setDetectedType("ingredient");
     }
   }, [inputText]);
 
