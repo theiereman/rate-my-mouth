@@ -44,6 +44,7 @@ export default function RecipeContentSubform({
   const [ingredients, setIngredients] = useState<RecipeItem[]>([]);
   const [instructions, setInstructions] = useState<RecipeItem[]>([]);
 
+  // store the last "used" category to automatically add the new items to that category
   const [lastUsedCategory, setLastUsedCategory] = useState<
     Map<ItemType, string>
   >(new Map());
@@ -154,6 +155,7 @@ export default function RecipeContentSubform({
       if (item) {
         const updatedItem = {
           ...item,
+          dbId: undefined,
           category: categName,
           type: categType, // Update the type to match the target category
         };
@@ -165,9 +167,13 @@ export default function RecipeContentSubform({
         });
 
         if (itemType === "ingredient") {
-          setIngredients((prev) => prev.filter((i) => i.id !== itemId));
+          setIngredients((prev) =>
+            prev.map((i) => (i.id === itemId ? { ...i, _destroy: true } : i))
+          );
         } else {
-          setInstructions((prev) => prev.filter((i) => i.id !== itemId));
+          setInstructions((prev) =>
+            prev.map((i) => (i.id === itemId ? { ...i, _destroy: true } : i))
+          );
         }
 
         // Add item to the target list
