@@ -34,11 +34,13 @@ export function useTextTypeDetection() {
       );
 
     // Vérifier si le texte est une phrase complète
-    const isFullSentence = text.split(/\s+/).length > 3 && text.length > 15;
+    const isFullSentence = text.split(/\s+/).length > 5;
 
     return (
-      (containsActionVerb && (startsWithVerb || isFullSentence)) ||
-      (startsWithVerb && (containsTimeIndicator || isFullSentence))
+      startsWithVerb ||
+      containsActionVerb ||
+      containsTimeIndicator ||
+      isFullSentence
     );
   };
 
@@ -51,12 +53,10 @@ export function useTextTypeDetection() {
 
     const text = inputText.trim();
 
-    if (isIngredient(text)) {
-      setDetectedType("ingredient");
-    } else if (isInstruction(text)) {
+    if (isInstruction(text)) {
       setDetectedType("instruction");
     } else {
-      setDetectedType(undefined);
+      setDetectedType("ingredient");
     }
   }, [inputText]);
 
