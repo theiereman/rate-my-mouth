@@ -1,19 +1,17 @@
 import { useForm, Link } from "@inertiajs/react";
 import { FormEvent, useState, useEffect } from "react";
 import { Input, Button } from "@components/ui";
+import { PageProps } from "@customTypes/usepage-props.types";
 import AuthLayout from "@layouts/AuthLayout";
 
-export default function Login({ flash }: PageProps) {
+export default function ForgotPassword({ flash }: PageProps) {
   const [showAlert, setShowAlert] = useState(false);
+  const [showNotice, setShowNotice] = useState(false);
 
   const form = useForm<{
     email: string;
-    password: string;
-    remember_me: boolean;
   }>({
     email: "",
-    password: "",
-    remember_me: false,
   });
 
   const { data, setData, errors, processing, post } = form;
@@ -21,17 +19,22 @@ export default function Login({ flash }: PageProps) {
   useEffect(() => {
     if (flash?.alert) {
       setShowAlert(true);
+      setShowNotice(false);
+    } else if (flash?.notice) {
+      setShowNotice(true);
+      setShowAlert(false);
     } else {
       setShowAlert(false);
+      setShowNotice(false);
     }
-  }, [flash?.alert]);
+  }, [flash?.alert, flash?.notice]);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     form.transform((data) => ({
       user: data,
     }));
-    post("/users/sign_in");
+    post("/users/password");
   };
 
   const content = (
@@ -41,8 +44,13 @@ export default function Login({ flash }: PageProps) {
       </h1>
       <div className="w-[400px] border border-neutral-200 bg-neutral-50 p-5 rounded-lg shadow-sm">
         <h1 className="text-center text-xl font-medium mb-4 text-neutral-800">
-          Identifiez-vous
+          Mot de passe oublié ?
         </h1>
+
+        <p className="text-sm text-neutral-600 mb-6 text-center">
+          Entrez votre adresse e-mail et nous vous enverrons un lien pour
+          réinitialiser votre mot de passe.
+        </p>
 
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
@@ -59,36 +67,6 @@ export default function Login({ flash }: PageProps) {
             />
           </div>
 
-          <div className="mb-4">
-            <Input
-              label="Mot de passe"
-              type="password"
-              id="password"
-              name="password"
-              value={data.password}
-              onChange={(e) => setData("password", e.target.value)}
-              error={errors.password}
-              autoComplete="current-password"
-            />
-          </div>
-
-          <div className="mb-4 flex items-center">
-            <input
-              type="checkbox"
-              id="remember_me"
-              name="remember_me"
-              checked={data.remember_me}
-              onChange={(e) => setData("remember_me", e.target.checked)}
-              className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-neutral-300 rounded"
-            />
-            <label
-              htmlFor="remember_me"
-              className="ml-2 block text-sm text-neutral-700"
-            >
-              Se souvenir de moi
-            </label>
-          </div>
-
           <Button
             type="submit"
             variant="primary"
@@ -96,7 +74,7 @@ export default function Login({ flash }: PageProps) {
             disabled={processing}
             isLoading={processing}
           >
-            Se connecter
+            Envoyer les instructions de réinitialisation
           </Button>
         </form>
 
@@ -106,26 +84,26 @@ export default function Login({ flash }: PageProps) {
           </div>
         )}
 
+        {showNotice && flash?.notice && (
+          <div className="mt-4 p-3 bg-green-50 text-green-600 text-sm rounded-md">
+            {flash.notice}
+          </div>
+        )}
+
         <div className="mt-4 text-sm">
           <Link
-            href="/users/password/new"
-            className="text-primary-600 hover:text-primary-800 hover:underline mr-4"
-          >
-            Mot de passe oublié ?
-          </Link>
-          <Link
-            href="/users/sign_up"
+            href="/users/sign_in"
             className="text-primary-600 hover:text-primary-800 hover:underline"
           >
-            S'inscrire
+            Retour à la connexion
           </Link>
         </div>
       </div>
     </div>
   );
 
-  return <AuthLayout title="Connexion">{content}</AuthLayout>;
+  return <AuthLayout title="Mot de passe oublié">{content}</AuthLayout>;
 }
 
-// Define the layout for the login page
-Login.layout = (page: React.ReactNode) => page;
+// Define the layout for the forgot password page
+ForgotPassword.layout = (page: React.ReactNode) => page;
