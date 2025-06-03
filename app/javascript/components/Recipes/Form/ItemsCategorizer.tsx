@@ -96,11 +96,18 @@ export default function ItemsCategorizer({
       }`}
       variant="flat"
     >
-      <Card.Header className="flex gap-2">
-        <h2 className="text-xl font-semibold text-neutral-800 flex items-center gap-1">
-          {type === "ingredient" ? "Ingrédients" : "Instructions"}
-        </h2>
-        <Badge>{items.length}</Badge>
+      <Card.Header>
+        <div className="flex gap-2 items-center">
+          <h2 className="text-xl font-semibold text-neutral-800 flex items-center gap-1">
+            {type === "ingredient" ? "Ingrédients" : "Instructions"}
+          </h2>
+          <Badge>{items.length}</Badge>
+        </div>
+        {items.length > 0 && (
+          <p className="text-xs text-neutral-500">
+            Astuce : Les éléments sont déplaçables entre les sous-catégories.
+          </p>
+        )}
       </Card.Header>
       <Card.Body className="space-y-2">
         {allCategories.length === 0 ? (
@@ -113,23 +120,27 @@ export default function ItemsCategorizer({
             subtext="Utiliser le champs ci-dessus pour en ajouter."
           />
         ) : (
-          allCategories
-            .sort((a, b) => a.name.localeCompare(b.name))
-            .map((category, index) => (
-              <CategoryItem
-                key={`${category.name}-${index}`}
-                name={category.name}
-                type={type}
-                color={category.color}
-                items={items.filter((item) => item.category === category.name)}
-                onItemUpdate={onItemUpdate}
-                onItemDelete={onItemDelete}
-                onNameChange={(newName) =>
-                  handleCategoryNameChange(category.name, newName)
-                }
-                onDelete={() => handleCategoryDelete(category.name)}
-              />
-            ))
+          <>
+            {allCategories
+              .sort((a, b) => a.name.localeCompare(b.name))
+              .map((category, index) => (
+                <CategoryItem
+                  key={`${category.name}-${index}`}
+                  name={category.name}
+                  type={type}
+                  color={category.color}
+                  items={items.filter(
+                    (item) => item.category === category.name
+                  )}
+                  onItemUpdate={onItemUpdate}
+                  onItemDelete={onItemDelete}
+                  onNameChange={(newName) =>
+                    handleCategoryNameChange(category.name, newName)
+                  }
+                  onDelete={() => handleCategoryDelete(category.name)}
+                />
+              ))}
+          </>
         )}
         <Button onClick={handleAddCategoryClick} variant="outline" fullWidth>
           Ajouter une sous-catégorie
