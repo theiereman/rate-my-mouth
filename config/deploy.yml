@@ -3,10 +3,10 @@ image: teyermann/ratemymouth
 
 servers:
   web:
-    - 192.168.1.27
+    - ratemymouth.dotsncircles.com
   worker:
     hosts:
-      - 192.168.1.27
+      - ratemymouth.dotsncircles.com
     cmd: bin/rails solid_queue:start
 
 proxy:
@@ -28,6 +28,7 @@ env:
 
 ssh:
   user: admin
+  proxy: admin@ratemymouth.dotsncircles.com
 
 volumes:
   - "/home/admin/docker_storage/ratemymouth_db/:/rails/storage"
