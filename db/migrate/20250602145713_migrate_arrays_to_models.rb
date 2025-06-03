@@ -28,7 +28,7 @@ class MigrateArraysToModels < ActiveRecord::Migration[8.0]
   def migrate_ingredients(recipe)
     return unless recipe.ingredients_data.present?
 
-    recipe.ingredients_data.each do |ingredient_name|
+    JSON.parse(recipe.ingredients_data).each do |ingredient_name|
       recipe.ingredients.create!(
         name: ingredient_name.to_s.strip,
         category: "" # Par défaut, pas de catégorie
@@ -39,7 +39,7 @@ class MigrateArraysToModels < ActiveRecord::Migration[8.0]
   def migrate_instructions(recipe)
     return unless recipe.instructions_data.present?
 
-    recipe.instructions_data.each do |instruction_name|
+    JSON.parse(recipe.instructions_data).each do |instruction_name|
       recipe.instructions.create!(
         name: instruction_name.to_s.strip,
         category: "" # Par défaut, pas de catégorie
