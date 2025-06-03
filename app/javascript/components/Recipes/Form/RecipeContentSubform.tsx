@@ -308,6 +308,14 @@ export default function RecipeContentSubform({
 
   return (
     <Card className="space-y-4">
+      <Card.Header>
+        <h2 className="text-xl font-semibold text-neutral-800 flex items-center gap-1">
+          <span className="material-symbols-outlined text-primary-600">
+            grocery
+          </span>
+          Ingrédients et instructions
+        </h2>
+      </Card.Header>
       <div className="flex flex-col sm:flex-row gap-2 w-full">
         <Input
           value={inputText}
