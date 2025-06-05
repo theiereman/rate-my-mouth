@@ -1,11 +1,12 @@
 import { Button, Card, Input } from "@components/ui";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
+import { useTimer } from "@contexts/TimerContext";
 import alarmSound from "../../assets/sounds/alert.wav";
 
 export default function Timer() {
-  const [hours, setHours] = useState(0);
-  const [minutes, setMinutes] = useState(0);
-  const [seconds, setSeconds] = useState(0);
+  const { timerState, setTimerState } = useTimer();
+  const { hours, minutes, seconds } = timerState;
+
   const [isRunning, setIsRunning] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [isOver, setIsOver] = useState(false);
@@ -20,33 +21,40 @@ export default function Timer() {
       setIsRunning(true);
       setIsPaused(false);
       timerRef.current = setInterval(() => {
-        setSeconds((prevSeconds) => {
-          if (prevSeconds > 0) return prevSeconds - 1;
+        setTimerState((prev) => {
+          const newSeconds =
+            prev.seconds > 0
+              ? prev.seconds - 1
+              : prev.minutes > 0
+              ? 59
+              : prev.hours > 0
+              ? 59
+              : 0;
 
-          setMinutes((prevMinutes) => {
-            if (prevMinutes > 0) {
-              setSeconds(59);
-              return prevMinutes - 1;
-            }
+          const newMinutes =
+            prev.seconds > 0
+              ? prev.minutes
+              : prev.minutes > 0
+              ? prev.minutes - 1
+              : prev.hours > 0
+              ? 59
+              : 0;
 
-            setHours((prevHours) => {
-              if (prevHours > 0) {
-                setMinutes(59);
-                setSeconds(59);
-                return prevHours - 1;
-              }
+          const newHours =
+            prev.seconds > 0 || prev.minutes > 0
+              ? prev.hours
+              : prev.hours > 0
+              ? prev.hours - 1
+              : 0;
 
-              clearInterval(timerRef.current!);
-              playSound();
-              handleStop();
-              setIsOver(true);
-              return 0;
-            });
+          if (newHours === 0 && newMinutes === 0 && newSeconds === 0) {
+            clearInterval(timerRef.current!);
+            playSound();
+            handleStop();
+            setIsOver(true);
+          }
 
-            return 0;
-          });
-
-          return 0;
+          return { hours: newHours, minutes: newMinutes, seconds: newSeconds };
         });
       }, 1000);
     }
@@ -64,9 +72,7 @@ export default function Timer() {
     setIsRunning(false);
     setIsPaused(false);
     clearInterval(timerRef.current!);
-    setHours(0);
-    setMinutes(0);
-    setSeconds(0);
+    setTimerState({ hours: 0, minutes: 0, seconds: 0 });
   };
 
   const playSound = () => {
@@ -86,7 +92,10 @@ export default function Timer() {
       className={`${isOver ? "border-4 border-primary-500" : ""}`}
     >
       <Card.Header className="flex">
-        <h2 className="flex-1 text-xl font-semibold text-neutral-800 flex items-center gap-2">
+        <h2
+          data-timer="true"
+          className="flex-1 text-xl font-semibold text-neutral-800 flex items-center gap-2"
+        >
           <span className="material-symbols-outlined text-primary-600">
             timer
           </span>
@@ -109,7 +118,12 @@ export default function Timer() {
           inputClassName="rounded-r-none rounded-bl-none"
           type="number"
           value={hours}
-          onChange={(e) => setHours(Math.max(0, Number(e.target.value)))}
+          onChange={(e) =>
+            setTimerState((prev) => ({
+              ...prev,
+              hours: Math.max(0, Number(e.target.value)),
+            }))
+          }
           onFocus={(e) => e.target.select()}
           disabled={isRunning}
         />
@@ -120,7 +134,10 @@ export default function Timer() {
           type="number"
           value={minutes}
           onChange={(e) =>
-            setMinutes(Math.max(0, Math.min(59, Number(e.target.value))))
+            setTimerState((prev) => ({
+              ...prev,
+              minutes: Math.max(0, Math.min(59, Number(e.target.value))),
+            }))
           }
           onFocus={(e) => e.target.select()}
           disabled={isRunning}
@@ -132,7 +149,10 @@ export default function Timer() {
           type="number"
           value={seconds}
           onChange={(e) =>
-            setSeconds(Math.max(0, Math.min(59, Number(e.target.value))))
+            setTimerState((prev) => ({
+              ...prev,
+              seconds: Math.max(0, Math.min(59, Number(e.target.value))),
+            }))
           }
           onFocus={(e) => e.target.select()}
           disabled={isRunning}

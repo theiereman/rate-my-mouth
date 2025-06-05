@@ -7,6 +7,7 @@ import IngredientList from "@components/Recipes/Ingredients/IngredientList";
 import { useUserIsCurrentUser } from "@hooks/useUserIsCurrentUser";
 import RecipeThumbnail from "@components/Recipes/RecipeThumbnail";
 import EmptyPlaceholder from "@components/ui/EmptyPlaceholder";
+import TextWithTimerLinks from "@components/ui/TextWithTimerLinks";
 
 export default function RecipeItem({ recipe }: { recipe: RecipeType }) {
   const { isCurrentUser } = useUserIsCurrentUser(recipe.user);
@@ -187,9 +188,7 @@ export default function RecipeItem({ recipe }: { recipe: RecipeType }) {
                                   {index + 1}
                                 </div>
                                 <div className="flex-1 pt-1">
-                                  <p className="text-neutral-700">
-                                    {instruction.name}
-                                  </p>
+                                  <TextWithTimerLinks text={instruction.name} />
                                 </div>
                               </li>
                             ))}
