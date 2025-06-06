@@ -3,7 +3,7 @@ import React, { useMemo } from "react";
 interface CardProps {
   children: React.ReactNode;
   className?: string;
-  variant?: "default" | "elevated" | "outlined" | "flat";
+  variant?: "outlined" | "flat";
   rounded?: "none" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | "full";
   hover?: boolean;
   onClick?: () => void;
@@ -28,7 +28,7 @@ interface CardFooterProps {
 const getVariantClasses = (variant: string) => {
   switch (variant) {
     case "outlined":
-      return "border border-neutral-300";
+      return "border border-3 border-neutral-300";
     case "flat":
       return "bg-transparent p-0!";
   }
@@ -39,7 +39,6 @@ export const Card = ({
   variant = "flat",
   hover = false,
   onClick,
-  ref,
 }: CardProps) => {
   const variantClasses = getVariantClasses(variant);
   const hoverClasses = hover
@@ -48,9 +47,7 @@ export const Card = ({
 
   const getRandomRotation = useMemo(() => {
     const rotation = Math.random();
-    return rotation < 0.5
-      ? Math.random() * 0.7 + 0.3
-      : Math.random() * -0.7 - 0.3;
+    return rotation < 0.5 ? rotation * -0.7 : rotation * 0.7;
   }, []);
 
   return (
@@ -60,17 +57,14 @@ export const Card = ({
           hover ? "group-hover/card:border-neutral-400" : ""
         } flex flex-col p-5 rounded-lg ${variantClasses} animate-fade-in`}
         onClick={onClick}
+        style={
+          variant === "outlined"
+            ? {
+                transform: `rotate(${getRandomRotation}deg)`,
+              }
+            : undefined
+        }
       >
-        {variant === "outlined" && (
-          <div
-            className={`${
-              hover ? "group-hover/card:border-neutral-400" : ""
-            } absolute top-0 -left-1 w-full h-full rounded-lg pointer-events-none ${variantClasses} animate-fade-in`}
-            style={{
-              transform: `rotate(${getRandomRotation}deg)`,
-            }}
-          />
-        )}
         {children}
       </div>
     </div>

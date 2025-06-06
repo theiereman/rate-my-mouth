@@ -101,7 +101,7 @@ export default function ItemsCategorizer({
           <h2 className="text-xl font-semibold text-neutral-800 flex items-center gap-1">
             {type === "ingredient" ? "Ingrédients" : "Instructions"}
           </h2>
-          <Badge>{items.length}</Badge>
+          <Badge text={items.length.toString()} />
         </div>
         {items.length > 0 && (
           <p className="text-xs text-neutral-500">

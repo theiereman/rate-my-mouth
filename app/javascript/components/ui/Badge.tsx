@@ -97,8 +97,6 @@ export const Badge = ({
   const backgroundStyle = {
     mask: `url(${badgeBackgrounds[selectedBackground]}) no-repeat center`,
     WebkitMask: `url(${badgeBackgrounds[selectedBackground]}) no-repeat center`,
-    maskSize: "contain",
-    WebkitMaskSize: "contain",
     opacity: 0.5,
   };
 
@@ -108,7 +106,7 @@ export const Badge = ({
       onClick={onClick}
     >
       <div
-        className={`absolute inset-0 ${backgroundClasses}`}
+        className={`absolute -inset-2 ${backgroundClasses}`}
         style={backgroundStyle}
         aria-hidden="true"
       />

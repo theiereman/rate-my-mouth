@@ -7,7 +7,7 @@ import { useEffect, useMemo, useState } from "react";
 import { debounce } from "lodash";
 import TagsSelector from "@components/Tags/TagsSelector";
 import { PagyMetadata } from "@components/ui/Pagination";
-import Page from "@layouts/Page";
+import Page from "@components/ui/Pages/Page";
 
 interface IndexProps {
   recipes: RecipeType[];
@@ -90,9 +90,6 @@ export default function Index({ recipes, pagy }: IndexProps) {
           variant="primary"
           size="lg"
           className="w-full sm:w-auto"
-          icon={
-            <span className="material-symbols-outlined current-color">add</span>
-          }
         >
           Nouvelle recette
         </LinkButton>

@@ -13,7 +13,7 @@ const getVariantValue = (difficulty: number): BadgeVariant => {
   }
 };
 
-export default function RecipeDifficulty({
+export default function RecipeDifficultyBadge({
   difficulty,
   ...props
 }: {

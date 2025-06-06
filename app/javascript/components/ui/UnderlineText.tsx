@@ -6,12 +6,14 @@ import stroke4 from "../../assets/images/stroke_4.svg";
 import stroke5 from "../../assets/images/stroke_5.svg";
 import stroke6 from "../../assets/images/stroke_6.svg";
 
-type StrokeVariant = 1 | 2 | 3 | 4 | 5 | "random";
+export type StrokeVariant = 1 | 2 | 3 | 4 | 5 | "random";
 
 interface UnderlineTextProps {
   children: ReactNode;
   stroke?: StrokeVariant;
   offset?: number;
+  className?: string;
+  scale?: number | { x: number; y: number };
 }
 
 const strokes = {
@@ -31,6 +33,8 @@ export const UnderlineText = ({
   children,
   stroke = "random",
   offset = 0,
+  className = "",
+  scale = 1,
 }: UnderlineTextProps) => {
   const selectedStroke = useMemo(() => {
     return stroke === "random" ? getRandomStroke() : stroke;
@@ -38,15 +42,23 @@ export const UnderlineText = ({
 
   const strokeSrc = strokes[selectedStroke];
 
+  const scaleTransform = useMemo(() => {
+    if (typeof scale === "number") {
+      return `scale(${scale})`;
+    }
+    return `scale(${scale.x}, ${scale.y})`;
+  }, [scale]);
+
   const strokeStyle = {
     mask: `url(${strokeSrc}) no-repeat center`,
+    transform: scaleTransform,
   };
 
   return (
-    <div className="relative inline-block">
-      <span className="z-10">{children}</span>
-      <div
-        className={`absolute left-0 w-full h-3 pointer-events-none bg-primary-500`}
+    <div className={`relative`}>
+      <div className={`z-10 ${className}`}>{children}</div>
+      <span
+        className={`absolute left-0 w-full h-3 pointer-events-none bg-primary-500 opacity-40`}
         style={{
           ...strokeStyle,
           bottom: `${offset}px`,

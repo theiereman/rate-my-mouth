@@ -2,7 +2,7 @@ import { UserType } from "@customTypes/user.types";
 import { Card, Badge, LinkButton } from "@components/ui";
 import UserAvatar from "@components/Users/UserAvatar";
 import UserLink from "@components/Users/UserLink";
-import Page from "@layouts/Page";
+import Page from "@components/ui/Pages/Page";
 import { lowerCase } from "lodash";
 import { LeaderboardProps, leaderboardTypes } from "./Show.props";
 

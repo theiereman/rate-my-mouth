@@ -39,7 +39,7 @@ interface LinkButtonProps extends CommonButtonProps {
   preserveState?: boolean;
   onBefore?: () => void;
   onSuccess?: () => void;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 const getVariantClasses = (variant: ButtonVariant) => {
@@ -121,17 +121,25 @@ const ButtonContent = ({
     {icon &&
       iconPosition === "left" &&
       (isLoading ? (
-        <span className="material-symbols-outlined text-white-600 animate-spin mr-2">
+        <span
+          className={`material-symbols-outlined text-white-600 animate-spin ${
+            children ? "mr-2" : ""
+          }`}
+        >
           progress_activity
         </span>
       ) : (
-        <span className="mr-2 flex">{icon}</span>
+        <span className={`${children ? "mr-2" : ""} flex`}>{icon}</span>
       ))}
     {children}
     {icon &&
       iconPosition === "right" &&
       (isLoading ? (
-        <span className="material-symbols-outlined text-white-600 animate-spin ml-2">
+        <span
+          className={`material-symbols-outlined text-white-600 animate-spin ${
+            children ? "ml-2" : ""
+          }`}
+        >
           progress_activity
         </span>
       ) : (

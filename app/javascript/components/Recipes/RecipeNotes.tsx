@@ -1,8 +1,15 @@
 import { Card, LinkButton, TextArea } from "@components/ui";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Section from "@components/ui/Pages/Section";
 
-export default function Notes({ recipeId }: { recipeId: number }) {
+export default function RecipeNotes({
+  recipeId,
+  className = "",
+}: {
+  recipeId: number;
+  className?: string;
+}) {
   const [notes, setNotes] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
@@ -27,29 +34,9 @@ export default function Notes({ recipeId }: { recipeId: number }) {
   }, []);
 
   return (
-    <Card className="flex flex-col h-full">
-      <Card.Header className="flex">
-        <h2 className="flex-1 text-xl font-semibold text-neutral-800 flex items-center gap-2">
-          <span className="material-symbols-outlined text-primary-600">
-            notes
-          </span>
-          Notes perso.
-        </h2>
-        <LinkButton
-          onBefore={() => setIsLoading(true)}
-          onSuccess={() => setIsLoading(false)}
-          isLoading={isLoading}
-          method="patch"
-          href={`/recipes/${recipeId}/notes/update_for_user`}
-          data={{ notes: notes }}
-          preserveScroll
-          preserveState
-          icon={<span className="material-symbols-outlined">save</span>}
-        >
-          Enregistrer
-        </LinkButton>
-      </Card.Header>
-      <Card.Body className="flex-1">
+    <div className={`flex flex-col gap-2 ${className}`}>
+      <h3>Notes perso.</h3>
+      <div className="flex gap-2">
         <TextArea
           rows={0}
           disabled={isLoading}
@@ -59,8 +46,21 @@ export default function Notes({ recipeId }: { recipeId: number }) {
           } h-full resize-none`}
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
-        ></TextArea>
-      </Card.Body>
-    </Card>
+        />
+
+        <LinkButton
+          onBefore={() => setIsLoading(true)}
+          onSuccess={() => setIsLoading(false)}
+          isLoading={isLoading}
+          method="patch"
+          href={`/recipes/${recipeId}/notes/update_for_user`}
+          data={{ notes: notes }}
+          preserveScroll
+          preserveState
+          size="xs"
+          icon={<span className="material-symbols-outlined">save</span>}
+        ></LinkButton>
+      </div>
+    </div>
   );
 }

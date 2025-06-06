@@ -3,7 +3,8 @@ import { RecipeType } from "@customTypes/recipe.types";
 import { Card } from "@components/ui";
 
 import RecipeThumbnail from "@components/Recipes/RecipeThumbnail";
-import RecipeHeader from "./RecipeHeader";
+import RecipeHeader from "@components/Recipes/RecipeHeader";
+import RecipeBadges from "@components/Recipes/RecipeBadges";
 
 interface RecipeProps {
   recipe: RecipeType;
@@ -20,7 +21,10 @@ export default function RecipeShortItem({ recipe }: RecipeProps) {
             className="h-40"
           />
 
-          <RecipeHeader recipe={recipe} />
+          <div className="flex-1 flex flex-col justify-between">
+            <RecipeHeader recipe={recipe} />
+            <RecipeBadges recipe={recipe} />
+          </div>
         </div>
       </Card>
     </Link>

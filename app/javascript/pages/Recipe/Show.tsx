@@ -5,7 +5,9 @@ import RecipeItem from "@components/Recipes/RecipeItem";
 import { CommentableType } from "@customTypes/comment.types";
 import RecipeRatingDetails from "@components/Ratings/Recipes/RecipeRatingDetails";
 import CommentList from "@components/Comments/CommentList";
-import Tools from "@components/tools/Tools";
+import Timer from "@components/tools/Timer";
+import RecipeNotes from "@components/Recipes/RecipeNotes";
+import Section from "@components/ui/Pages/Section";
 
 interface ShowProps {
   recipe: RecipeType;
@@ -14,26 +16,23 @@ interface ShowProps {
 
 export default function Show({ recipe, userRating }: ShowProps) {
   return (
-    <main className="flex flex-col gap-4">
+    <main className="flex flex-col gap-12">
       <Head title={`${recipe.name} de ${recipe.user.username}`} />
 
-      <RecipeItem recipe={recipe} />
+      <RecipeItem className="space-y-12!" recipe={recipe} />
 
-      <Tools recipeId={recipe.id} />
+      <Section title="Outils" underlineStroke={1} className="flex gap-6">
+        <Timer className="flex-1!" />
+        <RecipeNotes recipeId={recipe.id} className="flex-1!" />
+      </Section>
 
-      <div className="flex flex-col lg:flex-row gap-4">
-        <CommentList
-          className="flex-2"
-          comments={recipe.comments}
-          commentableId={recipe.id}
-          commentableType={CommentableType.recipe}
-        />
-        <RecipeRatingDetails
-          className="flex-1"
-          recipe={recipe}
-          userRating={userRating}
-        />
-      </div>
+      <RecipeRatingDetails recipe={recipe} userRating={userRating} />
+
+      <CommentList
+        comments={recipe.comments}
+        commentableId={recipe.id}
+        commentableType={CommentableType.recipe}
+      />
     </main>
   );
 }
