@@ -9,7 +9,7 @@ export default function IngredientsQuantitySelector({
 }) {
   return (
     <div className="flex gap-2 mb-2">
-      <h2 className="font-semibold">
+      <h2>
         Quantités pour {numberOfServings}{" "}
         <span className="inline-flex gap-1">
           <button

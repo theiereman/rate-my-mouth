@@ -14,7 +14,7 @@ export default function RecipeHeader({
     <div className={`flex-1 flex flex-col gap-8 ${className}`}>
       <div className="flex gap-6">
         <div className="flex-1 flex flex-col">
-          <h3 className="text-3xl font-medium text-neutral-800 line-clamp-1 font-serif">
+          <h3 className="text-4xl font-medium text-neutral-800 line-clamp-1 font-serif">
             {recipe.name}
           </h3>
           {recipe.user && (

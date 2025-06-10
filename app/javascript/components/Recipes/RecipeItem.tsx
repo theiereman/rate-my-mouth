@@ -33,14 +33,11 @@ export default function RecipeItem({
 
       <div className="flex flex-col justify-between gap-4">
         <RecipeHeader showDescription recipe={recipe} />
-        <RecipeBadges recipe={recipe} />
+        <div className="flex items-start justify-between">
+          <RecipeBadges recipe={recipe} />
+          {isCurrentUser && <RecipeActionsButtons recipe={recipe} />}
+        </div>
       </div>
-
-      {isCurrentUser && (
-        <Section title="Actions">
-          {<RecipeActionsButtons recipe={recipe} />}
-        </Section>
-      )}
 
       <Section title="Ingredients" underlineStroke={1}>
         <IngredientsQuantitySelector
