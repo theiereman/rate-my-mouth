@@ -13,7 +13,7 @@ export default function RecipeCategoryContainer({
     <div
       className={`flex flex-col rounded-lg border-1 p-2 w-full ${containerStyleClasses}`}
     >
-      {title && <h2 className="text-primary-500 text-sm">{title}</h2>}
+      {title && <h2 className="text-primary-600 text-sm">{title}</h2>}
       <div className="p-2">{children}</div>
     </div>
   );

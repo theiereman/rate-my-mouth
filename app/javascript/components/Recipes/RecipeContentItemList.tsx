@@ -10,7 +10,7 @@ function ItemListComponent({
   items: IngredientType[] | InstructionType[];
 }) {
   return (
-    <ol className={`${ordered ? "list-decimal" : "list-disc"}`}>
+    <ol className={`space-y-1 ${ordered ? "list-decimal" : "list-disc"}`}>
       {items.map((item) => (
         <span key={item.id} className="flex items-center gap-2 pl-5">
           <li>{item.name}</li>

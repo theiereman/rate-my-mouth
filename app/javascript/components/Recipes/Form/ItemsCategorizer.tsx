@@ -89,12 +89,11 @@ export default function ItemsCategorizer({
   };
 
   return (
-    <Card
+    <div
       ref={setNodeRef}
       className={`flex-1 p-0! ${
         isOver && over?.id === type ? "border-2 border-primary-500" : ""
       }`}
-      variant="flat"
     >
       <Card.Header>
         <div className="flex gap-2 items-center">
@@ -146,6 +145,6 @@ export default function ItemsCategorizer({
           Ajouter une sous-catégorie
         </Button>
       </Card.Body>
-    </Card>
+    </div>
   );
 }

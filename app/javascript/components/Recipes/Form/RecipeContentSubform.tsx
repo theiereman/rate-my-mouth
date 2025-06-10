@@ -17,6 +17,7 @@ import {
   useSensors,
 } from "@dnd-kit/core";
 import { v4 as uuidv4 } from "uuid";
+import Section from "@components/ui/Pages/Section";
 
 interface RecipeContentSubformProps {
   initialIngredients?: IngredientType[];
@@ -307,15 +308,11 @@ export default function RecipeContentSubform({
   };
 
   return (
-    <Card className="space-y-4">
-      <Card.Header>
-        <h2 className="text-xl font-semibold text-neutral-800 flex items-center gap-1">
-          <span className="material-symbols-outlined text-primary-600">
-            grocery
-          </span>
-          Ingrédients et instructions
-        </h2>
-      </Card.Header>
+    <Section
+      title="Ingrédients et instructions"
+      className="space-y-4"
+      underlineStroke={2}
+    >
       <div className="flex flex-col sm:flex-row gap-2 w-full">
         <Input
           value={inputText}
@@ -358,13 +355,15 @@ export default function RecipeContentSubform({
       {inputText.trim() && (
         <>
           {detectedType === "ingredient" ? (
-            <Badge variant="primary" size="md">
-              Détecté comme ingrédient - Appuyez sur Entrée pour ajouter
-            </Badge>
+            <Badge
+              text="Ingrédient - Appuyez sur Entrée pour ajouter"
+              variant="primary"
+            />
           ) : (
-            <Badge variant="secondary" size="md">
-              Détecté comme instruction - Appuyez sur Entrée pour ajouter
-            </Badge>
+            <Badge
+              text="Instruction - Appuyez sur Entrée pour ajouter"
+              variant="secondary"
+            />
           )}
         </>
       )}
@@ -375,7 +374,7 @@ export default function RecipeContentSubform({
           </span>
           <span>
             Les <strong>ingrédients</strong> contiennent généralement des
-            quantités (ex: "2 oeufs", "200g de farine", "une pincée de sel")
+            quantités (ex: "200g de farine", "une pincée de sel")
           </span>
         </li>
         <li className="flex items-start gap-2">
@@ -384,8 +383,7 @@ export default function RecipeContentSubform({
           </span>
           <span>
             Les <strong>instructions</strong> commencent souvent par un verbe
-            d'action (ex: "Mélanger les ingrédients", "Cuire pendant 10
-            minutes")
+            (ex: "Mélanger les ingrédients", "Cuire 10 minutes")
           </span>
         </li>
       </ul>
@@ -427,6 +425,6 @@ export default function RecipeContentSubform({
           />
         </DndContext>
       </div>
-    </Card>
+    </Section>
   );
 }

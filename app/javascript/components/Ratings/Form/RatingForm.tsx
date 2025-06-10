@@ -2,7 +2,7 @@ import Rating from "@mui/material/Rating";
 import { RatingType } from "@customTypes/rating.types";
 import { router } from "@inertiajs/react";
 import { useState } from "react";
-import { Badge } from "@components/ui";
+import { Badge, Button } from "@components/ui";
 
 export default function RatingForm({
   recipeId,
@@ -13,75 +13,62 @@ export default function RatingForm({
   rating?: RatingType;
   className?: string;
 }) {
-  const [hover, setHover] = useState(-1);
+  const [value, setValue] = useState<number | null>(rating?.value ?? null);
+  const [pendingValue, setPendingValue] = useState<number | null>(value);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleChange = (e: any, newValue: any) => {
-    e.preventDefault();
-    if (newValue === null) return;
+  const pendingUpdate = pendingValue !== null && pendingValue !== value;
 
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    if (pendingValue === null || !pendingUpdate) return;
     setIsSubmitting(true);
     router.post(
       `/recipes/${recipeId}/ratings`,
-      { value: newValue },
+      { value: pendingValue },
       {
         preserveScroll: true,
-        onSuccess: () => {
+        onFinish: () => {
           setIsSubmitting(false);
-        },
-        onError: () => {
-          setIsSubmitting(false);
+          setValue(pendingValue);
         },
       }
     );
   };
 
-  const labels: { [index: number]: string } = {
-    0.5: "Horrible",
-    1: "Très mauvais",
-    1.5: "Mauvais",
-    2: "Décevant",
-    2.5: "Moyen",
-    3: "Correct",
-    3.5: "Bon",
-    4: "Très bon",
-    4.5: "Excellent",
-    5: "Parfait",
+  const handleChange = (e: any, newValue: any) => {
+    e.preventDefault();
+    if (isSubmitting || newValue === null) return;
+    setPendingValue(newValue);
   };
 
   return (
-    <div className={`${className}`}>
-      <div className="flex items-center gap-2 mb-2">
-        <h3 className="font-medium text-neutral-800">Votre évaluation</h3>
-        {rating?.value && (
-          <Badge text={rating.value.toFixed(1)} variant="primary" />
-        )}
-      </div>
-
-      <div className="flex items-center gap-2">
+    <div className="flex flex-col gap-2">
+      <div className={`flex items-center gap-2 ${className}`}>
         <Rating
           name="user-rating"
           precision={0.5}
-          value={rating?.value ?? null}
+          value={pendingValue ?? value}
           onChange={handleChange}
-          onChangeActive={(_, newHover) => {
-            setHover(newHover);
-          }}
           size="large"
           disabled={isSubmitting}
           className="text-primary-500"
         />
-
-        {(hover !== -1 || rating?.value) && (
-          <span className="text-sm text-neutral-600 min-w-[100px]">
-            {labels[hover !== -1 ? hover : rating?.value || 0]}
-          </span>
+        {value && (
+          <Badge
+            text={`${pendingValue?.toFixed(1)}${pendingUpdate ? "*" : ""}`}
+            variant={pendingUpdate ? "warning" : "primary"}
+          />
         )}
+        <Button onClick={handleSubmit} disabled={isSubmitting}>
+          {isSubmitting ? "Envoi..." : "Noter"}
+        </Button>
       </div>
-
-      <p className="text-xs text-neutral-400">
-        Cliquez sur les étoiles pour modifier votre note
-      </p>
+      {pendingUpdate && (
+        <span className="text-xs text-neutral-500">
+          *Cliquez sur "Noter" pour confirmer la modification.
+        </span>
+      )}
     </div>
   );
 }

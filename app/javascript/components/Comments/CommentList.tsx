@@ -2,6 +2,7 @@ import { CommentableType, CommentType } from "@customTypes/comment.types";
 import CommentForm from "@components/Comments/Form/CommentForm";
 import Comment from "@components/Comments/CommentItem";
 import Section from "@components/ui/Pages/Section";
+import EmptyPlaceholder from "@components/ui/EmptyPlaceholder";
 
 export default function CommentList({
   comments,
@@ -20,7 +21,7 @@ export default function CommentList({
   return (
     <Section title="Commentaires" underlineStroke={1}>
       {commentableId && commentableType && (
-        <div className="pb-2">
+        <div className="mb-4">
           <CommentForm
             commentableId={commentableId}
             commentableType={commentableType}
@@ -36,17 +37,7 @@ export default function CommentList({
           ))}
         </ul>
       ) : (
-        <div className="py-8 text-center">
-          <span className="material-symbols-outlined material-symbols-filled text-primary-600 material-icon--lg">
-            mode_comment
-          </span>
-          <p className="text-neutral-600">Aucun commentaire pour le moment</p>
-          {commentableId && commentableType && (
-            <p className="text-neutral-500 text-sm mt-1">
-              Soyez le premier à commenter !
-            </p>
-          )}
-        </div>
+        <EmptyPlaceholder text="Aucun commentaire pour le moment" />
       )}
     </Section>
   );
