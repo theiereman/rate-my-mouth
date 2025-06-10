@@ -24,19 +24,19 @@ interface BadgeProps {
 const backgroundClasses = (variant: BadgeVariant) => {
   switch (variant) {
     case "primary":
-      return "bg-primary-100 border-primary-300";
+      return "bg-primary-100 border-primary-500";
     case "secondary":
-      return "bg-secondary-100 border-secondary-300";
+      return "bg-secondary-100 border-secondary-500";
     case "accent":
-      return "bg-accent-100 border-accent-300";
+      return "bg-accent-100 border-accent-500";
     case "valid":
-      return "bg-valid-100 border-valid-300";
+      return "bg-valid-100 border-valid-500";
     case "warning":
-      return "bg-warning-100 border-warning-300";
+      return "bg-warning-100 border-warning-500";
     case "error":
-      return "bg-error-100 border-error-300";
+      return "bg-error-100 border-error-500";
     case "neutral":
-      return "bg-neutral-100 border-neutral-300";
+      return "bg-neutral-100 border-neutral-500";
     case "gray":
       return "bg-gray-200 border-gray-300";
     default:

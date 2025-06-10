@@ -46,13 +46,9 @@ export default function RecipeContentItemList({
                 .sort(([a], [b]) => a.localeCompare(b)) // empty category first
                 .map(([category, item]) => (
                   <div className="flex flex-col items-start" key={category}>
-                    {category !== "" ? (
-                      <RecipeCategoryContainer title={category}>
-                        <ItemListComponent ordered={ordered} items={item} />
-                      </RecipeCategoryContainer>
-                    ) : (
+                    <RecipeCategoryContainer title={category}>
                       <ItemListComponent ordered={ordered} items={item} />
-                    )}
+                    </RecipeCategoryContainer>
                   </div>
                 ))}
             </div>

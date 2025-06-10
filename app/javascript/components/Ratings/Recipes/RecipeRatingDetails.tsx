@@ -14,6 +14,7 @@ export default function RecipeRatingDetails({
   return (
     <Section title="Évaluations" underlineStroke={2} className="space-y-4">
       <RatingForm recipeId={recipe.id} rating={userRating} />
+      <div className="h-px bg-neutral-200"></div>
       <RatingList count={5} ratings={recipe.ratings} />
     </Section>
   );

@@ -58,7 +58,7 @@ export const UnderlineText = ({
     <div className={`relative`}>
       <div className={`z-10 ${className}`}>{children}</div>
       <span
-        className={`absolute left-0 w-full h-3 pointer-events-none bg-primary-500 opacity-40`}
+        className={`absolute left-0 w-full h-3 pointer-events-none bg-primary-500 opacity-80`}
         style={{
           ...strokeStyle,
           bottom: `${offset}px`,

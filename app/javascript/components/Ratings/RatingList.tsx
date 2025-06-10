@@ -19,10 +19,8 @@ export default function RatingList({
     .slice(0, count);
 
   return (
-    <div className="flex flex-col gap-4 bg-neutral-50 p-4 rounded-lg border border-neutral-200">
-      <h3 className="text-neutral-800 mb-3">
-        Les {count} dernières évaluations
-      </h3>
+    <div className="flex flex-col gap-4 rounded-lg">
+      <h3 className="text-neutral-800">Les {count} dernières évaluations</h3>
 
       {sortedRatings.length > 0 ? (
         <ul className="space-y-4">

@@ -17,8 +17,6 @@ export default function RecipeNotes({
     const fetchNotes = async () => {
       setIsLoading(true);
       try {
-        //fake timeout to test loadin
-        await new Promise((resolve) => setTimeout(resolve, 1000));
         const response = await axios.get(
           `/recipes/${recipeId}/notes/show_for_user`
         );
