@@ -48,9 +48,9 @@ export const Card = ({
   return (
     <div className={`group/card relative ${hoverClasses} `}>
       <div
-        className={`absolute inset-0 pointer-events-none scale-101 rounded-lg ${variantClasses} animate-fade-in ${
+        className={`absolute inset-0 opacity-0 pointer-events-none scale-101 rounded-lg ${variantClasses} animate-fade-in ${
           hover
-            ? `group-hover/card:border-neutral-400 opacity-0 group-hover/card:rotate-1 group-hover/card:opacity-100 transition-all duration-200`
+            ? `group-hover/card:border-neutral-400  group-hover/card:rotate-1 group-hover/card:opacity-100 transition-all duration-200`
             : ""
         }`}
       />

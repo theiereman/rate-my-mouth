@@ -56,7 +56,7 @@ export const Badge = ({
 
   return (
     <span
-      className={`flex rounded-full justify-center items-center whitespace-nowrap text-neutral-900 border-2 ${backgroundClasses(
+      className={`flex rounded-full justify-center items-center whitespace-nowrap text-neutral-600 border-2 ${backgroundClasses(
         variant
       )} text-sm px-2 ${cursorClass} ${className}`}
       onClick={onClick}
