@@ -56,7 +56,7 @@ export default function RecipeContentItemList({
         })()
       ) : (
         <EmptyPlaceholder
-          text={`Aucune ${recipeItems[0]} n'a été ajouté à cette recette.`}
+          text={`Aucun élément n'a été ajouté à cette recette.`}
         />
       )}
     </>
