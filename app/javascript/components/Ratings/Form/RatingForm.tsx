@@ -79,7 +79,7 @@ export default function RatingForm({
         )}
       </div>
 
-      <p className="text-xs text-neutral-500 mt-2">
+      <p className="text-xs text-neutral-400">
         Cliquez sur les étoiles pour modifier votre note
       </p>
     </div>

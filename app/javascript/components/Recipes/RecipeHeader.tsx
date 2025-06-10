@@ -23,7 +23,7 @@ export default function RecipeHeader({
             </span>
           )}
           {showDescription && recipe.description && (
-            <p className="text-neutral-400 text-sm italic mt-2 line-clamp-3">
+            <p className="text-neutral-500 text-sm italic my-4 line-clamp-3">
               {recipe.description}
             </p>
           )}

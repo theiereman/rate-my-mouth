@@ -1,7 +1,6 @@
 import { Button, Card, Input } from "@components/ui";
 import { useState, useRef } from "react";
 import alarmSound from "../../assets/sounds/alert.wav";
-import Section from "@components/ui/Pages/Section";
 
 export default function Timer({ className = "" }: { className?: string }) {
   const [hours, setHours] = useState(0);

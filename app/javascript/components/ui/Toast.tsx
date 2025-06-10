@@ -120,7 +120,7 @@ export default function Toast({
       <div className="text-sm font-medium">{message}</div>
       <button
         type="button"
-        className="ml-auto -mx-1.5 -my-1.5 rounded-lg p-1.5 inline-flex items-center justify-center h-8 w-8 text-neutral-400 hover:text-neutral-900 focus:outline-none"
+        className="ml-auto -mx-1.5 -my-1.5 rounded-lg p-1.5 inline-flex items-center justify-center h-8 w-8 text-neutral-400 hover:text-neutral-800 focus:outline-none"
         onClick={() => {
           setIsLeaving(true);
           setIsVisible(false);
