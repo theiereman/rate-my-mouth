@@ -8,6 +8,7 @@ import { debounce } from "lodash";
 import TagsSelector from "@components/Tags/TagsSelector";
 import { PagyMetadata } from "@components/ui/Pagination";
 import Page from "@components/ui/Pages/Page";
+import Section from "@components/ui/Pages/Section";
 
 interface IndexProps {
   recipes: RecipeType[];
@@ -96,11 +97,10 @@ export default function Index({ recipes, pagy }: IndexProps) {
       }
     >
       <div className="space-y-2">
-        <h1 className="text-xl font-semibold text-neutral-800 font-serif">
-          <UnderlineText offset={-2}>Filtres</UnderlineText>
-        </h1>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 mx-4 gap-4">
+        <Section
+          title="Filtres"
+          className="grid grid-cols-1 md:grid-cols-3 gap-4"
+        >
           <Input
             placeholder="Rechercher une recette..."
             onChange={(e) => handleSearch(e.target.value)}
@@ -125,7 +125,7 @@ export default function Index({ recipes, pagy }: IndexProps) {
             initialTags={selectedTagIds.map((id) => ({ id, name: "" }))}
             onTagsSelected={handleTagsSelected}
           />
-        </div>
+        </Section>
       </div>
 
       {recipes.length === 0 ? (
