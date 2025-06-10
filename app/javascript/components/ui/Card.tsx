@@ -28,7 +28,7 @@ interface CardFooterProps {
 const getVariantClasses = (variant: string) => {
   switch (variant) {
     case "outlined":
-      return "border border-3 border-neutral-300";
+      return "border border-1 border-neutral-300";
     case "flat":
       return "bg-transparent p-0!";
   }
@@ -45,25 +45,20 @@ export const Card = ({
     ? "transition-transform duration-200 hover:scale-[1.01] cursor-pointer"
     : "";
 
-  const getRandomRotation = useMemo(() => {
-    const rotation = Math.random();
-    return rotation < 0.5 ? rotation * -0.7 : rotation * 0.7;
-  }, []);
-
   return (
     <div className={`group/card relative ${hoverClasses} `}>
+      <div
+        className={`absolute inset-0 pointer-events-none scale-101 rounded-lg ${variantClasses} animate-fade-in ${
+          hover
+            ? `group-hover/card:border-neutral-400 opacity-0 group-hover/card:rotate-1 group-hover/card:opacity-100 transition-all duration-200`
+            : ""
+        }`}
+      />
       <div
         className={`${
           hover ? "group-hover/card:border-neutral-400" : ""
         } flex flex-col p-5 rounded-lg ${variantClasses} animate-fade-in`}
         onClick={onClick}
-        style={
-          variant === "outlined"
-            ? {
-                transform: `rotate(${getRandomRotation}deg)`,
-              }
-            : undefined
-        }
       >
         {children}
       </div>
