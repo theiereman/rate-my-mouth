@@ -1,11 +1,11 @@
 import { Badge } from "@components/ui";
 import { RecipeType } from "@customTypes/recipe.types";
-import RecipeDifficultyBadge from "./RecipeDifficultyBadge";
+import RecipeDifficultyBadge from "@components/Recipes/RecipeDifficultyBadge";
 
 export default function RecipeBadges({ recipe }: { recipe: RecipeType }) {
   return (
-    <div className="flex flex-col">
-      <div id="badges" className="flex flex-wrap">
+    <div className="flex flex-col gap-2">
+      <div id="badges" className="flex flex-wrap gap-2">
         <Badge
           text={`${recipe.number_of_servings} portions`}
           variant="accent"
@@ -27,7 +27,7 @@ export default function RecipeBadges({ recipe }: { recipe: RecipeType }) {
           <span className="text-neutral-500 text-sm italic">Aucun tag</span>
         ) : (
           recipe.tags?.map((tag) => (
-            <Badge text={tag.name} key={tag.id} variant="neutral" />
+            <Badge text={tag.name} key={tag.id} variant="gray" />
           ))
         )}
       </div>

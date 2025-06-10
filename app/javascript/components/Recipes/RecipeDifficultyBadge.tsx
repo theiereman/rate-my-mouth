@@ -3,13 +3,13 @@ import { Badge, BadgeVariant } from "@components/ui";
 const getVariantValue = (difficulty: number): BadgeVariant => {
   switch (difficulty) {
     case 0:
-      return "success";
+      return "valid";
     case 1:
       return "warning";
     case 2:
       return "error";
     default:
-      return "neutral";
+      return "gray";
   }
 };
 

@@ -1,32 +1,14 @@
-import React, { useMemo } from "react";
-
-import badge1 from "../../assets/images/badge_1.svg";
-import badge2 from "../../assets/images/badge_2.svg";
-import badge3 from "../../assets/images/badge_3.svg";
-
 export type BadgeVariant =
   | "primary"
   | "secondary"
   | "accent"
-  | "success"
+  | "valid"
   | "warning"
   | "error"
-  | "info"
-  | "neutral";
+  | "neutral"
+  | "gray";
+
 type BadgeSize = "xs" | "sm" | "md" | "lg";
-
-const badgeBackgrounds = {
-  1: badge1,
-  2: badge2,
-  3: badge3,
-};
-
-const getRandomBackground = () => {
-  const backgroundNumbers = [1, 2, 3] as const;
-  return backgroundNumbers[
-    Math.floor(Math.random() * backgroundNumbers.length)
-  ];
-};
 
 interface BadgeProps {
   text: string;
@@ -39,78 +21,47 @@ interface BadgeProps {
   onClick?: () => void;
 }
 
-const getSizeClasses = (size: BadgeSize) => {
-  switch (size) {
-    case "xs":
-      return "text-xs px-1.5 py-0.5";
-    case "sm":
-      return "text-xs px-2 py-0.5";
-    case "md":
-      return "text-sm px-2.5 py-0.5";
-    case "lg":
-      return "text-sm px-3 py-1";
-    default:
-      return "text-xs px-2 py-0.5";
-  }
-};
-
-const getBadgeBackgroundClasses = (variant: BadgeVariant) => {
+const backgroundClasses = (variant: BadgeVariant) => {
   switch (variant) {
     case "primary":
-      return "bg-primary-500";
+      return "bg-primary-100 border-primary-300";
     case "secondary":
-      return "bg-secondary-500";
+      return "bg-secondary-100 border-secondary-300";
     case "accent":
-      return "bg-accent-500";
-    case "success":
-      return "bg-valid-500";
+      return "bg-accent-100 border-accent-300";
+    case "valid":
+      return "bg-valid-100 border-valid-300";
     case "warning":
-      return "bg-warning-500";
+      return "bg-warning-100 border-warning-300";
     case "error":
-      return "bg-error-500";
-    case "info":
-      return "bg-blue-500";
+      return "bg-error-100 border-error-300";
     case "neutral":
-      return "bg-neutral-400";
+      return "bg-neutral-100 border-neutral-300";
+    case "gray":
+      return "bg-gray-200 border-gray-300";
     default:
-      return "bg-primary-500";
+      return "";
   }
 };
 
 export const Badge = ({
   text,
   variant = "primary",
-  size = "md",
   icon,
   iconPosition = "left",
   className = "",
   onClick,
 }: BadgeProps) => {
-  const selectedBackground = useMemo(() => {
-    return getRandomBackground();
-  }, []);
-
-  const backgroundClasses = getBadgeBackgroundClasses(variant);
-  const sizeClasses = getSizeClasses(size);
   const cursorClass = onClick ? "cursor-pointer" : "";
-
-  const backgroundStyle = {
-    mask: `url(${badgeBackgrounds[selectedBackground]}) no-repeat center`,
-    WebkitMask: `url(${badgeBackgrounds[selectedBackground]}) no-repeat center`,
-    opacity: 0.5,
-  };
 
   return (
     <span
-      className={`relative flex justify-center items-center whitespace-nowrap ${sizeClasses}${cursorClass} ${className}`}
+      className={`flex rounded-full justify-center items-center whitespace-nowrap text-neutral-900 border-2 ${backgroundClasses(
+        variant
+      )} text-sm px-2 ${cursorClass} ${className}`}
       onClick={onClick}
     >
-      <div
-        className={`absolute -inset-2 ${backgroundClasses}`}
-        style={backgroundStyle}
-        aria-hidden="true"
-      />
-      <span className={`relative flex items-center text-black`}>
+      <span className={`flex items-center`}>
         {icon && iconPosition === "left" && (
           <div className="mr-1 flex align-center">{icon}</div>
         )}
