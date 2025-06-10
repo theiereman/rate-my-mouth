@@ -3,6 +3,7 @@ import { FormEvent, useState, useEffect } from "react";
 import { Input, Button } from "@components/ui";
 import AuthLayout from "@layouts/AuthLayout";
 import logo from "../../assets/images/logo_full.svg";
+import { PageProps } from "@customTypes/usepage-props.types";
 
 export default function Login({ flash }: PageProps) {
   const [showAlert, setShowAlert] = useState(false);
@@ -39,10 +40,6 @@ export default function Login({ flash }: PageProps) {
     <div className="h-full flex flex-col justify-center items-center">
       <img src={logo} alt="" className="w-72 h-72" />
       <div className="w-[400px] m-12">
-        <h1 className="text-2xl font-medium mb-4 text-neutral-800 font-serif">
-          Identifiez-vous
-        </h1>
-
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <Input
@@ -105,7 +102,7 @@ export default function Login({ flash }: PageProps) {
           </div>
         )}
 
-        <div className="mt-4 text-sm">
+        <div className="mt-4 text-sm flex flex-col">
           <Link
             href="/users/password/new"
             className="text-primary-600 hover:text-primary-800 hover:underline mr-4"
