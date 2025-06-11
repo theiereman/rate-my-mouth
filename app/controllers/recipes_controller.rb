@@ -4,7 +4,7 @@ class RecipesController < ApplicationController
   # GET /recipes
   def index
     @recipes = Recipe.filter(params.slice(:name, :user_id, :tags_ids)).order(created_at: :desc)
-    @pagy, @recipes = pagy(@recipes, limit: params[:limit] || 20)
+    @pagy, @recipes = pagy(@recipes, limit: params[:limit])
 
     respond_to do |format|
       format.html {
