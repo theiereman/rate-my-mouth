@@ -55,23 +55,24 @@ export default function Show({ users, type = "recipes" }: LeaderboardProps) {
       title="Classement"
       subtitle={`Classement des utilisateurs par nombre de ${typeTitle} postées`}
     >
-      {leaderboardTypes.map((t) => (
-        <LinkButton
-          variant="ghost"
-          preserveScroll
-          key={t.value}
-          href={`/leaderboard?type=${t.value}`}
-          className={`px-4 py-2 rounded-none rounded-t-md! hover:text-primary-600! ${
-            type === t.value
-              ? "bg-primary-100! text-primary-600"
-              : "text-neutral-600"
-          }`}
-        >
-          {t.title}
-        </LinkButton>
-      ))}
-      <Card className="p-0!">
-        <div></div>
+      <nav className="flex items-center justify-center gap-2 mb-0">
+        {leaderboardTypes.map((t) => (
+          <LinkButton
+            variant="ghost"
+            preserveScroll
+            key={t.value}
+            href={`/leaderboard?type=${t.value}`}
+            className={`px-4 py-2 rounded-none rounded-t-md! hover:text-primary-600! ${
+              type === t.value
+                ? "border-t-2 border-l-2 border-r-2 border-primary-200 bg-primary-50! text-primary-600"
+                : "text-neutral-600 border-2 border-transparent"
+            }`}
+          >
+            {t.title}
+          </LinkButton>
+        ))}
+      </nav>
+      <div className="border-2 border-primary-200 rounded-2xl">
         {users.length > 0 ? (
           <ul className="divide-y divide-neutral-200">
             {users.map((user, index) => (
@@ -82,16 +83,13 @@ export default function Show({ users, type = "recipes" }: LeaderboardProps) {
                   )}`}
                 >
                   {index + 1}
-                  <span className="material-symbols-outlined block">
+                  <span className="material-symbols-outlined">
                     {getMedalIcon(index)}
                   </span>
                 </span>
                 <UserAvatar user={user} size="md" className="flex-shrink-0" />
                 <UserLink className="flex-1" user={user} showTitle />
-                <Badge
-                  text={`${getBadgeValue(user)} ${typeTitle}`}
-                  variant="primary"
-                />
+                <Badge text={getBadgeValue(user).toString()} />
               </li>
             ))}
           </ul>
@@ -102,7 +100,7 @@ export default function Show({ users, type = "recipes" }: LeaderboardProps) {
             </p>
           </div>
         )}
-      </Card>
+      </div>
     </Page>
   );
 }

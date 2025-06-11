@@ -23,7 +23,7 @@ export default function Section({
       <div className="flex items-end gap-2 mb-4">
         <UnderlineText
           className={`flex gap-2`}
-          stroke={underlineStroke ? underlineStroke : "random"}
+          stroke={underlineStroke ? underlineStroke : 1}
           scale={1.4}
           offset={-2}
         >

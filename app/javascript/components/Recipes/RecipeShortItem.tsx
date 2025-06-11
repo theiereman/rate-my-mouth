@@ -18,10 +18,10 @@ export default function RecipeShortItem({ recipe }: RecipeProps) {
           <RecipeThumbnail
             thumbnailUrl={recipe.thumbnail_url}
             format="square"
-            className="size-32"
+            className="w-full sm:size-32"
           />
 
-          <div className="flex-1 flex flex-col justify-between">
+          <div className="flex-1 flex flex-col gap-4 justify-between">
             <RecipeHeader recipe={recipe} />
             <RecipeBadges recipe={recipe} />
           </div>

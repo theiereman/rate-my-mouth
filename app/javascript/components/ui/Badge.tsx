@@ -6,7 +6,8 @@ export type BadgeVariant =
   | "warning"
   | "error"
   | "neutral"
-  | "gray";
+  | "gray"
+  | "ghost";
 
 interface BadgeProps {
   text: string;
@@ -36,6 +37,8 @@ const backgroundClasses = (variant: BadgeVariant) => {
       return "bg-neutral-100 border-neutral-500";
     case "gray":
       return "bg-gray-200 border-gray-300";
+    case "ghost":
+      return "";
     default:
       return "";
   }
