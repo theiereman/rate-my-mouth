@@ -90,9 +90,7 @@ export default function CategoryItem({
   return (
     <div
       ref={setNodeRef}
-      className={`rounded-lg p-2 ${
-        isOver ? "border-2 border-primary-500" : ""
-      }`}
+      className={`rounded-lg ${isOver ? "border-2 border-primary-500" : ""}`}
       style={{ backgroundColor: color }}
     >
       {isEditing ? (
@@ -131,7 +129,10 @@ export default function CategoryItem({
         )
       )}
       {items.length === 0 ? (
-        <EmptyPlaceholder text="Aucun élément dans cette catégorie" />
+        <EmptyPlaceholder
+          text="Aucun élément dans cette catégorie"
+          variant={type === "ingredient" ? "primary" : "secondary"}
+        />
       ) : (
         <div className="space-y-2">
           {items.map((item) => (

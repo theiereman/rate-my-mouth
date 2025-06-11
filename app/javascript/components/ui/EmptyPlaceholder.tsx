@@ -1,22 +1,24 @@
+type PlaceholderVariant = "primary" | "secondary";
+
 export default function EmptyPlaceholder({
   text,
   subtext,
-  variant = "filled",
+  variant = "primary",
 }: {
   text: string;
   subtext?: string;
-  variant?: "filled" | "outline";
+  variant?: PlaceholderVariant;
 }) {
   const baseClasses = "text-center py-4 px-2 rounded-lg border";
   const variantClasses = {
-    filled: "bg-primary-50 border-primary-100",
-    outline: "border-neutral-300",
+    primary: "bg-primary-50 border-primary-100 text-primary-500",
+    secondary: "bg-secondary-50 border-secondary-100 text-secondary-500",
   };
 
   return (
     <div className={`${baseClasses} ${variantClasses[variant]}`}>
-      <p className="text-primary-500 text-sm">{text}</p>
-      <p className="text-primary-300 text-xs">{subtext}</p>
+      <p className="text-sm">{text}</p>
+      <p className="text-xs">{subtext}</p>
     </div>
   );
 }
