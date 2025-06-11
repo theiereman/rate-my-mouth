@@ -5,7 +5,7 @@ interface PageProps {
   children: React.ReactNode;
   additionnalHeaderContent?: React.ReactNode;
   title: string;
-  subtitle: string;
+  subtitle?: string;
   className?: string;
 }
 
@@ -13,14 +13,14 @@ export default function Page({
   children,
   additionnalHeaderContent,
   title,
-  subtitle,
+  subtitle = "",
   className = "",
 }: PageProps) {
   return (
     <div className={className}>
       <Head title={title} />
 
-      <div className="flex flex-col sm:flex-row gap-4 justify-between items-start xs:items-center mb-6">
+      <div className="flex flex-col sm:flex-row gap-4 justify-between items-center xs:items-center mb-6">
         <div>
           <h1 className="text-3xl font-bold text-neutral-800 font-serif">
             {title}

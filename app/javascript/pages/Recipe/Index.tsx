@@ -2,7 +2,7 @@ import { router } from "@inertiajs/react";
 import { RecipeType } from "@customTypes/recipe.types";
 import RecipeShort from "@components/Recipes/RecipeShortItem";
 import UserSelector from "@components/Users/UserSelector";
-import { LinkButton, Input, Pagination, UnderlineText } from "@components/ui";
+import { LinkButton, Input, Pagination } from "@components/ui";
 import { useEffect, useMemo, useState } from "react";
 import { debounce } from "lodash";
 import TagsSelector from "@components/Tags/TagsSelector";
@@ -82,7 +82,6 @@ export default function Index({ recipes, pagy }: IndexProps) {
 
   return (
     <Page
-      className="space-y-8"
       title="Recettes"
       subtitle="Découvrez les dernières recettes et partagez vos recettes favorites !"
       additionnalHeaderContent={
@@ -96,37 +95,35 @@ export default function Index({ recipes, pagy }: IndexProps) {
         </LinkButton>
       }
     >
-      <div className="space-y-2">
-        <Section
-          title="Filtres"
-          className="grid grid-cols-1 md:grid-cols-3 gap-4"
-        >
-          <Input
-            placeholder="Rechercher une recette..."
-            onChange={(e) => handleSearch(e.target.value)}
-            value={searchQuery}
-            rightIcon={
-              isLoading ? (
-                <span className="material-symbols-outlined text-primary-600 animate-spin">
-                  progress_activity
-                </span>
-              ) : undefined
-            }
-          />
+      <Section
+        title="Filtres"
+        childrenClassName="grid grid-cols-1 md:grid-cols-3 gap-4"
+      >
+        <Input
+          placeholder="Rechercher une recette..."
+          onChange={(e) => handleSearch(e.target.value)}
+          value={searchQuery}
+          rightIcon={
+            isLoading ? (
+              <span className="material-symbols-outlined text-primary-600 animate-spin">
+                progress_activity
+              </span>
+            ) : undefined
+          }
+        />
 
-          <UserSelector
-            initialUserId={selectedUserId ?? undefined}
-            onUserSelected={handleUserSelected}
-          />
-          <TagsSelector
-            maxTags={Infinity}
-            label=""
-            createNewTags={false}
-            initialTags={selectedTagIds.map((id) => ({ id, name: "" }))}
-            onTagsSelected={handleTagsSelected}
-          />
-        </Section>
-      </div>
+        <UserSelector
+          initialUserId={selectedUserId ?? undefined}
+          onUserSelected={handleUserSelected}
+        />
+        <TagsSelector
+          maxTags={Infinity}
+          label=""
+          createNewTags={false}
+          initialTags={selectedTagIds.map((id) => ({ id, name: "" }))}
+          onTagsSelected={handleTagsSelected}
+        />
+      </Section>
 
       {recipes.length === 0 ? (
         <div className="text-center py-12 bg-neutral-50 rounded-lg border border-neutral-200">

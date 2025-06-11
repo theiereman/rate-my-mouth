@@ -13,7 +13,7 @@ interface UnderlineTextProps {
   stroke?: StrokeVariant;
   offset?: number;
   className?: string;
-  scale?: number | { x: number; y: number };
+  scale?: number;
 }
 
 const strokes = {
@@ -43,10 +43,7 @@ export const UnderlineText = ({
   const strokeSrc = strokes[selectedStroke];
 
   const scaleTransform = useMemo(() => {
-    if (typeof scale === "number") {
-      return `scale(${scale})`;
-    }
-    return `scale(${scale.x}, ${scale.y})`;
+    return `scaleX(${scale})`;
   }, [scale]);
 
   const strokeStyle = {

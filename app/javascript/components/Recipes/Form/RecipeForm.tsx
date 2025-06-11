@@ -1,14 +1,7 @@
 import { InertiaFormProps, useForm } from "@inertiajs/react";
 import { FormEvent } from "react";
 import { RecipeFormType, RecipeType } from "@customTypes/recipe.types";
-import {
-  Button,
-  Input,
-  Card,
-  Combo,
-  TextArea,
-  LinkButton,
-} from "@components/ui";
+import { Button, Input, Combo, TextArea, LinkButton } from "@components/ui";
 import TagsSelector from "@components/Tags/TagsSelector";
 import RecipeThumbnail from "../RecipeThumbnail";
 import RecipeContentSubform from "./RecipeContentSubform";
@@ -62,11 +55,7 @@ export default function Form({ recipe, onSubmit, submitText }: FormProps) {
         />
       </div>
 
-      <Section
-        title="Informations générales"
-        underlineStroke={1}
-        className="space-y-4"
-      >
+      <Section title="Informations générales" underlineStroke={1}>
         <Input
           mandatory
           label="Nom de la recette"

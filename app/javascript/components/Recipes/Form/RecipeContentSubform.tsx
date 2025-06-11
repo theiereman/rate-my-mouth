@@ -1,4 +1,4 @@
-import { Badge, Button, Card, Input } from "@components/ui";
+import { Badge, Button, Input } from "@components/ui";
 import ItemsCategorizer from "./ItemsCategorizer";
 import { useTextTypeDetection } from "@hooks/useTextTypeDetection";
 import { useState, useEffect } from "react";
@@ -310,7 +310,7 @@ export default function RecipeContentSubform({
   return (
     <Section
       title="Ingrédients et instructions"
-      className="space-y-4"
+      childrenClassName="space-y-4"
       underlineStroke={2}
     >
       <div className="flex flex-col sm:flex-row gap-2 w-full">

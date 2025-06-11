@@ -4,7 +4,8 @@ import axios from "axios";
 import RecipeShortItem from "@components/Recipes/RecipeShortItem";
 import { useToast } from "@contexts/ToastProvider";
 import EmptyPlaceholder from "@components/ui/EmptyPlaceholder";
-import { Card, LinkButton } from "@components/ui";
+import Section from "@components/ui/Pages/Section";
+import { Link } from "@inertiajs/react";
 
 export default function CreatedRecipes({ userId }: { userId: number }) {
   const [recipes, setRecipes] = useState<RecipeType[]>([]);
@@ -40,7 +41,11 @@ export default function CreatedRecipes({ userId }: { userId: number }) {
   }, [userId]);
 
   return (
-    <>
+    <Section
+      title="Dernières recettes"
+      underlineStroke={2}
+      childrenClassName="flex flex-col"
+    >
       {loadingRecipes ? (
         <div className="text-center py-8">
           <span className="material-symbols-outlined animate-spin text-primary-600 text-4xl">
@@ -49,37 +54,27 @@ export default function CreatedRecipes({ userId }: { userId: number }) {
           <p className="mt-2 text-neutral-600">Chargement des recettes...</p>
         </div>
       ) : (
-        <Card>
-          <Card.Header>
-            <h2 className="text-xl font-semibold text-neutral-800 flex items-center gap-2">
-              <span className="material-symbols-outlined text-primary-600">
-                article
-              </span>
-              Dernières recettes
-            </h2>
-          </Card.Header>
-          <Card.Body className="flex flex-col gap-8">
-            {recipes.length > 0 ? (
-              <>
-                <div className="grid grid-cols-1 gap-4">
-                  {recipes.length > 0 &&
-                    recipes.map((recipe) => (
-                      <RecipeShortItem key={recipe.id} recipe={recipe} />
-                    ))}
-                </div>
-                <LinkButton
-                  className="mx-auto"
-                  href={`/recipes?user_id=${userId}`}
-                >
-                  Voir plus de recettes de cet utilisateur
-                </LinkButton>
-              </>
-            ) : (
-              <EmptyPlaceholder text="Aucune recette créée pour le moment" />
-            )}
-          </Card.Body>
-        </Card>
+        <>
+          {recipes.length > 0 ? (
+            <>
+              <div className="grid grid-cols-1 gap-4">
+                {recipes.length > 0 &&
+                  recipes.map((recipe) => (
+                    <RecipeShortItem key={recipe.id} recipe={recipe} />
+                  ))}
+              </div>
+              <Link
+                className="mx-auto underline text-primary-500 hover:text-primary-600"
+                href={`/recipes?user_id=${userId}`}
+              >
+                Voir plus de recettes de cet utilisateur
+              </Link>
+            </>
+          ) : (
+            <EmptyPlaceholder text="Aucune recette créée pour le moment" />
+          )}
+        </>
       )}
-    </>
+    </Section>
   );
 }

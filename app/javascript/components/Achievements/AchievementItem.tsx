@@ -46,24 +46,25 @@ export default function AchievementItem({
             {achievement.unlocked &&
               isCurrentUser &&
               (isSelectedAchievement ? (
-                <Badge text="Titre actuel" variant="primary" size="sm" />
+                <Badge text="Titre actuel" variant="primary" />
               ) : (
                 <LinkButton
                   method="patch"
                   size="xs"
+                  variant="outline"
                   preserveState
                   href={`/select_achievement_as_title?key=${achievement.key}`}
                 >
-                  Sélectionner comme titre
+                  Définir comme titre
                 </LinkButton>
               ))}
             <div className="flex-1"></div>
             {achievement.unlocked ? (
               <>
-                <Badge text="Débloqué" variant="success" size="sm" />
+                <Badge text="Débloqué" variant="valid" />
               </>
             ) : (
-              <Badge text="À débloquer" variant="neutral" size="sm" />
+              <Badge text="À débloquer" variant="neutral" />
             )}
           </div>
           {(!achievement.secret || achievement.unlocked) && (

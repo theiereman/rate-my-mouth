@@ -1,4 +1,4 @@
-import { Button, Card, Input } from "@components/ui";
+import { Button, Input } from "@components/ui";
 import { useState, useRef } from "react";
 import alarmSound from "../../assets/sounds/alert.wav";
 
@@ -83,14 +83,13 @@ export default function Timer({ className = "" }: { className?: string }) {
 
   return (
     <div
-      className={`p-2 ${
+      className={`${
         isOver ? "p-1! rounded-lg border-4 border-primary-500" : ""
       } ${className}`}
     >
       <div className="flex">
         <Input
           containerClassName="w-full"
-          label="Heures"
           inputClassName="rounded-r-none rounded-bl-none p-1!"
           type="number"
           value={hours}
@@ -100,7 +99,6 @@ export default function Timer({ className = "" }: { className?: string }) {
         />
         <Input
           containerClassName="w-full"
-          label="Minutes"
           inputClassName="rounded-none border-l-0 border-r-0 p-1!"
           type="number"
           value={minutes}
@@ -112,7 +110,6 @@ export default function Timer({ className = "" }: { className?: string }) {
         />
         <Input
           containerClassName="w-full"
-          label="Secondes"
           inputClassName="rounded-l-none rounded-br-none p-1!"
           type="number"
           value={seconds}

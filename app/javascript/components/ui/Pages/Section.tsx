@@ -7,22 +7,24 @@ export default function Section({
   icon,
   children,
   rightHeader,
-  className = "",
+  childrenClassName = "",
+  containerClassName = "",
 }: {
   title?: string;
   icon?: React.ReactNode;
   rightHeader?: React.ReactNode;
   children?: React.ReactNode;
   underlineStroke?: StrokeVariant;
-  className?: string;
+  childrenClassName?: string;
+  containerClassName?: string;
 }) {
   return (
-    <div>
+    <div className={containerClassName}>
       <div className="flex items-end gap-2 mb-4">
         <UnderlineText
           className={`flex gap-2`}
           stroke={underlineStroke ? underlineStroke : "random"}
-          scale={1.5}
+          scale={1.4}
           offset={-2}
         >
           {icon && <div className="icon">{icon}</div>}
@@ -32,7 +34,9 @@ export default function Section({
           <div className="ml-auto flex items-center">{rightHeader}</div>
         )}
       </div>
-      {children && <div className={`${className}`}>{children}</div>}
+      {children && (
+        <div className={`space-y-4 ${childrenClassName}`}>{children}</div>
+      )}
     </div>
   );
 }

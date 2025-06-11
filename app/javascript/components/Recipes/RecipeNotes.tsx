@@ -1,15 +1,8 @@
-import { Card, LinkButton, TextArea } from "@components/ui";
+import { LinkButton, TextArea } from "@components/ui";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Section from "@components/ui/Pages/Section";
 
-export default function RecipeNotes({
-  recipeId,
-  className = "",
-}: {
-  recipeId: number;
-  className?: string;
-}) {
+export default function RecipeNotes({ recipeId }: { recipeId: number }) {
   const [notes, setNotes] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
@@ -32,33 +25,30 @@ export default function RecipeNotes({
   }, []);
 
   return (
-    <div className={`flex flex-col gap-2 ${className}`}>
-      <h3>Notes perso.</h3>
-      <div className="flex gap-2">
-        <TextArea
-          rows={0}
-          disabled={isLoading}
-          containerClassName="h-full"
-          textareaClassName={`${
-            isLoading ? "text-neutral-400 italic" : ""
-          } h-full resize-none`}
-          value={notes}
-          onChange={(e) => setNotes(e.target.value)}
-        />
+    <div className="flex gap-2">
+      <TextArea
+        rows={0}
+        disabled={isLoading}
+        containerClassName="h-full"
+        textareaClassName={`${
+          isLoading ? "text-neutral-400 italic" : ""
+        } h-full resize-none`}
+        value={notes}
+        onChange={(e) => setNotes(e.target.value)}
+      />
 
-        <LinkButton
-          onBefore={() => setIsLoading(true)}
-          onSuccess={() => setIsLoading(false)}
-          isLoading={isLoading}
-          method="patch"
-          href={`/recipes/${recipeId}/notes/update_for_user`}
-          data={{ notes: notes }}
-          preserveScroll
-          preserveState
-          size="xs"
-          icon={<span className="material-symbols-outlined">save</span>}
-        ></LinkButton>
-      </div>
+      <LinkButton
+        onBefore={() => setIsLoading(true)}
+        onSuccess={() => setIsLoading(false)}
+        isLoading={isLoading}
+        method="patch"
+        href={`/recipes/${recipeId}/notes/update_for_user`}
+        data={{ notes: notes }}
+        preserveScroll
+        preserveState
+        size="xs"
+        icon={<span className="material-symbols-outlined">save</span>}
+      ></LinkButton>
     </div>
   );
 }

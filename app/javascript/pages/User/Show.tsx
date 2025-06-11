@@ -8,6 +8,7 @@ import { AchievementType } from "@customTypes/achievement.types";
 import UserPreferences from "@components/Users/UserPreferences";
 import { useUserIsCurrentUser } from "@hooks/useUserIsCurrentUser";
 import CreatedRecipes from "@components/Users/Recipes/CreatedRecipes";
+import Page from "@components/ui/Pages/Page";
 
 export default function Show({ user }: { user: UserType }) {
   const { isCurrentUser } = useUserIsCurrentUser(user);
@@ -31,29 +32,30 @@ export default function Show({ user }: { user: UserType }) {
   }, [user.id]);
 
   return (
-    <div className="space-y-4">
+    <>
       <Head title={`Profil de ${user.username}`} />
+      <Page title={`Profil de ${user.username}`} className="space-y-8">
+        <UserProfile user={user} />
 
-      <UserProfile user={user} />
+        {isCurrentUser && <UserPreferences user={user} />}
 
-      {isCurrentUser && <UserPreferences user={user} />}
+        <CreatedRecipes userId={user.id} />
 
-      <CreatedRecipes userId={user.id} />
-
-      {loadingAchievements ? (
-        <div className="text-center py-8">
-          <span className="material-symbols-outlined animate-spin text-primary-600 text-4xl">
-            progress_activity
-          </span>
-          <p className="mt-2 text-neutral-600">Chargement des succès...</p>
-        </div>
-      ) : (
-        achievements && (
-          <>
-            <AchievementsList achievements={achievements} user={user} />
-          </>
-        )
-      )}
-    </div>
+        {loadingAchievements ? (
+          <div className="text-center py-8">
+            <span className="material-symbols-outlined animate-spin text-primary-600 text-4xl">
+              progress_activity
+            </span>
+            <p className="mt-2 text-neutral-600">Chargement des succès...</p>
+          </div>
+        ) : (
+          achievements && (
+            <>
+              <AchievementsList achievements={achievements} user={user} />
+            </>
+          )
+        )}
+      </Page>
+    </>
   );
 }

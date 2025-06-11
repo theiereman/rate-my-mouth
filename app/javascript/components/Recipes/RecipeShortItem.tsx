@@ -18,7 +18,7 @@ export default function RecipeShortItem({ recipe }: RecipeProps) {
           <RecipeThumbnail
             thumbnailUrl={recipe.thumbnail_url}
             format="square"
-            className="h-40"
+            className="size-32"
           />
 
           <div className="flex-1 flex flex-col justify-between">

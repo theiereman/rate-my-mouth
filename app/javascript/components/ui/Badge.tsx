@@ -8,12 +8,9 @@ export type BadgeVariant =
   | "neutral"
   | "gray";
 
-type BadgeSize = "xs" | "sm" | "md" | "lg";
-
 interface BadgeProps {
   text: string;
   variant?: BadgeVariant;
-  size?: BadgeSize;
   rounded?: boolean;
   icon?: React.ReactNode;
   iconPosition?: "left" | "right";

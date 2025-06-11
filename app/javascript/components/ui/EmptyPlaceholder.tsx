@@ -7,16 +7,16 @@ export default function EmptyPlaceholder({
   subtext?: string;
   variant?: "filled" | "outline";
 }) {
-  const baseClasses = "text-center py-4 rounded-lg border";
+  const baseClasses = "text-center py-4 px-2 rounded-lg border";
   const variantClasses = {
-    filled: "bg-neutral-50 border-neutral-100",
-    outline: "border-neutral-600",
+    filled: "bg-primary-50 border-primary-100",
+    outline: "border-neutral-300",
   };
 
   return (
     <div className={`${baseClasses} ${variantClasses[variant]}`}>
-      <p className="text-neutral-600 text-sm">{text}</p>
-      <p className="text-neutral-400 text-xs">{subtext}</p>
+      <p className="text-primary-500 text-sm">{text}</p>
+      <p className="text-primary-300 text-xs">{subtext}</p>
     </div>
   );
 }

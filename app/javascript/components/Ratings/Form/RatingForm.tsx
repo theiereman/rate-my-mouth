@@ -19,6 +19,8 @@ export default function RatingForm({
 
   const pendingUpdate = pendingValue !== null && pendingValue !== value;
 
+  console.log(pendingValue);
+
   const handleSubmit = (e: any) => {
     e.preventDefault();
     if (pendingValue === null || !pendingUpdate) return;
@@ -43,8 +45,8 @@ export default function RatingForm({
   };
 
   return (
-    <div className="flex flex-col gap-2">
-      <div className={`flex items-center gap-2 ${className}`}>
+    <div className="flex flex-col gap-2">e
+      <div className={`flex items-stretch gap-2 ${className}`}>
         <Rating
           name="user-rating"
           precision={0.5}
@@ -52,23 +54,22 @@ export default function RatingForm({
           onChange={handleChange}
           size="large"
           disabled={isSubmitting}
-          className="text-primary-500"
+          className="text-primary-500 m-auto"
         />
-        {value && (
+        {pendingValue && (
           <Badge
             text={`${pendingValue?.toFixed(1)}${pendingUpdate ? "*" : ""}`}
             variant={pendingUpdate ? "warning" : "primary"}
           />
         )}
-        <Button onClick={handleSubmit} disabled={isSubmitting}>
+        <Button
+          className="flex-1"
+          onClick={handleSubmit}
+          disabled={isSubmitting}
+        >
           {isSubmitting ? "Envoi..." : "Noter"}
         </Button>
       </div>
-      {pendingUpdate && (
-        <span className="text-xs text-neutral-500">
-          *Cliquez sur "Noter" pour confirmer la modification.
-        </span>
-      )}
     </div>
   );
 }
