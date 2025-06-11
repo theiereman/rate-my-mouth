@@ -9,7 +9,7 @@ export default function UserProfile({ user }: { user: UserType }) {
   const { isCurrentUser } = useUserIsCurrentUser(user);
 
   return (
-    <Section>
+    <Section title="Profil" underlineStroke={4}>
       <div className="flex gap-4 items-center">
         <UserAvatar user={user} size="xl" allowAvatarChange={isCurrentUser} />
         <div className="flex-1">

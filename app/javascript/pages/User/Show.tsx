@@ -34,7 +34,7 @@ export default function Show({ user }: { user: UserType }) {
   return (
     <>
       <Head title={`Profil de ${user.username}`} />
-      <Page title={`Profil de ${user.username}`} className="space-y-8">
+      <Page>
         <UserProfile user={user} />
 
         {isCurrentUser && <UserPreferences user={user} />}

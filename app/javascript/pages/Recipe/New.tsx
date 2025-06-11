@@ -34,6 +34,7 @@ export default function New({ recipe }: NewProps) {
         </div>
 
         <Form
+          title="Créer une nouvelle recette"
           recipe={recipe}
           onSubmit={(form) => {
             form.transform((data) => ({ recipe: data }));

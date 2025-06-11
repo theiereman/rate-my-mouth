@@ -1,4 +1,4 @@
-import { Badge, Button, Card } from "@components/ui";
+import { Badge, Button } from "@components/ui";
 import EmptyPlaceholder from "@components/ui/EmptyPlaceholder";
 import { ItemCategory, ItemType, RecipeItem } from "@customTypes/recipe.types";
 import CategoryItem from "./CategoryItem";

@@ -45,7 +45,7 @@ export default function RatingForm({
   };
 
   return (
-    <div className="flex flex-col gap-2">e
+    <div className="flex flex-col gap-2">
       <div className={`flex items-stretch gap-2 ${className}`}>
         <Rating
           name="user-rating"
