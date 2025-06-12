@@ -34,8 +34,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
           <div className="flex items-center h-16 gap-2 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <HomeButton className="me-6" />
             <Navbar />
-            <UserActions />
             <ThemeSelector />
+            <UserActions />
           </div>
         </header>
 
