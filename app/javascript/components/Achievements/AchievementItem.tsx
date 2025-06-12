@@ -2,6 +2,7 @@ import { Card, Badge, LinkButton } from "@components/ui";
 import { AchievementType } from "@customTypes/achievement.types";
 import { UserType } from "@customTypes/user.types";
 import { useUserIsCurrentUser } from "@hooks/useUserIsCurrentUser";
+import { Link } from "@inertiajs/react";
 
 interface AchievementCardProps {
   achievement: AchievementType;
@@ -41,35 +42,32 @@ export default function AchievementItem({
           </span>
         </div>
         <div className="flex-1">
-          <div className="flex items-center gap-2">
-            <h3 className="text-neutral-800">{achievement.name}</h3>
-            {achievement.unlocked &&
-              isCurrentUser &&
-              (isSelectedAchievement ? (
-                <Badge variant="primary" size="sm">
-                  Titre actuel
-                </Badge>
-              ) : (
-                <LinkButton
-                  method="patch"
-                  size="xs"
-                  preserveState
-                  href={`/select_achievement_as_title?key=${achievement.key}`}
-                >
-                  Sélectionner comme titre
-                </LinkButton>
-              ))}
+          <div className="flex items-start gap-2">
+            {achievement.unlocked && isCurrentUser ? (
+              <Link
+                method="patch"
+                preserveState
+                preserveScroll
+                className={`font-semibold underline text-primary-600 text-start cursor-pointer`}
+                title="Définir ce succès comme titre"
+                href={`/select_achievement_as_title?key=${achievement.key}`}
+              >
+                {achievement.name}
+              </Link>
+            ) : (
+              <h3 className="text-neutral-800">{achievement.name}</h3>
+            )}
+
+            {achievement.unlocked && isCurrentUser && isSelectedAchievement && (
+              <Badge text="Titre actuel" variant="primary" />
+            )}
             <div className="flex-1"></div>
             {achievement.unlocked ? (
               <>
-                <Badge variant="success" size="sm">
-                  Débloqué
-                </Badge>
+                <Badge text="Débloqué" variant="valid" />
               </>
             ) : (
-              <Badge variant="neutral" size="sm">
-                À débloquer
-              </Badge>
+              <Badge text="À débloquer" variant="neutral" />
             )}
           </div>
           {(!achievement.secret || achievement.unlocked) && (

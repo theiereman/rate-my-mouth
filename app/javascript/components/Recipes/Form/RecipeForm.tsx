@@ -1,25 +1,26 @@
 import { InertiaFormProps, useForm } from "@inertiajs/react";
 import { FormEvent } from "react";
 import { RecipeFormType, RecipeType } from "@customTypes/recipe.types";
-import {
-  Button,
-  Input,
-  Card,
-  Combo,
-  TextArea,
-  LinkButton,
-} from "@components/ui";
+import { Button, Input, Combo, TextArea, LinkButton } from "@components/ui";
 import TagsSelector from "@components/Tags/TagsSelector";
 import RecipeThumbnail from "../RecipeThumbnail";
 import RecipeContentSubform from "./RecipeContentSubform";
+import Section from "@components/ui/Pages/Section";
+import Page from "@components/ui/Pages/Page";
 
 interface FormProps {
   recipe: RecipeType;
   onSubmit: (form: InertiaFormProps<RecipeFormType>) => void;
   submitText: string;
+  title: string;
 }
 
-export default function Form({ recipe, onSubmit, submitText }: FormProps) {
+export default function Form({
+  recipe,
+  onSubmit,
+  submitText,
+  title,
+}: FormProps) {
   const form = useForm<RecipeFormType>({
     name: recipe.name || "",
     ingredients_attributes:
@@ -51,10 +52,10 @@ export default function Form({ recipe, onSubmit, submitText }: FormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="contents">
-      <div className="mb-2">
-        <h2 className="text-lg font-medium text-neutral-800 mb-3">
-          Miniature de la recette
-        </h2>
+      <Page
+        title={title}
+        subtitle="Partagez votre recette avec le reste de la communauté et inspirez d'autres cuisiniers !"
+      >
         <RecipeThumbnail
           thumbnailUrl={data.thumbnail || recipe.thumbnail_url}
           allowThumbnailChange={true}
@@ -62,18 +63,8 @@ export default function Form({ recipe, onSubmit, submitText }: FormProps) {
             setData("thumbnail", file as unknown as string);
           }}
         />
-      </div>
 
-      <Card>
-        <Card.Header>
-          <h2 className="text-xl font-semibold text-neutral-800 flex items-center gap-1">
-            <span className="material-symbols-outlined text-primary-600">
-              article
-            </span>
-            Informations générales
-          </h2>
-        </Card.Header>
-        <Card.Body className="space-y-4">
+        <Section title="Informations générales" underlineStroke={1}>
           <Input
             mandatory
             label="Nom de la recette"
@@ -147,46 +138,48 @@ export default function Form({ recipe, onSubmit, submitText }: FormProps) {
               className="w-full"
             />
           </div>
-        </Card.Body>
-      </Card>
+        </Section>
 
-      <RecipeContentSubform
-        initialIngredients={
-          data.ingredients_attributes.map((ing) => ({
-            id: ing.id || 0,
-            name: ing.name,
-            category: ing.category,
-          })) || []
-        }
-        initialInstructions={
-          data.instructions_attributes.map((inst) => ({
-            id: inst.id || 0,
-            name: inst.name,
-            category: inst.category,
-          })) || []
-        }
-        onDataChange={(contentData) => {
-          setData("ingredients_attributes", contentData.ingredients_attributes);
-          setData(
-            "instructions_attributes",
-            contentData.instructions_attributes
-          );
-        }}
-      />
+        <RecipeContentSubform
+          initialIngredients={
+            data.ingredients_attributes.map((ing) => ({
+              id: ing.id || 0,
+              name: ing.name,
+              category: ing.category,
+            })) || []
+          }
+          initialInstructions={
+            data.instructions_attributes.map((inst) => ({
+              id: inst.id || 0,
+              name: inst.name,
+              category: inst.category,
+            })) || []
+          }
+          onDataChange={(contentData) => {
+            setData(
+              "ingredients_attributes",
+              contentData.ingredients_attributes
+            );
+            setData(
+              "instructions_attributes",
+              contentData.instructions_attributes
+            );
+          }}
+        />
 
-      <div className="flex gap-2 justify-end">
-        <LinkButton variant="gray" href={`/recipes/${recipe.id}`}>
-          Annuler
-        </LinkButton>
-        <Button
-          type="submit"
-          variant="primary"
-          size="lg"
-          isLoading={processing}
-        >
-          {submitText}
-        </Button>
-      </div>
+        <div className="flex gap-2 justify-end">
+          <LinkButton
+            preserveScroll
+            variant="ghost"
+            href={recipe.id ? `/recipes/${recipe.id}` : "/recipes"}
+          >
+            Annuler
+          </LinkButton>
+          <Button type="submit" variant="primary" isLoading={processing}>
+            {submitText}
+          </Button>
+        </div>
+      </Page>
     </form>
   );
 }

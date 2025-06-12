@@ -9,3 +9,4 @@ export { default as Input } from "./Input";
 export { default as Pagination } from "./Pagination";
 export { default as TextArea } from "./TextArea";
 export { default as Toast } from "./Toast";
+export { default as UnderlineText } from "./UnderlineText";

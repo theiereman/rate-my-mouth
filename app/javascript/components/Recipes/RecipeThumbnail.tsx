@@ -72,7 +72,7 @@ export const RecipeThumbnail = ({
             <span className="material-symbols-outlined material-icon--lg">
               add_photo_alternate
             </span>
-            <span className="text-sm font-medium">Modifier l'image</span>
+            <span className="text-sm font-medium">Modifier la miniature</span>
           </div>
           {url && (
             <div

@@ -151,7 +151,7 @@ export default function TagsSelector({
 
   return (
     <div className={className}>
-      {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
+      {error && <p className="text-red-500 text-sm">{error}</p>}
 
       <Combo
         values={comboOptions}
@@ -175,6 +175,7 @@ export default function TagsSelector({
         <div className="flex flex-wrap gap-2 mt-2">
           {selectedTags.map((tag) => (
             <Badge
+              text={tag.name}
               key={tag.id}
               variant="primary"
               icon={
@@ -186,9 +187,7 @@ export default function TagsSelector({
                 </span>
               }
               iconPosition="right"
-            >
-              {tag.name}
-            </Badge>
+            />
           ))}
         </div>
       )}

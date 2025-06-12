@@ -1,11 +1,23 @@
 import { Head } from "@inertiajs/react";
 import { RecipeType } from "@customTypes/recipe.types";
 import { RatingType } from "@customTypes/rating.types";
-import RecipeItem from "@components/Recipes/RecipeItem";
 import { CommentableType } from "@customTypes/comment.types";
-import RecipeRatingDetails from "@components/Ratings/Recipes/RecipeRatingDetails";
 import CommentList from "@components/Comments/CommentList";
-import Tools from "@components/tools/Tools";
+import Timer from "@components/tools/Timer";
+import RecipeNotes from "@components/Recipes/RecipeNotes";
+import Section from "@components/ui/Pages/Section";
+import CommentForm from "@components/Comments/Form/CommentForm";
+import RatingForm from "@components/Ratings/Form/RatingForm";
+import RatingList from "@components/Ratings/RatingList";
+import RecipeContentItemList from "@components/Recipes/RecipeContentItemList";
+import IngredientsQuantitySelector from "@components/Recipes/Ingredients/IngredientsQuantitySelector";
+import RecipeActionsButtons from "@components/Recipes/RecipeActionsButtons";
+import RecipeHeader from "@components/Recipes/RecipeHeader";
+import RecipeBadges from "@components/Recipes/RecipeBadges";
+import RecipeThumbnail from "@components/Recipes/RecipeThumbnail";
+import { useIngredientQuantifier } from "@hooks/useIngredientQuantifier";
+import { useUserIsCurrentUser } from "@hooks/useUserIsCurrentUser";
+import Page from "@components/ui/Pages/Page";
 
 interface ShowProps {
   recipe: RecipeType;
@@ -13,27 +25,81 @@ interface ShowProps {
 }
 
 export default function Show({ recipe, userRating }: ShowProps) {
+  const { isCurrentUser } = useUserIsCurrentUser(recipe.user);
+
+  const {
+    handleIncrease,
+    handleDecrease,
+    numberOfServings,
+    updatedIngredients,
+  } = useIngredientQuantifier({ recipe });
+
   return (
-    <main className="flex flex-col gap-4">
+    <Page>
       <Head title={`${recipe.name} de ${recipe.user.username}`} />
 
-      <RecipeItem recipe={recipe} />
+      {recipe.thumbnail_url && (
+        <RecipeThumbnail thumbnailUrl={recipe.thumbnail_url} className="mb-4" />
+      )}
 
-      <Tools recipeId={recipe.id} />
-
-      <div className="flex flex-col lg:flex-row gap-4">
-        <CommentList
-          className="flex-2"
-          comments={recipe.comments}
-          commentableId={recipe.id}
-          commentableType={CommentableType.recipe}
-        />
-        <RecipeRatingDetails
-          className="flex-1"
-          recipe={recipe}
-          userRating={userRating}
-        />
+      <div className="flex flex-col justify-between gap-6">
+        <RecipeHeader showDescription recipe={recipe} />
+        <RecipeBadges recipe={recipe} />
+        {isCurrentUser && <RecipeActionsButtons recipe={recipe} />}
       </div>
-    </main>
+
+      <Section title="Ingredients" underlineStroke={1}>
+        <IngredientsQuantitySelector
+          numberOfServings={numberOfServings}
+          onValueIncrease={handleIncrease}
+          onValueDecrease={handleDecrease}
+        />
+        <RecipeContentItemList recipeItems={updatedIngredients} />
+      </Section>
+
+      <Section title="Instructions" underlineStroke={2}>
+        <RecipeContentItemList recipeItems={recipe.instructions} ordered />
+      </Section>
+
+      <div className="flex flex-col gap-16 md:flex-row md:gap-12">
+        <Section
+          title="Minuteur"
+          containerClassName="flex-2"
+          underlineStroke={1}
+        >
+          <Timer />
+        </Section>
+        <Section title="Notes personnelles" containerClassName="flex-3">
+          <RecipeNotes recipeId={recipe.id} />
+        </Section>
+      </div>
+
+      <div className="flex flex-col gap-16 md:flex-row md:gap-12">
+        <Section
+          title={`Commentaires (${recipe.comments.length})`}
+          containerClassName="flex-3"
+        >
+          <CommentForm
+            commentableId={recipe.id}
+            commentableType={CommentableType.recipe}
+            className="md:h-10" //forcing height to match the rating form
+          />
+          <CommentList comments={recipe.comments} />
+        </Section>
+
+        <Section
+          title={`Évaluations (${recipe.ratings.length})`}
+          containerClassName="flex-2"
+          underlineStroke={4}
+        >
+          <RatingForm
+            recipeId={recipe.id}
+            rating={userRating}
+            className="self-start md:self-stretch md:h-10" //forcing height to match the comment form
+          />
+          <RatingList count={5} ratings={recipe.ratings} />
+        </Section>
+      </div>
+    </Page>
   );
 }

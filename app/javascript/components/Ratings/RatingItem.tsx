@@ -3,7 +3,7 @@ import { RatingType } from "@customTypes/rating.types";
 
 export default function RatingItem({ rating }: { rating: RatingType }) {
   return (
-    <div>
+    <>
       <Rating
         precision={0.5}
         value={rating.value}
@@ -11,6 +11,6 @@ export default function RatingItem({ rating }: { rating: RatingType }) {
         size="small"
         className="text-primary-500"
       />
-    </div>
+    </>
   );
 }

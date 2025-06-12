@@ -7,7 +7,8 @@ import { useEffect, useMemo, useState } from "react";
 import { debounce } from "lodash";
 import TagsSelector from "@components/Tags/TagsSelector";
 import { PagyMetadata } from "@components/ui/Pagination";
-import Page from "@layouts/Page";
+import Page from "@components/ui/Pages/Page";
+import Section from "@components/ui/Pages/Section";
 
 interface IndexProps {
   recipes: RecipeType[];
@@ -87,28 +88,17 @@ export default function Index({ recipes, pagy }: IndexProps) {
         <LinkButton
           href="/recipes/new"
           variant="primary"
-          size="lg"
           className="w-full sm:w-auto"
-          icon={
-            <span className="material-symbols-outlined current-color">add</span>
-          }
         >
           Nouvelle recette
         </LinkButton>
       }
     >
-      <div
-        id="filters"
-        className="border rounded-lg p-4 my-6 border-neutral-200"
-      >
-        <h1 className="text-xl font-semibold text-neutral-800 mb-2">
-          Filtres
-          <p className="text-sm font-normal text-neutral-500 ">
-            Additionnez les filtres entre eux pour affiner la recherche
-          </p>
-        </h1>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div>
+        <Section
+          title="Filtres"
+          childrenClassName="grid grid-cols-1 mb-6 md:mb-2 md:grid-cols-3 md:gap-4"
+        >
           <Input
             placeholder="Rechercher une recette..."
             onChange={(e) => handleSearch(e.target.value)}
@@ -133,30 +123,29 @@ export default function Index({ recipes, pagy }: IndexProps) {
             initialTags={selectedTagIds.map((id) => ({ id, name: "" }))}
             onTagsSelected={handleTagsSelected}
           />
-        </div>
+        </Section>
+
+        {recipes.length === 0 ? (
+          <div className="text-center py-12 bg-neutral-50 rounded-lg border border-neutral-200">
+            <h3 className="text-lg font-medium text-neutral-800 mb-2">
+              Aucune recette disponible
+            </h3>
+            <p className="text-neutral-600 mb-4">
+              Soyez le premier à partager une recette délicieuse !
+            </p>
+            <LinkButton href="/recipes/new" variant="primary">
+              Ajouter une recette
+            </LinkButton>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 gap-6 animate-fade-in">
+            {recipes.map((recipe) => (
+              <RecipeShort key={recipe.id} recipe={recipe} />
+            ))}
+          </div>
+        )}
+        {pagy && <Pagination className="mt-8" pagy={pagy}></Pagination>}
       </div>
-
-      {recipes.length === 0 ? (
-        <div className="text-center py-12 bg-neutral-50 rounded-lg border border-neutral-200">
-          <h3 className="text-lg font-medium text-neutral-800 mb-2">
-            Aucune recette disponible
-          </h3>
-          <p className="text-neutral-600 mb-4">
-            Soyez le premier à partager une recette délicieuse !
-          </p>
-          <LinkButton href="/recipes/new" variant="primary">
-            Ajouter une recette
-          </LinkButton>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 gap-6 animate-fade-in">
-          {recipes.map((recipe) => (
-            <RecipeShort key={recipe.id} recipe={recipe} />
-          ))}
-        </div>
-      )}
-
-      {pagy && <Pagination className="mt-8" pagy={pagy}></Pagination>}
     </Page>
   );
 }

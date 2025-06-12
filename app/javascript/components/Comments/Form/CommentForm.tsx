@@ -30,6 +30,7 @@ export default function CommentForm({
 
   function submit(event: any) {
     event.preventDefault();
+    if (processing || !data.content.trim()) return;
     post(`/${commentableType}/${commentableId}/comments`, {
       preserveScroll: true,
     });

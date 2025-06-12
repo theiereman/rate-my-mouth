@@ -1,8 +1,8 @@
-import { Button, Card, Input } from "@components/ui";
+import { Button, Input } from "@components/ui";
 import { useState, useRef } from "react";
 import alarmSound from "../../assets/sounds/alert.wav";
 
-export default function Timer() {
+export default function Timer({ className = "" }: { className?: string }) {
   const [hours, setHours] = useState(0);
   const [minutes, setMinutes] = useState(0);
   const [seconds, setSeconds] = useState(0);
@@ -63,6 +63,7 @@ export default function Timer() {
   const handleStop = () => {
     setIsRunning(false);
     setIsPaused(false);
+    setIsOver(false);
     clearInterval(timerRef.current!);
     setHours(0);
     setMinutes(0);
@@ -81,32 +82,15 @@ export default function Timer() {
   };
 
   return (
-    <Card
-      onClick={() => setIsOver(false)}
-      className={`${isOver ? "border-4 border-primary-500" : ""}`}
+    <div
+      className={`${
+        isOver ? "p-1! rounded-lg border-4 border-primary-500" : ""
+      } ${className}`}
     >
-      <Card.Header className="flex">
-        <h2 className="flex-1 text-xl font-semibold text-neutral-800 flex items-center gap-2">
-          <span className="material-symbols-outlined text-primary-600">
-            timer
-          </span>
-          Minuteur
-        </h2>
-        {isOver && (
-          <Button
-            className="animate-pulse"
-            icon={<span className="material-symbols-outlined">stop</span>}
-            onClick={stopSound}
-          >
-            Arrêter
-          </Button>
-        )}
-      </Card.Header>
       <div className="flex">
         <Input
           containerClassName="w-full"
-          label="Heures"
-          inputClassName="rounded-r-none rounded-bl-none"
+          inputClassName="rounded-r-none rounded-bl-none p-1!"
           type="number"
           value={hours}
           onChange={(e) => setHours(Math.max(0, Number(e.target.value)))}
@@ -115,8 +99,7 @@ export default function Timer() {
         />
         <Input
           containerClassName="w-full"
-          label="Minutes"
-          inputClassName="rounded-none border-l-0 border-r-0"
+          inputClassName="rounded-none border-l-0 border-r-0 p-1!"
           type="number"
           value={minutes}
           onChange={(e) =>
@@ -127,8 +110,7 @@ export default function Timer() {
         />
         <Input
           containerClassName="w-full"
-          label="Secondes"
-          inputClassName="rounded-l-none rounded-br-none"
+          inputClassName="rounded-l-none rounded-br-none p-1!"
           type="number"
           value={seconds}
           onChange={(e) =>
@@ -140,27 +122,32 @@ export default function Timer() {
       </div>
       <div className="flex w-full">
         <Button
-          className="w-full rounded-none rounded-bl-lg"
+          className="py-1 w-full rounded-none rounded-bl-lg"
           onClick={handleStart}
           disabled={isRunning || totalSeconds() <= 0}
         >
           Start
         </Button>
         <Button
-          className="w-full rounded-none"
+          className="py-1 w-full rounded-none"
           onClick={handlePause}
           disabled={!isRunning}
         >
           Pause
         </Button>
         <Button
-          className="w-full rounded-none rounded-br-lg"
-          onClick={handleStop}
-          disabled={!isRunning && !isPaused}
+          className={`py-1 w-full rounded-none rounded-br-lg ${
+            isOver ? "animate-pulse" : ""
+          }`}
+          onClick={() => {
+            handleStop();
+            stopSound();
+          }}
+          disabled={!isRunning && !isPaused && !isOver}
         >
           Stop
         </Button>
       </div>
-    </Card>
+    </div>
   );
 }

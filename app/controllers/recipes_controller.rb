@@ -4,7 +4,7 @@ class RecipesController < ApplicationController
   # GET /recipes
   def index
     @recipes = Recipe.filter(params.slice(:name, :user_id, :tags_ids)).order(created_at: :desc)
-    @pagy, @recipes = pagy(@recipes, limit: params[:limit] || 20)
+    @pagy, @recipes = pagy(@recipes, limit: params[:limit])
 
     respond_to do |format|
       format.html {
@@ -91,7 +91,7 @@ class RecipesController < ApplicationController
 
     def recipe_as_json(recipe = @recipe)
       recipe.as_json(include: {
-        user: { only: [ :id, :username ]  },
+        user: { only: [ :id, :username, :ratings_count ]  },
         tags: {},
         ingredients: {},
         instructions: {},

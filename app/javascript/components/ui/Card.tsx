@@ -1,9 +1,7 @@
-import React from "react";
-
 interface CardProps {
   children: React.ReactNode;
   className?: string;
-  variant?: "default" | "elevated" | "outlined" | "flat";
+  variant?: "outlined" | "flat";
   rounded?: "none" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | "full";
   hover?: boolean;
   onClick?: () => void;
@@ -27,26 +25,18 @@ interface CardFooterProps {
 
 const getVariantClasses = (variant: string) => {
   switch (variant) {
-    case "default":
-      return "bg-white shadow-md";
-    case "elevated":
-      return "bg-white shadow-lg";
     case "outlined":
-      return "bg-white border border-neutral-200";
+      return "border border-1 border-neutral-300";
     case "flat":
-      return "bg-transparent";
-    default:
-      return "bg-white shadow-md";
+      return "bg-transparent p-0!";
   }
 };
 
 export const Card = ({
   children,
-  className = "",
-  variant = "outlined",
+  variant = "flat",
   hover = false,
   onClick,
-  ref,
 }: CardProps) => {
   const variantClasses = getVariantClasses(variant);
   const hoverClasses = hover
@@ -54,12 +44,22 @@ export const Card = ({
     : "";
 
   return (
-    <div
-      ref={ref}
-      className={`flex flex-col p-5 rounded-lg ${variantClasses} ${hoverClasses} ${className} animate-fade-in`}
-      onClick={onClick}
-    >
-      {children}
+    <div className={`group/card relative ${hoverClasses} `}>
+      <div
+        className={`absolute inset-0 opacity-0 pointer-events-none scale-101 rounded-lg ${variantClasses} animate-fade-in ${
+          hover
+            ? `group-hover/card:border-neutral-400  group-hover/card:rotate-1 group-hover/card:opacity-100 transition-all duration-200`
+            : ""
+        }`}
+      />
+      <div
+        className={`${
+          hover ? "group-hover/card:border-neutral-400" : ""
+        } flex flex-col p-5 rounded-lg ${variantClasses} animate-fade-in`}
+        onClick={onClick}
+      >
+        {children}
+      </div>
     </div>
   );
 };

@@ -69,7 +69,7 @@ export default function UserSelector({
 
   return (
     <div className={className}>
-      {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
+      {error && <p className="text-red-500 text-sm">{error}</p>}
       <Combo
         className="flex-1"
         values={userOptions}

@@ -19,17 +19,17 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="flex flex-col md:flex-row justify-between p-3 text-neutral-500 text-sm">
+    <footer className="flex flex-col md:flex-row justify-between p-3 text-neutral-400 text-sm">
       <p>© {new Date().getFullYear()} RateMyMouth. All rights reserved.</p>
 
-      <div id="details" className="flex-1 flex flex-col md:flex-row">
+      <div id="details" className="flex-1 flex flex-col sm:flex-row">
         <nav className={`flex-1 flex md:justify-center gap-2`}>
           {links.map((link) => (
             <a
               key={link.name}
               href={link.href}
               target="_blank"
-              className="hover:text-primary-600 hover:underline"
+              className="hover:text-primary-600! hover:underline"
             >
               {link.name}
             </a>

@@ -1,20 +1,17 @@
-import React from "react";
-
 export type BadgeVariant =
   | "primary"
   | "secondary"
   | "accent"
-  | "success"
+  | "valid"
   | "warning"
   | "error"
-  | "info"
-  | "neutral";
-type BadgeSize = "xs" | "sm" | "md" | "lg";
+  | "neutral"
+  | "gray"
+  | "ghost";
 
 interface BadgeProps {
-  children: React.ReactNode;
+  text: string;
   variant?: BadgeVariant;
-  size?: BadgeSize;
   rounded?: boolean;
   icon?: React.ReactNode;
   iconPosition?: "left" | "right";
@@ -22,71 +19,57 @@ interface BadgeProps {
   onClick?: () => void;
 }
 
-const getVariantClasses = (variant: BadgeVariant) => {
+const backgroundClasses = (variant: BadgeVariant) => {
   switch (variant) {
     case "primary":
-      return "bg-primary-100 text-primary-800";
+      return "bg-primary-100 border-primary-500";
     case "secondary":
-      return "bg-secondary-100 text-secondary-800";
+      return "bg-secondary-100 border-secondary-500";
     case "accent":
-      return "bg-accent-100 text-accent-800";
-    case "success":
-      return "bg-green-100 text-green-800";
+      return "bg-accent-100 border-accent-500";
+    case "valid":
+      return "bg-valid-100 border-valid-500";
     case "warning":
-      return "bg-yellow-100 text-yellow-800";
+      return "bg-warning-100 border-warning-500";
     case "error":
-      return "bg-red-100 text-red-800";
-    case "info":
-      return "bg-blue-100 text-blue-800";
+      return "bg-error-100 border-error-500";
     case "neutral":
-      return "bg-neutral-200 text-neutral-800";
+      return "bg-neutral-100 border-neutral-500";
+    case "gray":
+      return "bg-gray-200 border-gray-300";
+    case "ghost":
+      return "";
     default:
-      return "bg-primary-100 text-primary-800";
-  }
-};
-
-const getSizeClasses = (size: BadgeSize) => {
-  switch (size) {
-    case "xs":
-      return "text-xs px-1.5 py-0.5";
-    case "sm":
-      return "text-xs px-2 py-0.5";
-    case "md":
-      return "text-sm px-2.5 py-0.5";
-    case "lg":
-      return "text-sm px-3 py-1";
-    default:
-      return "text-xs px-2 py-0.5";
+      return "";
   }
 };
 
 export const Badge = ({
-  children,
+  text,
   variant = "primary",
-  size = "sm",
-  rounded = true,
   icon,
   iconPosition = "left",
   className = "",
   onClick,
 }: BadgeProps) => {
-  const variantClasses = getVariantClasses(variant);
-  const sizeClasses = getSizeClasses(size);
-  const roundedClasses = rounded ? "rounded-full" : "rounded";
   const cursorClass = onClick ? "cursor-pointer" : "";
 
   return (
     <span
-      className={`flex justify-center items-center font-medium whitespace-nowrap ${variantClasses} ${sizeClasses} ${roundedClasses} ${cursorClass} ${className}`}
+      className={`flex rounded-full justify-center items-center whitespace-nowrap text-neutral-600 border-1 ${backgroundClasses(
+        variant
+      )} text-sm px-2 ${cursorClass} ${className}`}
       onClick={onClick}
     >
-      {icon && iconPosition === "left" && (
-        <div className="mr-1 flex align-center">{icon}</div>
-      )}
-      {children}
-      {icon && iconPosition === "right" && (
-        <div className="ml-1 flex align-center">{icon}</div>
-      )}
+      <span className={`flex items-center`}>
+        {icon && iconPosition === "left" && (
+          <div className="mr-1 flex align-center">{icon}</div>
+        )}
+        <span className="font-black">{text}</span>
+        {icon && iconPosition === "right" && (
+          <div className="ml-1 flex align-center">{icon}</div>
+        )}
+      </span>
     </span>
   );
 };

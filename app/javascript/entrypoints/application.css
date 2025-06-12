@@ -17,7 +17,21 @@
   font-style: normal;
   font-weight: 400;
   src: local("Material Icons"), local("MaterialIcons-Outlined"),
-    url("/assets/material-symbol-outlined.woff2") format("woff2");
+    url("/assets/fonts/material-symbol-outlined.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "LoveYaLikeASister";
+  font-style: normal;
+  font-weight: 200 900;
+  src: url("/assets/fonts/loveyalikeasister.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Quicksand";
+  font-style: normal;
+  font-weight: 500 900;
+  src: url("/assets/fonts/quicksand-variable.ttf") format("truetype");
 }
 
 .material-symbols-outlined {

@@ -1,4 +1,4 @@
-import { Badge, Button, Card } from "@components/ui";
+import { Badge, Button } from "@components/ui";
 import EmptyPlaceholder from "@components/ui/EmptyPlaceholder";
 import { ItemCategory, ItemType, RecipeItem } from "@customTypes/recipe.types";
 import CategoryItem from "./CategoryItem";
@@ -41,7 +41,6 @@ export default function ItemsCategorizer({
     return acc;
   }, [] as ItemCategory[]);
 
-  // Combine categories with items and empty categories, avoiding duplicates
   const allCategories = [...categories];
   emptyCategories.forEach((emptyCategory) => {
     if (!allCategories.find((cat) => cat.name === emptyCategory.name)) {
@@ -52,7 +51,6 @@ export default function ItemsCategorizer({
   const handleAddCategoryClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
-    // Trouver le plus grand indice existant dans les noms de catégories
     let maxIndex = 0;
     allCategories.forEach((cat) => {
       const match = cat.name.match(/^Catégorie (\d+)$/);
@@ -89,63 +87,63 @@ export default function ItemsCategorizer({
   };
 
   return (
-    <Card
+    <div
       ref={setNodeRef}
-      className={`flex-1 p-0! ${
+      className={`flex-1 space-y-4 ${
         isOver && over?.id === type ? "border-2 border-primary-500" : ""
       }`}
-      variant="flat"
     >
-      <Card.Header>
-        <div className="flex gap-2 items-center">
-          <h2 className="text-xl font-semibold text-neutral-800 flex items-center gap-1">
-            {type === "ingredient" ? "Ingrédients" : "Instructions"}
-          </h2>
-          <Badge>{items.length}</Badge>
-        </div>
+      <div className="flex flex-col">
+        <h2 className="text-xl font-semibold text-neutral-800 flex items-center gap-1">
+          {type === "ingredient" ? "Ingrédients" : "Instructions"}
+          <Badge
+            text={items.length.toString()}
+            variant={type === "ingredient" ? "primary" : "secondary"}
+          />
+        </h2>
         {items.length > 0 && (
-          <p className="text-xs text-neutral-500">
-            Astuce : Les éléments sont déplaçables entre les sous-catégories.
+          <p className="text-xs flex items-center gap-1 text-neutral-400">
+            <span className="material-symbols-outlined material-icon--sm">
+              info
+            </span>
+            Les éléments sont déplaçables entre les sous-catégories.
           </p>
         )}
-      </Card.Header>
-      <Card.Body className="space-y-2">
-        {allCategories.length === 0 ? (
-          <EmptyPlaceholder
-            text={
-              type == "ingredient"
-                ? "Aucun ingrédient ajouté"
-                : `Aucune instruction ajoutée`
-            }
-            subtext="Utiliser le champs ci-dessus pour en ajouter."
-          />
-        ) : (
-          <>
-            {allCategories
-              .sort((a, b) => a.name.localeCompare(b.name))
-              .map((category, index) => (
-                <CategoryItem
-                  key={`${category.name}-${index}`}
-                  name={category.name}
-                  type={type}
-                  color={category.color}
-                  items={items.filter(
-                    (item) => item.category === category.name
-                  )}
-                  onItemUpdate={onItemUpdate}
-                  onItemDelete={onItemDelete}
-                  onNameChange={(newName) =>
-                    handleCategoryNameChange(category.name, newName)
-                  }
-                  onDelete={() => handleCategoryDelete(category.name)}
-                />
-              ))}
-          </>
-        )}
-        <Button onClick={handleAddCategoryClick} variant="outline" fullWidth>
-          Ajouter une sous-catégorie
-        </Button>
-      </Card.Body>
-    </Card>
+      </div>
+      {allCategories.length === 0 ? (
+        <EmptyPlaceholder
+          text={
+            type == "ingredient"
+              ? "Aucun ingrédient ajouté"
+              : `Aucune instruction ajoutée`
+          }
+          subtext="Utiliser le champs ci-dessus pour en ajouter."
+          variant={type === "ingredient" ? "primary" : "secondary"}
+        />
+      ) : (
+        <>
+          {allCategories
+            .sort((a, b) => a.name.localeCompare(b.name))
+            .map((category, index) => (
+              <CategoryItem
+                key={`${category.name}-${index}`}
+                name={category.name}
+                type={type}
+                color={category.color}
+                items={items.filter((item) => item.category === category.name)}
+                onItemUpdate={onItemUpdate}
+                onItemDelete={onItemDelete}
+                onNameChange={(newName) =>
+                  handleCategoryNameChange(category.name, newName)
+                }
+                onDelete={() => handleCategoryDelete(category.name)}
+              />
+            ))}
+        </>
+      )}
+      <Button onClick={handleAddCategoryClick} variant="outline" fullWidth>
+        Ajouter une sous-catégorie
+      </Button>
+    </div>
   );
 }

@@ -1,8 +1,7 @@
 import { RatingType } from "@customTypes/rating.types";
 import RatingItem from "@components/Ratings/RatingItem";
-import UserAvatar from "@components/Users/UserAvatar";
-import { formatDateTime } from "@helpers/date-helper";
 import EmptyPlaceholder from "@components/ui/EmptyPlaceholder";
+import UserRelatedEventHeader from "@components/Users/UserRelatedEventHeader";
 
 export default function RatingList({
   ratings,
@@ -19,30 +18,17 @@ export default function RatingList({
     .slice(0, count);
 
   return (
-    <div>
-      <h3 className="font-medium text-neutral-800 mb-3">
-        Les {count} dernières évaluations
-      </h3>
-
+    <div className="flex flex-col gap-4 rounded-lg">
       {sortedRatings.length > 0 ? (
-        <ul className="space-y-4">
+        <ul className="divide-y divide-neutral-200">
           {sortedRatings.map((rating) => (
-            <li key={rating.id} className="flex items-start gap-3">
-              <UserAvatar
+            <li className="py-4" key={rating.id}>
+              <UserRelatedEventHeader
                 user={rating.user}
-                size="md"
-                className="flex-shrink-0"
+                eventTimestamp={rating.created_at}
               />
-              <div className="flex-1">
-                <div className="flex sm:flex-row items-center gap-1 mb-1">
-                  <span className="font-medium text-sm text-neutral-800">
-                    {rating.user.username}
-                  </span>
-                  <span className="text-xs text-neutral-500">
-                    {formatDateTime(rating.created_at)}
-                  </span>
-                </div>
-                <RatingItem rating={rating} />
+              <div className="flex items-center text-neutral-800 gap-1">
+                A noté cette recette <RatingItem rating={rating} />
               </div>
             </li>
           ))}
