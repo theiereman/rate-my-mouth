@@ -14,7 +14,9 @@ function ItemListComponent({
     <ol className={`space-y-1 ${ordered ? "list-decimal" : "list-disc"}`}>
       {items.map((item) => (
         <span key={item.id} className="flex items-center gap-2 pl-5">
-          <TextWithTimerLinks text={item.name} />
+          <li>
+            <TextWithTimerLinks text={item.name} />
+          </li>
         </span>
       ))}
     </ol>

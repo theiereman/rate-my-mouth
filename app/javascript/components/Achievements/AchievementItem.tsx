@@ -1,4 +1,4 @@
-import { Card, Badge, LinkButton } from "@components/ui";
+import { Card, Badge } from "@components/ui";
 import { AchievementType } from "@customTypes/achievement.types";
 import { UserType } from "@customTypes/user.types";
 import { useUserIsCurrentUser } from "@hooks/useUserIsCurrentUser";
