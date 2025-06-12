@@ -7,12 +7,16 @@ export default function RecipeActionsButtons({
   recipe: RecipeType;
 }) {
   return (
-    <div className="flex gap-2">
+    <div className="flex flex-col md:flex-row gap-2">
       <LinkButton
         href={`/recipes/${recipe.id}/edit`}
         variant="outline"
-        size="xs"
-        icon={<span className="material-symbols-outlined">edit</span>}
+        icon={
+          <span className="material-symbols-outlined material-icon--sm">
+            edit
+          </span>
+        }
+        className="text-sm py-1!"
       >
         Modifier
       </LinkButton>
@@ -20,11 +24,15 @@ export default function RecipeActionsButtons({
         href={`/recipes/${recipe.id}`}
         method="delete"
         variant="outline"
-        size="xs"
         onBefore={() =>
           confirm("Êtes-vous sûr de vouloir supprimer cette recette?")
         }
-        icon={<span className="material-symbols-outlined">delete</span>}
+        icon={
+          <span className="material-symbols-outlined material-icon--sm">
+            delete
+          </span>
+        }
+        className="text-sm py-1!"
       >
         Supprimer
       </LinkButton>

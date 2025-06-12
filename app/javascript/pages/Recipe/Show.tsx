@@ -44,10 +44,8 @@ export default function Show({ recipe, userRating }: ShowProps) {
 
       <div className="flex flex-col justify-between gap-6">
         <RecipeHeader showDescription recipe={recipe} />
-        <div className="flex items-start justify-between">
-          <RecipeBadges recipe={recipe} />
-          {isCurrentUser && <RecipeActionsButtons recipe={recipe} />}
-        </div>
+        <RecipeBadges recipe={recipe} />
+        {isCurrentUser && <RecipeActionsButtons recipe={recipe} />}
       </div>
 
       <Section title="Ingredients" underlineStroke={1}>

@@ -97,7 +97,7 @@ export default function Index({ recipes, pagy }: IndexProps) {
       <div>
         <Section
           title="Filtres"
-          childrenClassName="grid grid-cols-1 mb-4 md:grid-cols-3 md:gap-4"
+          childrenClassName="grid grid-cols-1 mb-6 md:mb-2 md:grid-cols-3 md:gap-4"
         >
           <Input
             placeholder="Rechercher une recette..."
