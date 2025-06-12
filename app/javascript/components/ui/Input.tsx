@@ -90,6 +90,7 @@ export const Input = ({
           aria-describedby={
             props.id ? `${props.id}-helper-text ${props.id}-error` : undefined
           }
+          disabled={disabled}
           {...props}
         />
         {rightIcon && (
