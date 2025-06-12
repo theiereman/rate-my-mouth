@@ -16,7 +16,7 @@ export default function Navbar() {
     <nav className="flex-1 flex font-serif">
       <div className="hidden md:flex">
         {navItems.map((item) =>
-          item.href === url ? (
+          url.startsWith(item.href) ? (
             <UnderlineText offset={6} key={item.name}>
               <LinkButton
                 key={item.name}
