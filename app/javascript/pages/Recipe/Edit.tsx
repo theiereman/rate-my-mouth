@@ -9,8 +9,6 @@ interface EditProps {
 export default function Edit({ recipe }: EditProps) {
   return (
     <>
-      <Head title="Modification de la recette" />
-
       <Form
         title={`Modification de la recette`}
         recipe={recipe}

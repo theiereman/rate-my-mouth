@@ -33,7 +33,7 @@ export default function Show({ user }: { user: UserType }) {
 
   return (
     <>
-      <Head title={`Profil de ${user.username}`} />
+      <Head title={user.username} />
       <Page>
         <UserProfile user={user} />
 

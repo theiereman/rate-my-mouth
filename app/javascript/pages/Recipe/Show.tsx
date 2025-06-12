@@ -38,7 +38,7 @@ export default function Show({ recipe, userRating }: ShowProps) {
   return (
     <TimerProvider>
       <Page>
-        <Head title={`${recipe.name} de ${recipe.user.username}`} />
+        <Head title={recipe.name} />
 
         {recipe.thumbnail_url && (
           <RecipeThumbnail

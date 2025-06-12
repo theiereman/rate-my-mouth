@@ -12,6 +12,7 @@ type ResolvedComponent = {
 };
 
 createInertiaApp({
+  title: (title) => `Rate My Mouth - ${title}`,
   resolve: (name) => {
     const pages = import.meta.glob<ResolvedComponent>("../pages/**/*.tsx", {
       eager: true,
