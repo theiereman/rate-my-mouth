@@ -1,6 +1,7 @@
 import { IngredientType, InstructionType } from "@customTypes/recipe.types";
 import EmptyPlaceholder from "@components/ui/EmptyPlaceholder";
 import RecipeCategoryContainer from "./RecipeCategoryContainer";
+import TextWithTimerLinks from "@components/ui/TextWithTimerLinks";
 
 function ItemListComponent({
   ordered,
@@ -13,7 +14,7 @@ function ItemListComponent({
     <ol className={`space-y-1 ${ordered ? "list-decimal" : "list-disc"}`}>
       {items.map((item) => (
         <span key={item.id} className="flex items-center gap-2 pl-5">
-          <li>{item.name}</li>
+          <TextWithTimerLinks text={item.name} />
         </span>
       ))}
     </ol>

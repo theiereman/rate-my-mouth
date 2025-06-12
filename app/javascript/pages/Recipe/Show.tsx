@@ -18,6 +18,7 @@ import RecipeThumbnail from "@components/Recipes/RecipeThumbnail";
 import { useIngredientQuantifier } from "@hooks/useIngredientQuantifier";
 import { useUserIsCurrentUser } from "@hooks/useUserIsCurrentUser";
 import Page from "@components/ui/Pages/Page";
+import { TimerProvider } from "@contexts/TimerContext";
 
 interface ShowProps {
   recipe: RecipeType;
@@ -35,71 +36,76 @@ export default function Show({ recipe, userRating }: ShowProps) {
   } = useIngredientQuantifier({ recipe });
 
   return (
-    <Page>
-      <Head title={`${recipe.name} de ${recipe.user.username}`} />
+    <TimerProvider>
+      <Page>
+        <Head title={`${recipe.name} de ${recipe.user.username}`} />
 
-      {recipe.thumbnail_url && (
-        <RecipeThumbnail thumbnailUrl={recipe.thumbnail_url} className="mb-4" />
-      )}
-
-      <div className="flex flex-col justify-between gap-6">
-        <RecipeHeader showDescription recipe={recipe} />
-        <RecipeBadges recipe={recipe} />
-        {isCurrentUser && <RecipeActionsButtons recipe={recipe} />}
-      </div>
-
-      <Section title="Ingredients" underlineStroke={1}>
-        <IngredientsQuantitySelector
-          numberOfServings={numberOfServings}
-          onValueIncrease={handleIncrease}
-          onValueDecrease={handleDecrease}
-        />
-        <RecipeContentItemList recipeItems={updatedIngredients} />
-      </Section>
-
-      <Section title="Instructions" underlineStroke={2}>
-        <RecipeContentItemList recipeItems={recipe.instructions} ordered />
-      </Section>
-
-      <div className="flex flex-col gap-16 md:flex-row md:gap-12">
-        <Section
-          title="Minuteur"
-          containerClassName="flex-2"
-          underlineStroke={1}
-        >
-          <Timer />
-        </Section>
-        <Section title="Notes personnelles" containerClassName="flex-3">
-          <RecipeNotes recipeId={recipe.id} />
-        </Section>
-      </div>
-
-      <div className="flex flex-col gap-16 md:flex-row md:gap-12">
-        <Section
-          title={`Commentaires (${recipe.comments.length})`}
-          containerClassName="flex-3"
-        >
-          <CommentForm
-            commentableId={recipe.id}
-            commentableType={CommentableType.recipe}
-            className="md:h-10" //forcing height to match the rating form
+        {recipe.thumbnail_url && (
+          <RecipeThumbnail
+            thumbnailUrl={recipe.thumbnail_url}
+            className="mb-4"
           />
-          <CommentList comments={recipe.comments} />
+        )}
+
+        <div className="flex flex-col justify-between gap-6">
+          <RecipeHeader showDescription recipe={recipe} />
+          <RecipeBadges recipe={recipe} />
+          {isCurrentUser && <RecipeActionsButtons recipe={recipe} />}
+        </div>
+
+        <Section title="Ingredients" underlineStroke={1}>
+          <IngredientsQuantitySelector
+            numberOfServings={numberOfServings}
+            onValueIncrease={handleIncrease}
+            onValueDecrease={handleDecrease}
+          />
+          <RecipeContentItemList recipeItems={updatedIngredients} />
         </Section>
 
-        <Section
-          title={`Évaluations (${recipe.ratings.length})`}
-          containerClassName="flex-2"
-          underlineStroke={4}
-        >
-          <RatingForm
-            recipeId={recipe.id}
-            rating={userRating}
-            className="self-start md:self-stretch md:h-10" //forcing height to match the comment form
-          />
-          <RatingList count={5} ratings={recipe.ratings} />
+        <Section title="Instructions" underlineStroke={2}>
+          <RecipeContentItemList recipeItems={recipe.instructions} ordered />
         </Section>
-      </div>
-    </Page>
+
+        <div className="flex flex-col gap-16 md:flex-row md:gap-12">
+          <Section
+            title="Minuteur"
+            containerClassName="flex-2"
+            underlineStroke={1}
+          >
+            <Timer />
+          </Section>
+          <Section title="Notes personnelles" containerClassName="flex-3">
+            <RecipeNotes recipeId={recipe.id} />
+          </Section>
+        </div>
+
+        <div className="flex flex-col gap-16 md:flex-row md:gap-12">
+          <Section
+            title={`Commentaires (${recipe.comments.length})`}
+            containerClassName="flex-3"
+          >
+            <CommentForm
+              commentableId={recipe.id}
+              commentableType={CommentableType.recipe}
+              className="md:h-10" //forcing height to match the rating form
+            />
+            <CommentList comments={recipe.comments} />
+          </Section>
+
+          <Section
+            title={`Évaluations (${recipe.ratings.length})`}
+            containerClassName="flex-2"
+            underlineStroke={4}
+          >
+            <RatingForm
+              recipeId={recipe.id}
+              rating={userRating}
+              className="self-start md:self-stretch md:h-10" //forcing height to match the comment form
+            />
+            <RatingList count={5} ratings={recipe.ratings} />
+          </Section>
+        </div>
+      </Page>
+    </TimerProvider>
   );
 }
