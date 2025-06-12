@@ -78,16 +78,16 @@ export default function Show({ users, type = "recipes" }: LeaderboardProps) {
             {users.map((user, index) => (
               <li key={user.id} className="p-4 flex items-center gap-4">
                 <span
-                  className={`flex-shrink-0 w-8 text-center font-bold ${getMedalColor(
+                  className={`flex w-8 text-center font-bold ${getMedalColor(
                     index
                   )}`}
                 >
                   {index + 1}
-                  <span className="material-symbols-outlined">
+                  <span className="material-symbols-outlined justify-center">
                     {getMedalIcon(index)}
                   </span>
                 </span>
-                <UserAvatar user={user} size="md" className="flex-shrink-0" />
+                <UserAvatar user={user} size="md" />
                 <UserLink className="flex-1" user={user} showTitle />
                 <Badge text={getBadgeValue(user).toString()} />
               </li>
