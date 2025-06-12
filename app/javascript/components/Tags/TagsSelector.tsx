@@ -151,7 +151,7 @@ export default function TagsSelector({
 
   return (
     <div className={className}>
-      {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
+      {error && <p className="text-red-500 text-sm">{error}</p>}
 
       <Combo
         values={comboOptions}

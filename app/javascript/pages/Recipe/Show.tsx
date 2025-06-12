@@ -63,7 +63,7 @@ export default function Show({ recipe, userRating }: ShowProps) {
         <RecipeContentItemList recipeItems={recipe.instructions} ordered />
       </Section>
 
-      <div className="flex flex-col md:flex-row gap-12">
+      <div className="flex flex-col gap-16 md:flex-row md:gap-12">
         <Section
           title="Minuteur"
           containerClassName="flex-2"
@@ -76,8 +76,11 @@ export default function Show({ recipe, userRating }: ShowProps) {
         </Section>
       </div>
 
-      <div className="flex flex-col md:flex-row gap-12">
-        <Section title="Commentaires" containerClassName="flex-3">
+      <div className="flex flex-col gap-16 md:flex-row md:gap-12">
+        <Section
+          title={`Commentaires (${recipe.comments.length})`}
+          containerClassName="flex-3"
+        >
           <CommentForm
             commentableId={recipe.id}
             commentableType={CommentableType.recipe}
@@ -87,14 +90,14 @@ export default function Show({ recipe, userRating }: ShowProps) {
         </Section>
 
         <Section
-          title="Évaluations"
+          title={`Évaluations (${recipe.ratings.length})`}
           containerClassName="flex-2"
           underlineStroke={4}
         >
           <RatingForm
             recipeId={recipe.id}
             rating={userRating}
-            className="self-center md:self-stretch md:h-10" //forcing height to match the comment form
+            className="self-start md:self-stretch md:h-10" //forcing height to match the comment form
           />
           <RatingList count={5} ratings={recipe.ratings} />
         </Section>

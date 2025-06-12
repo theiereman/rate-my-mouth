@@ -88,17 +88,16 @@ export default function Index({ recipes, pagy }: IndexProps) {
         <LinkButton
           href="/recipes/new"
           variant="primary"
-          size="lg"
           className="w-full sm:w-auto"
         >
           Nouvelle recette
         </LinkButton>
       }
     >
-      <div className="">
+      <div>
         <Section
           title="Filtres"
-          childrenClassName="grid grid-cols-1 md:grid-cols-3 md:gap-4"
+          childrenClassName="grid grid-cols-1 mb-4 md:grid-cols-3 md:gap-4"
         >
           <Input
             placeholder="Rechercher une recette..."

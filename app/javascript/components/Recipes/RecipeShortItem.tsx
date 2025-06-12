@@ -3,8 +3,8 @@ import { RecipeType } from "@customTypes/recipe.types";
 import { Card } from "@components/ui";
 
 import RecipeThumbnail from "@components/Recipes/RecipeThumbnail";
-import RecipeHeader from "@components/Recipes/RecipeHeader";
-import RecipeBadges from "@components/Recipes/RecipeBadges";
+import RecipeHeader from "./RecipeHeader";
+import RecipeBadges from "./RecipeBadges";
 
 interface RecipeProps {
   recipe: RecipeType;

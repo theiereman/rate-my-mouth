@@ -1,5 +1,5 @@
 import { Head } from "@inertiajs/react";
-import RecipeForm from "@components/Recipes/Form/RecipeForm";
+import Form from "@components/Recipes/Form/RecipeForm";
 import { RecipeType } from "@customTypes/recipe.types";
 
 interface EditProps {
@@ -11,8 +11,8 @@ export default function Edit({ recipe }: EditProps) {
     <>
       <Head title="Modification de la recette" />
 
-      <RecipeForm
-        title={`Modification de la recette "${recipe.name} qsdfio qsjdoif jqsodifj qosidjf oqisjdfij qsidjf"`}
+      <Form
+        title={`Modification de la recette`}
         recipe={recipe}
         onSubmit={(form) => {
           form.transform((data) => ({ recipe: data }));

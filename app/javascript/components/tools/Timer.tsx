@@ -122,24 +122,21 @@ export default function Timer({ className = "" }: { className?: string }) {
       </div>
       <div className="flex w-full">
         <Button
-          size="sm"
-          className="w-full rounded-none rounded-bl-lg"
+          className="py-1 w-full rounded-none rounded-bl-lg"
           onClick={handleStart}
           disabled={isRunning || totalSeconds() <= 0}
         >
           Start
         </Button>
         <Button
-          size="sm"
-          className="w-full rounded-none"
+          className="py-1 w-full rounded-none"
           onClick={handlePause}
           disabled={!isRunning}
         >
           Pause
         </Button>
         <Button
-          size="sm"
-          className={`w-full rounded-none rounded-br-lg ${
+          className={`py-1 w-full rounded-none rounded-br-lg ${
             isOver ? "animate-pulse" : ""
           }`}
           onClick={() => {

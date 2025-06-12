@@ -45,31 +45,25 @@ export default function RatingForm({
   };
 
   return (
-    <div className="flex flex-col gap-2">
-      <div className={`flex items-stretch gap-2 ${className}`}>
-        <Rating
-          name="user-rating"
-          precision={0.5}
-          value={pendingValue ?? value}
-          onChange={handleChange}
-          size="large"
-          disabled={isSubmitting}
-          className="text-primary-500 m-auto"
+    <div className={`flex items-stretch gap-2 ${className}`}>
+      <Rating
+        name="user-rating"
+        precision={0.5}
+        value={pendingValue ?? value}
+        onChange={handleChange}
+        size="large"
+        disabled={isSubmitting}
+        className="text-primary-500 m-auto"
+      />
+      {pendingValue && (
+        <Badge
+          text={`${pendingValue?.toFixed(1)}${pendingUpdate ? "*" : ""}`}
+          variant={pendingUpdate ? "warning" : "primary"}
         />
-        {pendingValue && (
-          <Badge
-            text={`${pendingValue?.toFixed(1)}${pendingUpdate ? "*" : ""}`}
-            variant={pendingUpdate ? "warning" : "primary"}
-          />
-        )}
-        <Button
-          className="flex-1"
-          onClick={handleSubmit}
-          disabled={isSubmitting}
-        >
-          {isSubmitting ? "Envoi..." : "Noter"}
-        </Button>
-      </div>
+      )}
+      <Button className="flex-1" onClick={handleSubmit} disabled={isSubmitting}>
+        {isSubmitting ? "Envoi..." : "Noter"}
+      </Button>
     </div>
   );
 }

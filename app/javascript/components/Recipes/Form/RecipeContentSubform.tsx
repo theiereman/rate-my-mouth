@@ -46,12 +46,10 @@ export default function RecipeContentSubform({
   const [ingredients, setIngredients] = useState<RecipeItem[]>([]);
   const [instructions, setInstructions] = useState<RecipeItem[]>([]);
 
-  // store the last "used" category to automatically add the new items to that category
   const [lastUsedCategory, setLastUsedCategory] = useState<
     Map<ItemType, string>
   >(new Map());
 
-  // Initialiser les données depuis les props
   useEffect(() => {
     const initialIngredientsItems: RecipeItem[] = initialIngredients.map(
       (ingredient) => ({
@@ -59,7 +57,7 @@ export default function RecipeContentSubform({
         type: "ingredient" as ItemType,
         value: ingredient.name,
         category: ingredient.category || "",
-        dbId: ingredient.id, // Garder l'ID de la base de données pour les mises à jour
+        dbId: ingredient.id,
       })
     );
 
@@ -69,7 +67,7 @@ export default function RecipeContentSubform({
         type: "instruction" as ItemType,
         value: instruction.name,
         category: instruction.category || "",
-        dbId: instruction.id, // Garder l'ID de la base de données pour les mises à jour
+        dbId: instruction.id,
       })
     );
 
@@ -77,7 +75,6 @@ export default function RecipeContentSubform({
     setInstructions(initialInstructionsItems);
   }, []);
 
-  // Notifier le parent des changements
   useEffect(() => {
     if (onDataChange) {
       const ingredientsAttributes = ingredients.map((item) => ({
@@ -103,7 +100,6 @@ export default function RecipeContentSubform({
 
   const items = ingredients.concat(instructions);
 
-  // Filtrer les éléments non supprimés pour l'affichage
   const visibleIngredients = ingredients.filter((item) => !item._destroy);
   const visibleInstructions = instructions.filter((item) => !item._destroy);
 
@@ -158,12 +154,10 @@ export default function RecipeContentSubform({
         const updatedItem = {
           ...item,
           category: categName,
-          type: categType, // Update the type to match the target category
-          // Remove dbId when changing categories
+          type: categType,
           dbId: categType === itemType ? item.dbId : undefined,
         };
 
-        //set last used category depending on type
         setLastUsedCategory((prev) => {
           prev.set(categType, categName);
           return new Map(prev);
@@ -187,28 +181,21 @@ export default function RecipeContentSubform({
           }
         }
 
-        // Add item to the target list
         if (categType === "ingredient") {
           setIngredients((prev) => {
-            // Check if item already exists in target list (shouldn't happen, but safety check)
             const existingItemIndex = prev.findIndex((i) => i.id === itemId);
             if (existingItemIndex >= 0) {
-              // Update existing item
               return prev.map((i) => (i.id === itemId ? updatedItem : i));
             } else {
-              // Add new item
               return [...prev, updatedItem];
             }
           });
         } else {
           setInstructions((prev) => {
-            // Check if item already exists in target list (shouldn't happen, but safety check)
             const existingItemIndex = prev.findIndex((i) => i.id === itemId);
             if (existingItemIndex >= 0) {
-              // Update existing item
               return prev.map((i) => (i.id === itemId ? updatedItem : i));
             } else {
-              // Add new item
               return [...prev, updatedItem];
             }
           });
@@ -227,35 +214,29 @@ export default function RecipeContentSubform({
   };
 
   const deleteItem = (id: string) => {
-    // Pour les éléments existants (avec dbId), on les marque comme _destroy
-    // Pour les nouveaux éléments, on les supprime directement
     const ingredientToDelete = ingredients.find((item) => item.id === id);
     const instructionToDelete = instructions.find((item) => item.id === id);
 
     if (ingredientToDelete) {
       if (ingredientToDelete.dbId) {
-        // Élément existant : on le marque comme détruit mais on le garde pour le formulaire
         setIngredients((prev) =>
           prev.map((item) =>
             item.id === id ? { ...item, _destroy: true } : item
           )
         );
       } else {
-        // Nouvel élément : on le supprime directement
         setIngredients((prev) => prev.filter((item) => item.id !== id));
       }
     }
 
     if (instructionToDelete) {
       if (instructionToDelete.dbId) {
-        // Élément existant : on le marque comme détruit mais on le garde pour le formulaire
         setInstructions((prev) =>
           prev.map((item) =>
             item.id === id ? { ...item, _destroy: true } : item
           )
         );
       } else {
-        // Nouvel élément : on le supprime directement
         setInstructions((prev) => prev.filter((item) => item.id !== id));
       }
     }
@@ -387,7 +368,7 @@ export default function RecipeContentSubform({
           </span>
         </li>
       </ul>
-      <div className="flex flex-col md:flex-row gap-4">
+      <div className="flex flex-col md:flex-row gap-6">
         <DndContext
           onDragEnd={handleDragEnd}
           sensors={useSensors(

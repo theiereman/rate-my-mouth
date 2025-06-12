@@ -52,7 +52,10 @@ export default function Form({
 
   return (
     <form onSubmit={handleSubmit} className="contents">
-      <Page title={title}>
+      <Page
+        title={title}
+        subtitle="Partagez votre recette avec le reste de la communauté et inspirez d'autres cuisiniers !"
+      >
         <RecipeThumbnail
           thumbnailUrl={data.thumbnail || recipe.thumbnail_url}
           allowThumbnailChange={true}
@@ -165,15 +168,14 @@ export default function Form({
         />
 
         <div className="flex gap-2 justify-end">
-          <LinkButton variant="gray" href={`/recipes/${recipe.id}`}>
+          <LinkButton
+            preserveScroll
+            variant="ghost"
+            href={recipe.id ? `/recipes/${recipe.id}` : "/recipes"}
+          >
             Annuler
           </LinkButton>
-          <Button
-            type="submit"
-            variant="primary"
-            size="lg"
-            isLoading={processing}
-          >
+          <Button type="submit" variant="primary" isLoading={processing}>
             {submitText}
           </Button>
         </div>

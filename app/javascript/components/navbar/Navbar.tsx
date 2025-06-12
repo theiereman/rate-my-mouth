@@ -22,8 +22,7 @@ export default function Navbar() {
                 key={item.name}
                 href={item.href}
                 variant="ghost"
-                size="xl"
-                className="hidden md:block px-4! hover:scale-105! transition-transform! focus:ring-0! focus:ring-offset-0!"
+                className="text-xl hidden md:block px-4! hover:scale-105! transition-transform! focus:ring-0! focus:ring-offset-0!"
               >
                 {item.name}
               </LinkButton>
@@ -33,8 +32,7 @@ export default function Navbar() {
               key={item.name}
               href={item.href}
               variant="ghost"
-              size="xl"
-              className="hidden md:block px-4! hover:scale-105! transition-transform! focus:ring-0! focus:ring-offset-0!"
+              className="text-xl hidden md:block px-4! hover:scale-105! transition-transform! focus:ring-0! focus:ring-offset-0!"
             >
               {item.name}
             </LinkButton>
@@ -69,7 +67,7 @@ export default function Navbar() {
               <li key={item.name}>
                 <Link
                   href={item.href}
-                  className={`block px-4 py-2 text-neutral-600 hover:text-primary-600 hover:bg-neutral-50 rounded-md transition-colors duration-200`}
+                  className={`text-xl block px-4 py-2 text-neutral-600 hover:text-primary-600 hover:bg-neutral-50 rounded-md transition-colors duration-200`}
                   onClick={() => setIsOpen(false)}
                 >
                   {item.name}
