@@ -37,85 +37,84 @@ export default function Login({ flash }: PageProps) {
   };
 
   const content = (
-    <div className="h-full flex flex-col justify-center items-center">
-      <img src={logo} alt="" className="w-72 h-72" />
-      <div className="w-[400px] m-12">
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <Input
-              label="Email"
-              type="email"
-              id="email"
-              name="email"
-              value={data.email}
-              onChange={(e) => setData("email", e.target.value)}
-              error={errors.email}
-              autoFocus
-              autoComplete="email"
-            />
-          </div>
+    <div className="h-full w-full flex flex-col items-stretch">
+      <img src={logo} alt="app logo" />
 
-          <div className="mb-4">
-            <Input
-              label="Mot de passe"
-              type="password"
-              id="password"
-              name="password"
-              value={data.password}
-              onChange={(e) => setData("password", e.target.value)}
-              error={errors.password}
-              autoComplete="current-password"
-            />
-          </div>
-
-          <div className="mb-4 flex items-center">
-            <input
-              type="checkbox"
-              id="remember_me"
-              name="remember_me"
-              checked={data.remember_me}
-              onChange={(e) => setData("remember_me", e.target.checked)}
-              className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-neutral-300 rounded"
-            />
-            <label
-              htmlFor="remember_me"
-              className="ml-2 block text-sm text-neutral-700"
-            >
-              Se souvenir de moi
-            </label>
-          </div>
-
-          <Button
-            type="submit"
-            variant="primary"
-            fullWidth
-            disabled={processing}
-            isLoading={processing}
-          >
-            Se connecter
-          </Button>
-        </form>
-
-        {showAlert && flash?.alert && (
-          <div className="mt-4 p-3 bg-red-50 text-red-600 text-sm rounded-md">
-            {flash.alert}
-          </div>
-        )}
-
-        <div className="mt-4 text-sm flex flex-col">
-          <Link
-            href="/users/password/new"
-            className="text-primary-600 hover:text-primary-800 hover:underline mr-4"
-          >
-            Mot de passe oublié ?
-          </Link>
-          <Link
-            href="/users/sign_up"
-            className="text-primary-600 hover:text-primary-800 hover:underline"
-          >
-            S'inscrire
-          </Link>
+      <form onSubmit={handleSubmit}>
+        <div className="mb-4">
+          <Input
+            label="Email"
+            type="email"
+            id="email"
+            name="email"
+            value={data.email}
+            onChange={(e) => setData("email", e.target.value)}
+            error={errors.email}
+            autoFocus
+            autoComplete="email"
+          />
         </div>
+
+        <div className="mb-4">
+          <Input
+            label="Mot de passe"
+            type="password"
+            id="password"
+            name="password"
+            value={data.password}
+            onChange={(e) => setData("password", e.target.value)}
+            error={errors.password}
+            autoComplete="current-password"
+          />
+        </div>
+
+        <div className="mb-4 flex items-center">
+          <input
+            type="checkbox"
+            id="remember_me"
+            name="remember_me"
+            checked={data.remember_me}
+            onChange={(e) => setData("remember_me", e.target.checked)}
+            className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-neutral-300 rounded"
+          />
+          <label
+            htmlFor="remember_me"
+            className="ml-2 block text-sm text-neutral-700"
+          >
+            Se souvenir de moi
+          </label>
+        </div>
+
+        <Button
+          type="submit"
+          variant="primary"
+          fullWidth
+          disabled={processing}
+          isLoading={processing}
+        >
+          Se connecter
+        </Button>
+      </form>
+
+      {showAlert && flash?.alert && (
+        <div className="mt-4 p-3 bg-red-50 text-red-600 text-sm rounded-md">
+          {flash.alert}
+        </div>
+      )}
+
+      <div className="mt-4 text-sm flex flex-col">
+        <Link
+          href="/users/password/new"
+          className="text-primary-600 hover:text-primary-800 hover:underline mr-4"
+        >
+          Mot de passe oublié ?
+        </Link>
+        <Link
+          href="/users/sign_up"
+          className="text-primary-600 hover:text-primary-800 hover:underline"
+        >
+          S'inscrire
+        </Link>
       </div>
     </div>
   );

@@ -38,66 +38,61 @@ export default function ForgotPassword({ flash }: PageProps) {
   };
 
   const content = (
-    <div className="h-full flex flex-col justify-center items-center">
-      <h1 className="text-2xl font-bold m-10 text-primary-600">
-        Rate My Mouth
+    <div className="h-full flex flex-col justify-center items-stretch">
+      <h1 className="text-xl font-medium mb-4 text-neutral-800">
+        Mot de passe oublié ?
       </h1>
-      <div className="w-[400px] border border-neutral-200 bg-neutral-50 p-5 rounded-lg shadow-sm">
-        <h1 className="text-center text-xl font-medium mb-4 text-neutral-800">
-          Mot de passe oublié ?
-        </h1>
 
-        <p className="text-sm text-neutral-600 mb-6 text-center">
-          Entrez votre adresse e-mail et nous vous enverrons un lien pour
-          réinitialiser votre mot de passe.
-        </p>
+      <p className="text-sm text-neutral-600 mb-6">
+        Entrez votre adresse e-mail et nous vous enverrons un lien pour
+        réinitialiser votre mot de passe.
+      </p>
 
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <Input
-              label="Email"
-              type="email"
-              id="email"
-              name="email"
-              value={data.email}
-              onChange={(e) => setData("email", e.target.value)}
-              error={errors.email}
-              autoFocus
-              autoComplete="email"
-            />
-          </div>
-
-          <Button
-            type="submit"
-            variant="primary"
-            fullWidth
-            disabled={processing}
-            isLoading={processing}
-          >
-            Envoyer les instructions de réinitialisation
-          </Button>
-        </form>
-
-        {showAlert && flash?.alert && (
-          <div className="mt-4 p-3 bg-red-50 text-red-600 text-sm rounded-md">
-            {flash.alert}
-          </div>
-        )}
-
-        {showNotice && flash?.notice && (
-          <div className="mt-4 p-3 bg-green-50 text-green-600 text-sm rounded-md">
-            {flash.notice}
-          </div>
-        )}
-
-        <div className="mt-4 text-sm">
-          <Link
-            href="/users/sign_in"
-            className="text-primary-600 hover:text-primary-800 hover:underline"
-          >
-            Retour à la connexion
-          </Link>
+      <form onSubmit={handleSubmit}>
+        <div className="mb-4">
+          <Input
+            label="Email"
+            type="email"
+            id="email"
+            name="email"
+            value={data.email}
+            onChange={(e) => setData("email", e.target.value)}
+            error={errors.email}
+            autoFocus
+            autoComplete="email"
+          />
         </div>
+
+        <Button
+          type="submit"
+          variant="primary"
+          fullWidth
+          disabled={processing}
+          isLoading={processing}
+        >
+          Envoyer le lien
+        </Button>
+      </form>
+
+      {showAlert && flash?.alert && (
+        <div className="mt-4 p-3 bg-red-50 text-red-600 text-sm rounded-md">
+          {flash.alert}
+        </div>
+      )}
+
+      {showNotice && flash?.notice && (
+        <div className="mt-4 p-3 bg-green-50 text-green-600 text-sm rounded-md">
+          {flash.notice}
+        </div>
+      )}
+
+      <div className="mt-4 text-sm">
+        <Link
+          href="/users/sign_in"
+          className="text-primary-600 hover:text-primary-800 hover:underline"
+        >
+          Retour à la connexion
+        </Link>
       </div>
     </div>
   );
