@@ -298,7 +298,6 @@ class RecipeTest < ActiveSupport::TestCase
   test "should handle filter_by_name case insensitively" do
     @recipe.name = "Gâteau au Chocolat"
 
-
     results = Recipe.filter_by_name("gâteau")
     assert_includes results, @recipe
 
