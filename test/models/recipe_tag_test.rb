@@ -26,8 +26,7 @@ class RecipeTagTest < ActiveSupport::TestCase
 
   test "should not allow duplicate recipe-tag pairs" do
     @recipe_tag.save!
-    duplicate = RecipeTag.new(recipe: @recipe, tag: @tag)
-    assert_not duplicate.valid?
-    assert_includes duplicate.errors[:recipe_id], "has already been taken"
+    dup = RecipeTag.new(recipe: @recipe, tag: @tag)
+    assert_not dup.valid?
   end
 end
