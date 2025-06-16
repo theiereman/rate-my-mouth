@@ -12,7 +12,7 @@ export default function RecipeHeader({
 }) {
   return (
     <div className={`flex-1 flex flex-col gap-8 ${className}`}>
-      <div className="flex gap-6">
+      <div className="flex flex-col items-start sm:flex-row gap-6">
         <div className="flex-1 flex flex-col">
           <h3 className="text-4xl font-medium text-neutral-800 line-clamp-1 font-serif">
             {recipe.name}
@@ -28,7 +28,7 @@ export default function RecipeHeader({
             </p>
           )}
         </div>
-        <div className="flex flex-col items-end gap-1">
+        <div className="flex flex-col items-start sm:items-end gap-1">
           <Rating
             size="medium"
             precision={0.5}
