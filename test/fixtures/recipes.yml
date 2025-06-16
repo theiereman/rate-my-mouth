@@ -1,0 +1,15 @@
+one:
+  name: "Gâteau au chocolat"
+  description: "Un délicieux gâteau au chocolat moelleux"
+  number_of_servings: 8
+  difficulty: medium
+  url: "https://example.com/gateau-chocolat"
+  user: one
+
+two:
+  name: "Compote de pommes"
+  description: "Une compote de pommes maison, simple et savoureuse"
+  number_of_servings: 4
+  difficulty: easy
+  url: "https://example.com/compote-pommes"
+  user: two

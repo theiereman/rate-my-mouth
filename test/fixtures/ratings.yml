@@ -1,0 +1,14 @@
+one:
+  value: 5
+  user: one
+  recipe: one
+
+two:
+  value: 3.0
+  user: two
+  recipe: one
+
+three:
+  value: 5.0
+  user: one
+  recipe: two

@@ -34,6 +34,7 @@ class Recipe < ApplicationRecord
 
   validates :name, presence: true
   validates :number_of_servings, presence: true, numericality: { only_integer: true, greater_than: 0 }
+  validates :difficulty, presence: true, inclusion: { in: difficulties.keys }
 
   # FIXME: temp hack to make it work when you pass the thumbnail as recipe_param
   # it breaks the whole params hash and make value change type etc, please send help
@@ -44,6 +45,8 @@ class Recipe < ApplicationRecord
 
     if value.is_a?(Integer)
       value = { 0 => :easy, 1 => :medium, 2 => :hard }[value] || :easy
+    elsif value.is_a?(String) && !Recipe.difficulties.key?(value.to_sym)
+      value = :easy
     end
 
     super(value)
@@ -72,6 +75,7 @@ class Recipe < ApplicationRecord
     end
   end
 
+  # TODO: move to tag model
   def find_or_create_tag_by_name(name)
     tag = Tag.where("lower(name) = ?", name.downcase).first_or_initialize(name: name)
     tag.save if tag.new_record?
