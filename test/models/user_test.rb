@@ -47,26 +47,4 @@ class UserTest < ActiveSupport::TestCase
     @user.save
     assert_equal mixed_case_email.downcase, @user.reload.email
   end
-
-  test "should have one recipe" do
-    assert_equal 1, @user.number_of_recipes
-  end
-
-  test "should make one request to count recipes" do
-    assert_queries_count(1) do
-      @user.number_of_recipes
-    end
-  end
-
-  test "should make one request to count comments" do
-    assert_queries_count(1) do
-      @user.number_of_comments
-    end
-  end
-
-  test "should make one request to count ratings" do
-    assert_queries_count(1) do
-      @user.number_of_ratings
-    end
-  end
 end

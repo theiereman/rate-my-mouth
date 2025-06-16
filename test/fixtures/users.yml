@@ -5,3 +5,7 @@ one:
 two:
   username: Jane Smith
   email: jane.smith@example.com
+
+no_relationship_user:
+  username: No Relationship User
+  email: no.relationship@example.com

@@ -4,6 +4,7 @@ class RecipeTest < ActiveSupport::TestCase
   def setup
     @recipe = recipes(:one)
     @user = users(:one)
+    @other_user = users(:no_relationship_user)
   end
 
   # Tests de validations de base
@@ -80,12 +81,14 @@ class RecipeTest < ActiveSupport::TestCase
 
   # Tests de la méthode average_rating
   test "should return 0.0 for average_rating when no ratings" do
+    @recipe.ratings.destroy_all
     assert_equal 0.0, @recipe.average_rating
   end
 
   test "should calculate correct average_rating" do
+    @recipe.ratings.destroy_all
     @recipe.ratings.create!(value: 3.0, user: @recipe.user)
-    @recipe.ratings.create!(value: 5.0, user: @recipe.user)
+    @recipe.ratings.create!(value: 5.0, user: @other_user)
     assert_equal 4.0, @recipe.average_rating
   end
 
@@ -109,7 +112,7 @@ class RecipeTest < ActiveSupport::TestCase
 
     results = Recipe.filter_by_user_id(user2.id)
     assert_includes results, recipes(:two)
-    assert_not_includes results, recipes(:one)
+    assert_not_includes results, @recipe
   end
 
   test "should filter by tags_ids" do
@@ -222,7 +225,7 @@ class RecipeTest < ActiveSupport::TestCase
   end
 
   test "should destroy associated ratings when recipe is destroyed" do
-    rating = @recipe.ratings.create!(value: 4.0, user: @user)
+    rating = @recipe.ratings.create!(value: 4.0, user: @other_user)
     rating_id = rating.id
 
     @recipe.destroy
@@ -240,7 +243,7 @@ class RecipeTest < ActiveSupport::TestCase
   end
 
   test "should destroy associated notes when recipe is destroyed" do
-    note = @recipe.notes.create!(content: "Test note", user: @user)
+    note = @recipe.notes.create!(content: "Test note", user: @other_user)
     note_id = note.id
 
     @recipe.destroy

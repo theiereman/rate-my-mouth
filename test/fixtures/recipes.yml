@@ -13,3 +13,11 @@ two:
   difficulty: easy
   url: "https://example.com/compote-pommes"
   user: two
+
+no_relationship_recipe:
+  name: "Recette sans relation"
+  description: "Une recette sans commentaires / évaluations associées"
+  number_of_servings: 2
+  difficulty: easy
+  url: "https://example.com/recette-sans-relation"
+  user: no_relationship_user
