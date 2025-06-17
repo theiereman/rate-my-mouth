@@ -3,7 +3,7 @@ one:
   user: one
   recipe: one
 
-three:
+two:
   value: 5.0
   user: one
   recipe: two
