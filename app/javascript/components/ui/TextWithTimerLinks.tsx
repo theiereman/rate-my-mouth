@@ -12,23 +12,46 @@ export default function TextWithTimerLinks({
   const { setTime } = useTimer();
 
   const timeRegex =
-    /(\d+)\s*(?:heures?|h)\s*(?:(\d+)\s*(?:minutes?|min))?\s*(?:(\d+)\s*(?:secondes?|s))?|(\d+)\s*(?:minutes?|min)\s*(?:(\d+)\s*(?:secondes?|s))?|(\d+)\s*(?:secondes?|s)/gi;
+    /\b(\d+)\s*(h|heures?|min|minutes?|s|sec|secondes?)(?:\s*(\d+)(?:\s*(min|minutes?|s|sec|secondes?))?)?\b/gi;
 
   const parseTimeMatch = (match: RegExpMatchArray) => {
-    const [fullMatch] = match;
+    const [fullMatch, number1, unit1, number2, unit2] = match;
     let hours = 0,
       minutes = 0,
       seconds = 0;
 
-    if (match[1]) {
-      hours = parseInt(match[1]);
-      minutes = match[2] ? parseInt(match[2]) : 0;
-      seconds = match[3] ? parseInt(match[3]) : 0;
-    } else if (match[4]) {
-      minutes = parseInt(match[4]);
-      seconds = match[5] ? parseInt(match[5]) : 0;
-    } else if (match[6]) {
-      seconds = parseInt(match[6]);
+    const value1 = parseInt(number1);
+    const normalizedUnit1 = unit1.toLowerCase();
+
+    // Premier nombre/unité
+    if (normalizedUnit1.startsWith("h")) {
+      hours = value1;
+    } else if (normalizedUnit1.startsWith("min")) {
+      minutes = value1;
+    } else if (normalizedUnit1.startsWith("s")) {
+      seconds = value1;
+    }
+
+    // Deuxième nombre/unité
+    if (number2) {
+      const value2 = parseInt(number2);
+
+      if (unit2) {
+        // Unité explicite
+        const normalizedUnit2 = unit2.toLowerCase();
+        if (normalizedUnit2.startsWith("min")) {
+          minutes += value2;
+        } else if (normalizedUnit2.startsWith("s")) {
+          seconds += value2;
+        }
+      } else {
+        // Unité implicite basée sur la première unité
+        if (normalizedUnit1.startsWith("h")) {
+          minutes += value2; // 1h30 = 1h + 30min
+        } else if (normalizedUnit1.startsWith("min")) {
+          seconds += value2; // 5min30 = 5min + 30s
+        }
+      }
     }
 
     return { hours, minutes, seconds, fullMatch };
