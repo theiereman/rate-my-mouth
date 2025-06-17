@@ -13,11 +13,8 @@ export default function UserProfile({ user }: { user: UserType }) {
       <div className="flex gap-4 items-center">
         <UserAvatar user={user} size="xl" allowAvatarChange={isCurrentUser} />
         <div className="flex-1">
-          <h3 className="text-lg font-medium text-neutral-800">
+          <h3 className="text-xl font-semibold text-neutral-800">
             {user.username}{" "}
-            <span className="text-xs font-light text-neutral-600">
-              (membre depuis le {formatDate(user.created_at)})
-            </span>
           </h3>
           {user.title ? (
             <p className="text-sm text-neutral-700">{user.title}</p>
@@ -26,6 +23,9 @@ export default function UserProfile({ user }: { user: UserType }) {
               Aucun titre selectionné
             </p>
           )}
+          <p className="text-xs font-light text-neutral-600">
+            Membre depuis le {formatDate(user.created_at)}
+          </p>
         </div>
       </div>
       <div className="flex flex-wrap gap-2">
