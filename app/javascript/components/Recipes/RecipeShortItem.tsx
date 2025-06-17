@@ -24,7 +24,7 @@ export default function RecipeShortItem({ recipe }: RecipeProps) {
           )}
 
           <div className="flex-1 flex flex-col gap-4 justify-between">
-            <RecipeHeader recipe={recipe} />
+            <RecipeHeader recipe={recipe} enableUserlink={false} />
             <RecipeBadges recipe={recipe} />
           </div>
         </div>
