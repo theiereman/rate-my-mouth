@@ -3,8 +3,8 @@ require "test_helper"
 class RecipeTagTest < ActiveSupport::TestCase
   def setup
     @user = users(:one)
-    @recipe = recipes(:one)
-    @tag = tags(:one)
+    @recipe = recipes(:two)
+    @tag = tags(:two)
     @recipe_tag = RecipeTag.new(recipe: @recipe, tag: @tag)
   end
 

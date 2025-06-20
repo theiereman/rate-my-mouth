@@ -119,8 +119,7 @@ class RecipeTest < ActiveSupport::TestCase
     tag1 = tags(:one)
     tag2 = tags(:two)
 
-    @recipe.tags << tag1
-    @recipe.save!
+    # recipe1 is set with fixtures
 
     recipe2 = recipes(:two)
     recipe2.tags << tag2
@@ -180,8 +179,6 @@ class RecipeTest < ActiveSupport::TestCase
 
   test "should clear existing tags when assigning new tags_attributes" do
     old_tag = tags(:one)
-    @recipe.tags << old_tag
-
     assert_includes @recipe.tags, old_tag
 
     @recipe.tags_attributes = [ { name: "nouveau_tag" } ]
@@ -252,9 +249,9 @@ class RecipeTest < ActiveSupport::TestCase
   end
 
   test "should destroy associated recipe_tags when recipe is destroyed" do
-    tag = tags(:one)
-    @recipe.tags << tag
     recipe_tag_id = @recipe.recipe_tags.first.id
+
+    tag = @recipe.recipe_tags.first.tag
 
     @recipe.destroy
 
