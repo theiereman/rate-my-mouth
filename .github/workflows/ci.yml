@@ -57,16 +57,28 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install packages
-        run: sudo apt-get update && sudo apt-get install --no-install-recommends -y build-essential git libyaml-dev pkg-config google-chrome-stable
+        run: sudo apt-get update && sudo apt-get install --no-install-recommends -y build-essential git curl libjemalloc2 libvips sqlite3 npm libyaml-dev pkg-config libglib2.0-dev libexpat1-dev libvips42 google-chrome-stable
 
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "23"
+          cache: "npm"
+
+      - name: Install JavaScript dependencies
+        run: npm install
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: .ruby-version
           bundler-cache: true
+
+      - name: Build Vite assets
+        run: bin/vite build --clear --mode=test
 
       - name: Run tests
         env:
