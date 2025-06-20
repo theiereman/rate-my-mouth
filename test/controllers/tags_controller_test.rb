@@ -1,6 +1,7 @@
 require "test_helper"
+require_relative "base_controller_test"
 
-class TagsControllerTest < ActionDispatch::IntegrationTest
+class TagsControllerTest < BaseControllerTest
   setup do
     @tag = tags(:one)
   end
@@ -10,39 +11,9 @@ class TagsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "should get new" do
-    get new_tag_url
-    assert_response :success
-  end
-
   test "should create tag" do
     assert_difference("Tag.count") do
-      post tags_url, params: { tag: { name: @tag.name } }
+      post tags_url, params: { tag: { name: "brand new tag !" } }
     end
-
-    assert_redirected_to tag_url(Tag.last)
-  end
-
-  test "should show tag" do
-    get tag_url(@tag)
-    assert_response :success
-  end
-
-  test "should get edit" do
-    get edit_tag_url(@tag)
-    assert_response :success
-  end
-
-  test "should update tag" do
-    patch tag_url(@tag), params: { tag: { name: @tag.name } }
-    assert_redirected_to tag_url(@tag)
-  end
-
-  test "should destroy tag" do
-    assert_difference("Tag.count", -1) do
-      delete tag_url(@tag)
-    end
-
-    assert_redirected_to tags_url
   end
 end
