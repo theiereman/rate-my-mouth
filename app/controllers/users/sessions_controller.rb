@@ -16,7 +16,7 @@ class Users::SessionsController < Devise::SessionsController
       redirect_to root_path
     else
       flash[:alert] = "Email ou mot de passe invalide"
-      render inertia: "Auth/Login"
+      render inertia: "Auth/Login",  status: :unprocessable_entity
     end
   end
 

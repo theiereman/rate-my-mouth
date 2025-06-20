@@ -28,7 +28,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
       clean_up_passwords resource
       set_minimum_password_length
       flash[:alert] = resource.errors.full_messages.join(", ")
-      render inertia: "Auth/Register"
+      render inertia: "Auth/Register", status: :unprocessable_entity
     end
   end
 

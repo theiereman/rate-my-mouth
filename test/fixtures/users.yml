@@ -1,0 +1,11 @@
+one:
+  username: John Doe
+  email: john.doe@example.com
+
+two:
+  username: Jane Smith
+  email: jane.smith@example.com
+
+no_relationship_user:
+  username: No Relationship User
+  email: no.relationship@example.com

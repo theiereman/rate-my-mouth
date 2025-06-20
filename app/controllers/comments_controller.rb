@@ -26,7 +26,7 @@ class CommentsController < ApplicationController
       @comment.destroy
       redirect_to @commentable
     else
-      redirect_to @commentable, alert: "Vous n'êtes pas autorisé à supprimer ce commentaire."
+      redirect_to @commentable, alert: "Erreur lors de la suppression du commentaire."
     end
   end
 

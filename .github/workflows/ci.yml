@@ -53,38 +53,48 @@ jobs:
       - name: Lint code for consistent style
         run: bin/rubocop -f github
 
-  # test:
-  #   runs-on: ubuntu-latest
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install packages
+        run: sudo apt-get update && sudo apt-get install --no-install-recommends -y build-essential git curl libjemalloc2 libvips sqlite3 npm libyaml-dev pkg-config libglib2.0-dev libexpat1-dev libvips42
 
-  #   # services:
-  #   #  redis:
-  #   #    image: redis
-  #   #    ports:
-  #   #      - 6379:6379
-  #   #    options: --health-cmd "redis-cli ping" --health-interval 10s --health-timeout 5s --health-retries 5
-  #   steps:
-  #     - name: Install packages
-  #       run: sudo apt-get update && sudo apt-get install --no-install-recommends -y build-essential git libyaml-dev pkg-config google-chrome-stable
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-  #     - name: Checkout code
-  #       uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "23"
+          cache: "npm"
 
-  #     - name: Set up Ruby
-  #       uses: ruby/setup-ruby@v1
-  #       with:
-  #         ruby-version: .ruby-version
-  #         bundler-cache: true
+      - name: Install JavaScript dependencies
+        run: npm install
 
-  #     - name: Run tests
-  #       env:
-  #         RAILS_ENV: test
-  #         # REDIS_URL: redis://localhost:6379/0
-  #       run: bin/rails db:test:prepare test test:system
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: .ruby-version
+          bundler-cache: true
 
-  #     - name: Keep screenshots from failed system tests
-  #       uses: actions/upload-artifact@v4
-  #       if: failure()
-  #       with:
-  #         name: screenshots
-  #         path: ${{ github.workspace }}/tmp/screenshots
-  #         if-no-files-found: ignore
+      - name: Build Vite assets
+        run: bin/vite build --clear --mode=test
+
+      - name: Precompile assets
+        env:
+          RAILS_ENV: test
+        run: bin/rails assets:precompile
+
+      - name: Run tests
+        env:
+          RAILS_ENV: test
+          # REDIS_URL: redis://localhost:6379/0
+        run: bin/rails db:test:prepare test test:system
+
+      - name: Keep screenshots from failed system tests
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: screenshots
+          path: ${{ github.workspace }}/tmp/screenshots
+          if-no-files-found: ignore

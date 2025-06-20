@@ -1,0 +1,9 @@
+one:
+  value: 5
+  user: one
+  recipe: one
+
+two:
+  value: 5.0
+  user: one
+  recipe: two

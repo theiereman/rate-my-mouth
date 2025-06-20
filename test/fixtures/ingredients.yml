@@ -1,0 +1,19 @@
+one:
+  name: "Farine"
+  category: "base"
+  recipe: one
+
+two:
+  name: "Œufs"
+  category: "protéines"
+  recipe: one
+
+three:
+  name: "Pommes"
+  category: "fruits"
+  recipe: two
+
+four:
+  name: "Sucre"
+  category: "sucrant"
+  recipe: two

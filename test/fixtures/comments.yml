@@ -1,0 +1,14 @@
+one:
+  content: "Excellente recette, très facile à faire !"
+  user: one
+  commentable: one (Recipe)
+
+two:
+  content: "Un peu trop sucré à mon goût"
+  user: two
+  commentable: one (Recipe)
+
+three:
+  content: "Parfait pour un dessert rapide"
+  user: one
+  commentable: two (Recipe)

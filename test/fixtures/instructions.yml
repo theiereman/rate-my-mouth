@@ -1,0 +1,24 @@
+one:
+  name: "Mélanger les ingrédients secs"
+  category: "préparation"
+  recipe: one
+
+two:
+  name: "Incorporer les œufs"
+  category: "préparation"
+  recipe: one
+
+three:
+  name: "Cuire au four à 180°C"
+  category: "cuisson"
+  recipe: one
+
+four:
+  name: "Éplucher et couper les pommes"
+  category: "préparation"
+  recipe: two
+
+five:
+  name: "Faire une compote"
+  category: "cuisson"
+  recipe: two

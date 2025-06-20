@@ -1,8 +1,7 @@
 class UsersController < ApplicationController
   before_action :set_user, only: %i[ show update update_avatar ]
 
-  # GET /users/list.json
-  def list
+  def index
     @users = User.all.order(:username)
     render json: @users.as_json(only: [ :id, :username, :email ])
   end

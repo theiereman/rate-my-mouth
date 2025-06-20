@@ -54,7 +54,7 @@ class RecipesController < ApplicationController
     if @recipe.save
       redirect_to @recipe
     else
-      redirect_to new_recipe_url, inertia: { errors: @recipe.errors }
+      redirect_to new_recipe_url, status: :unprocessable_entity, inertia: { errors: @recipe.errors }
     end
   end
 
