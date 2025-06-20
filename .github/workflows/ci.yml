@@ -57,7 +57,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install packages
-        run: sudo apt-get update && sudo apt-get install --no-install-recommends -y build-essential git curl libjemalloc2 libvips sqlite3 npm libyaml-dev pkg-config libglib2.0-dev libexpat1-dev libvips42 google-chrome-stable
+        run: sudo apt-get update && sudo apt-get install --no-install-recommends -y build-essential git curl libjemalloc2 libvips sqlite3 npm libyaml-dev pkg-config libglib2.0-dev libexpat1-dev libvips42
 
       - name: Checkout code
         uses: actions/checkout@v4
@@ -79,6 +79,11 @@ jobs:
 
       - name: Build Vite assets
         run: bin/vite build --clear --mode=test
+
+      - name: Precompile assets
+        env:
+          RAILS_ENV: test
+        run: bin/rails assets:precompile
 
       - name: Run tests
         env:
