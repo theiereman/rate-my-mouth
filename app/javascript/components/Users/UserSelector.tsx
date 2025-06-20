@@ -33,7 +33,7 @@ export default function UserSelector({
     const fetchUsers = async () => {
       try {
         setIsLoading(true);
-        const response = await axios.get("/users/list");
+        const response = await axios.get("/users");
         setUsers(response.data);
 
         // Si un ID initial est fourni, trouver l'utilisateur correspondant

@@ -9,8 +9,7 @@ Rails.application.routes.draw do
     resources :comments, only: [ :create, :update, :destroy ]
   end
 
-  resources :users, only: [ :show, :update ] do
-    get "list", on: :collection
+  resources :users, only: [ :index, :show, :update ] do
     resources :achievements, only: [ :index ]
     patch "update_avatar", on: :member
   end
