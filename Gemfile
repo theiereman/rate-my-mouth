@@ -77,3 +77,5 @@ gem "pagy", "~> 9.3"
 
 # S3 bucket storage for Active Storage
 gem "aws-sdk-s3", require: false
+
+gem "noticed", "~> 2.7"
