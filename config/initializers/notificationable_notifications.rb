@@ -4,13 +4,10 @@ ActiveSupport::Notifications.subscribe(/\.created.notificationable$|\.updated.no
   record  = event.payload[:record]
   next unless user.is_a?(User) && record
 
-  if event.name.starts_with?("comment")
-    if record.commentable.is_a?(Recipe) && record.commentable.user != user
-      NotificationMailer.with(comment: record).new_comment_notification.deliver_later
-    end
-  elsif event.name.starts_with?("rating")
-    if record.recipe.user != user
-      NotificationMailer.with(rating: record).new_rating_notification.deliver_later
-    end
+  case event.name.starts_with?
+  when "comment" && record.commentable.is_a?(Recipe)
+    NewCommentNotifier.with(record: record).deliver
+  when "rating"
+    NewRatingNotifier.with(record: record).deliver
   end
 end

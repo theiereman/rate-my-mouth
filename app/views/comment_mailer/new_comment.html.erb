@@ -4,10 +4,10 @@
     <div style="height: 2px; background-color: #e5e7eb; margin: 20px 0;"></div>
   </div>
 
-  <p style="font-size: 16px; color: #374151; margin-bottom: 20px;">Bonjour <%= @recipe_owner.username %>,</p>
+  <p style="font-size: 16px; color: #374151; margin-bottom: 20px;">Bonjour <%= @comment.recipe.user.username %>,</p>
 
   <p style="font-size: 16px; color: #374151; margin-bottom: 20px;">
-    <strong><%= @commenter.username %></strong> a laissé un commentaire sur votre recette "<%= @recipe.name %>".
+    <strong><%= @comment.user.username %></strong> a laissé un commentaire sur votre recette "<%= @comment.recipe.name %>".
   </p>
 
   <div style="background-color: #f3f4f6; border-left: 4px solid #0ea5e9; padding: 15px; margin: 20px 0; border-radius: 0 4px 4px 0;">
@@ -17,7 +17,7 @@
   </div>
 
   <div style="text-align: center; margin: 30px 0;">
-    <a href="<%= recipe_url(@recipe) %>" style="display: inline-block; background-color: #0ea5e9; color: white; text-decoration: none; padding: 12px 24px; border-radius: 6px; font-weight: bold;">
+    <a href="<%= recipe_url(@comment.recipe) %>" style="display: inline-block; background-color: #0ea5e9; color: white; text-decoration: none; padding: 12px 24px; border-radius: 6px; font-weight: bold;">
       Voir le commentaire
     </a>
   </div>
