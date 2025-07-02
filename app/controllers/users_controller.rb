@@ -38,6 +38,17 @@ class UsersController < ApplicationController
     }
   end
 
+  def my_notifications
+    @notifications = current_user.notifications.order(created_at: :desc)
+    @pagy, @notifications = pagy(@notifications)
+
+    # TODO: maybe use presenter pattern instead of service
+    render json: {
+      notifications: NotificationFormatterService.new(@notifications).format,
+      pagy: pagy_metadata(@pagy)
+    }
+  end
+
   private
     def user_params
       params.expect(user: [ :notification_preference, :avatar ])

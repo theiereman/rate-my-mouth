@@ -1,4 +1,4 @@
-class AchievementUnlocker
+class AchievementUnlockerService
   def initialize(user)
     @user = user
   end

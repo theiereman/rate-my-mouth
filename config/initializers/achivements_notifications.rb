@@ -4,5 +4,5 @@ ActiveSupport::Notifications.subscribe(/\.created$|\.updated$/) do |*args|
   record  = event.payload[:record]
   next unless user.is_a?(User) && record
 
-  AchievementUnlocker.new(user).check!(event.name, record: record)
+  AchievementUnlockerService.new(user).check!(event.name, record: record)
 end
