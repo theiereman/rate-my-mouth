@@ -17,17 +17,25 @@ export default function UserActions() {
       <div
         className={`${
           !isOpen ? "hidden" : "block"
-        } text-end absolute right-0 bg-white rounded-md shadow-lg z-10`}
+        } text-end absolute right-0 bg-white rounded-md shadow-lg z-10 w-64 overflow-hidden`}
       >
         <LinkButton
           variant="ghost"
           href="/my_profile"
-          className="flex flex-col items-end px-4 py-2 hover:bg-neutral-100 transition-colors"
+          className="flex flex-col items-end px-4 py-2 hover:bg-neutral-100 transition-colors w-full rounded-none"
         >
-          <p className="text-sm font-medium text-neutral-700">
+          <p
+            className="text-sm font-medium text-neutral-700 max-w-full truncate"
+            title={current_user.username}
+          >
             {current_user.username}
           </p>
-          <p className="text-xs text-neutral-500">{current_user.email}</p>
+          <p
+            className="text-xs text-neutral-500 max-w-full truncate"
+            title={current_user.email}
+          >
+            {current_user.email}
+          </p>
         </LinkButton>
         <LinkButton
           variant="ghost"
