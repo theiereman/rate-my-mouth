@@ -7,6 +7,7 @@ import { Footer } from "@components/ui";
 import { useToast } from "../contexts/ToastProvider";
 import { usePage } from "@inertiajs/react";
 import { useEffect } from "react";
+import UserNotifications from "@components/navbar/UserNotifications";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const { flash } = usePage<PageProps>().props;
@@ -35,6 +36,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <HomeButton className="me-6" />
             <Navbar />
             <ThemeSelector />
+            <UserNotifications />
             <UserActions />
           </div>
         </header>
