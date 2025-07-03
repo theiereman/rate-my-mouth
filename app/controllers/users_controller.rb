@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+  include Paginatable
+
   before_action :set_user, only: %i[ show update update_avatar ]
 
   def index
@@ -40,10 +42,11 @@ class UsersController < ApplicationController
 
   def my_notifications
     @notifications = current_user.notifications.order(created_at: :desc)
-    @pagy, @notifications = pagy(@notifications)
+    @pagy, @notifications = paginate_collection(@notifications)
+    @presented_notifications = @notifications.map { |notification| NotificationPresenter.new(notification).to_h }
 
     render json: {
-      notifications: @notifications.map { |notification| NotificationPresenter.new(notification).to_h },
+      notifications: @presented_notifications,
       pagy: pagy_metadata(@pagy)
     }
   end
