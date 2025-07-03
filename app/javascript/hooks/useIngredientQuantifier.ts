@@ -15,19 +15,20 @@ export function useIngredientQuantifier({ recipe }: { recipe: RecipeType }) {
     }
   };
 
-  //extract every number inside ingredients and multiply them by the number of servings
   const updatedIngredients = recipe.ingredients?.map((ingredient) => {
-    // Regex mise à jour pour exclure les nombres précédés directement par une lettre
-    const regex = /(?<![a-zA-Z])(\d+(\.\d+)?)/g;
+    const regex = /(?<![a-zA-Z])(\d+(?:[\.,]\d+)?)/g;
     const numbers = ingredient.name.match(regex);
     if (numbers) {
       const updatedName = ingredient.name.replace(regex, (match) => {
-        const number = parseFloat(match);
+        const number = parseFloat(match.replace(",", "."));
         const updatedNumber =
           (number / recipe.number_of_servings) * numberOfServings;
-        return updatedNumber % 1 === 0
-          ? Math.round(updatedNumber).toString()
-          : updatedNumber.toFixed(2).replace(/\.?0+$/, "");
+        let result =
+          updatedNumber % 1 === 0
+            ? Math.round(updatedNumber).toString()
+            : updatedNumber.toFixed(2).replace(/\.?0+$/, "");
+
+        return result;
       });
       return { ...ingredient, name: updatedName };
     }
