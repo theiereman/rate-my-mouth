@@ -55,7 +55,7 @@ export default function CommentForm({
           }
         />
       </div>
-      <Button variant="primary" size="md" isLoading={processing} type="submit">
+      <Button variant="primary" isLoading={processing} type="submit">
         Commenter
       </Button>
     </form>

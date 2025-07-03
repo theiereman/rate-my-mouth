@@ -22,7 +22,10 @@ createInertiaApp({
       console.error(`Missing Inertia page component: '${name}.tsx'`);
     }
 
-    page.default.layout ||= (page) => createElement(Layout, null, page);
+    if (page && page.default) {
+      (page.default as any).layout ||= (page: ReactNode) =>
+        createElement(Layout, null, page);
+    }
 
     return page;
   },

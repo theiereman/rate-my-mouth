@@ -1,6 +1,5 @@
 import React, { ButtonHTMLAttributes } from "react";
 import { Link } from "@inertiajs/react";
-import background_image from "../../assets/images/button_background.svg";
 
 type ButtonVariant =
   | "primary"

@@ -46,7 +46,6 @@ export default function RecipeNotes({ recipeId }: { recipeId: number }) {
         data={{ notes: notes }}
         preserveScroll
         preserveState
-        size="xs"
         icon={<span className="material-symbols-outlined">save</span>}
       ></LinkButton>
     </div>

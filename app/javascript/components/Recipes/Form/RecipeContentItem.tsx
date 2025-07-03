@@ -110,7 +110,6 @@ export default function RecipeContentItem({
       />
       <Button
         variant="ghost"
-        size="sm"
         onClick={handleDelete}
         className="text-red-600 hover:text-red-700"
       >

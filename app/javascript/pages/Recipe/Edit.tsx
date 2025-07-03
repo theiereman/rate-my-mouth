@@ -1,4 +1,3 @@
-import { Head } from "@inertiajs/react";
 import Form from "@components/Recipes/Form/RecipeForm";
 import { RecipeType } from "@customTypes/recipe.types";
 

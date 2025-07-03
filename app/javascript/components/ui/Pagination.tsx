@@ -22,7 +22,6 @@ export default function Pagination({
     <div className={`flex gap-2 justify-center items-center ${className}`}>
       <LinkButton
         preserveState
-        size="xs"
         className="material-symbols-outlined"
         disabled={pagy.page === 1}
         href={pagy.first_url}
@@ -31,7 +30,6 @@ export default function Pagination({
       </LinkButton>
       <LinkButton
         preserveState
-        size="xs"
         className="material-symbols-outlined"
         disabled={pagy.page === 1}
         href={pagy.prev_url}
@@ -44,7 +42,6 @@ export default function Pagination({
 
       <LinkButton
         preserveState
-        size="xs"
         className="material-symbols-outlined"
         disabled={pagy.page === pagy.pages}
         href={pagy.next_url}
@@ -53,7 +50,6 @@ export default function Pagination({
       </LinkButton>
       <LinkButton
         preserveState
-        size="xs"
         className="material-symbols-outlined"
         disabled={pagy.page === pagy.pages}
         href={pagy.last_url}

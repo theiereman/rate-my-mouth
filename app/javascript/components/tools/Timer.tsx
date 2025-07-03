@@ -1,5 +1,5 @@
 import { Button, Input } from "@components/ui";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { useTimer } from "@contexts/TimerContext";
 import alarmSound from "../../assets/sounds/alert.wav";
 
