@@ -20,7 +20,7 @@ export default function UserLink({
   const { isCurrentUser } = useUserIsCurrentUser(user);
 
   return (
-    <div className={`flex flex-col text-xs ${className}`}>
+    <div className={`${className} flex flex-col`}>
       <div className="flex items-center gap-1 text-neutral-400">
         {prefix && <span>{prefix} </span>}
         {disabled ? (
@@ -36,7 +36,7 @@ export default function UserLink({
           </Link>
         )}
       </div>
-      <p className="text-neutral-500">
+      <p className="text-neutral-500 text-xs">
         {showTitle && user.title && `${user.title}`}
       </p>
     </div>

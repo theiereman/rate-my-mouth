@@ -88,7 +88,7 @@ export default function Show({ users, type = "recipes" }: LeaderboardProps) {
                   </span>
                 </span>
                 <UserAvatar user={user} size="md" />
-                <UserLink className="flex-1" user={user} showTitle />
+                <UserLink className="flex-1 text-md" user={user} showTitle />
                 <Badge text={getBadgeValue(user).toString()} />
               </li>
             ))}
