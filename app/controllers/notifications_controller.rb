@@ -1,4 +1,4 @@
-class UserNotificationsController < ApplicationController
+class NotificationsController < ApplicationController
   include Paginatable
 
   def index
@@ -14,13 +14,11 @@ class UserNotificationsController < ApplicationController
 
   def mark_as_read
     notification_ids = params[:notification_ids]
-    notifications = current_user.notifications.where(id: notification_ids)
-
-    return if notifications.empty?
-
+    p notification_ids
+    notifications = current_user.notifications.where(id: notification_ids).where(read_at: nil)
+    p notifications
     notifications.each(&:mark_as_read!)
-
-    redirect_back_or_to root_path
+    render json: { success: true }
   rescue => e
     render json: { success: false, message: e.message }, status: :unprocessable_entity
   end

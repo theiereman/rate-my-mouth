@@ -4,8 +4,10 @@ import NotificationItem from "./NotificationItem";
 
 export default function NotificationList({
   notifications,
+  handleMarkAsRead,
 }: {
   notifications: NotificationType[];
+  handleMarkAsRead?: (id: number) => void;
 }) {
   return (
     <>
@@ -13,7 +15,10 @@ export default function NotificationList({
         <ul className="divide-y divide-neutral-200">
           {notifications.map((notification) => (
             <li className="py-1" key={notification.id}>
-              <NotificationItem notification={notification} />
+              <NotificationItem
+                notification={notification}
+                handleMarkAsRead={handleMarkAsRead}
+              />
             </li>
           ))}
         </ul>

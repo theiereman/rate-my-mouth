@@ -1,34 +1,55 @@
-import {
-  NotificationEventType,
-  NotificationType,
-} from "@customTypes/notifications.types";
+import { Button } from "@components/ui";
+import { NotificationType } from "@customTypes/notifications.types";
 import { formatDateTime } from "@helpers/date-helper";
-import { Link } from "@inertiajs/react";
+import { router } from "@inertiajs/react";
 
 export default function NotificationItem({
   notification,
+  handleMarkAsRead,
 }: {
   notification: NotificationType;
+  handleMarkAsRead?: (id: number) => void;
 }) {
-  const icon = getIconForEvent(notification.event);
+  const icon = getIconForEvent(notification);
+
+  const handleClick = async () => {
+    if (notification.read_at === null) {
+      handleMarkAsRead?.(notification.id);
+    }
+
+    if (notification.recipe && notification.recipe.id !== 0) {
+      router.visit(`/recipes/${notification.recipe?.id}`);
+    }
+  };
 
   return (
-    <div className="flex items-center">
+    <div className="flex gap-2 items-center">
       <span className="material-symbols-outlined text-primary-600 mr-2">
         {icon}
       </span>
-      <div className="text-sm flex flex-col">
-        {getMessageElementForEvent(notification.event, notification.recipe_id)}
-        <span className="text-xs text-neutral-500">
+      <div className="text-sm flex-1 flex gap-1 flex-col">
+        <Button
+          variant="ghost"
+          onClick={handleClick}
+          className="hover:text-primary-600! hover:underline text-start p-0! text-sm/4"
+        >
+          <span className="line-clamp-3">
+            {getMessageForEvent(notification)}
+          </span>
+        </Button>
+        <span className="text-xs text-neutral-400">
           {formatDateTime(notification.created_at)}
         </span>
       </div>
+      {!notification.read_at && (
+        <span className="size-2 rounded-full mx-auto bg-secondary-600 animate-pulse" />
+      )}
     </div>
   );
 }
 
-function getIconForEvent(event: NotificationEventType) {
-  switch (event) {
+function getIconForEvent(notification: NotificationType) {
+  switch (notification.event) {
     case "new_comment":
       return "comment";
     case "new_rating":
@@ -40,31 +61,25 @@ function getIconForEvent(event: NotificationEventType) {
   }
 }
 
-function getMessageForEvent(event: NotificationEventType) {
-  switch (event) {
+function getMessageForEvent(notification: NotificationType) {
+  var res = "";
+  switch (notification.event) {
     case "new_comment":
-      return "Nouveau commentaire";
+      res = "Nouveau commentaire";
+      break;
     case "new_rating":
-      return "Nouvelle note";
+      res = "Nouvelle note";
+      break;
     case "achievement_unlocked":
-      return "Succès débloqué !";
+      res = "Succès débloqué !";
+      break;
     default:
-      return "Notification inconnue";
+      res = "Notification inconnue";
   }
-}
 
-function getMessageElementForEvent(
-  type: NotificationEventType,
-  recipe_id?: number | null
-) {
-  return !recipe_id || recipe_id === 0 ? (
-    <p>{getMessageForEvent(type)}</p>
-  ) : (
-    <Link
-      className="hover:text-primary-600 hover:underline"
-      href={`/recipes/${recipe_id}`}
-    >
-      {getMessageForEvent(type)}
-    </Link>
-  );
+  if (notification.recipe && notification.recipe.id !== 0) {
+    res += ` sur la recette "${notification.recipe.name}"`;
+  }
+
+  return res;
 }
