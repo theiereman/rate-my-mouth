@@ -42,9 +42,8 @@ class UsersController < ApplicationController
     @notifications = current_user.notifications.order(created_at: :desc)
     @pagy, @notifications = pagy(@notifications)
 
-    # TODO: maybe use presenter pattern instead of service
     render json: {
-      notifications: NotificationFormatterService.new(@notifications).format,
+      notifications: @notifications.map { |notification| NotificationPresenter.new(notification).to_h },
       pagy: pagy_metadata(@pagy)
     }
   end
