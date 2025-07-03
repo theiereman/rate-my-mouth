@@ -67,7 +67,7 @@ export default function AchievementItem({
                 <Badge text="Débloqué" variant="valid" />
               </>
             ) : (
-              <Badge text="À débloquer" variant="neutral" />
+              <Badge text="À débloquer" variant="gray" />
             )}
           </div>
           {(!achievement.secret || achievement.unlocked) && (
