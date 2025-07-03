@@ -1,14 +1,8 @@
 class NotificationPresenter # used to present Noticed::Notification objects
   TYPE_MAPPING = {
-    "NewCommentNotifier::Notification" => "comment",
-    "NewRatingNotifier::Notification" => "rating",
-    "AchievementUnlockedNotifier::Notification" => "achievement"
-  }.freeze
-
-  MESSAGE_MAPPING = {
-    "comment" => "Nouveau commentaire sur votre contenu",
-    "rating" => "Nouvelle note reçue",
-    "achievement" => "Nouveau succès débloqué"
+    "NewCommentNotifier::Notification" => "new_comment",
+    "NewRatingNotifier::Notification" => "new_rating",
+    "AchievementUnlockedNotifier::Notification" => "achievement_unlocked"
   }.freeze
 
   def initialize(notification)
@@ -18,38 +12,21 @@ class NotificationPresenter # used to present Noticed::Notification objects
   def to_h
     {
       id: @notification.id,
-      type: extract_type,
-      event: "created",
-      message: generate_message,
+      event: extract_event,
+      recipe_id: recipe_id,
       read_at: @notification.read_at,
       seen_at: @notification.seen_at,
       created_at: @notification.created_at
     }
   end
 
-  def type
-    extract_type
-  end
-
-  def message
-    generate_message
-  end
-
-  def read?
-    @notification.read_at.present?
-  end
-
-  def seen?
-    @notification.seen_at.present?
+  def recipe_id
+    @notification.record.recipe.id if @notification.record.respond_to?(:recipe)
   end
 
   private
 
-  def extract_type
+  def extract_event
     TYPE_MAPPING[@notification.type] || "unknown"
-  end
-
-  def generate_message
-    MESSAGE_MAPPING[extract_type] || "Nouvelle notification"
   end
 end
