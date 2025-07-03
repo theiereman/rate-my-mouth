@@ -17,7 +17,9 @@ Rails.application.routes.draw do
   patch "select_achievement_as_title", to: "achievements#select_achievement_as_title", as: :select_achievement_as_title
 
   get "my_profile", to: "users#my_profile", as: :my_profile
-  get "my_notifications", to: "users#my_notifications", as: :my_notifications
+
+  get "notifications", to: "user_notifications#index", as: :notifications
+  post "notifications/mark_as_read", to: "user_notifications#mark_as_read", as: :mark_notifications_as_read
 
   resources :recipes, concerns: [ :commentable ] do
     resources :ratings, only: [ :create ]

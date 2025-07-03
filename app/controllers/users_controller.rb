@@ -40,17 +40,6 @@ class UsersController < ApplicationController
     }
   end
 
-  def my_notifications
-    @notifications = current_user.notifications.order(created_at: :desc)
-    @pagy, @notifications = paginate_collection(@notifications)
-    @presented_notifications = @notifications.map { |notification| NotificationPresenter.new(notification).to_h }
-
-    render json: {
-      notifications: @presented_notifications,
-      pagy: pagy_metadata(@pagy)
-    }
-  end
-
   private
     def user_params
       params.expect(user: [ :notification_preference, :avatar ])
