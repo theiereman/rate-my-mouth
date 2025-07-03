@@ -13,15 +13,15 @@ class NotificationPresenter # used to present Noticed::Notification objects
     {
       id: @notification.id,
       event: extract_event,
-      recipe_id: recipe_id,
+      recipe: recipe,
       read_at: @notification.read_at,
       seen_at: @notification.seen_at,
       created_at: @notification.created_at
     }
   end
 
-  def recipe_id
-    @notification.record.recipe.id if @notification.record.respond_to?(:recipe)
+  def recipe
+    @notification.record.recipe.as_json(only: [ :id, :name ]) if @notification.record.respond_to?(:recipe)
   end
 
   private

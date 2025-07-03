@@ -37,6 +37,8 @@ export interface RecipeType {
   ratings_count: number;
 }
 
+export type RecipeMinimalType = Pick<RecipeType, "id" | "name">;
+
 export type RecipeFormType = {
   name: string;
   url: string;
