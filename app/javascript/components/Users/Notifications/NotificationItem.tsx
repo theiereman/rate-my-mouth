@@ -31,9 +31,9 @@ export default function NotificationItem({
         <Button
           variant="ghost"
           onClick={handleClick}
-          className="hover:text-primary-600! hover:underline text-start p-0! text-sm/4"
+          className="hover:text-primary-600! hover:underline text-start! p-0! text-sm/4"
         >
-          <span className="line-clamp-3">
+          <span className="line-clamp-3 w-full">
             {getMessageForEvent(notification)}
           </span>
         </Button>
