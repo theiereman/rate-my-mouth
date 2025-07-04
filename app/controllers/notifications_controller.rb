@@ -2,7 +2,7 @@ class NotificationsController < ApplicationController
   include Paginatable
 
   def index
-    @notifications = current_user.notifications.order(created_at: :desc)
+    @notifications = current_user.notifications.order(read_at: :asc).order(created_at: :desc)
     @pagy, @notifications = paginate_collection(@notifications)
     @presented_notifications = @notifications.map { |notification| NotificationPresenter.new(notification).to_h }
 
