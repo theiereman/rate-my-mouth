@@ -3,7 +3,6 @@ import NotificationList from "../Users/Notifications/NotificationList";
 import { usePopupElement } from "@hooks/usePopupElement";
 import { NotificationType } from "@customTypes/notifications.types";
 import EmptyPlaceholder from "@components/ui/EmptyPlaceholder";
-import { Button } from "@components/ui";
 import axios from "axios";
 import { useToast } from "@contexts/ToastProvider";
 
@@ -45,7 +44,7 @@ export default function UserNotifications() {
       });
       fetchUserNotifications();
     } catch (err) {
-      showToast("Erreur lors de la mise à jour des notifications", {
+      showToast("Impossible de marquer toutes les notifications comme 'lues'", {
         type: "error",
       });
     }
@@ -56,13 +55,9 @@ export default function UserNotifications() {
       await axios.post("/notifications/mark_as_read", {
         notification_ids: [id],
       });
-      setNotifications((prev) =>
-        prev.map((n) =>
-          n.id === id ? { ...n, read_at: new Date().toISOString() } : n
-        )
-      );
+      fetchUserNotifications();
     } catch (err) {
-      showToast("Erreur lors de la mise à jour des notifications", {
+      showToast("Impossible de marquer la notification comme 'lue'", {
         type: "error",
       });
     }
@@ -88,17 +83,23 @@ export default function UserNotifications() {
         }  absolute right-0 w-86 max-w-[70vw] bg-white rounded-md shadow-lg z-10 py-2 px-4 flex-col gap-2 max-h-64 overflow-y-auto`}
       >
         <div>
-          <h1 className="text-sm font-medium text-neutral-700">
-            Historique des notifications
-          </h1>
-          <Button
-            variant="ghost"
-            className="text-xs m-0! p-0! whitespace-nowrap enabled:text-primary-600! enabled:underline!"
+          <div className="flex text-sm items-center justify-between">
+            <h1 className="text-neutral-700">Historique des notifications</h1>
+            <button
+              disabled={isLoading}
+              className="text-xs disabled:text-neutral-400 enabled:text-primary-600! enabled:underline! enabled:cursor-pointer"
+              onClick={fetchUserNotifications}
+            >
+              Rafraîchir
+            </button>
+          </div>
+          <button
+            className="text-xs disabled:text-neutral-400 enabled:text-primary-600! enabled:underline! enabled:cursor-pointer"
             onClick={handleMarkAllAsRead}
             disabled={unreadNotifications.length === 0}
           >
             Tout marquer comme lu
-          </Button>
+          </button>
         </div>
         {isLoading ? (
           <EmptyPlaceholder
