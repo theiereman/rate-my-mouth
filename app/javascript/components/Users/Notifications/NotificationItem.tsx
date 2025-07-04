@@ -17,8 +17,8 @@ export default function NotificationItem({
       handleMarkAsRead?.(notification.id);
     }
 
-    if (notification.recipe && notification.recipe.id !== 0) {
-      router.visit(`/recipes/${notification.recipe?.id}`);
+    if (notification.linked_item_path) {
+      router.visit(notification.linked_item_path);
     }
   };
 
@@ -33,9 +33,7 @@ export default function NotificationItem({
           onClick={handleClick}
           className="hover:text-primary-600! hover:underline text-start! p-0! text-sm/4"
         >
-          <span className="line-clamp-3 w-full">
-            {getMessageForEvent(notification)}
-          </span>
+          <span className="line-clamp-3 w-full">{notification.message}</span>
         </Button>
         <span className="text-xs text-neutral-400">
           {formatDateTime(notification.created_at)}
@@ -59,27 +57,4 @@ function getIconForEvent(notification: NotificationType) {
     default:
       return "notifications"; // Default icon if type is unknown
   }
-}
-
-function getMessageForEvent(notification: NotificationType) {
-  var res = "";
-  switch (notification.event) {
-    case "new_comment":
-      res = "Nouveau commentaire";
-      break;
-    case "new_rating":
-      res = "Nouvelle note";
-      break;
-    case "achievement_unlocked":
-      res = "Succès débloqué !";
-      break;
-    default:
-      res = "Notification inconnue";
-  }
-
-  if (notification.recipe && notification.recipe.id !== 0) {
-    res += ` sur la recette "${notification.recipe.name}"`;
-  }
-
-  return res;
 }
