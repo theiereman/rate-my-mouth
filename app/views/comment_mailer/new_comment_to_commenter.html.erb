@@ -3,11 +3,9 @@
     <h1 style="color: #0ea5e9; font-size: 24px; margin-bottom: 10px;">Rate My Mouth</h1>
     <div style="height: 2px; background-color: #e5e7eb; margin: 20px 0;"></div>
   </div>
-
-  <p style="font-size: 16px; color: #374151; margin-bottom: 20px;">Bonjour <%= @comment.recipe.user.username %>,</p>
-
+  
   <p style="font-size: 16px; color: #374151; margin-bottom: 20px;">
-    <strong><%= @comment.user.username %></strong> a laissé un commentaire sur votre recette "<%= @comment.recipe.name %>".
+    <strong><%= @comment.user.username %></strong> a laissé un commentaire sur la recette "<%= @comment.recipe.name %>" à laquelle vous avez participé.
   </p>
 
   <div style="background-color: #f3f4f6; border-left: 4px solid #0ea5e9; padding: 15px; margin: 20px 0; border-radius: 0 4px 4px 0;">
