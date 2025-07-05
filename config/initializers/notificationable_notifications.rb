@@ -20,9 +20,8 @@ ActiveSupport::Notifications.subscribe(/\.created.notificationable$|\.updated.no
 
   case event.name
   when /^comment/
-    if record.commentable&.is_a?(Recipe) && should_notify?(record, record.user)
-      NewCommentNotifier.with(record: record).deliver
-    end
+    NewCommentToAuthorNotifier.with(record: record).deliver
+    NewCommentToOtherCommentersNotifier.with(record: record, commenter: user).deliver
   when /^rating/
     if should_notify?(record, record.user)
       NewRatingNotifier.with(record: record).deliver
