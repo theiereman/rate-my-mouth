@@ -1,4 +1,4 @@
-type PlaceholderVariant = "primary" | "secondary";
+type PlaceholderVariant = "primary" | "secondary" | "ghost";
 
 export default function EmptyPlaceholder({
   text,
@@ -13,6 +13,7 @@ export default function EmptyPlaceholder({
   const variantClasses = {
     primary: "bg-primary-50 border-primary-100 text-primary-500",
     secondary: "bg-secondary-50 border-secondary-100 text-secondary-500",
+    ghost: "bg-transparent border-transparent text-neutral-500",
   };
 
   return (

@@ -19,8 +19,6 @@ export default function RatingForm({
 
   const pendingUpdate = pendingValue !== null && pendingValue !== value;
 
-  console.log(pendingValue);
-
   const handleSubmit = (e: any) => {
     e.preventDefault();
     if (pendingValue === null || !pendingUpdate) return;

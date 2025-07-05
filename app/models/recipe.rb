@@ -100,6 +100,11 @@ class Recipe < ApplicationRecord
     end
   end
 
+  # every commenter who has commented on this recipe, excluding the comment author and the recipe's user
+  def other_commenters(comment_author)
+    comments.includes(:user).map(&:user).uniq.filter { |other_user| other_user != comment_author && other_user != self.user }
+  end
+
   private
 
   def filtering_params

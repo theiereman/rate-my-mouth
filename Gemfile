@@ -54,6 +54,7 @@ end
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
+  gem "letter_opener"
 end
 
 group :test do
@@ -77,3 +78,5 @@ gem "pagy", "~> 9.3"
 
 # S3 bucket storage for Active Storage
 gem "aws-sdk-s3", require: false
+
+gem "noticed", "~> 2.7"

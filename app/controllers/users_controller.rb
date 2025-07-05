@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+  include Paginatable
+
   before_action :set_user, only: %i[ show update update_avatar ]
 
   def index

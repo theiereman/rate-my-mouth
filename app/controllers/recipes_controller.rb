@@ -1,10 +1,12 @@
 class RecipesController < ApplicationController
+  include Paginatable
+
   before_action :set_recipe, only: %i[ show edit update destroy ]
 
   # GET /recipes
   def index
     @recipes = Recipe.filter(params.slice(:name, :user_id, :tags_ids)).order(created_at: :desc)
-    @pagy, @recipes = pagy(@recipes, limit: params[:limit])
+    @pagy, @recipes = paginate_collection(@recipes)
 
     respond_to do |format|
       format.html {
