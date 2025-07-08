@@ -17,8 +17,8 @@ export default function RecipeHeader({
   enableUserlink = true,
 }: RecipeHeaderProps) {
   return (
-    <div className={`flex-1 flex gap-6 ${className}`}>
-      <div className="flex-1 flex flex-col">
+    <div className={`flex-1 md:flex gap-6 ${className}`}>
+      <div className="flex-1 flex flex-col gap-2">
         <h3
           title={recipe.name}
           className="text-4xl font-medium text-neutral-800 line-clamp-2 sm:line-clamp-1 font-serif"
@@ -26,7 +26,7 @@ export default function RecipeHeader({
           {recipe.name}
         </h3>
         {recipe.user && (
-          <span className="text-neutral-400 text-sm flex gap-1">
+          <span className="text-neutral-400 text-sm flex flex-col md:flex-row gap-1">
             <UserLink
               prefix="Par"
               user={recipe.user}
