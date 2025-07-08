@@ -20,11 +20,11 @@ class NewCommentToAuthorNotifierTest < ActiveSupport::TestCase
   test "should notify every commenter except the author" do
     @recipe_one.commenters.each do |commenter|
       if (commenter.id == @recipe_one.user.id) || (commenter.id == @commenter.id)
-        assert_no_difference -> { Noticed::Notification.where(recipient_id: commenter.id).where(type: "NewCommentToOtherCommentersNotifier::Notification").count } do
+        assert_no_difference -> { commenter.notifications.where(type: "NewCommentToOtherCommentersNotifier::Notification").count } do
           Comment.create(user: @commenter, commentable: @recipe_one, content: "Great recipe!")
         end
       else
-        assert_difference -> { Noticed::Notification.where(recipient_id: commenter.id).where(type: "NewCommentToOtherCommentersNotifier::Notification").count }, 1 do
+        assert_difference -> { commenter.notifications.where(type: "NewCommentToOtherCommentersNotifier::Notification").count }, 1 do
           Comment.create(user: @commenter, commentable: @recipe_one, content: "Great recipe!")
         end
       end
@@ -32,9 +32,8 @@ class NewCommentToAuthorNotifierTest < ActiveSupport::TestCase
   end
 
   test "should not notify if commenting own recipe" do
-    assert_no_difference -> { Noticed::Notification.where(recipient_id: @recipe_one_author.id)
-                              .where(type: "NewCommentToOtherCommentersNotifier::Notification")
-                              .where(type: "NewCommentToAuthorNotifier::Notification").count } do
+    assert_no_difference -> { @recipe_one_author.notifications
+                                .where(type: [ "NewCommentToOtherCommentersNotifier::Notification", "NewCommentToAuthorNotifier::Notification" ]).count } do
       Comment.create(user: @recipe_one_author, commentable: @recipe_one, content: "Great recipe!")
     end
   end
