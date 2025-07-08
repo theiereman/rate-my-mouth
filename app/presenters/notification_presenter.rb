@@ -2,7 +2,8 @@ class NotificationPresenter # used to present Noticed::Notification objects
   include Rails.application.routes.url_helpers
 
   TYPE_MAPPING = {
-    "NewCommentNotifier::Notification" => "new_comment",
+    "NewCommentToOtherCommentersNotifier::Notification" => "new_comment",
+    "NewCommentToAuthorNotifier::Notification" => "new_comment",
     "NewRatingNotifier::Notification" => "new_rating",
     "AchievementUnlockedNotifier::Notification" => "achievement_unlocked"
   }.freeze
@@ -41,7 +42,7 @@ class NotificationPresenter # used to present Noticed::Notification objects
 
   def linked_item_path
     case @notification.type
-    when "NewCommentNotifier::Notification" || "NewRatingNotifier::Notification"
+    when "NewCommentToOtherCommentersNotifier::Notification", "NewCommentToAuthorNotifier::Notification", "NewRatingNotifier::Notification"
       recipe_path(@notification.record.recipe) if @notification.record&.respond_to?(:recipe)
     when "AchievementUnlockedNotifier::Notification"
       my_profile_path
