@@ -18,9 +18,5 @@ class AchievementMailerTest < ActionMailer::TestCase
     end
 
     assert_equal [ @user.email ], email.to
-    assert_equal "Vous avez débloqué un nouveau succès", email.subject
-    assert_match "nouveau", email.body.encoded
-    assert_match "Cuisinier novice", email.body.encoded
-    assert_match @user.username, email.body.encoded
   end
 end

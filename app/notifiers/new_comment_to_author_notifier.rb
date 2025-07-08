@@ -7,7 +7,7 @@ class NewCommentToAuthorNotifier < ApplicationNotifier
   deliver_by :email do |config|
     config.mailer = "CommentMailer"
     config.method = :new_comment_to_author
-    config.if = -> { recipient.notification_preference? && recipient.id != record.user.id }
+    config.if = -> { recipient.notification_preference? }
   end
 
   validates :record, presence: true

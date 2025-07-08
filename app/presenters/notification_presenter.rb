@@ -27,7 +27,7 @@ class NotificationPresenter # used to present Noticed::Notification objects
 
   def message
     case @notification.type
-    when "NewCommentNotifier::Notification"
+    when "NewCommentToOtherCommentersNotifier::Notification", "NewCommentToAuthorNotifier::Notification"
       "Nouveau commentaire sur la recette '#{@notification.record.recipe.name}'" if @notification.record&.recipe
     when "NewRatingNotifier::Notification"
       "Nouvelle note sur la recette '#{@notification.record.recipe.name}'" if @notification.record&.recipe
