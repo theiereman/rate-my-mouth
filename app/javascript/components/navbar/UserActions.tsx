@@ -5,12 +5,15 @@ import { LinkButton } from "@components/ui";
 import { usePopupElement } from "@hooks/usePopupElement";
 
 export default function UserActions() {
-  const { ref, isOpen } = usePopupElement();
+  const { contentRef, buttonRef, isOpen } = usePopupElement();
   const { current_user } = usePage<PageProps>().props;
 
   return (
-    <div ref={ref} className="relative group">
-      <button className="flex items-center space-x-3 focus:outline-none cursor-pointer transition-transform group-hover:scale-105">
+    <div ref={contentRef} className="relative group">
+      <button
+        ref={buttonRef}
+        className="flex items-center space-x-3 focus:outline-none cursor-pointer transition-transform group-hover:scale-105"
+      >
         <UserAvatar user={current_user} />
       </button>
 

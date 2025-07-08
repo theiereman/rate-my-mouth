@@ -3,11 +3,14 @@ import PredefinedThemeSelector from "@components/theme/PredefinedThemeSelector";
 import { usePopupElement } from "@hooks/usePopupElement";
 
 export default function ThemeSelector() {
-  const { ref, isOpen } = usePopupElement();
+  const { contentRef, buttonRef, isOpen } = usePopupElement();
 
   return (
-    <div ref={ref} className="relative group">
-      <button className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center space-x-3 focus:outline-none cursor-pointer transition-transform group-hover:scale-105">
+    <div ref={contentRef} className="relative group">
+      <button
+        ref={buttonRef}
+        className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center space-x-3 focus:outline-none cursor-pointer transition-transform group-hover:scale-105"
+      >
         <span className="material-symbols-outlined text-primary-600">
           color_lens
         </span>

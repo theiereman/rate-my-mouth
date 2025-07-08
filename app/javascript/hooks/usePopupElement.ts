@@ -1,22 +1,27 @@
 import { useEffect, useRef, useState } from "react";
 
 export function usePopupElement() {
-  const ref = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
 
   const [isHovered, setIsHovered] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     const handleClick = (event: MouseEvent) => {
-      if (!ref.current || isHovered) return;
+      if (!contentRef.current || isHovered) return;
 
       //click inside the popup while open
-      if (isOpen && ref.current.contains(event.target as Node)) {
+      if (
+        isOpen &&
+        !buttonRef.current?.contains(event.target as Node) &&
+        contentRef.current.contains(event.target as Node)
+      ) {
         return;
       }
 
       //click outside of the popup
-      if (!ref.current.contains(event.target as Node)) {
+      if (!contentRef.current.contains(event.target as Node)) {
         setIsOpen(false);
         return;
       }
@@ -30,15 +35,15 @@ export function usePopupElement() {
     };
 
     document.addEventListener("mousedown", handleClick);
-    ref.current?.addEventListener("mouseover", handleHover);
-    ref.current?.addEventListener("mouseout", handleHover);
+    contentRef.current?.addEventListener("mouseover", handleHover);
+    contentRef.current?.addEventListener("mouseout", handleHover);
 
     return () => {
       document.removeEventListener("mousedown", handleClick);
-      ref.current?.removeEventListener("mouseover", handleHover);
-      ref.current?.removeEventListener("mouseout", handleHover);
+      contentRef.current?.removeEventListener("mouseover", handleHover);
+      contentRef.current?.removeEventListener("mouseout", handleHover);
     };
-  }, [ref, isHovered, isOpen]);
+  }, [contentRef, buttonRef, isHovered, isOpen]);
 
-  return { ref, isOpen };
+  return { contentRef, buttonRef, isOpen };
 }
