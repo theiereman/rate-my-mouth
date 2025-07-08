@@ -1,9 +1,7 @@
 class NotificationsController < ApplicationController
-  include Paginatable
-
   def index
-    @notifications = current_user.notifications.order(read_at: :asc).order(created_at: :desc)
-    @pagy, @notifications = paginate_collection(@notifications)
+    @notifications = current_user.notifications.order(Arel.sql("read_at IS NULL DESC, created_at DESC"))
+    @pagy, @notifications = pagy_countless(@notifications, page: params[:page])
     @presented_notifications = @notifications.map { |notification| NotificationPresenter.new(notification).to_h }
 
     render json: {

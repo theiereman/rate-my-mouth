@@ -5,6 +5,7 @@ export interface PagyMetadata {
   prev_url: string;
   next_url: string;
   last_url: string;
+  next: number | null;
   count: number;
   page: number;
   pages: number;
