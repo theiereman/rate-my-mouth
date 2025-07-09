@@ -5,7 +5,9 @@ class RecipesController < ApplicationController
 
   # GET /recipes
   def index
-    @recipes = Recipe.filter(params.slice(:name, :user_id, :tags_ids)).order(created_at: :desc)
+    @recipes = Recipe.filter(params.slice(:name, :user_id, :tags_ids))
+      .includes(:thumbnail_attachment, :user, :tags, :ingredients, :instructions, ratings: [ user: [ :avatar_attachment ] ], comments: [ user: [ :avatar_attachment ] ])
+      .order(created_at: :desc)
     @pagy, @recipes = paginate_collection(@recipes)
 
     respond_to do |format|
@@ -83,7 +85,7 @@ class RecipesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_recipe
-      @recipe = Recipe.find(params[:id])
+      @recipe = Recipe.includes(:thumbnail_attachment, :user, :tags, :ingredients, :instructions, ratings: [ user: [ :avatar_attachment ] ], comments: [ user: [ :avatar_attachment ] ]).find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.
