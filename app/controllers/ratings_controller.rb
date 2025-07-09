@@ -1,5 +1,17 @@
 class RatingsController < ApplicationController
+  include Paginatable
+
   before_action :set_recipe
+
+  def index
+    @ratings = @recipe.ratings.includes(user: [ :avatar_attachment ]).order(created_at: :desc)
+    @pagy, @ratings = paginate_collection(@ratings)
+
+    render json: {
+      ratings: @ratings.map { |rating| rating.as_json(include: { user: { only: [ :id, :username ], methods: [ :avatar_url ] } }) },
+      pagy: pagy_metadata(@pagy)
+    }
+  end
 
   def create
     @rating = Rating.find_by(user: current_user, recipe: @recipe)

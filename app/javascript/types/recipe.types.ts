@@ -1,4 +1,3 @@
-import { CommentType } from "@customTypes/comment.types";
 import { RatingType } from "@customTypes/rating.types";
 import { TagType } from "@customTypes/tag.types";
 import { UserType } from "@customTypes/user.types";
@@ -29,8 +28,6 @@ export interface RecipeType {
   average_rating: number;
   created_at: string;
   updated_at: string;
-  comments: CommentType[];
-  ratings: RatingType[];
   user: UserType;
   tags?: TagType[];
   comments_count: number;

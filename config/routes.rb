@@ -5,10 +5,6 @@ Rails.application.routes.draw do
     passwords: "users/passwords"
   }
 
-  concern :commentable do
-    resources :comments, only: [ :create, :update, :destroy ]
-  end
-
   resources :users, only: [ :index, :show, :update ] do
     resources :achievements, only: [ :index ]
     patch "update_avatar", on: :member
@@ -21,8 +17,9 @@ Rails.application.routes.draw do
   get "notifications", to: "notifications#index", as: :notifications
   post "notifications/mark_as_read", to: "notifications#mark_as_read", as: :mark_notifications_as_read
 
-  resources :recipes, concerns: [ :commentable ] do
-    resources :ratings, only: [ :create ]
+  resources :recipes do
+    resources :ratings, only: [ :index, :create ]
+    resources :comments, only: [ :index, :create, :update, :destroy ]
     resources :notes, only: [] do
       get "show_for_user", on: :collection
       patch "update_for_user", on: :collection

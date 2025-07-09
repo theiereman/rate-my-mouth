@@ -9,6 +9,7 @@ import UserPreferences from "@components/Users/UserPreferences";
 import { useUserIsCurrentUser } from "@hooks/useUserIsCurrentUser";
 import CreatedRecipes from "@components/Users/Recipes/CreatedRecipes";
 import Page from "@components/ui/Pages/Page";
+import Loading from "@components/ui/Loading";
 
 export default function Show({ user }: { user: UserType }) {
   const { isCurrentUser } = useUserIsCurrentUser(user);
@@ -42,12 +43,7 @@ export default function Show({ user }: { user: UserType }) {
         <CreatedRecipes userId={user.id} />
 
         {loadingAchievements ? (
-          <div className="text-center py-8">
-            <span className="material-symbols-outlined animate-spin text-primary-600 text-4xl">
-              progress_activity
-            </span>
-            <p className="mt-2 text-neutral-600">Chargement des succès...</p>
-          </div>
+          <Loading text="Chargement des succès..." />
         ) : (
           achievements && (
             <>

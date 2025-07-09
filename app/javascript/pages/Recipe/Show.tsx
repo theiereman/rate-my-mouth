@@ -2,13 +2,11 @@ import { Head } from "@inertiajs/react";
 import { RecipeType } from "@customTypes/recipe.types";
 import { RatingType } from "@customTypes/rating.types";
 import { CommentableType } from "@customTypes/comment.types";
-import CommentList from "@components/Comments/CommentList";
 import Timer from "@components/tools/Timer";
 import RecipeNotes from "@components/Recipes/RecipeNotes";
 import Section from "@components/ui/Pages/Section";
 import CommentForm from "@components/Comments/Form/CommentForm";
 import RatingForm from "@components/Ratings/Form/RatingForm";
-import RatingList from "@components/Ratings/RatingList";
 import RecipeContentItemList from "@components/Recipes/RecipeContentItemList";
 import IngredientsQuantitySelector from "@components/Recipes/Ingredients/IngredientsQuantitySelector";
 import RecipeActionsButtons from "@components/Recipes/RecipeActionsButtons";
@@ -19,6 +17,7 @@ import { useIngredientQuantifier } from "@hooks/useIngredientQuantifier";
 import { useUserIsCurrentUser } from "@hooks/useUserIsCurrentUser";
 import Page from "@components/ui/Pages/Page";
 import { TimerProvider } from "@contexts/TimerContext";
+import RecipeRelatedItemList from "@components/Recipes/RecipeRelatedItemList";
 
 interface ShowProps {
   recipe: RecipeType;
@@ -81,7 +80,7 @@ export default function Show({ recipe, userRating }: ShowProps) {
 
         <div className="flex flex-col gap-16 md:flex-row md:gap-12">
           <Section
-            title={`Commentaires (${recipe.comments.length})`}
+            title={`Commentaires (${recipe.comments_count})`}
             containerClassName="flex-3"
           >
             <CommentForm
@@ -89,11 +88,11 @@ export default function Show({ recipe, userRating }: ShowProps) {
               commentableType={CommentableType.recipe}
               className="md:h-10" //forcing height to match the rating form
             />
-            <CommentList comments={recipe.comments} />
+            <RecipeRelatedItemList recipe={recipe} relatedItemType="comments" />
           </Section>
 
           <Section
-            title={`Évaluations (${recipe.ratings.length})`}
+            title={`Évaluations (${recipe.ratings_count})`}
             containerClassName="flex-2"
             underlineStroke={4}
           >
@@ -102,7 +101,7 @@ export default function Show({ recipe, userRating }: ShowProps) {
               rating={userRating}
               className="self-start md:self-stretch md:h-10" //forcing height to match the comment form
             />
-            <RatingList count={5} ratings={recipe.ratings} />
+            <RecipeRelatedItemList recipe={recipe} relatedItemType="ratings" />
           </Section>
         </div>
       </Page>

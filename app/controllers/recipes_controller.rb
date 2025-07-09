@@ -7,7 +7,7 @@ class RecipesController < ApplicationController
   # GET /recipes
   def index
     @recipes = Recipe.filter(params.slice(:name, :user_id, :tags_ids))
-      .includes(:thumbnail_attachment, :user, :tags, :ingredients, :instructions, ratings: [ user: [ :avatar_attachment ] ], comments: [ user: [ :avatar_attachment ] ])
+      .includes(:thumbnail_attachment, :tags, :ingredients, :instructions,  user: [ :avatar_attachment ])
       .order(created_at: :desc)
     @pagy, @recipes = paginate_collection(@recipes)
 
@@ -93,7 +93,7 @@ class RecipesController < ApplicationController
     end
 
     def set_eager_loaded_recipe
-      @recipe = Recipe.includes(:thumbnail_attachment, :user, :tags, :ingredients, :instructions, ratings: [ user: [ :avatar_attachment ] ], comments: [ user: [ :avatar_attachment ] ]).find(params[:id])
+      @recipe = Recipe.includes(:thumbnail_attachment, :user, :tags, :ingredients, :instructions).find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.
@@ -111,23 +111,7 @@ class RecipesController < ApplicationController
         user: { only: [ :id, :username, :ratings_count ]  },
         tags: {},
         ingredients: {},
-        instructions: {},
-        comments: {
-          include: {
-            user: {
-              only: [ :id, :username ],
-              methods: [ :avatar_url ]
-            }
-          }
-        },
-        ratings: {
-          include: {
-            user: {
-              only: [ :id, :username ],
-              methods: [ :avatar_url ]
-            }
-          }
-        }
+        instructions: {}
       }, methods: [ :average_rating, :difficulty_value, :thumbnail_url ])
     end
 end
