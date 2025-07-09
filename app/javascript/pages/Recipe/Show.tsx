@@ -7,7 +7,6 @@ import RecipeNotes from "@components/Recipes/RecipeNotes";
 import Section from "@components/ui/Pages/Section";
 import CommentForm from "@components/Comments/Form/CommentForm";
 import RatingForm from "@components/Ratings/Form/RatingForm";
-import RatingList from "@components/Ratings/RatingList";
 import RecipeContentItemList from "@components/Recipes/RecipeContentItemList";
 import IngredientsQuantitySelector from "@components/Recipes/Ingredients/IngredientsQuantitySelector";
 import RecipeActionsButtons from "@components/Recipes/RecipeActionsButtons";
@@ -18,9 +17,7 @@ import { useIngredientQuantifier } from "@hooks/useIngredientQuantifier";
 import { useUserIsCurrentUser } from "@hooks/useUserIsCurrentUser";
 import Page from "@components/ui/Pages/Page";
 import { TimerProvider } from "@contexts/TimerContext";
-import RecipeComments from "@components/Recipes/RecipeComments";
-import RecipeRatings from "@components/Recipes/RecipeRatings";
-
+import RecipeRelatedItemList from "@components/Recipes/RecipeRelatedItemList";
 interface ShowProps {
   recipe: RecipeType;
   userRating: RatingType;
@@ -87,7 +84,10 @@ export default function Show({ recipe, userRating }: ShowProps) {
               commentableType={CommentableType.recipe}
               className="md:h-10" //forcing height to match the rating form
             />
-            <RecipeComments recipeId={recipe.id} />
+            <RecipeRelatedItemList
+              recipeId={recipe.id}
+              relatedItemType="comments"
+            />
           </Section>
 
           <Section
@@ -100,7 +100,10 @@ export default function Show({ recipe, userRating }: ShowProps) {
               rating={userRating}
               className="self-start md:self-stretch md:h-10" //forcing height to match the comment form
             />
-            <RecipeRatings recipeId={recipe.id} />
+            <RecipeRelatedItemList
+              recipeId={recipe.id}
+              relatedItemType="ratings"
+            />
           </Section>
         </div>
       </Page>

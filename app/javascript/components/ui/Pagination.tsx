@@ -22,8 +22,6 @@ export function Pagination({
   pagy?: PagyMetadata;
   className?: string;
 }) {
-  console.log(pagy);
-
   const handleNextClick = () => {
     console.log("Next URL:", pagy?.next_url);
     router.visit(pagy?.next_url ?? "#", {
@@ -79,23 +77,27 @@ export function CustomPagination({
   onLastClick?: () => void;
 }) {
   return (
-    <div className={`flex gap-2 justify-center items-center ${className}`}>
-      <Button disabled={pagy?.prev === null} onClick={onFirstClick}>
-        <span className="material-symbols-outlined">first_page</span>
-      </Button>
-      <Button disabled={pagy?.prev === null} onClick={onPrevClick}>
-        <span className="material-symbols-outlined">keyboard_arrow_left</span>
-      </Button>
-      <span className="text-neutral-500">
-        {pagy?.page} / {pagy?.pages}
-      </span>
+    (pagy?.pages ?? 0) > 1 && (
+      <div className={`flex gap-2 justify-center items-center ${className}`}>
+        <Button disabled={pagy?.prev === null} onClick={onFirstClick}>
+          <span className="material-symbols-outlined">first_page</span>
+        </Button>
+        <Button disabled={pagy?.prev === null} onClick={onPrevClick}>
+          <span className="material-symbols-outlined">keyboard_arrow_left</span>
+        </Button>
+        <span className="text-neutral-500">
+          {pagy?.page} / {pagy?.pages}
+        </span>
 
-      <Button onClick={onNextClick} disabled={pagy?.next === null}>
-        <span className="material-symbols-outlined">keyboard_arrow_right</span>
-      </Button>
-      <Button onClick={onLastClick} disabled={pagy?.next === null}>
-        <span className="material-symbols-outlined">last_page</span>
-      </Button>
-    </div>
+        <Button onClick={onNextClick} disabled={pagy?.next === null}>
+          <span className="material-symbols-outlined">
+            keyboard_arrow_right
+          </span>
+        </Button>
+        <Button onClick={onLastClick} disabled={pagy?.next === null}>
+          <span className="material-symbols-outlined">last_page</span>
+        </Button>
+      </div>
+    )
   );
 }
