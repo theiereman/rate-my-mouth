@@ -19,6 +19,7 @@ import { useUserIsCurrentUser } from "@hooks/useUserIsCurrentUser";
 import Page from "@components/ui/Pages/Page";
 import { TimerProvider } from "@contexts/TimerContext";
 import RecipeComments from "@components/Recipes/RecipeComments";
+import RecipeRatings from "@components/Recipes/RecipeRatings";
 
 interface ShowProps {
   recipe: RecipeType;
@@ -90,7 +91,7 @@ export default function Show({ recipe, userRating }: ShowProps) {
           </Section>
 
           <Section
-            title={`Évaluations (${recipe.ratings.length})`}
+            title={`Évaluations`}
             containerClassName="flex-2"
             underlineStroke={4}
           >
@@ -99,7 +100,7 @@ export default function Show({ recipe, userRating }: ShowProps) {
               rating={userRating}
               className="self-start md:self-stretch md:h-10" //forcing height to match the comment form
             />
-            <RatingList count={5} ratings={recipe.ratings} />
+            <RecipeRatings recipeId={recipe.id} />
           </Section>
         </div>
       </Page>

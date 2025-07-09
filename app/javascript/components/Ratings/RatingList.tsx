@@ -27,9 +27,7 @@ export default function RatingList({
                 user={rating.user}
                 eventTimestamp={rating.created_at}
               />
-              <div className="flex items-center text-neutral-800 gap-1">
-                A noté cette recette <RatingItem rating={rating} />
-              </div>
+              <RatingItem rating={rating} />
             </li>
           ))}
         </ul>

@@ -111,15 +111,7 @@ class RecipesController < ApplicationController
         user: { only: [ :id, :username, :ratings_count ]  },
         tags: {},
         ingredients: {},
-        instructions: {},
-        ratings: {
-          include: {
-            user: {
-              only: [ :id, :username ],
-              methods: [ :avatar_url ]
-            }
-          }
-        }
+        instructions: {}
       }, methods: [ :average_rating, :difficulty_value, :thumbnail_url ])
     end
 end
