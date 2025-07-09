@@ -9,7 +9,7 @@ import { PagyMetadata } from "@components/ui/Pagination";
 import { Button } from "@components/ui";
 
 export default function UserNotifications() {
-  const { isOpen, ref } = usePopupElement();
+  const { isOpen, contentRef, buttonRef } = usePopupElement();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [notifications, setNotifications] = useState<NotificationType[]>([]);
@@ -81,8 +81,11 @@ export default function UserNotifications() {
   };
 
   return (
-    <div ref={ref} className="relative group">
-      <button className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center space-x-3 focus:outline-none cursor-pointer transition-transform group-hover:scale-105">
+    <div ref={contentRef} className="relative group">
+      <button
+        ref={buttonRef}
+        className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center space-x-3 focus:outline-none cursor-pointer transition-transform group-hover:scale-105"
+      >
         <span className="material-symbols-outlined text-primary-600">
           notifications
         </span>
