@@ -18,7 +18,12 @@ class RecipesController < ApplicationController
         }
       }
       format.json { render json: {
-        recipes: @recipes.map { |recipe| recipe.as_json(methods: [ :average_rating, :difficulty_value, :thumbnail_url ]) },
+        recipes: @recipes.map { |recipe| recipe.as_json(
+          include: {
+            user: { only: [ :id, :username, :ratings_count ]  },
+            tags: {}
+          },
+          methods: [ :average_rating, :difficulty_value, :thumbnail_url ]) },
         pagy: pagy_metadata(@pagy)
       }}
     end
