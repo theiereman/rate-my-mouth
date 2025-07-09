@@ -18,6 +18,7 @@ import { useUserIsCurrentUser } from "@hooks/useUserIsCurrentUser";
 import Page from "@components/ui/Pages/Page";
 import { TimerProvider } from "@contexts/TimerContext";
 import RecipeRelatedItemList from "@components/Recipes/RecipeRelatedItemList";
+
 interface ShowProps {
   recipe: RecipeType;
   userRating: RatingType;
@@ -78,7 +79,10 @@ export default function Show({ recipe, userRating }: ShowProps) {
         </div>
 
         <div className="flex flex-col gap-16 md:flex-row md:gap-12">
-          <Section title={`Commentaires`} containerClassName="flex-3">
+          <Section
+            title={`Commentaires (${recipe.comments_count})`}
+            containerClassName="flex-3"
+          >
             <CommentForm
               commentableId={recipe.id}
               commentableType={CommentableType.recipe}
@@ -88,7 +92,7 @@ export default function Show({ recipe, userRating }: ShowProps) {
           </Section>
 
           <Section
-            title={`Évaluations`}
+            title={`Évaluations (${recipe.ratings_count})`}
             containerClassName="flex-2"
             underlineStroke={4}
           >
