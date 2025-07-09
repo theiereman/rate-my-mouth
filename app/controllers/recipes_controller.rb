@@ -1,7 +1,8 @@
 class RecipesController < ApplicationController
   include Paginatable
 
-  before_action :set_recipe, only: %i[ show edit update destroy ]
+  before_action :set_eager_loaded_recipe, only: %i[ show ]
+  before_action :set_recipe, only: %i[ edit update destroy ]
 
   # GET /recipes
   def index
@@ -51,7 +52,11 @@ class RecipesController < ApplicationController
   # GET /recipes/1/edit
   def edit
     render inertia: "Recipe/Edit", props: {
-      recipe: recipe_as_json
+      recipe: @recipe.as_json(include: {
+        tags: {},
+        ingredients: {},
+        instructions: {}
+      }, methods: [ :average_rating, :difficulty_value, :thumbnail_url ])
     }
   end
 
@@ -83,8 +88,11 @@ class RecipesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_recipe
+      @recipe = Recipe.find(params[:id])
+    end
+
+    def set_eager_loaded_recipe
       @recipe = Recipe.includes(:thumbnail_attachment, :user, :tags, :ingredients, :instructions, ratings: [ user: [ :avatar_attachment ] ], comments: [ user: [ :avatar_attachment ] ]).find(params[:id])
     end
 
