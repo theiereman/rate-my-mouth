@@ -4,7 +4,7 @@ class RatingsController < ApplicationController
   before_action :set_recipe
 
   def index
-    @ratings = @recipe.ratings.includes(:user).order(created_at: :desc)
+    @ratings = @recipe.ratings.includes(user: [ :avatar_attachment ]).order(created_at: :desc)
     @pagy, @ratings = paginate_collection(@ratings)
 
     render json: {
