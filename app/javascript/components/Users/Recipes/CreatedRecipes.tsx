@@ -6,6 +6,7 @@ import { useToast } from "@contexts/ToastProvider";
 import EmptyPlaceholder from "@components/ui/EmptyPlaceholder";
 import Section from "@components/ui/Pages/Section";
 import { Link } from "@inertiajs/react";
+import Loading from "@components/ui/Loading";
 
 export default function CreatedRecipes({ userId }: { userId: number }) {
   const [recipes, setRecipes] = useState<RecipeType[]>([]);
@@ -47,12 +48,7 @@ export default function CreatedRecipes({ userId }: { userId: number }) {
       childrenClassName="flex flex-col"
     >
       {loadingRecipes ? (
-        <div className="text-center py-8">
-          <span className="material-symbols-outlined animate-spin text-primary-600 text-4xl">
-            progress_activity
-          </span>
-          <p className="mt-2 text-neutral-600">Chargement des recettes...</p>
-        </div>
+        <Loading text="Chargement des recettes..." />
       ) : (
         <>
           {recipes.length > 0 ? (
