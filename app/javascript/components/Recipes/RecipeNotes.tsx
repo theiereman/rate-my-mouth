@@ -13,7 +13,7 @@ export default function RecipeNotes({ recipeId }: { recipeId: number }) {
         const response = await axios.get(
           `/recipes/${recipeId}/notes/show_for_user`
         );
-        setNotes(response.data);
+        setNotes(response.data ?? "");
       } catch (err) {
         console.error(err);
       } finally {

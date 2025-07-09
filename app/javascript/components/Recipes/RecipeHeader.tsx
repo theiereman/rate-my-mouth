@@ -18,7 +18,7 @@ export default function RecipeHeader({
 }: RecipeHeaderProps) {
   return (
     <div className={`flex-1 md:flex gap-6 ${className}`}>
-      <div className="flex-1 flex flex-col gap-2">
+      <div className="flex-1 flex flex-col gap-2 md:gap-0">
         <h3
           title={recipe.name}
           className="text-4xl font-medium text-neutral-800 line-clamp-2 sm:line-clamp-1 font-serif"
@@ -56,7 +56,7 @@ export default function RecipeHeader({
           value={recipe.average_rating}
           readOnly
         />
-        <span className="text-sm text-neutral-600">
+        <span className="text-sm text-neutral-600 mx-1">
           {`${recipe.average_rating.toFixed(1)} sur ${
             recipe.ratings_count
           } avis`}
