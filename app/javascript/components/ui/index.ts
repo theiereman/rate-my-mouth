@@ -6,7 +6,7 @@ export { default as Combo } from "./Combo";
 export type { ComboValue } from "./Combo";
 export { default as Footer } from "./Footer";
 export { default as Input } from "./Input";
-export { default as Pagination } from "./Pagination";
+export { Pagination, CustomPagination } from "./Pagination";
 export { default as TextArea } from "./TextArea";
 export { default as Toast } from "./Toast";
 export { default as UnderlineText } from "./UnderlineText";
