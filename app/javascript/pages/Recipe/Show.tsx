@@ -2,7 +2,6 @@ import { Head } from "@inertiajs/react";
 import { RecipeType } from "@customTypes/recipe.types";
 import { RatingType } from "@customTypes/rating.types";
 import { CommentableType } from "@customTypes/comment.types";
-import CommentList from "@components/Comments/CommentList";
 import Timer from "@components/tools/Timer";
 import RecipeNotes from "@components/Recipes/RecipeNotes";
 import Section from "@components/ui/Pages/Section";
@@ -19,6 +18,7 @@ import { useIngredientQuantifier } from "@hooks/useIngredientQuantifier";
 import { useUserIsCurrentUser } from "@hooks/useUserIsCurrentUser";
 import Page from "@components/ui/Pages/Page";
 import { TimerProvider } from "@contexts/TimerContext";
+import RecipeComments from "@components/Recipes/RecipeComments";
 
 interface ShowProps {
   recipe: RecipeType;
@@ -80,16 +80,13 @@ export default function Show({ recipe, userRating }: ShowProps) {
         </div>
 
         <div className="flex flex-col gap-16 md:flex-row md:gap-12">
-          <Section
-            title={`Commentaires (${recipe.comments.length})`}
-            containerClassName="flex-3"
-          >
+          <Section title={`Commentaires`} containerClassName="flex-3">
             <CommentForm
               commentableId={recipe.id}
               commentableType={CommentableType.recipe}
               className="md:h-10" //forcing height to match the rating form
             />
-            <CommentList comments={recipe.comments} />
+            <RecipeComments recipeId={recipe.id} />
           </Section>
 
           <Section

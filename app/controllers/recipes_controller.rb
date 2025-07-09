@@ -112,14 +112,6 @@ class RecipesController < ApplicationController
         tags: {},
         ingredients: {},
         instructions: {},
-        comments: {
-          include: {
-            user: {
-              only: [ :id, :username ],
-              methods: [ :avatar_url ]
-            }
-          }
-        },
         ratings: {
           include: {
             user: {

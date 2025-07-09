@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   }
 
   concern :commentable do
-    resources :comments, only: [ :create, :update, :destroy ]
+    resources :comments, only: [ :index, :create, :update, :destroy ]
   end
 
   resources :users, only: [ :index, :show, :update ] do
