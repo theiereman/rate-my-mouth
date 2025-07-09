@@ -34,21 +34,21 @@ interface LinkButtonProps extends CommonButtonProps {
 const getVariantClasses = (variant: ButtonVariant) => {
   switch (variant) {
     case "primary":
-      return "bg-primary-600 hover:bg-primary-700 text-white";
+      return "bg-primary-600 enabled:hover:bg-primary-700 text-white";
     case "secondary":
-      return "bg-secondary-600 hover:bg-secondary-700 text-white";
+      return "bg-secondary-600 enabled:hover:bg-secondary-700 text-white";
     case "accent":
-      return "bg-accent-600 hover:bg-accent-700 text-white";
+      return "bg-accent-600 enabled:hover:bg-accent-700 text-white";
     case "gray":
-      return "bg-gray-300 hover:bg-gray-400 text-neutral-700";
+      return "bg-gray-300 enabled:hover:bg-gray-400 text-neutral-700";
     case "outline":
-      return "bg-white border border-neutral-300 text-neutral-700 hover:border-primary-500 hover:text-primary-600 hover:bg-primary-50";
+      return "bg-white border border-neutral-300 text-neutral-700 enabled:hover:border-primary-500 enabled:hover:text-primary-600 enabled:hover:bg-primary-50";
     case "ghost":
-      return "bg-transparent text-neutral-700 hover:text-neutral-800";
+      return "bg-transparent text-neutral-700 enabled:hover:text-neutral-600";
     case "error":
-      return "bg-error-600 hover:bg-error-700 text-white";
+      return "bg-error-600 enabled:hover:bg-error-700 text-white";
     default:
-      return "bg-primary-600 hover:bg-primary-700 text-white";
+      return "bg-primary-600 enabled:hover:bg-primary-700 text-white";
   }
 };
 
@@ -63,7 +63,7 @@ const getButtonClasses = ({
 }: CommonButtonProps) => {
   const variantClasses = getVariantClasses(variant);
   const widthClass = fullWidth ? "w-full" : "";
-  const disabledClass = disabled || isLoading ? "opacity-60" : "cursor-pointer";
+  const disabledClass = disabled || isLoading ? "opacity-50" : "cursor-pointer";
 
   return {
     className: `${baseClasses} ${variantClasses} ${widthClass} ${disabledClass} ${className}`,

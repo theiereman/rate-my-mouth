@@ -1,0 +1,15 @@
+Rate My Mouth
+
+
+Félicitations ! Vous avez débloqué un nouveau succès
+
+<%= @achievement_rule.name %>
+<%= @achievement_rule.description %>
+
+Ce succès a été débloqué le <%= l(@user_achievement.unlocked_at, format: :long) %>.
+Vous pouvez maintenant l'utiliser comme titre sur votre profil !
+
+Voir mon profil : <%= user_url(@user) %>
+
+© <%= Date.today.year %> Rate My Mouth. Tous droits réservés.
+Continue à cuisiner et à découvrir de nouveaux succès !

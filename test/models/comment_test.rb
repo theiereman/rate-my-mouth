@@ -1,10 +1,12 @@
 require "test_helper"
 
 class CommentTest < ActiveSupport::TestCase
+  include ActiveJob::TestHelper
+
   def setup
     @comment = comments(:one)
     @user = users(:one)
-    @recipe = recipes(:one)
+    @recipe = recipes(:two)
   end
 
   # Tests de validations de base
