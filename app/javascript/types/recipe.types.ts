@@ -28,7 +28,6 @@ export interface RecipeType {
   average_rating: number;
   created_at: string;
   updated_at: string;
-  ratings: RatingType[];
   user: UserType;
   tags?: TagType[];
   comments_count: number;

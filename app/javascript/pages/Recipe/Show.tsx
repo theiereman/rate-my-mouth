@@ -84,10 +84,7 @@ export default function Show({ recipe, userRating }: ShowProps) {
               commentableType={CommentableType.recipe}
               className="md:h-10" //forcing height to match the rating form
             />
-            <RecipeRelatedItemList
-              recipeId={recipe.id}
-              relatedItemType="comments"
-            />
+            <RecipeRelatedItemList recipe={recipe} relatedItemType="comments" />
           </Section>
 
           <Section
@@ -100,10 +97,7 @@ export default function Show({ recipe, userRating }: ShowProps) {
               rating={userRating}
               className="self-start md:self-stretch md:h-10" //forcing height to match the comment form
             />
-            <RecipeRelatedItemList
-              recipeId={recipe.id}
-              relatedItemType="ratings"
-            />
+            <RecipeRelatedItemList recipe={recipe} relatedItemType="ratings" />
           </Section>
         </div>
       </Page>

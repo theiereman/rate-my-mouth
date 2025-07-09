@@ -8,7 +8,7 @@ class RatingsController < ApplicationController
     @pagy, @ratings = paginate_collection(@ratings)
 
     render json: {
-      ratings: @ratings.map { |rating| rating.as_json(include: { user: { only: [ :id, :username, :avatar_url ] } }) },
+      ratings: @ratings.map { |rating| rating.as_json(include: { user: { only: [ :id, :username ], methods: [ :avatar_url ] } }) },
       pagy: pagy_metadata(@pagy)
     }
   end

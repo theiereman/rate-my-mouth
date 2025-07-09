@@ -9,7 +9,7 @@ class CommentsController < ApplicationController
     @pagy, @comments = paginate_collection(@comments)
 
     render json: {
-      comments: @comments.map { |comment| comment.as_json(include: { user: { only: [ :id, :username, :avatar_url ] } }) },
+      comments: @comments.map { |comment| comment.as_json(include: { user: { only: [ :id, :username ], methods: [ :avatar_url ] } }) },
       pagy: pagy_metadata(@pagy)
     }
   end

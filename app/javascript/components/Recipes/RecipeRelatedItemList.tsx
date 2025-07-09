@@ -7,24 +7,27 @@ import RatingList from "@components/Ratings/RatingList";
 import { CustomPagination } from "@components/ui";
 import CommentList from "@components/Comments/CommentList";
 import { CommentType } from "@customTypes/comment.types";
+import { RecipeType } from "@customTypes/recipe.types";
 
 export default function RecipeRelatedItemList({
-  recipeId,
+  recipe,
   relatedItemType,
+  preloadedItems = [],
 }: {
-  recipeId: number;
+  recipe: RecipeType;
   relatedItemType: "ratings" | "comments";
+  preloadedItems?: RatingType[] | CommentType[];
 }) {
   const [firstLoading, setFirstLoading] = useState(true);
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState<RatingType[] | CommentType[]>([]);
   const [pagy, setPagy] = useState<any>(null);
 
   const { showToast } = useToast();
 
-  const fetchRatings = async (page: number) => {
+  const fetchItems = async (page: number) => {
     try {
       const response = await axios.get(
-        `/recipes/${recipeId}/${relatedItemType}?page=${page}`
+        `/recipes/${recipe.id}/${relatedItemType}?page=${page}`
       );
       setItems(
         relatedItemType === "ratings"
@@ -47,8 +50,52 @@ export default function RecipeRelatedItemList({
   };
 
   useEffect(() => {
-    fetchRatings(1);
-  }, []);
+    fetchItems(pagy?.page || 1);
+  }, [recipe]);
+
+  useEffect(() => {
+    if (preloadedItems.length > 0) {
+      appendItems(preloadedItems);
+      setFirstLoading(false);
+    }
+  }, [preloadedItems]);
+
+  // Helper to append new items while preserving type safety
+  const appendItems = (newItems: RatingType[] | CommentType[]) => {
+    setItems((prev) => {
+      if (relatedItemType === "ratings") {
+        const prevById = new Map(
+          (prev as RatingType[]).map((item) => [item.id, item])
+        );
+        (newItems as RatingType[]).forEach((item) => {
+          if (!prevById.has(item.id)) {
+            prevById.set(item.id, item);
+          }
+        });
+        // Preserve original order of prev, append only new items
+        return (prev as RatingType[]).concat(
+          (newItems as RatingType[]).filter(
+            (item) => !prev.some((p) => p.id === item.id)
+          )
+        );
+      } else {
+        const prevById = new Map(
+          (prev as CommentType[]).map((item) => [item.id, item])
+        );
+        (newItems as CommentType[]).forEach((item) => {
+          if (!prevById.has(item.id)) {
+            prevById.set(item.id, item);
+          }
+        });
+        // Preserve original order of prev, append only new items
+        return (prev as CommentType[]).concat(
+          (newItems as CommentType[]).filter(
+            (item) => !prev.some((p) => p.id === item.id)
+          )
+        );
+      }
+    });
+  };
 
   return (
     <div>
@@ -64,10 +111,10 @@ export default function RecipeRelatedItemList({
           {items.length > 0 && (
             <CustomPagination
               pagy={pagy}
-              onFirstClick={() => fetchRatings(1)}
-              onPrevClick={() => fetchRatings(pagy?.prev)}
-              onNextClick={() => fetchRatings(pagy?.next)}
-              onLastClick={() => fetchRatings(pagy?.last)}
+              onFirstClick={() => fetchItems(1)}
+              onPrevClick={() => fetchItems(pagy?.prev)}
+              onNextClick={() => fetchItems(pagy?.next)}
+              onLastClick={() => fetchItems(pagy?.last)}
             />
           )}
         </>
