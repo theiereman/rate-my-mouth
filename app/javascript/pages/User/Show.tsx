@@ -10,6 +10,7 @@ import { useUserIsCurrentUser } from "@hooks/useUserIsCurrentUser";
 import CreatedRecipes from "@components/Users/Recipes/CreatedRecipes";
 import Page from "@components/ui/Pages/Page";
 import Loading from "@components/ui/Loading";
+import { LinkButton } from "@components/ui";
 
 export default function Show({ user }: { user: UserType }) {
   const { isCurrentUser } = useUserIsCurrentUser(user);
@@ -50,6 +51,12 @@ export default function Show({ user }: { user: UserType }) {
               <AchievementsList achievements={achievements} user={user} />
             </>
           )
+        )}
+
+        {isCurrentUser && (
+          <LinkButton variant="error" href="/users/sign_out" method="delete">
+            Se déconnecter
+          </LinkButton>
         )}
       </Page>
     </>

@@ -47,7 +47,7 @@ const getVariantClasses = (variant: ButtonVariant) => {
     case "ghost":
       return "bg-transparent text-neutral-700";
     case "ghost-primary":
-      return "bg-transparent text-neutral-700 enabled:hover:text-primary-500 underline";
+      return "bg-transparent text-neutral-700 enabled:hover:text-primary-500";
     case "error":
       return "bg-error-600 enabled:hover:bg-error-700 text-white";
     default:
