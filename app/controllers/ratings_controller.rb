@@ -4,11 +4,11 @@ class RatingsController < ApplicationController
   before_action :set_recipe
 
   def index
-    @ratings = @recipe.ratings.includes(user: [ :avatar_attachment ]).order(created_at: :desc)
+    @ratings = @recipe.ratings.includes(user: [:avatar_attachment]).order(created_at: :desc)
     @pagy, @ratings = paginate_collection(@ratings)
 
     render json: {
-      ratings: @ratings.map { |rating| rating.as_json(include: { user: { only: [ :id, :username ], methods: [ :avatar_url ] } }) },
+      ratings: @ratings.map { |rating| rating.as_json(include: {user: {only: [:id, :username], methods: [:avatar_url]}}) },
       pagy: pagy_metadata(@pagy)
     }
   end
@@ -26,15 +26,12 @@ class RatingsController < ApplicationController
       else
         redirect_to @recipe, alert: "Erreur lors de l'ajout de la note."
       end
+    elsif @rating.update(rating_params)
+      redirect_to @recipe, notice: "Note mise à jour."
     else
-      if @rating.update(rating_params)
-        redirect_to @recipe, notice: "Note mise à jour."
-      else
-        redirect_to @recipe, alert: "Impossible de mettre à jour la note"
-      end
+      redirect_to @recipe, alert: "Impossible de mettre à jour la note"
     end
   end
-
 
   private
 
@@ -43,6 +40,6 @@ class RatingsController < ApplicationController
   end
 
   def rating_params
-    params.expect(rating: [ :value ])
+    params.expect(rating: [:value])
   end
 end

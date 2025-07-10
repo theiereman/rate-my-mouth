@@ -15,17 +15,18 @@ class TagsController < ApplicationController
     if @tag.save
       render json: serialize_tag(@tag), status: :created
     else
-      render json: { errors: @tag.errors }, status: :unprocessable_entity
+      render json: {errors: @tag.errors}, status: :unprocessable_entity
     end
   end
 
   private
-    # Only allow a list of trusted parameters through.
-    def tag_params
-      params.expect(tag: [ :name ])
-    end
 
-    def serialize_tag(tag)
-      tag.as_json
-    end
+  # Only allow a list of trusted parameters through.
+  def tag_params
+    params.expect(tag: [:name])
+  end
+
+  def serialize_tag(tag)
+    tag.as_json
+  end
 end

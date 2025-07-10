@@ -5,7 +5,7 @@ module Filterable
 
   class_methods do
     def filter(filtering_params)
-      results = self.where(nil)
+      results = where(nil)
       filtering_params.each do |key, value|
         results = results.send("filter_by_#{key}", value) unless value.blank?
       end

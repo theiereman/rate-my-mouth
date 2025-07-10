@@ -8,14 +8,14 @@ class ApplicationController < ActionController::Base
   inertia_share if: :user_signed_in? do
     {
       csrf_token: form_authenticity_token,
-      current_user: current_user.as_json(only: [ :username, :email ], methods: [ :avatar_url ])
+      current_user: current_user.as_json(only: [:username, :email], methods: [:avatar_url])
     }
   end
 
   protected
 
   def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:sign_up, keys: [ :username ])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:username])
   end
 
   def health_check_request?

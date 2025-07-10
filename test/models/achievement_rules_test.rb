@@ -303,7 +303,7 @@ class AchievementRulesTest < ActiveSupport::TestCase
     # Create 4 recipes
     travel_to(Time.new(2024, 3, 15, 10, 0, 0)) do
       4.times do |i|
-        create_test_recipe(@user, name: "Recipe #{i+1}")
+        create_test_recipe(@user, name: "Recipe #{i + 1}")
       end
 
       # Verify achievement is still not unlocked

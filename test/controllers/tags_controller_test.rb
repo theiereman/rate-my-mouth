@@ -13,7 +13,7 @@ class TagsControllerTest < BaseControllerTest
 
   test "should create tag" do
     assert_difference("Tag.count") do
-      post tags_url, params: { tag: { name: "brand new tag !" } }
+      post tags_url, params: {tag: {name: "brand new tag !"}}
     end
   end
 end

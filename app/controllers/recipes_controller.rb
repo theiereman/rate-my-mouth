@@ -1,13 +1,13 @@
 class RecipesController < ApplicationController
   include Paginatable
 
-  before_action :set_eager_loaded_recipe, only: %i[ show ]
-  before_action :set_recipe, only: %i[ edit update destroy ]
+  before_action :set_eager_loaded_recipe, only: %i[show]
+  before_action :set_recipe, only: %i[edit update destroy]
 
   # GET /recipes
   def index
     @recipes = Recipe.filter(params.slice(:name, :user_id, :tags_ids))
-      .includes(:thumbnail_attachment, :tags, :ingredients, :instructions,  user: [ :avatar_attachment ])
+      .includes(:thumbnail_attachment, :tags, :ingredients, :instructions, user: [:avatar_attachment])
       .order(created_at: :desc)
     @pagy, @recipes = paginate_collection(@recipes)
 
@@ -20,15 +20,20 @@ class RecipesController < ApplicationController
           pagy: pagy_metadata(@pagy)
         }
       }
-      format.json { render json: {
-        recipes: @recipes.map { |recipe| recipe.as_json(
-          include: {
-            user: { only: [ :id, :username, :ratings_count ]  },
-            tags: {}
+      format.json {
+        render json: {
+          recipes: @recipes.map { |recipe|
+            recipe.as_json(
+              include: {
+                user: {only: [:id, :username, :ratings_count]},
+                tags: {}
+              },
+              methods: [:average_rating, :difficulty_value, :thumbnail_url]
+            )
           },
-          methods: [ :average_rating, :difficulty_value, :thumbnail_url ]) },
-        pagy: pagy_metadata(@pagy)
-      }}
+          pagy: pagy_metadata(@pagy)
+        }
+      }
     end
   end
 
@@ -56,7 +61,7 @@ class RecipesController < ApplicationController
         tags: {},
         ingredients: {},
         instructions: {}
-      }, methods: [ :average_rating, :difficulty_value, :thumbnail_url ])
+      }, methods: [:average_rating, :difficulty_value, :thumbnail_url])
     }
   end
 
@@ -68,7 +73,7 @@ class RecipesController < ApplicationController
     if @recipe.save
       redirect_to @recipe
     else
-      redirect_to new_recipe_url, status: :unprocessable_entity, inertia: { errors: @recipe.errors }
+      redirect_to new_recipe_url, status: :unprocessable_entity, inertia: {errors: @recipe.errors}
     end
   end
 
@@ -77,7 +82,7 @@ class RecipesController < ApplicationController
     if @recipe.update(recipe_params)
       redirect_to @recipe
     else
-      redirect_to edit_recipe_url(@recipe), inertia: { errors: @recipe.errors }
+      redirect_to edit_recipe_url(@recipe), inertia: {errors: @recipe.errors}
     end
   end
 
@@ -88,30 +93,31 @@ class RecipesController < ApplicationController
   end
 
   private
-    def set_recipe
-      @recipe = Recipe.find(params[:id])
-    end
 
-    def set_eager_loaded_recipe
-      @recipe = Recipe.includes(:thumbnail_attachment, :user, :tags, :ingredients, :instructions).find(params[:id])
-    end
+  def set_recipe
+    @recipe = Recipe.find(params[:id])
+  end
 
-    # Only allow a list of trusted parameters through.
-    def recipe_params
-      params.require(:recipe).permit(
-        :name, :description, :url, :number_of_servings, :difficulty, :thumbnail,
-        ingredients_attributes: [ :id, :name, :category, :_destroy ],
-        instructions_attributes: [ :id, :name, :category, :_destroy ],
-        tags_attributes: [ :id, :name ]
-      )
-    end
+  def set_eager_loaded_recipe
+    @recipe = Recipe.includes(:thumbnail_attachment, :user, :tags, :ingredients, :instructions).find(params[:id])
+  end
 
-    def recipe_as_json(recipe = @recipe)
-      recipe.as_json(include: {
-        user: { only: [ :id, :username, :ratings_count ]  },
-        tags: {},
-        ingredients: {},
-        instructions: {}
-      }, methods: [ :average_rating, :difficulty_value, :thumbnail_url ])
-    end
+  # Only allow a list of trusted parameters through.
+  def recipe_params
+    params.require(:recipe).permit(
+      :name, :description, :url, :number_of_servings, :difficulty, :thumbnail,
+      ingredients_attributes: [:id, :name, :category, :_destroy],
+      instructions_attributes: [:id, :name, :category, :_destroy],
+      tags_attributes: [:id, :name]
+    )
+  end
+
+  def recipe_as_json(recipe = @recipe)
+    recipe.as_json(include: {
+      user: {only: [:id, :username, :ratings_count]},
+      tags: {},
+      ingredients: {},
+      instructions: {}
+    }, methods: [:average_rating, :difficulty_value, :thumbnail_url])
+  end
 end

@@ -13,7 +13,7 @@ module Paginatable
     limit = params[:limit]&.to_i
     return nil if limit.blank? || limit <= 0
 
-    [ limit, max_pagination_limit ].min
+    [limit, max_pagination_limit].min
   end
 
   def max_pagination_limit

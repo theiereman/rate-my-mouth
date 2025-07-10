@@ -7,8 +7,8 @@ class CreateTags < ActiveRecord::Migration[8.0]
     end
 
     create_join_table :recipes, :tags do |t|
-      t.index [ :recipe_id, :tag_id ]
-      t.index [ :tag_id, :recipe_id ]
+      t.index [:recipe_id, :tag_id]
+      t.index [:tag_id, :recipe_id]
     end
   end
 end

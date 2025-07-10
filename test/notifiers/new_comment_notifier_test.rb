@@ -11,7 +11,7 @@ class NewCommentToAuthorNotifierTest < ActiveSupport::TestCase
     @recipe_two_author = @recipe_two.user
   end
 
-   test "should notify author after new comment" do
+  test "should notify author after new comment" do
     assert_difference -> { @recipe_one_author.notifications.count }, 1 do
       Comment.create(user: @commenter, commentable: @recipe_one, content: "Great recipe!")
     end
@@ -32,8 +32,10 @@ class NewCommentToAuthorNotifierTest < ActiveSupport::TestCase
   end
 
   test "should not notify if commenting own recipe" do
-    assert_no_difference -> { @recipe_one_author.notifications
-                                .where(type: [ "NewCommentToOtherCommentersNotifier::Notification", "NewCommentToAuthorNotifier::Notification" ]).count } do
+    assert_no_difference -> {
+      @recipe_one_author.notifications
+        .where(type: ["NewCommentToOtherCommentersNotifier::Notification", "NewCommentToAuthorNotifier::Notification"]).count
+    } do
       Comment.create(user: @recipe_one_author, commentable: @recipe_one, content: "Great recipe!")
     end
   end
