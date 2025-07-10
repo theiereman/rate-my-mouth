@@ -28,10 +28,10 @@
 }
 
 @font-face {
-  font-family: "Quicksand";
+  font-family: "MonaSans";
   font-style: normal;
-  font-weight: 500 900;
-  src: url("/assets/fonts/quicksand-variable.ttf") format("truetype");
+  font-weight: 200 900;
+  src: url("/assets/fonts/MonaSans-variable.ttf") format("truetype");
 }
 
 .material-symbols-outlined {

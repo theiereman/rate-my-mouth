@@ -6,7 +6,7 @@ export default {
   ],
   theme: {
     fontFamily: {
-      sans: ["Quicksand", "system-ui", "sans-serif"],
+      sans: ["MonaSans", "system-ui", "sans-serif"],
       serif: ["LoveYaLikeASister", "Georgia", "serif"],
       mono: ["JetBrains Mono", "monospace"],
     },

@@ -65,7 +65,7 @@ export const Badge = ({
         {icon && iconPosition === "left" && (
           <div className="mr-1 flex align-center">{icon}</div>
         )}
-        <span className="font-black">{text}</span>
+        <span className="font-semibold">{text}</span>
         {icon && iconPosition === "right" && (
           <div className="ml-1 flex align-center">{icon}</div>
         )}
