@@ -8,6 +8,7 @@ type ButtonVariant =
   | "gray"
   | "outline"
   | "ghost"
+  | "ghost-primary"
   | "error";
 
 // Interface commune pour les propriétés partagées
@@ -44,7 +45,9 @@ const getVariantClasses = (variant: ButtonVariant) => {
     case "outline":
       return "bg-white border border-neutral-300 text-neutral-700 enabled:hover:border-primary-500 enabled:hover:text-primary-600 enabled:hover:bg-primary-50";
     case "ghost":
-      return "bg-transparent text-neutral-700 enabled:hover:text-neutral-600";
+      return "bg-transparent text-neutral-700";
+    case "ghost-primary":
+      return "bg-transparent text-neutral-700 enabled:hover:text-primary-500 underline";
     case "error":
       return "bg-error-600 enabled:hover:bg-error-700 text-white";
     default:
