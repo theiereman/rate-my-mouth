@@ -12,11 +12,11 @@ class Users::PasswordsController < Devise::PasswordsController
 
     if successfully_sent?(resource)
       flash[:notice] = "Vous allez recevoir un e-mail avec les instructions de réinitialisation de votre mot de passe dans quelques minutes."
-      render inertia: "Auth/ForgotPassword"
     else
       flash[:alert] = resource.errors.full_messages.join(", ")
-      render inertia: "Auth/ForgotPassword"
     end
+
+    render inertia: "Auth/ForgotPassword"
   end
 
   # GET /users/password/edit?reset_password_token=abcdef
