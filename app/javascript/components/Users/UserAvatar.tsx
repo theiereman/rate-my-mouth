@@ -1,18 +1,14 @@
 import { UserType } from "@customTypes/user.types";
-import { router } from "@inertiajs/react";
-import { useFilePicker } from "use-file-picker";
-import { FileSizeValidator } from "use-file-picker/validators";
-import { useToast } from "@contexts/ToastProvider";
-import { FILE_PICKER_ERROR_MESSAGES } from "@helpers/filepickerHelper";
+import { ReactNode } from "react";
 
 type AvatarSize = "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
 
-interface AvatarProps {
+interface AvatarProps extends React.HTMLAttributes<HTMLDivElement> {
   user: UserType;
   size?: AvatarSize;
-  rounded?: "full" | "lg" | "md" | "sm" | "none";
   className?: string;
-  allowAvatarChange?: boolean;
+  onClick?: () => void;
+  iconOnHover?: ReactNode;
 }
 
 const getSizeClasses = (size: AvatarSize) => {
@@ -48,58 +44,38 @@ const getInitials = (name: string) => {
 export const UserAvatar = ({
   user,
   size = "md",
-  className = "",
-  allowAvatarChange = false,
+  className,
+  onClick,
+  iconOnHover,
+  ...props
 }: AvatarProps) => {
-  const { showToast } = useToast();
-
-  const { openFilePicker } = useFilePicker({
-    accept: [".jpg", ".jpeg", ".png"],
-    readAs: "Text",
-    multiple: false,
-    validators: [
-      new FileSizeValidator({ minFileSize: 0, maxFileSize: 5 * 1024 * 1024 }),
-    ],
-    onFilesRejected: (data) => {
-      data.errors.forEach((error) => {
-        showToast(
-          FILE_PICKER_ERROR_MESSAGES[(error as any).reason] ||
-            "Erreur lors de la selection de l'image.",
-          {
-            type: "error",
-          }
-        );
-      });
-    },
-    onFilesSuccessfullySelected: ({ plainFiles }) => {
-      router.patch(`/users/${user.id}/update_avatar`, {
-        user: { avatar: plainFiles[0] },
-      });
-    },
-  });
-
   const sizeClasses = getSizeClasses(size);
-  const cursorClass = allowAvatarChange ? "cursor-pointer" : "";
 
   return (
-    <div className={`relative ${className} group`}>
-      {allowAvatarChange == true && (
+    <div
+      {...props}
+      className={`relative ${className} group ${
+        onClick ? "cursor-pointer" : ""
+      }`}
+    >
+      {iconOnHover && (
         <div
-          onClick={openFilePicker}
-          className={`${sizeClasses} absolute top-0 right-0 hidden group-hover:flex cursor-pointer text-primary-600 bg-white opacity-60 z-10 items-center justify-center`}
+          className={`${sizeClasses} absolute top-0 right-0 hidden group-hover:flex cursor-pointer text-primary-600 bg-white opacity-60 z-10 items-center justify-center pointer-events-none`}
         >
-          <span className="material-symbols-outlined">edit</span>
+          {iconOnHover}
         </div>
       )}
+
       {user.avatar_url ? (
         <img
+          onClick={onClick}
           src={user.avatar_url}
           alt={user.username}
-          className={`${sizeClasses} ${cursorClass} rounded-full object-cover`}
+          className={`${sizeClasses} rounded-full object-cover`}
         />
       ) : (
         <div
-          className={`${sizeClasses} ${cursorClass} rounded-full bg-primary-100 text-primary-800 flex items-center justify-center font-medium`}
+          className={`${sizeClasses} rounded-full bg-primary-100 text-primary-800 flex items-center justify-center font-medium`}
         >
           {getInitials(user.username)}
         </div>
