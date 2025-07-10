@@ -4,101 +4,97 @@
 # Customize only what you really need and notice that the core Pagy works also without any of the following lines.
 # Should you just cherry pick part of this file, please maintain the require-order of the extras
 
-
 # Pagy Variables
 # See https://ddnexus.github.io/pagy/docs/api/pagy#variables
 # You can set any pagy variable as a Pagy::DEFAULT. They can also be overridden per instance by just passing them to
 # Pagy.new|Pagy::Countless.new|Pagy::Calendar::*.new or any of the #pagy* controller methods
 # Here are the few that make more sense as DEFAULTs:
-Pagy::DEFAULT[:limit]       = 10                    # default
- # Pagy::DEFAULT[:size]        = 7                     # default
- # Pagy::DEFAULT[:ends]        = true                  # default
- # Pagy::DEFAULT[:page_param]  = :page                 # default
- # Pagy::DEFAULT[:count_args]  = []                    # example for non AR ORMs
- # Pagy::DEFAULT[:max_pages]   = 3000                  # example
+Pagy::DEFAULT[:limit] = 10                    # default
+# Pagy::DEFAULT[:size]        = 7                     # default
+# Pagy::DEFAULT[:ends]        = true                  # default
+# Pagy::DEFAULT[:page_param]  = :page                 # default
+# Pagy::DEFAULT[:count_args]  = []                    # example for non AR ORMs
+# Pagy::DEFAULT[:max_pages]   = 3000                  # example
 
+# Extras
+# See https://ddnexus.github.io/pagy/categories/extra
 
- # Extras
- # See https://ddnexus.github.io/pagy/categories/extra
+# Legacy Compatibility Extras
 
+# Size extra: Enable the Array type for the `:size` variable (e.g. `size: [1,4,4,1]`)
+# See https://ddnexus.github.io/pagy/docs/extras/size
+# require 'pagy/extras/size'   # must be required before the other extras
 
- # Legacy Compatibility Extras
+# Backend Extras
 
- # Size extra: Enable the Array type for the `:size` variable (e.g. `size: [1,4,4,1]`)
- # See https://ddnexus.github.io/pagy/docs/extras/size
- # require 'pagy/extras/size'   # must be required before the other extras
+# Arel extra: For better performance utilizing grouped ActiveRecord collections:
+# See: https://ddnexus.github.io/pagy/docs/extras/arel
+# require 'pagy/extras/arel'
 
+# Array extra: Paginate arrays efficiently, avoiding expensive array-wrapping and without overriding
+# See https://ddnexus.github.io/pagy/docs/extras/array
+# require 'pagy/extras/array'
 
- # Backend Extras
+# Calendar extra: Add pagination filtering by calendar time unit (year, quarter, month, week, day)
+# See https://ddnexus.github.io/pagy/docs/extras/calendar
+# require 'pagy/extras/calendar'
+# Default for each calendar unit class in IRB:
+# >> Pagy::Calendar::Year::DEFAULT
+# >> Pagy::Calendar::Quarter::DEFAULT
+# >> Pagy::Calendar::Month::DEFAULT
+# >> Pagy::Calendar::Week::DEFAULT
+# >> Pagy::Calendar::Day::DEFAULT
+#
+# Uncomment the following lines, if you need calendar localization without using the I18n extra
+# module LocalizePagyCalendar
+#   def localize(time, opts)
+#     ::I18n.l(time, **opts)
+#   end
+# end
+# Pagy::Calendar.prepend LocalizePagyCalendar
 
- # Arel extra: For better performance utilizing grouped ActiveRecord collections:
- # See: https://ddnexus.github.io/pagy/docs/extras/arel
- # require 'pagy/extras/arel'
+# Countless extra: Paginate without any count, saving one query per rendering
+# See https://ddnexus.github.io/pagy/docs/extras/countless
+require "pagy/extras/countless"
+# Pagy::DEFAULT[:countless_minimal] = false   # default (eager loading)
 
- # Array extra: Paginate arrays efficiently, avoiding expensive array-wrapping and without overriding
- # See https://ddnexus.github.io/pagy/docs/extras/array
- # require 'pagy/extras/array'
+# Elasticsearch Rails extra: Paginate `ElasticsearchRails::Results` objects
+# See https://ddnexus.github.io/pagy/docs/extras/elasticsearch_rails
+# Default :pagy_search method: change only if you use also
+# the searchkick or meilisearch extra that defines the same
+# Pagy::DEFAULT[:elasticsearch_rails_pagy_search] = :pagy_search
+# Default original :search method called internally to do the actual search
+# Pagy::DEFAULT[:elasticsearch_rails_search] = :search
+# require 'pagy/extras/elasticsearch_rails'
 
- # Calendar extra: Add pagination filtering by calendar time unit (year, quarter, month, week, day)
- # See https://ddnexus.github.io/pagy/docs/extras/calendar
- # require 'pagy/extras/calendar'
- # Default for each calendar unit class in IRB:
- # >> Pagy::Calendar::Year::DEFAULT
- # >> Pagy::Calendar::Quarter::DEFAULT
- # >> Pagy::Calendar::Month::DEFAULT
- # >> Pagy::Calendar::Week::DEFAULT
- # >> Pagy::Calendar::Day::DEFAULT
- #
- # Uncomment the following lines, if you need calendar localization without using the I18n extra
- # module LocalizePagyCalendar
- #   def localize(time, opts)
- #     ::I18n.l(time, **opts)
- #   end
- # end
- # Pagy::Calendar.prepend LocalizePagyCalendar
+# Headers extra: http response headers (and other helpers) useful for API pagination
+# See https://ddnexus.github.io/pagy/docs/extras/headers
+# require 'pagy/extras/headers'
+# Pagy::DEFAULT[:headers] = { page: 'Current-Page',
+#                            limit: 'Page-Items',
+#                            count: 'Total-Count',
+#                            pages: 'Total-Pages' }     # default
 
- # Countless extra: Paginate without any count, saving one query per rendering
- # See https://ddnexus.github.io/pagy/docs/extras/countless
- require "pagy/extras/countless"
- # Pagy::DEFAULT[:countless_minimal] = false   # default (eager loading)
+# Keyset extra: Paginate with the Pagy keyset pagination technique
+# See https://ddnexus.github.io/pagy/docs/extras/keyset
+# require 'pagy/extras/keyset'
 
- # Elasticsearch Rails extra: Paginate `ElasticsearchRails::Results` objects
- # See https://ddnexus.github.io/pagy/docs/extras/elasticsearch_rails
- # Default :pagy_search method: change only if you use also
- # the searchkick or meilisearch extra that defines the same
- # Pagy::DEFAULT[:elasticsearch_rails_pagy_search] = :pagy_search
- # Default original :search method called internally to do the actual search
- # Pagy::DEFAULT[:elasticsearch_rails_search] = :search
- # require 'pagy/extras/elasticsearch_rails'
+# Meilisearch extra: Paginate `Meilisearch` result objects
+# See https://ddnexus.github.io/pagy/docs/extras/meilisearch
+# Default :pagy_search method: change only if you use also
+# the elasticsearch_rails or searchkick extra that define the same method
+# Pagy::DEFAULT[:meilisearch_pagy_search] = :pagy_search
+# Default original :search method called internally to do the actual search
+# Pagy::DEFAULT[:meilisearch_search] = :ms_search
+# require 'pagy/extras/meilisearch'
 
- # Headers extra: http response headers (and other helpers) useful for API pagination
- # See https://ddnexus.github.io/pagy/docs/extras/headers
- # require 'pagy/extras/headers'
- # Pagy::DEFAULT[:headers] = { page: 'Current-Page',
- #                            limit: 'Page-Items',
- #                            count: 'Total-Count',
- #                            pages: 'Total-Pages' }     # default
-
- # Keyset extra: Paginate with the Pagy keyset pagination technique
- # See https://ddnexus.github.io/pagy/docs/extras/keyset
- # require 'pagy/extras/keyset'
-
- # Meilisearch extra: Paginate `Meilisearch` result objects
- # See https://ddnexus.github.io/pagy/docs/extras/meilisearch
- # Default :pagy_search method: change only if you use also
- # the elasticsearch_rails or searchkick extra that define the same method
- # Pagy::DEFAULT[:meilisearch_pagy_search] = :pagy_search
- # Default original :search method called internally to do the actual search
- # Pagy::DEFAULT[:meilisearch_search] = :ms_search
- # require 'pagy/extras/meilisearch'
-
- # Metadata extra: Provides the pagination metadata to Javascript frameworks like Vue.js, react.js, etc.
- # See https://ddnexus.github.io/pagy/docs/extras/metadata
- # you must require the JS Tools internal extra (BEFORE the metadata extra) ONLY if you need also the :sequels
- # require "pagy/extras/js_tools"
- require "pagy/extras/metadata"
- # For performance reasons, you should explicitly set ONLY the metadata you use in the frontend
- Pagy::DEFAULT[:metadata] = %i[first_url prev_url next_url last_url count page pages limit next prev last]   # example
+# Metadata extra: Provides the pagination metadata to Javascript frameworks like Vue.js, react.js, etc.
+# See https://ddnexus.github.io/pagy/docs/extras/metadata
+# you must require the JS Tools internal extra (BEFORE the metadata extra) ONLY if you need also the :sequels
+# require "pagy/extras/js_tools"
+require "pagy/extras/metadata"
+# For performance reasons, you should explicitly set ONLY the metadata you use in the frontend
+Pagy::DEFAULT[:metadata] = %i[first_url prev_url next_url last_url count page pages limit next prev last]   # example
 
 # Searchkick extra: Paginate `Searchkick::Results` objects
 # See https://ddnexus.github.io/pagy/docs/extras/searchkick
@@ -110,7 +106,6 @@ Pagy::DEFAULT[:limit]       = 10                    # default
 # require 'pagy/extras/searchkick'
 # uncomment if you are going to use Searchkick.pagy_search
 # Searchkick.extend Pagy::Searchkick
-
 
 # Frontend Extras
 
@@ -130,7 +125,6 @@ Pagy::DEFAULT[:limit]       = 10                    # default
 # Multi size var used by the *_nav_js helpers
 # See https://ddnexus.github.io/pagy/docs/extras/pagy#steps
 # Pagy::DEFAULT[:steps] = { 0 => 5, 540 => 7, 720 => 9 }   # example
-
 
 # Feature Extras
 
@@ -209,12 +203,10 @@ Pagy::DEFAULT[:limit]       = 10                    # default
 #                   filepath: 'path/to/pagy-xyz.yml',
 #                   pluralize: lambda{ |count| ... } )
 
-
 # I18n extra: uses the standard i18n gem which is ~18x slower using ~10x more memory
 # than the default pagy internal i18n (see above)
 # See https://ddnexus.github.io/pagy/docs/extras/i18n
 # require 'pagy/extras/i18n'
-
 
 # When you are done setting your own default freeze it, so it will not get changed accidentally
 Pagy::DEFAULT.freeze

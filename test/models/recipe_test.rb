@@ -127,12 +127,12 @@ class RecipeTest < ActiveSupport::TestCase
     recipe2.save!
 
     # Filtre par un seul tag
-    results = Recipe.filter_by_tags_ids([ tag1.id ])
+    results = Recipe.filter_by_tags_ids([tag1.id])
     assert_includes results, @recipe
     assert_includes results, recipe2
 
     # Filtre par plusieurs tags (AND logic)
-    results = Recipe.filter_by_tags_ids([ tag1.id, tag2.id ])
+    results = Recipe.filter_by_tags_ids([tag1.id, tag2.id])
     assert_includes results, recipe2
     assert_not_includes results, @recipe
   end
@@ -140,8 +140,8 @@ class RecipeTest < ActiveSupport::TestCase
   # Tests de la gestion des tags
   test "should handle tags_attributes assignment" do
     tag_params = [
-      { name: "dessert" },
-      { name: "facile" }
+      {name: "dessert"},
+      {name: "facile"}
     ]
 
     @recipe.tags_attributes = tag_params
@@ -155,12 +155,11 @@ class RecipeTest < ActiveSupport::TestCase
   test "should handle tags_attributes with existing tag ids" do
     existing_tag = tags(:one)
     tag_params = [
-      { id: existing_tag.id, name: existing_tag.name },
-      { name: "nouveau" }
+      {id: existing_tag.id, name: existing_tag.name},
+      {name: "nouveau"}
     ]
 
     @recipe.tags_attributes = tag_params
-
 
     assert_equal 2, @recipe.tags.count
     assert_includes @recipe.tags, existing_tag
@@ -181,8 +180,7 @@ class RecipeTest < ActiveSupport::TestCase
     old_tag = tags(:one)
     assert_includes @recipe.tags, old_tag
 
-    @recipe.tags_attributes = [ { name: "nouveau_tag" } ]
-
+    @recipe.tags_attributes = [{name: "nouveau_tag"}]
 
     assert_not_includes @recipe.tags, old_tag
     assert @recipe.tags.exists?(name: "nouveau_tag")
@@ -190,13 +188,12 @@ class RecipeTest < ActiveSupport::TestCase
 
   test "should skip blank tag names in tags_attributes" do
     tag_params = [
-      { name: "valide" },
-      { name: "" },
-      { name: "  " }
+      {name: "valide"},
+      {name: ""},
+      {name: "  "}
     ]
 
     @recipe.tags_attributes = tag_params
-
 
     assert_equal 1, @recipe.tags.count
     assert_equal "valide", @recipe.tags.first.name
@@ -268,12 +265,11 @@ class RecipeTest < ActiveSupport::TestCase
 
   test "should handle invalid tag id in tags_attributes gracefully" do
     tag_params = [
-      { id: 99999, name: "inexistant" }, # ID qui n'existe pas
-      { name: "nouveau" }
+      {id: 99999, name: "inexistant"}, # ID qui n'existe pas
+      {name: "nouveau"}
     ]
 
     @recipe.tags_attributes = tag_params
-
 
     # Les deux tags doivent être créés par nom
     assert_equal 2, @recipe.tags.count

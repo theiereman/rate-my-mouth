@@ -13,7 +13,7 @@ class CommentMailerTest < ActionMailer::TestCase
       email.deliver_now
     end
 
-    assert_equal [ @user.email ], email.to
+    assert_equal [@user.email], email.to
     assert_equal "Nouveau commentaire sur votre recette \"#{@comment.commentable.name}\"", email.subject
     assert_match @comment.content, email.body.encoded
   end
@@ -25,7 +25,7 @@ class CommentMailerTest < ActionMailer::TestCase
       email.deliver_now
     end
 
-    assert_equal [ @user.email ], email.to
+    assert_equal [@user.email], email.to
     assert_equal "Nouveau commentaire sur la recette \"#{@comment.commentable.name}\"", email.subject
     assert_match @comment.content, email.body.encoded
   end

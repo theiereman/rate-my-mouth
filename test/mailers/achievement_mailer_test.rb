@@ -17,6 +17,6 @@ class AchievementMailerTest < ActionMailer::TestCase
       email.deliver_now
     end
 
-    assert_equal [ @user.email ], email.to
+    assert_equal [@user.email], email.to
   end
 end

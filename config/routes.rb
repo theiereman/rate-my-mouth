@@ -5,8 +5,8 @@ Rails.application.routes.draw do
     passwords: "users/passwords"
   }
 
-  resources :users, only: [ :index, :show, :update ] do
-    resources :achievements, only: [ :index ]
+  resources :users, only: [:index, :show, :update] do
+    resources :achievements, only: [:index]
     patch "update_avatar", on: :member
   end
 
@@ -18,20 +18,20 @@ Rails.application.routes.draw do
   post "notifications/mark_as_read", to: "notifications#mark_as_read", as: :mark_notifications_as_read
 
   resources :recipes do
-    resources :ratings, only: [ :index, :create ]
-    resources :comments, only: [ :index, :create, :update, :destroy ]
+    resources :ratings, only: [:index, :create]
+    resources :comments, only: [:index, :create, :update, :destroy]
     resources :notes, only: [] do
       get "show_for_user", on: :collection
       patch "update_for_user", on: :collection
     end
   end
 
-  resources :tags, only: [ :index, :create ]
+  resources :tags, only: [:index, :create]
 
-  resource :leaderboard, only: [ :show ]
-  resolve("Leaderboard") { [ :leaderboard ] }
+  resource :leaderboard, only: [:show]
+  resolve("Leaderboard") { [:leaderboard] }
 
-  get "up" => "rails/health#show", as: :rails_health_check
+  get "up" => "rails/health#show", :as => :rails_health_check
 
   root "recipes#index"
 

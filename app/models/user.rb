@@ -1,6 +1,6 @@
 class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable
+    :recoverable, :rememberable, :validatable
 
   has_many :recipes, dependent: :destroy
   has_many :comments, dependent: :destroy
@@ -10,11 +10,11 @@ class User < ApplicationRecord
   has_many :notifications, class_name: "Noticed::Notification", as: :recipient
 
   has_one_attached :avatar do |attachable|
-    attachable.variant :thumb, resize_to_limit: [ 100, 100 ], preprocessed: true
+    attachable.variant :thumb, resize_to_limit: [100, 100], preprocessed: true
   end
 
   validates :username, presence: true, uniqueness: true
-  validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
+  validates :email, presence: true, uniqueness: true, format: {with: URI::MailTo::EMAIL_REGEXP}
 
   def number_of_recipes
     recipes.count
@@ -31,8 +31,6 @@ class User < ApplicationRecord
   def avatar_url
     if avatar.attached?
       Rails.application.routes.url_helpers.rails_blob_path(avatar.variant(:thumb), only_path: true)
-    else
-      nil
     end
   end
 end

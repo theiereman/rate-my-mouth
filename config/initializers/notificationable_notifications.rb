@@ -1,7 +1,7 @@
 ActiveSupport::Notifications.subscribe(/\.created.notificationable$|\.updated.notificationable$/) do |*args|
-  event   = ActiveSupport::Notifications::Event.new(*args)
-  user    = event.payload[:user]
-  record  = event.payload[:record]
+  event = ActiveSupport::Notifications::Event.new(*args)
+  user = event.payload[:user]
+  record = event.payload[:record]
   next unless user.is_a?(User) && record
 
   # Méthode helper pour vérifier les conditions de notification

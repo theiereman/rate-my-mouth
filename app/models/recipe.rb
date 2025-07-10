@@ -7,10 +7,10 @@ class Recipe < ApplicationRecord
   scope :filter_by_tags_ids, ->(tag_ids) {
     tag_ids = Array(tag_ids)
     joins(:tags)
-    .where(tags: { id: tag_ids })
-    .group("recipes.id")
-    .having("COUNT(DISTINCT tags.id) = ?", tag_ids.size)
-    .distinct
+      .where(tags: {id: tag_ids})
+      .group("recipes.id")
+      .having("COUNT(DISTINCT tags.id) = ?", tag_ids.size)
+      .distinct
   }
 
   has_one_attached :thumbnail
@@ -33,8 +33,8 @@ class Recipe < ApplicationRecord
   accepts_nested_attributes_for :instructions, allow_destroy: true, reject_if: :all_blank
 
   validates :name, presence: true
-  validates :number_of_servings, presence: true, numericality: { only_integer: true, greater_than: 0 }
-  validates :difficulty, presence: true, inclusion: { in: difficulties.keys }
+  validates :number_of_servings, presence: true, numericality: {only_integer: true, greater_than: 0}
+  validates :difficulty, presence: true, inclusion: {in: difficulties.keys}
 
   # FIXME: temp hack to make it work when you pass the thumbnail as recipe_param
   # it breaks the whole params hash and make value change type etc, please send help
@@ -44,16 +44,16 @@ class Recipe < ApplicationRecord
     end
 
     if value.is_a?(Integer)
-      value = { 0 => :easy, 1 => :medium, 2 => :hard }[value] || :easy
+      value = {0 => :easy, 1 => :medium, 2 => :hard}[value] || :easy
     elsif value.is_a?(String) && !Recipe.difficulties.key?(value.to_sym)
       value = :easy
     end
 
-    super(value)
+    super
   end
 
   def tags_attributes=(attributes)
-    self.tags.clear
+    tags.clear
 
     # FIXME: temp hack to make it work when you pass the thumbnail as recipe_param
     # it breaks the whole params hash and make value change type etc, please send help
@@ -65,7 +65,7 @@ class Recipe < ApplicationRecord
       if tag_params[:id].present?
         begin
           tag = Tag.find(tag_params[:id])
-          self.tags << tag unless self.tags.include?(tag)
+          tags << tag unless tags.include?(tag)
         rescue ActiveRecord::RecordNotFound
           find_or_create_tag_by_name(tag_params[:name])
         end
@@ -79,7 +79,7 @@ class Recipe < ApplicationRecord
   def find_or_create_tag_by_name(name)
     tag = Tag.where("lower(name) = ?", name.downcase).first_or_initialize(name: name)
     tag.save if tag.new_record?
-    self.tags << tag unless self.tags.include?(tag)
+    tags << tag unless tags.include?(tag)
     tag
   end
 
@@ -95,8 +95,6 @@ class Recipe < ApplicationRecord
   def thumbnail_url
     if thumbnail.attached?
       Rails.application.routes.url_helpers.rails_blob_path(thumbnail, only_path: true)
-    else
-      nil
     end
   end
 

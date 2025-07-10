@@ -46,8 +46,6 @@ class NotificationPresenter # used to present Noticed::Notification objects
       recipe_path(@notification.record.recipe) if @notification.record&.respond_to?(:recipe)
     when "AchievementUnlockedNotifier::Notification"
       my_profile_path
-    else
-      nil
     end
   end
 

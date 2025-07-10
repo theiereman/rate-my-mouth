@@ -1,11 +1,11 @@
 class UsersController < ApplicationController
   include Paginatable
 
-  before_action :set_user, only: %i[ show update update_avatar ]
+  before_action :set_user, only: %i[show update update_avatar]
 
   def index
     @users = User.all.order(:username)
-    render json: @users.as_json(only: [ :id, :username, :email ])
+    render json: @users.as_json(only: [:id, :username, :email])
   end
 
   def show
@@ -41,20 +41,21 @@ class UsersController < ApplicationController
   end
 
   private
-    def user_params
-      params.expect(user: [ :notification_preference, :avatar ])
-    end
 
-    def set_user
-      @user = User.find(params[:id])
-      redirect_to root_path, alert: "Utilisateur introuvable" if @user.nil?
-    end
+  def user_params
+    params.expect(user: [:notification_preference, :avatar])
+  end
 
-    def user_as_json(user = @user)
-      user
+  def set_user
+    @user = User.find(params[:id])
+    redirect_to root_path, alert: "Utilisateur introuvable" if @user.nil?
+  end
+
+  def user_as_json(user = @user)
+    user
       .as_json(
-        only: [ :id, :username, :title, :notification_preference, :created_at, :recipes_count, :comments_count, :ratings_count ],
-        methods: [ :avatar_url ]
+        only: [:id, :username, :title, :notification_preference, :created_at, :recipes_count, :comments_count, :ratings_count],
+        methods: [:avatar_url]
       )
-    end
+  end
 end

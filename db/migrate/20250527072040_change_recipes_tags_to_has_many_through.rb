@@ -6,7 +6,7 @@ class ChangeRecipesTagsToHasManyThrough < ActiveRecord::Migration[8.0]
       t.references :tag, null: false, foreign_key: true
       t.timestamps
 
-      t.index [ :recipe_id, :tag_id ], unique: true
+      t.index [:recipe_id, :tag_id], unique: true
     end
 
     # Migrer les données existantes de recipes_tags vers recipe_tags
@@ -25,8 +25,8 @@ class ChangeRecipesTagsToHasManyThrough < ActiveRecord::Migration[8.0]
   def down
     # Recréer la table de jointure
     create_join_table :recipes, :tags do |t|
-      t.index [ :recipe_id, :tag_id ]
-      t.index [ :tag_id, :recipe_id ]
+      t.index [:recipe_id, :tag_id]
+      t.index [:tag_id, :recipe_id]
     end
 
     # Migrer les données vers l'ancienne structure

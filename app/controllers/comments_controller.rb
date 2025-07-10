@@ -2,14 +2,14 @@ class CommentsController < ApplicationController
   include Paginatable
 
   before_action :set_commentable
-  before_action :set_comment, only: [ :update, :destroy ]
+  before_action :set_comment, only: [:update, :destroy]
 
   def index
-    @comments = @commentable.comments.includes(user: [ :avatar_attachment ]).order(created_at: :desc)
+    @comments = @commentable.comments.includes(user: [:avatar_attachment]).order(created_at: :desc)
     @pagy, @comments = paginate_collection(@comments)
 
     render json: {
-      comments: @comments.map { |comment| comment.as_json(include: { user: { only: [ :id, :username ], methods: [ :avatar_url ] } }) },
+      comments: @comments.map { |comment| comment.as_json(include: {user: {only: [:id, :username], methods: [:avatar_url]}}) },
       pagy: pagy_metadata(@pagy)
     }
   end
@@ -55,6 +55,6 @@ class CommentsController < ApplicationController
   end
 
   def comment_params
-    params.expect(comment: [ :content ])
+    params.expect(comment: [:content])
   end
 end

@@ -1,5 +1,5 @@
 class Users::RegistrationsController < Devise::RegistrationsController
-  before_action :configure_sign_up_params, only: [ :create ]
+  before_action :configure_sign_up_params, only: [:create]
 
   # GET /users/sign_up
   def new
@@ -35,14 +35,14 @@ class Users::RegistrationsController < Devise::RegistrationsController
   protected
 
   def configure_sign_up_params
-    devise_parameter_sanitizer.permit(:sign_up, keys: [ :username ])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:username])
   end
 
   def respond_with(resource, _opts = {})
     if resource.persisted?
       inertia_location after_sign_up_path_for(resource)
     else
-      redirect_to new_user_registration_path, inertia: { errors: resource.errors }
+      redirect_to new_user_registration_path, inertia: {errors: resource.errors}
     end
   end
 end

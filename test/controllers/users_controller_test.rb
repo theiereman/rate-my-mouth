@@ -26,7 +26,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
   test "should sign up user" do
     assert_difference("User.count") do
-      post user_registration_path, params: { user: { username: "new_user_name", email: "new_user@example.com", password: "password", password_confirmation: "password" } }
+      post user_registration_path, params: {user: {username: "new_user_name", email: "new_user@example.com", password: "password", password_confirmation: "password"}}
     end
 
     assert_redirected_to root_path
@@ -34,7 +34,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
   test "should not sign up user with already taken email" do
     assert_no_difference("User.count") do
-      post user_registration_path, params: { user: { username: "new_user_name", email: @user.email, password: "password", password_confirmation: "password" } }
+      post user_registration_path, params: {user: {username: "new_user_name", email: @user.email, password: "password", password_confirmation: "password"}}
     end
 
     assert_response :unprocessable_entity
@@ -43,7 +43,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
   test "should not sign up user with already taken username" do
     assert_no_difference("User.count") do
-      post user_registration_path, params: { user: { username: @user.username, email: "new_user@example.com", password: "password", password_confirmation: "password" } }
+      post user_registration_path, params: {user: {username: @user.username, email: "new_user@example.com", password: "password", password_confirmation: "password"}}
     end
 
     assert_response :unprocessable_entity
@@ -64,8 +64,8 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should sign in user" do
-    post user_registration_path, params: { user: { username: "new_user_name", email: "new_user@example.com", password: "password", password_confirmation: "password" } }
-    post user_session_path, params: { user: { email: "new_user@example.com", password: "password" } }
+    post user_registration_path, params: {user: {username: "new_user_name", email: "new_user@example.com", password: "password", password_confirmation: "password"}}
+    post user_session_path, params: {user: {email: "new_user@example.com", password: "password"}}
     assert_response :redirect
     assert_redirected_to root_path
   end
