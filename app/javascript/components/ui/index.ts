@@ -1,11 +1,13 @@
 export { Badge } from "./Badge";
 export type { BadgeVariant } from "./Badge";
-export { Button, LinkButton } from "./Button";
+export { default as LinkButton } from "./v2/LinkButton";
+export { default as Button } from "./v2/Button";
+export type { ButtonProps } from "./v2/Button";
 export { default as Card } from "./Card";
 export { default as Combo } from "./Combo";
 export type { ComboValue } from "./Combo";
 export { default as Footer } from "./Footer";
-export { default as Input } from "./Input";
+export { default as Input } from "./v2/Input";
 export { Pagination, CustomPagination } from "./Pagination";
 export { default as TextArea } from "./TextArea";
 export { default as Toast } from "./Toast";
