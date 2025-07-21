@@ -23,6 +23,6 @@ class Users::SessionsController < Devise::SessionsController
   # DELETE /users/sign_out
   def destroy
     sign_out
-    inertia_location new_user_session_path
+    inertia_location root_path
   end
 end
