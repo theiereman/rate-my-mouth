@@ -24,7 +24,7 @@ createInertiaApp({
 
     if (page && page.default) {
       (page.default as any).layout ||= (page: ReactNode) =>
-        createElement(Layout, null, page);
+        name.startsWith("Public/") ? page : createElement(Layout, null, page);
     }
 
     return page;
@@ -36,14 +36,14 @@ createInertiaApp({
         createElement(
           ToastProvider,
           null,
-          createElement(ThemeProvider, null, createElement(App, props))
-        )
+          createElement(ThemeProvider, null, createElement(App, props)),
+        ),
       );
     } else {
       console.error(
         "Missing root element.\n\n" +
           "If you see this error, it probably means you load Inertia.js on non-Inertia pages.\n" +
-          'Consider moving <%= vite_typescript_tag "inertia" %> to the Inertia-specific layout instead.'
+          'Consider moving <%= vite_typescript_tag "inertia" %> to the Inertia-specific layout instead.',
       );
     }
   },
