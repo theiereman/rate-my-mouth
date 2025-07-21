@@ -21,17 +21,10 @@
 }
 
 @font-face {
-  font-family: "LoveYaLikeASister";
+  font-family: "MonaSans";
   font-style: normal;
   font-weight: 200 900;
-  src: url("/assets/fonts/loveyalikeasister.ttf") format("truetype");
-}
-
-@font-face {
-  font-family: "Quicksand";
-  font-style: normal;
-  font-weight: 500 900;
-  src: url("/assets/fonts/quicksand-variable.ttf") format("truetype");
+  src: url("/assets/fonts/MonaSans.ttf") format("truetype");
 }
 
 .material-symbols-outlined {
