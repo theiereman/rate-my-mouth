@@ -1,19 +1,20 @@
 import Navbar from "../components/navbar/Navbar";
 import HomeButton from "../components/navbar/HomeButton";
-import UserActions from "../components/navbar/UserActions";
 import { PageProps } from "@customTypes/usepage-props.types";
-import ThemeSelector from "../components/theme/ThemeSelector";
+import ThemeSelector from "../components/navbar/dropdowns/theme/ThemeSelector";
 import { Footer } from "@components/ui";
 import { useToast } from "../contexts/ToastProvider";
-import { usePage } from "@inertiajs/react";
+import { router, usePage } from "@inertiajs/react";
 import { useEffect } from "react";
-import UserNotifications from "@components/navbar/UserNotifications";
+import UserNotifications from "@components/navbar/dropdowns/UserNotificationsDropdown";
 import axios from "axios";
+import UserAvatar from "@components/Users/UserAvatar";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const { flash } = usePage<PageProps>().props;
   const { showToast } = useToast();
   const { csrf_token } = usePage().props; // to make basic axios requests work
+  const { current_user } = usePage<PageProps>().props;
 
   useEffect(() => {
     // Check for different types of flash messages
@@ -45,7 +46,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <Navbar />
             <ThemeSelector />
             <UserNotifications />
-            <UserActions />
+            <UserAvatar
+              user={current_user}
+              onClick={() => {
+                console.log("profile");
+                router.visit("/my_profile");
+              }}
+              title="Voir mon profil"
+              className="hover:scale-105 transition-transform duration-200"
+            />
           </div>
         </header>
 
