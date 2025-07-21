@@ -54,8 +54,8 @@ class UsersController < ApplicationController
   def user_as_json(user = @user)
     user
       .as_json(
-        only: [ :id, :username, :email, :title, :notification_preference, :created_at, :recipes_count, :comments_count, :ratings_count ],
-        methods: [ :avatar_url ]
+        only: [:id, :username, :email, :title, :notification_preference, :created_at, :recipes_count, :comments_count, :ratings_count],
+        methods: [:avatar_url]
       )
   end
 end
