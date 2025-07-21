@@ -1,14 +1,14 @@
 import Navbar from "../components/navbar/Navbar";
 import HomeButton from "../components/navbar/HomeButton";
 import { PageProps } from "@customTypes/usepage-props.types";
-import ThemeSelector from "../components/navbar/dropdowns/theme/ThemeSelector";
 import { Footer } from "@components/ui";
 import { useToast } from "../contexts/ToastProvider";
 import { router, usePage } from "@inertiajs/react";
 import { useEffect } from "react";
-import UserNotifications from "@components/navbar/dropdowns/UserNotificationsDropdown";
 import axios from "axios";
 import UserAvatar from "@components/Users/UserAvatar";
+import ThemeSelector from "@components/navbar/dropdowns/theme/ThemeSelector";
+import UserNotificationsDropdown from "@components/navbar/dropdowns/UserNotificationsDropdown";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const { flash } = usePage<PageProps>().props;
@@ -45,7 +45,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <HomeButton className="me-6" />
             <Navbar />
             <ThemeSelector />
-            <UserNotifications />
+            <UserNotificationsDropdown />
             <UserAvatar
               user={current_user}
               onClick={() => {
