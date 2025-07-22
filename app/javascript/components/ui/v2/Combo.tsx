@@ -7,7 +7,6 @@ interface ComboValue {
 }
 
 type ComboProps = InputHTMLAttributes<HTMLInputElement> & {
-  selectedValue?: number;
   selectedValues?: number[]; //multi select
   values: ComboValue[];
   label: string;
@@ -16,7 +15,7 @@ type ComboProps = InputHTMLAttributes<HTMLInputElement> & {
 };
 
 export default function Combo({
-  selectedValue,
+  selectedValues,
   values = [],
   onSelectedValue,
   onSearchValueChange,
@@ -29,9 +28,10 @@ export default function Combo({
 
   //update input value on value change
   useEffect(() => {
-    const found = values.find((v) => v.value === selectedValue);
+    if (!selectedValues || selectedValues?.length > 1) return;
+    const found = values.find((v) => v.value === selectedValues[0]);
     if (!inputValue) setInputValue(found ? found.label : "");
-  }, [selectedValue, values]);
+  }, [selectedValues, values]);
 
   //handle click outside the div
   useEffect(() => {
@@ -51,7 +51,7 @@ export default function Combo({
 
   const handleSearchValueChange = (value: string) => {
     setInputValue(value);
-    if (!value && selectedValue) {
+    if (!value && selectedValues) {
       onSelectedValue && onSelectedValue(null);
     }
     onSearchValueChange && onSearchValueChange(value);
