@@ -1,4 +1,4 @@
-import { Input } from "@components/ui";
+import { Badge, Input } from "@components/ui";
 import { InputHTMLAttributes, useEffect, useRef, useState } from "react";
 
 interface ComboValue {
@@ -7,11 +7,12 @@ interface ComboValue {
 }
 
 type ComboProps = InputHTMLAttributes<HTMLInputElement> & {
-  selectedValues?: number[]; //multi select
+  selectedValues?: ComboValue[]; //multi select
   values: ComboValue[];
   label: string;
   onSelectedValue?: (value: ComboValue | null) => void;
   onSearchValueChange?: (value: string) => void;
+  onSelectedValueRemove?: (value: ComboValue) => void;
 };
 
 export default function Combo({
@@ -19,12 +20,15 @@ export default function Combo({
   values = [],
   onSelectedValue,
   onSearchValueChange,
+  onSelectedValueRemove,
   ...props
 }: ComboProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [inputValue, setInputValue] = useState("");
 
   const divRef = useRef<HTMLDivElement>(null);
+
+  console.log(selectedValues);
 
   //update input value on value change
   useEffect(() => {
@@ -51,9 +55,6 @@ export default function Combo({
 
   const handleSearchValueChange = (value: string) => {
     setInputValue(value);
-    if (!value && selectedValues) {
-      onSelectedValue && onSelectedValue(null);
-    }
     onSearchValueChange && onSearchValueChange(value);
   };
 
@@ -93,6 +94,20 @@ export default function Combo({
           )}
         </div>
       )}
+      {selectedValues &&
+        selectedValues.length > 1 &&
+        selectedValues.map((cbVal) => {
+          return (
+            <Badge
+              onClick={() => {
+                onSelectedValueRemove && onSelectedValueRemove(cbVal);
+              }}
+              key={cbVal.value}
+              text={cbVal.label}
+              className="mt-2 mr-2 inline-block"
+            />
+          );
+        })}
     </div>
   );
 }

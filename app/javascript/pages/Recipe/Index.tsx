@@ -25,23 +25,14 @@ export default function Index({
     "recipe-index-search-query",
   );
 
-  const [tags, setTags] = usePersistantState<TagType[]>(
-    [],
-    "recipe-index-tags",
-  );
-  const [selectedTagIds, setSelectedTagIds] = usePersistantState<number[]>(
-    [],
-    "recipe-index-selected-tags",
+  const [tags, setTags] = useState<TagType[]>([]);
+  const [selectedTags, setSelectedTags] = useState<TagType[]>([]);
+  const nonSelectedTags = tags.filter(
+    (tag) => !selectedTags.find((t) => t.id === tag.id),
   );
 
-  const [selectedUserId, setSelectedUserId] = usePersistantState<number | null>(
-    null,
-    "recipe-index-selected-user",
-  );
-  const [users, setUsers] = usePersistantState<UserType[]>(
-    [],
-    "recipe-index-users",
-  );
+  const [selectedUser, setSelectedUser] = useState<UserType | null>(null);
+  const [users, setUsers] = useState<UserType[]>([]);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -54,9 +45,9 @@ export default function Index({
     const params: { name?: string; user_id?: number; tags_ids?: number[] } = {};
 
     if (searchQuery?.trim()) params.name = searchQuery;
-    if (selectedUserId) params.user_id = selectedUserId;
-    if (selectedTagIds && selectedTagIds.length > 0)
-      params.tags_ids = selectedTagIds;
+    if (selectedUser) params.user_id = selectedUser.id;
+    if (selectedTags && selectedTags.length > 0)
+      params.tags_ids = selectedTags.map((tag) => tag.id);
 
     router.get("/recipes", params, {
       preserveState: true,
@@ -106,7 +97,11 @@ export default function Index({
           />
 
           <Combo
-            selectedValues={selectedUserId ? [selectedUserId] : undefined}
+            selectedValues={
+              selectedUser
+                ? [{ value: selectedUser.id, label: selectedUser.username }]
+                : undefined
+            }
             values={users.map((user) => ({
               value: user.id,
               label: user.username,
@@ -114,7 +109,7 @@ export default function Index({
             onSearchValueChange={useDebouncedCallback(searchUser, 500)}
             onSelectedValue={(value) => {
               setIsLoading(true);
-              setSelectedUserId(value?.value);
+              setSelectedUser(value?.value);
               debouncedQuery();
             }}
             label="Auteur de la recette"
@@ -122,15 +117,28 @@ export default function Index({
 
           <Combo
             label="Tags associés"
-            selectedValues={selectedTagIds}
-            values={tags.map((tag) => ({
+            selectedValues={selectedTags?.map((tag) => ({
+              value: tag.id,
+              label: tag.name,
+            }))}
+            values={nonSelectedTags.map((tag) => ({
               value: tag.id,
               label: `${tag.name} (${tag.recipes_count})`,
             }))}
             onSearchValueChange={useDebouncedCallback(searchTags, 500)}
             onSelectedValue={(value) => {
               setIsLoading(true);
-              setSelectedTagIds([value?.value]);
+              setSelectedTags([
+                ...selectedTags,
+                tags.find((tag) => tag.id === value?.value)!,
+              ]);
+              debouncedQuery();
+            }}
+            onSelectedValueRemove={(value) => {
+              setIsLoading(true);
+              setSelectedTags(
+                selectedTags.filter((tag) => tag.id !== value.value),
+              );
               debouncedQuery();
             }}
           />
