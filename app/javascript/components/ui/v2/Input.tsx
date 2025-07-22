@@ -1,14 +1,16 @@
 import { InputHTMLAttributes, useId } from "react";
 
-type InputProps = InputHTMLAttributes<HTMLInputElement> & {
+export type InputProps = InputHTMLAttributes<HTMLInputElement> & {
   label: string;
   error?: string;
+  rightIcon?: React.ReactNode;
 };
 
 export default function Input({
   label,
   error,
   className,
+  rightIcon,
   ...props
 }: InputProps) {
   const inputId = useId();
@@ -23,11 +25,19 @@ export default function Input({
           {label}
         </label>
       )}
-      <input
-        id={inputId}
-        className={`focus:border-accent-400 border-primary-900 border-3 p-1 ring-0 focus:border-3 ${className}`}
-        {...props}
-      />
+      <div className="relative">
+        <input
+          id={inputId}
+          className={`focus:border-accent-400 border-primary-900 w-full border-3 p-1 ring-0 focus:border-3 ${rightIcon ? "pr-10" : ""} ${className}`}
+          {...props}
+        />
+        {rightIcon && (
+          <div className="text-primary-900 absolute top-1/2 right-2 flex -translate-y-1/2 items-center justify-center">
+            {rightIcon}
+          </div>
+        )}
+      </div>
+
       {error && (
         <span className="mt-1 text-sm font-medium text-red-600">{error}</span>
       )}

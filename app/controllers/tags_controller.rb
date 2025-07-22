@@ -11,6 +11,14 @@ class TagsController < ApplicationController
     render json: {tags: @tags.as_json, pagy: pagy_metadata(@pagy)}
   end
 
+  # GET /tags/by_ids
+  def by_ids
+    ids = params[:ids]&.split(",")&.map(&:to_i) || []
+    @tags = Tag.where(id: ids)
+
+    render json: {tags: @tags.as_json}
+  end
+
   # POST /tags
   def create
     @tag = Tag.new(tag_params)

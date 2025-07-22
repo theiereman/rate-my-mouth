@@ -10,7 +10,6 @@ import { useDebouncedCallback } from "use-debounce";
 import { UserType } from "@customTypes/user.types";
 import axios from "axios";
 import EmptyPlaceholder from "@components/ui/EmptyPlaceholder";
-import { usePersistantState } from "@hooks/usePersistantState";
 import { TagType } from "@customTypes/tag.types";
 
 export default function Index({
@@ -20,45 +19,75 @@ export default function Index({
   recipes: RecipeType[];
   pagy: PagyMetadata;
 }) {
-  const [searchQuery, setSearchQuery] = usePersistantState<string>(
-    "",
-    "recipe-index-search-query",
-  );
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   const [tags, setTags] = useState<TagType[]>([]);
   const [selectedTags, setSelectedTags] = useState<TagType[]>([]);
   const nonSelectedTags = tags.filter(
-    (tag) => !selectedTags.find((t) => t.id === tag.id),
+    (tag) => !selectedTags.some((t) => t.id === tag.id),
   );
 
   const [selectedUser, setSelectedUser] = useState<UserType | null>(null);
   const [users, setUsers] = useState<UserType[]>([]);
 
-  const [isLoading, setIsLoading] = useState(false);
+  const urlParams = new URLSearchParams(window.location.search);
+
+  const [isLoadingUsers, setIsLoadingUsers] = useState(false);
+  const [isLoadingTags, setIsLoadingTags] = useState(false);
+  const [isLoadingRecipes, setIsLoadingRecipes] = useState(false);
 
   useEffect(() => {
-    if (users.length == 0) initUsers();
-    if (tags.length == 0) initTags();
+    initUsers();
+    initTags();
+    initQueryFromUrl();
+    initSelectedTagsFromUrl();
+    initSelectedUserFromUrl();
   }, []);
 
+  //TODO : handle errors and display them under appropriate inputs
+
+  const initQueryFromUrl = () => {
+    const query = urlParams.get("name") || "";
+    setSearchQuery(query);
+  };
+
+  const initSelectedUserFromUrl = async () => {
+    const userId = urlParams.get("user_id");
+    if (userId) {
+      const response = await axios.get(`/users/by_id?id=${userId}`);
+      if (response.data.user) {
+        setSelectedUser(response.data.user);
+      }
+    }
+  };
+
+  const initSelectedTagsFromUrl = async () => {
+    const tagsIds = urlParams.get("tags_ids");
+    if (tagsIds) {
+      const response = await axios.get(`/tags/by_ids?ids=${tagsIds}`);
+      setSelectedTags(response.data.tags);
+    }
+  };
+
   const fetchRecipes = useDebouncedCallback(() => {
-    const params: { name?: string; user_id?: number; tags_ids?: number[] } = {};
+    const params: { name?: string; user_id?: number; tags_ids?: string } = {};
 
     if (searchQuery?.trim()) params.name = searchQuery;
     if (selectedUser) params.user_id = selectedUser.id;
     if (selectedTags && selectedTags.length > 0)
-      params.tags_ids = selectedTags.map((tag) => tag.id);
+      params.tags_ids = selectedTags.map((tag) => tag.id).join(",");
 
     router.get("/recipes", params, {
       preserveState: true,
       preserveScroll: true,
-      onFinish: () => setIsLoading(false),
+      onFinish: () => setIsLoadingRecipes(false),
     });
   }, 500);
 
   const initTags = () => searchTags("");
   const searchTags = async (value: string) => {
     const response = await axios.get(`/tags${value ? `?name=${value}` : ""}`);
+    setIsLoadingTags(false);
     setTags(response.data.tags);
   };
 
@@ -67,14 +96,22 @@ export default function Index({
     const response = await axios.get(
       `/users${value ? `?username=${value}` : ""}`,
     );
+    setIsLoadingUsers(false);
     setUsers(response.data.users);
   };
 
-  const handleValueChange = (fn: (...args: any) => void) => {
-    setIsLoading(true);
-    fn();
+  const debouncedSearchUser = useDebouncedCallback((value: string) => {
+    searchUser(value);
+  }, 500);
+
+  const debouncedSearchTags = useDebouncedCallback((value: string) => {
+    searchTags(value);
+  }, 500);
+
+  useEffect(() => {
+    setIsLoadingRecipes(true);
     fetchRecipes();
-  };
+  }, [searchQuery, selectedUser, selectedTags]);
 
   return (
     <Page
@@ -94,31 +131,50 @@ export default function Index({
           <Input
             label="Nom de la recette"
             onChange={(e) => {
-              handleValueChange(() => setSearchQuery(e.target.value));
+              setSearchQuery(e.target.value);
             }}
             value={searchQuery}
           />
 
           <Combo
-            selectedValues={
-              selectedUser
-                ? [{ value: selectedUser.id, label: selectedUser.username }]
-                : undefined
+            label="Auteur de la recette"
+            rightIcon={
+              isLoadingUsers ? (
+                <span className="material-symbols-outlined animate-spin">
+                  progress_activity
+                </span>
+              ) : undefined
             }
             values={users.map((user) => ({
               value: user.id,
               label: user.username,
             }))}
-            onSearchValueChange={useDebouncedCallback(searchUser, 500)}
-            onSelectedValue={(value) => {
-              handleValueChange(() => setSelectedUser(value?.value));
+            selectedValue={
+              selectedUser
+                ? { value: selectedUser.id, label: selectedUser.username }
+                : undefined
+            }
+            onSearchValueChange={(value) => {
+              setIsLoadingUsers(true);
+              debouncedSearchUser(value);
             }}
-            label="Auteur de la recette"
+            onSelectedValue={(value) => {
+              setSelectedUser(
+                users.find((user) => user.id === value?.value) || null,
+              );
+            }}
           />
 
           <Combo
             label="Tags associés"
-            selectedValues={selectedTags?.map((tag) => ({
+            rightIcon={
+              isLoadingTags ? (
+                <span className="material-symbols-outlined animate-spin">
+                  progress_activity
+                </span>
+              ) : undefined
+            }
+            selectedValue={selectedTags?.map((tag) => ({
               value: tag.id,
               label: tag.name,
             }))}
@@ -126,26 +182,32 @@ export default function Index({
               value: tag.id,
               label: `${tag.name} (${tag.recipes_count})`,
             }))}
-            onSearchValueChange={useDebouncedCallback(searchTags, 500)}
+            onSearchValueChange={(value) => {
+              setIsLoadingTags(true);
+              debouncedSearchTags(value);
+            }}
             onSelectedValue={(value) => {
-              handleValueChange(() =>
-                setSelectedTags([
-                  ...selectedTags,
-                  tags.find((tag) => tag.id === value?.value)!,
-                ]),
-              );
+              setSelectedTags((prev) => [
+                ...prev,
+                tags.find((tag) => tag.id === value?.value)!,
+              ]);
             }}
             onSelectedValueRemove={(value) => {
-              handleValueChange(() =>
-                setSelectedTags(
-                  selectedTags.filter((tag) => tag.id !== value.value),
-                ),
+              setSelectedTags((prev) =>
+                prev.filter((tag) => tag.id !== value.value),
               );
             }}
           />
         </Section>
 
-        {recipes.length === 0 ? (
+        {isLoadingRecipes ? (
+          <div className="text-primary-900 mt-8 flex flex-col items-center gap-2">
+            <span className="text-lg">Chargement des recettes...</span>
+            <span className="material-symbols-outlined animate-spin">
+              progress_activity
+            </span>
+          </div>
+        ) : recipes.length === 0 ? (
           <EmptyPlaceholder
             text="Aucune recette disponible"
             subtext="Soyez le premier à partager une nouvelle recette !"

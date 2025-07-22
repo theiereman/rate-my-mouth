@@ -1,13 +1,14 @@
 import { Badge, Input } from "@components/ui";
 import { InputHTMLAttributes, useEffect, useRef, useState } from "react";
+import { InputProps } from "./Input";
 
 interface ComboValue {
   value: any;
   label: string;
 }
 
-type ComboProps = InputHTMLAttributes<HTMLInputElement> & {
-  selectedValues?: ComboValue[]; //multi select
+type ComboProps = InputProps & {
+  selectedValue?: ComboValue[] | ComboValue; //multi select or single select
   values: ComboValue[];
   label: string;
   onSelectedValue?: (value: ComboValue | null) => void;
@@ -16,7 +17,7 @@ type ComboProps = InputHTMLAttributes<HTMLInputElement> & {
 };
 
 export default function Combo({
-  selectedValues,
+  selectedValue,
   values = [],
   onSelectedValue,
   onSearchValueChange,
@@ -25,17 +26,18 @@ export default function Combo({
 }: ComboProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [inputValue, setInputValue] = useState("");
+  const [isUserTyping, setIsUserTyping] = useState(false);
 
   const divRef = useRef<HTMLDivElement>(null);
 
-  console.log(selectedValues);
+  const isMultiselect = Array.isArray(selectedValue);
 
-  //update input value on value change
+  //update input value when selectedValue changes
   useEffect(() => {
-    if (!selectedValues || selectedValues?.length > 1) return;
-    const found = values.find((v) => v.value === selectedValues[0]);
-    if (!inputValue) setInputValue(found ? found.label : "");
-  }, [selectedValues, values]);
+    if (!isUserTyping && !isMultiselect && selectedValue) {
+      setInputValue(selectedValue.label);
+    }
+  }, [selectedValue]);
 
   //handle click outside the div
   useEffect(() => {
@@ -55,12 +57,15 @@ export default function Combo({
 
   const handleSearchValueChange = (value: string) => {
     setInputValue(value);
+    if (value.trim() === "" && !isMultiselect) {
+      onSelectedValue && onSelectedValue(null);
+    }
     onSearchValueChange && onSearchValueChange(value);
   };
 
   const handleSelectedValueChange = (value: ComboValue) => {
     onSelectedValue && onSelectedValue(value);
-    setInputValue(value.label);
+    if (!isMultiselect) setInputValue(value.label);
     setIsOpen(false);
   };
 
@@ -72,6 +77,9 @@ export default function Combo({
         onChange={(e) => handleSearchValueChange(e.target.value)}
         onClick={() => setIsOpen(true)}
         className={isOpen ? "border-b-0" : undefined}
+        onFocus={() => setIsUserTyping(true)}
+        onBlur={() => setIsUserTyping(false)}
+        rightIcon={props.rightIcon}
       />
       {isOpen && (
         <div className="border-primary-900 absolute z-10 max-h-60 w-full overflow-auto border-x-3 border-b-3 bg-white shadow-lg">
@@ -94,9 +102,9 @@ export default function Combo({
           )}
         </div>
       )}
-      {selectedValues &&
-        selectedValues.length > 1 &&
-        selectedValues.map((cbVal) => {
+      {isMultiselect &&
+        selectedValue.length > 0 &&
+        selectedValue.map((cbVal) => {
           return (
             <Badge
               onClick={() => {

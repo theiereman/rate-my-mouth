@@ -9,6 +9,17 @@ class UsersController < ApplicationController
     render json: {users: @users.as_json(only: [:id, :username, :email]), pagy: pagy_metadata(@pagy)}
   end
 
+  # GET /users/by_id
+  def by_id
+    @user = User.find_by(id: params[:id])
+
+    if @user
+      render json: {user: @user.as_json(only: [:id, :username, :email])}
+    else
+      render json: {user: nil}
+    end
+  end
+
   def show
     if @user == current_user
       redirect_to my_profile_path

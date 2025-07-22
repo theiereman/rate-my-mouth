@@ -5,7 +5,8 @@ class Recipe < ApplicationRecord
   scope :filter_by_name, ->(name) { where("recipes.name LIKE ?", "%#{name}%") }
   scope :filter_by_user_id, ->(user_id) { where(user_id: user_id) }
   scope :filter_by_tags_ids, ->(tag_ids) {
-    tag_ids = Array(tag_ids)
+    # Convertir la chaîne séparée par des virgules en array
+    tag_ids = tag_ids.is_a?(String) ? tag_ids.split(",").map(&:to_i) : Array(tag_ids)
     joins(:tags)
       .where(tags: {id: tag_ids})
       .group("recipes.id")
