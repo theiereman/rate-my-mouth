@@ -101,10 +101,4 @@ class Recipe < ApplicationRecord
   def commenters
     comments.includes(:user).map(&:user).uniq
   end
-
-  private
-
-  def filtering_params
-    params.slice(:name, :user_id, :tag_ids)
-  end
 end

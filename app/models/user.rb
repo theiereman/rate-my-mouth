@@ -1,4 +1,8 @@
 class User < ApplicationRecord
+  include Filterable
+
+  scope :filter_by_username, ->(username) { where("users.username LIKE ?", "%#{username}%") }
+
   devise :database_authenticatable, :registerable,
     :recoverable, :rememberable, :validatable
 

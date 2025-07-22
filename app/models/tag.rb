@@ -1,4 +1,8 @@
 class Tag < ApplicationRecord
+  include Filterable
+
+  scope :filter_by_name, ->(name) { where("tags.name LIKE ?", "%#{name}%") }
+
   has_many :recipe_tags, dependent: :destroy
   has_many :recipes, through: :recipe_tags
 

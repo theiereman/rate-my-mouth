@@ -1,7 +1,7 @@
 module Filterable
   extend ActiveSupport::Concern
 
-  # model should have filter_by_ scopes and filtering_params method
+  # model should have filter_by_ scopes
 
   class_methods do
     def filter(filtering_params)

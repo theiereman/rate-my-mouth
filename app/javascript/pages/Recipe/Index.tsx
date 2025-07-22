@@ -1,52 +1,62 @@
 import { router } from "@inertiajs/react";
 import { RecipeType } from "@customTypes/recipe.types";
 import RecipeShort from "@components/Recipes/RecipeShortItem";
-import UserSelector from "@components/Users/UserSelector";
 import { LinkButton, Input, Pagination, Combo } from "@components/ui";
-import { useEffect, useMemo, useState } from "react";
-import { debounce } from "lodash";
-import TagsSelector from "@components/Tags/TagsSelector";
+import { useEffect, useState } from "react";
 import { PagyMetadata } from "@components/ui/Pagination";
 import Page from "@components/ui/Pages/Page";
 import Section from "@components/ui/Pages/Section";
+import { useDebouncedCallback } from "use-debounce";
+import { UserType } from "@customTypes/user.types";
+import axios from "axios";
+import EmptyPlaceholder from "@components/ui/EmptyPlaceholder";
+import { usePersistantState } from "@hooks/usePersistantState";
+import { TagType } from "@customTypes/tag.types";
 
-interface IndexProps {
+export default function Index({
+  recipes,
+  pagy,
+}: {
   recipes: RecipeType[];
   pagy: PagyMetadata;
-}
+}) {
+  const [searchQuery, setSearchQuery] = usePersistantState<string>(
+    "",
+    "recipe-index-search-query",
+  );
 
-export default function Index({ recipes, pagy }: IndexProps) {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
-  const [selectedTagIds, setSelectedTagIds] = useState<number[]>([]);
+  const [tags, setTags] = usePersistantState<TagType[]>(
+    [],
+    "recipe-index-tags",
+  );
+  const [selectedTagIds, setSelectedTagIds] = usePersistantState<number[]>(
+    [],
+    "recipe-index-selected-tags",
+  );
+
+  const [selectedUserId, setSelectedUserId] = usePersistantState<number | null>(
+    null,
+    "recipe-index-selected-user",
+  );
+  const [users, setUsers] = usePersistantState<UserType[]>(
+    [],
+    "recipe-index-users",
+  );
+
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    // Récupérer les paramètres de l'URL
-    const params = new URLSearchParams(window.location.search);
-
-    const query = params.get("name") || "";
-    const userId = params.get("user_id");
-    const tags = params.getAll("tags_ids[]");
-
-    // Initialiser les états avec les valeurs des paramètres
-    setSearchQuery(query);
-    setSelectedUserId(userId ? parseInt(userId, 10) : null);
-    setSelectedTagIds(tags.map((tag) => parseInt(tag)));
+    if (users.length == 0) initUsers();
+    if (tags.length == 0) initTags();
   }, []);
 
-  const search = (
-    name?: string,
-    user_id?: number | null,
-    tags_ids?: number[],
-  ) => {
-    setIsLoading(true);
-
+  const debouncedQuery = useDebouncedCallback(() => {
     const params: { name?: string; user_id?: number; tags_ids?: number[] } = {};
 
-    if (name?.trim()) params.name = name;
-    if (user_id) params.user_id = user_id;
-    if (tags_ids && tags_ids.length > 0) params.tags_ids = tags_ids;
+    if (searchQuery?.trim()) params.name = searchQuery;
+    if (selectedUserId) params.user_id = selectedUserId;
+    if (selectedTagIds && selectedTagIds.length > 0)
+      params.tags_ids = selectedTagIds;
 
     router.get("/recipes", params, {
       preserveState: true,
@@ -54,32 +64,20 @@ export default function Index({ recipes, pagy }: IndexProps) {
       onSuccess: () => setIsLoading(false),
       onError: () => setIsLoading(false),
     });
+  }, 500);
+
+  const initTags = () => searchTags("");
+  const searchTags = async (value: string) => {
+    const response = await axios.get(`/tags${value ? `?name=${value}` : ""}`);
+    setTags(response.data.tags);
   };
 
-  const debouncedSearch = useMemo(() => debounce(search, 500), []);
-  useEffect(() => {
-    return () => {
-      debouncedSearch.cancel();
-    };
-  }, [debouncedSearch]);
-
-  const handleSearch = (query: string) => {
-    console.log(query);
-
-    setIsLoading(true);
-    setSearchQuery(query);
-    debouncedSearch(query, selectedUserId, selectedTagIds);
-  };
-
-  const handleUserSelected = (userId: number | null) => {
-    setSelectedUserId(userId);
-    search(searchQuery, userId, selectedTagIds);
-  };
-
-  const handleTagsSelected = (tags: { id?: number; name: string }[]) => {
-    const tagIds = tags.map((tag) => tag.id).filter(Boolean) as number[];
-    setSelectedTagIds(tagIds);
-    search(searchQuery, selectedUserId, tagIds);
+  const initUsers = () => searchUser("");
+  const searchUser = async (value: string) => {
+    const response = await axios.get(
+      `/users${value ? `?username=${value}` : ""}`,
+    );
+    setUsers(response.data.users);
   };
 
   return (
@@ -99,43 +97,50 @@ export default function Index({ recipes, pagy }: IndexProps) {
         >
           <Input
             label="Nom de la recette"
-            onChange={(e) => handleSearch(e.target.value)}
+            onChange={(e) => {
+              setIsLoading(true);
+              setSearchQuery(e.target.value);
+              debouncedQuery();
+            }}
             value={searchQuery}
           />
 
           <Combo
-            values={[
-              { value: "1", label: "ABC" },
-              { value: "2", label: "DEF" },
-            ]}
+            selectedValues={selectedUserId ? [selectedUserId] : undefined}
+            values={users.map((user) => ({
+              value: user.id,
+              label: user.username,
+            }))}
+            onSearchValueChange={useDebouncedCallback(searchUser, 500)}
+            onSelectedValue={(value) => {
+              setIsLoading(true);
+              setSelectedUserId(value?.value);
+              debouncedQuery();
+            }}
             label="Auteur de la recette"
           />
 
-          <UserSelector
-            initialUserId={selectedUserId ?? undefined}
-            onUserSelected={handleUserSelected}
-          />
-          <TagsSelector
-            maxTags={Infinity}
-            label=""
-            createNewTags={false}
-            initialTags={selectedTagIds.map((id) => ({ id, name: "" }))}
-            onTagsSelected={handleTagsSelected}
+          <Combo
+            label="Tags associés"
+            selectedValues={selectedTagIds}
+            values={tags.map((tag) => ({
+              value: tag.id,
+              label: `${tag.name} (${tag.recipes_count})`,
+            }))}
+            onSearchValueChange={useDebouncedCallback(searchTags, 500)}
+            onSelectedValue={(value) => {
+              setIsLoading(true);
+              setSelectedTagIds([value?.value]);
+              debouncedQuery();
+            }}
           />
         </Section>
 
         {recipes.length === 0 ? (
-          <div className="rounded-lg border border-neutral-200 bg-neutral-50 py-12 text-center">
-            <h3 className="mb-2 text-lg font-medium text-neutral-800">
-              Aucune recette disponible
-            </h3>
-            <p className="mb-4 text-neutral-600">
-              Soyez le premier à partager une recette délicieuse !
-            </p>
-            <LinkButton href="/recipes/new" variant="primary">
-              Ajouter une recette
-            </LinkButton>
-          </div>
+          <EmptyPlaceholder
+            text="Aucune recette disponible"
+            subtext="Soyez le premier à partager une nouvelle recette !"
+          />
         ) : (
           <div className="animate-fade-in grid grid-cols-1 gap-6">
             {recipes.map((recipe) => (
@@ -143,6 +148,7 @@ export default function Index({ recipes, pagy }: IndexProps) {
             ))}
           </div>
         )}
+
         {pagy && <Pagination className="mt-8" pagy={pagy}></Pagination>}
       </div>
     </Page>
