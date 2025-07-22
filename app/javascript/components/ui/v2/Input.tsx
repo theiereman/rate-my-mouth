@@ -7,10 +7,7 @@ type InputProps = InputHTMLAttributes<HTMLInputElement> & {
 
 export default function Input({
   label,
-  value,
   error,
-  className,
-  onChange,
   ...props
 }: InputProps) {
   const inputId = useId();
@@ -27,7 +24,7 @@ export default function Input({
       )}
       <input
         id={inputId}
-        className={`focus:border-accent-400 border-primary-900 border-3 p-1 ring-0 focus:border-3 ${className}`}
+        className={`focus:border-accent-400 border-primary-900 border-3 p-1 ring-0 focus:border-3 ${props.className}`}
         {...props}
       />
       {error && (

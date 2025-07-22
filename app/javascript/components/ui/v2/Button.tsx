@@ -24,7 +24,7 @@ export default function Button({
 }: ButtonProps) {
   return (
     <button
-      className={`${className} ${getVariantClasses(variant)} cursor-pointer uppercase transition-colors`}
+      className={`${className} ${props.disabled ? "opacity-60 cursor-default" : "" } ${getVariantClasses(variant)} cursor-pointer uppercase transition-colors`}
       {...props}
     >
       {children}

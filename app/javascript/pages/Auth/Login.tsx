@@ -30,6 +30,7 @@ export default function Login({ flash }: PageProps) {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     form.transform((data) => ({
       user: data,
     }));
@@ -45,8 +46,6 @@ export default function Login({ flash }: PageProps) {
           <Input
             label="Email"
             type="email"
-            id="email"
-            name="email"
             value={data.email}
             onChange={(e) => setData("email", e.target.value)}
             error={errors.email}
@@ -59,8 +58,6 @@ export default function Login({ flash }: PageProps) {
           <Input
             label="Mot de passe"
             type="password"
-            id="password"
-            name="password"
             value={data.password}
             onChange={(e) => setData("password", e.target.value)}
             error={errors.password}
@@ -87,10 +84,8 @@ export default function Login({ flash }: PageProps) {
 
         <Button
           type="submit"
-          variant="primary"
-          fullWidth
           disabled={processing}
-          isLoading={processing}
+          className="w-full"
         >
           Se connecter
         </Button>
