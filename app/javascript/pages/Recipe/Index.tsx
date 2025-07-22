@@ -41,7 +41,7 @@ export default function Index({
     if (tags.length == 0) initTags();
   }, []);
 
-  const debouncedQuery = useDebouncedCallback(() => {
+  const fetchRecipes = useDebouncedCallback(() => {
     const params: { name?: string; user_id?: number; tags_ids?: number[] } = {};
 
     if (searchQuery?.trim()) params.name = searchQuery;
@@ -52,8 +52,7 @@ export default function Index({
     router.get("/recipes", params, {
       preserveState: true,
       preserveScroll: true,
-      onSuccess: () => setIsLoading(false),
-      onError: () => setIsLoading(false),
+      onFinish: () => setIsLoading(false),
     });
   }, 500);
 
@@ -69,6 +68,12 @@ export default function Index({
       `/users${value ? `?username=${value}` : ""}`,
     );
     setUsers(response.data.users);
+  };
+
+  const handleValueChange = (fn: (...args: any) => void) => {
+    setIsLoading(true);
+    fn();
+    fetchRecipes();
   };
 
   return (
@@ -89,9 +94,7 @@ export default function Index({
           <Input
             label="Nom de la recette"
             onChange={(e) => {
-              setIsLoading(true);
-              setSearchQuery(e.target.value);
-              debouncedQuery();
+              handleValueChange(() => setSearchQuery(e.target.value));
             }}
             value={searchQuery}
           />
@@ -108,9 +111,7 @@ export default function Index({
             }))}
             onSearchValueChange={useDebouncedCallback(searchUser, 500)}
             onSelectedValue={(value) => {
-              setIsLoading(true);
-              setSelectedUser(value?.value);
-              debouncedQuery();
+              handleValueChange(() => setSelectedUser(value?.value));
             }}
             label="Auteur de la recette"
           />
@@ -127,19 +128,19 @@ export default function Index({
             }))}
             onSearchValueChange={useDebouncedCallback(searchTags, 500)}
             onSelectedValue={(value) => {
-              setIsLoading(true);
-              setSelectedTags([
-                ...selectedTags,
-                tags.find((tag) => tag.id === value?.value)!,
-              ]);
-              debouncedQuery();
+              handleValueChange(() =>
+                setSelectedTags([
+                  ...selectedTags,
+                  tags.find((tag) => tag.id === value?.value)!,
+                ]),
+              );
             }}
             onSelectedValueRemove={(value) => {
-              setIsLoading(true);
-              setSelectedTags(
-                selectedTags.filter((tag) => tag.id !== value.value),
+              handleValueChange(() =>
+                setSelectedTags(
+                  selectedTags.filter((tag) => tag.id !== value.value),
+                ),
               );
-              debouncedQuery();
             }}
           />
         </Section>
