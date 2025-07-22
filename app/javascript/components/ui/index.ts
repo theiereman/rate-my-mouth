@@ -4,7 +4,7 @@ export { default as LinkButton } from "./v2/LinkButton";
 export { default as Button } from "./v2/Button";
 export type { ButtonProps } from "./v2/Button";
 export { default as Card } from "./Card";
-export { default as Combo } from "./Combo";
+export { default as Combo } from "./v2/Combo";
 export type { ComboValue } from "./Combo";
 export { default as Footer } from "./Footer";
 export { default as Input } from "./v2/Input";

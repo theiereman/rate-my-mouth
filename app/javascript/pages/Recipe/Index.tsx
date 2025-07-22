@@ -2,7 +2,7 @@ import { router } from "@inertiajs/react";
 import { RecipeType } from "@customTypes/recipe.types";
 import RecipeShort from "@components/Recipes/RecipeShortItem";
 import UserSelector from "@components/Users/UserSelector";
-import { LinkButton, Input, Pagination } from "@components/ui";
+import { LinkButton, Input, Pagination, Combo } from "@components/ui";
 import { useEffect, useMemo, useState } from "react";
 import { debounce } from "lodash";
 import TagsSelector from "@components/Tags/TagsSelector";
@@ -38,7 +38,7 @@ export default function Index({ recipes, pagy }: IndexProps) {
   const search = (
     name?: string,
     user_id?: number | null,
-    tags_ids?: number[]
+    tags_ids?: number[],
   ) => {
     setIsLoading(true);
 
@@ -64,6 +64,8 @@ export default function Index({ recipes, pagy }: IndexProps) {
   }, [debouncedSearch]);
 
   const handleSearch = (query: string) => {
+    console.log(query);
+
     setIsLoading(true);
     setSearchQuery(query);
     debouncedSearch(query, selectedUserId, selectedTagIds);
@@ -82,14 +84,10 @@ export default function Index({ recipes, pagy }: IndexProps) {
 
   return (
     <Page
-      title="Recettes"
+      title="Index des recettes"
       subtitle="Découvrez les dernières recettes et partagez vos recettes favorites !"
       additionnalHeaderContent={
-        <LinkButton
-          href="/recipes/new"
-          variant="primary"
-          className="w-full sm:w-auto"
-        >
+        <LinkButton href="/recipes/new" className="w-full sm:w-auto">
           Nouvelle recette
         </LinkButton>
       }
@@ -100,16 +98,17 @@ export default function Index({ recipes, pagy }: IndexProps) {
           childrenClassName="grid grid-cols-1 mb-6 md:mb-2 md:grid-cols-3 md:gap-4"
         >
           <Input
-            placeholder="Rechercher une recette..."
+            label="Nom de la recette"
             onChange={(e) => handleSearch(e.target.value)}
             value={searchQuery}
-            rightIcon={
-              isLoading ? (
-                <span className="material-symbols-outlined text-primary-600 animate-spin">
-                  progress_activity
-                </span>
-              ) : undefined
-            }
+          />
+
+          <Combo
+            values={[
+              { value: "1", label: "ABC" },
+              { value: "2", label: "DEF" },
+            ]}
+            label="Auteur de la recette"
           />
 
           <UserSelector
@@ -126,11 +125,11 @@ export default function Index({ recipes, pagy }: IndexProps) {
         </Section>
 
         {recipes.length === 0 ? (
-          <div className="text-center py-12 bg-neutral-50 rounded-lg border border-neutral-200">
-            <h3 className="text-lg font-medium text-neutral-800 mb-2">
+          <div className="rounded-lg border border-neutral-200 bg-neutral-50 py-12 text-center">
+            <h3 className="mb-2 text-lg font-medium text-neutral-800">
               Aucune recette disponible
             </h3>
-            <p className="text-neutral-600 mb-4">
+            <p className="mb-4 text-neutral-600">
               Soyez le premier à partager une recette délicieuse !
             </p>
             <LinkButton href="/recipes/new" variant="primary">
@@ -138,7 +137,7 @@ export default function Index({ recipes, pagy }: IndexProps) {
             </LinkButton>
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-6 animate-fade-in">
+          <div className="animate-fade-in grid grid-cols-1 gap-6">
             {recipes.map((recipe) => (
               <RecipeShort key={recipe.id} recipe={recipe} />
             ))}

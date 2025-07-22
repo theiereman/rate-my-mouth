@@ -21,12 +21,12 @@ export default function Page({
       <Head title={title} />
 
       {title && (
-        <div className="flex flex-col sm:flex-row gap-4 justify-between items-center xs:items-center">
+        <div className="xs:items-center flex flex-col items-center justify-between gap-4 sm:flex-row">
           <div>
-            <h1 className="text-4xl font-bold text-neutral-800 font-serif">
+            <h1 className="text-3xl font-bold text-neutral-800 uppercase">
               {title}
             </h1>
-            <p className="text-neutral-600">{subtitle}</p>
+            <p className="text-primary-900/60 font-light">{subtitle}</p>
           </div>
 
           {additionnalHeaderContent}
