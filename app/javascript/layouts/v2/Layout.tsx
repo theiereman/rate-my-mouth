@@ -1,11 +1,10 @@
-import Navbar from "../components/navbar/v2/Navbar";
 import { PageProps } from "@customTypes/usepage-props.types";
 import { Footer } from "@components/ui";
-import { useToast } from "../contexts/ToastProvider";
 import { usePage } from "@inertiajs/react";
 import { useEffect } from "react";
 import axios from "axios";
 import Logo from "@components/ui/Logo";
+import { useToast } from "@contexts/ToastProvider";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const { flash } = usePage<PageProps>().props;
@@ -34,17 +33,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
   }, [csrf_token]);
 
   return (
-    <div className="relative flex min-h-screen flex-col">
+    <div className="relative flex h-screen flex-col items-stretch overflow-hidden">
       <Logo className="pointer-events-none absolute -right-1/8 -bottom-1/5 size-7/10 rotate-10 fill-current opacity-5" />
-      <div className="bg-background sticky top-0 z-10 p-2 px-4">
-        <Navbar />
-      </div>
 
-      <main className="relative flex-grow">
-        <div className="animate-fade-in mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
-          {children}
-        </div>
-      </main>
+      <div className="flex-1 overflow-auto p-4">{children}</div>
 
       <Footer />
     </div>

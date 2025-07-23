@@ -1,14 +1,13 @@
 import { LinkButton } from "@components/ui";
-import Logo from "@components/ui/Logo";
 
 export default function Home() {
   return (
-    <div className="text-primary-900 relative z-10 flex min-h-screen flex-col justify-between overflow-hidden px-4 pb-4 lg:flex-row">
+    <div className="text-primary-900 relative z-10 flex h-full flex-1 flex-col justify-between overflow-hidden lg:flex-row">
       <div>
-        <h1 className="text-8xl font-black lg:text-[164px]/40">
+        <h1 className="text-7xl font-black lg:text-[164px]/40">
           RATE<br></br>MY<br></br>MOUTH
         </h1>
-        <h2 className="text-4xl font-light uppercase lg:text-6xl">
+        <h2 className="text-3xl font-light uppercase lg:text-6xl">
           Transformez vos <br />
           recettes en XP
         </h2>
@@ -27,7 +26,6 @@ export default function Home() {
           S'inscrire
         </LinkButton>
       </div>
-      <Logo className="pointer-events-none absolute -right-1/8 -bottom-1/5 -z-10 size-9/10 rotate-20 fill-current opacity-5" />
     </div>
   );
 }
