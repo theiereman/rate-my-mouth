@@ -74,11 +74,6 @@ export default function Index({
     <Page
       title="Index des recettes"
       subtitle="Découvrez les dernières recettes et partagez vos recettes favorites !"
-      additionnalHeaderContent={
-        <LinkButton href="/recipes/new" className="w-full sm:w-auto">
-          Nouvelle recette
-        </LinkButton>
-      }
     >
       <Section title="Filtres" variant="ghost">
         <RecipeFilters

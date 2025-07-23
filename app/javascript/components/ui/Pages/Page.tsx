@@ -17,7 +17,7 @@ export default function Page({
   className = "",
 }: PageProps) {
   return (
-    <main className={`space-y-16 ${className}`}>
+    <main className={`space-y-8 ${className}`}>
       <Head title={title} />
 
       {title && (

@@ -16,7 +16,8 @@ export default function Navbar() {
   return (
     <nav className="divide-primary-900 flex w-full border-1">
       <div className="flex flex-1 divide-x-1">
-        <LinkButton href="/my_profile">Nouv. recette</LinkButton>
+        <LinkButton href="/recipes/new">Nouv. recette</LinkButton>
+
         {navItems.map((item) => (
           <LinkButton
             key={item.name}

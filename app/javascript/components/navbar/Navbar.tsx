@@ -13,7 +13,7 @@ export default function Navbar() {
   const { url } = usePage();
 
   return (
-    <nav className="flex-1 flex font-serif">
+    <nav className="flex flex-1 font-serif">
       <div className="hidden md:flex">
         {navItems.map((item) =>
           url.startsWith(item.href) ? (
@@ -22,7 +22,7 @@ export default function Navbar() {
                 key={item.name}
                 href={item.href}
                 variant="ghost"
-                className="text-xl hidden md:block px-4! hover:scale-105! transition-transform! focus:ring-0! focus:ring-offset-0!"
+                className="hidden px-4! text-xl transition-transform! hover:scale-105! focus:ring-0! focus:ring-offset-0! md:block"
               >
                 {item.name}
               </LinkButton>
@@ -32,11 +32,11 @@ export default function Navbar() {
               key={item.name}
               href={item.href}
               variant="ghost"
-              className="text-xl hidden md:block px-4! hover:scale-105! transition-transform! focus:ring-0! focus:ring-offset-0!"
+              className="hidden px-4! text-xl transition-transform! hover:scale-105! focus:ring-0! focus:ring-offset-0! md:block"
             >
               {item.name}
             </LinkButton>
-          )
+          ),
         )}
       </div>
 
@@ -44,7 +44,7 @@ export default function Navbar() {
       <div className="md:hidden">
         <button
           type="button"
-          className="text-neutral-600 hover:text-primary-600 flex"
+          className="hover:text-primary-600 flex text-neutral-600"
           onClick={() => setIsOpen(!isOpen)}
         >
           {isOpen ? (
@@ -61,13 +61,13 @@ export default function Navbar() {
 
       {/* Mobile navigation menu */}
       {isOpen && (
-        <div className="md:hidden absolute top-16 inset-x-0 z-10 bg-white shadow-lg rounded-b-lg animate-slide-in">
-          <ul className="flex flex-col p-4 space-y-3">
+        <div className="animate-slide-in absolute inset-x-0 top-16 z-10 rounded-b-lg bg-white shadow-lg md:hidden">
+          <ul className="flex flex-col space-y-3 p-4">
             {navItems.map((item) => (
               <li key={item.name}>
                 <Link
                   href={item.href}
-                  className={`text-xl block px-4 py-2 text-neutral-600 hover:text-primary-600 hover:bg-neutral-50 rounded-md transition-colors duration-200`}
+                  className={`hover:text-primary-600 block rounded-md px-4 py-2 text-xl text-neutral-600 transition-colors duration-200 hover:bg-neutral-50`}
                   onClick={() => setIsOpen(false)}
                 >
                   {item.name}
