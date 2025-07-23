@@ -1,16 +1,18 @@
 import { router } from "@inertiajs/react";
 import { RecipeType } from "@customTypes/recipe.types";
 import RecipeShort from "@components/Recipes/RecipeShortItem";
-import { LinkButton, Input, Pagination, Combo } from "@components/ui";
+import { LinkButton, Pagination } from "@components/ui";
 import { useEffect, useState } from "react";
 import { PagyMetadata } from "@components/ui/Pagination";
 import Page from "@components/ui/Pages/Page";
 import Section from "@components/ui/Pages/Section";
 import { useDebouncedCallback } from "use-debounce";
 import { UserType } from "@customTypes/user.types";
-import axios from "axios";
 import EmptyPlaceholder from "@components/ui/EmptyPlaceholder";
 import { TagType } from "@customTypes/tag.types";
+import RecipeFilters from "@components/Recipe/RecipeFilters";
+import { useRecipeFilters } from "@hooks/useRecipeFilters";
+import { useUrlParams } from "@hooks/useUrlParams";
 
 export default function Index({
   recipes,
@@ -20,63 +22,43 @@ export default function Index({
   pagy: PagyMetadata;
 }) {
   const [searchQuery, setSearchQuery] = useState<string>("");
-
-  const [tags, setTags] = useState<TagType[]>([]);
   const [selectedTags, setSelectedTags] = useState<TagType[]>([]);
-  const nonSelectedTags = tags.filter(
-    (tag) => !selectedTags.some((t) => t.id === tag.id),
-  );
-
   const [selectedUser, setSelectedUser] = useState<UserType | null>(null);
-  const [users, setUsers] = useState<UserType[]>([]);
-
-  const urlParams = new URLSearchParams(window.location.search);
-
-  const [isLoadingUsers, setIsLoadingUsers] = useState(false);
-  const [isLoadingTags, setIsLoadingTags] = useState(false);
   const [isLoadingRecipes, setIsLoadingRecipes] = useState(false);
+
+  const {
+    tags,
+    users,
+    isLoadingTags,
+    isLoadingUsers,
+    errors,
+    searchTags,
+    searchUsers,
+    initTags,
+    initUsers,
+  } = useRecipeFilters();
+
+  const { initFromUrl } = useUrlParams({
+    onQueryInit: setSearchQuery,
+    onUserInit: setSelectedUser,
+    onTagsInit: setSelectedTags,
+  });
 
   useEffect(() => {
     initUsers();
     initTags();
-    initQueryFromUrl();
-    initSelectedTagsFromUrl();
-    initSelectedUserFromUrl();
+    initFromUrl();
   }, []);
-
-  //TODO : handle errors and display them under appropriate inputs
-
-  const initQueryFromUrl = () => {
-    const query = urlParams.get("name") || "";
-    setSearchQuery(query);
-  };
-
-  const initSelectedUserFromUrl = async () => {
-    const userId = urlParams.get("user_id");
-    if (userId) {
-      const response = await axios.get(`/users/by_id?id=${userId}`);
-      if (response.data.user) {
-        setSelectedUser(response.data.user);
-      }
-    }
-  };
-
-  const initSelectedTagsFromUrl = async () => {
-    const tagsIds = urlParams.get("tags_ids");
-    if (tagsIds) {
-      const response = await axios.get(`/tags/by_ids?ids=${tagsIds}`);
-      setSelectedTags(response.data.tags);
-    }
-  };
 
   const fetchRecipes = useDebouncedCallback(() => {
     const params: { name?: string; user_id?: number; tags_ids?: string } = {};
 
     if (searchQuery?.trim()) params.name = searchQuery;
     if (selectedUser) params.user_id = selectedUser.id;
-    if (selectedTags && selectedTags.length > 0)
+    if (selectedTags.length > 0)
       params.tags_ids = selectedTags.map((tag) => tag.id).join(",");
 
+    setIsLoadingRecipes(true);
     router.get("/recipes", params, {
       preserveState: true,
       preserveScroll: true,
@@ -84,32 +66,7 @@ export default function Index({
     });
   }, 500);
 
-  const initTags = () => searchTags("");
-  const searchTags = async (value: string) => {
-    const response = await axios.get(`/tags${value ? `?name=${value}` : ""}`);
-    setIsLoadingTags(false);
-    setTags(response.data.tags);
-  };
-
-  const initUsers = () => searchUser("");
-  const searchUser = async (value: string) => {
-    const response = await axios.get(
-      `/users${value ? `?username=${value}` : ""}`,
-    );
-    setIsLoadingUsers(false);
-    setUsers(response.data.users);
-  };
-
-  const debouncedSearchUser = useDebouncedCallback((value: string) => {
-    searchUser(value);
-  }, 500);
-
-  const debouncedSearchTags = useDebouncedCallback((value: string) => {
-    searchTags(value);
-  }, 500);
-
   useEffect(() => {
-    setIsLoadingRecipes(true);
     fetchRecipes();
   }, [searchQuery, selectedUser, selectedTags]);
 
@@ -124,79 +81,21 @@ export default function Index({
       }
     >
       <div>
-        <Section
-          title="Filtres"
-          childrenClassName="grid grid-cols-1 mb-6 md:mb-2 md:grid-cols-3 md:gap-4"
-        >
-          <Input
-            label="Nom de la recette"
-            onChange={(e) => {
-              setSearchQuery(e.target.value);
-            }}
-            value={searchQuery}
-          />
-
-          <Combo
-            label="Auteur de la recette"
-            rightIcon={
-              isLoadingUsers ? (
-                <span className="material-symbols-outlined animate-spin">
-                  progress_activity
-                </span>
-              ) : undefined
-            }
-            values={users.map((user) => ({
-              value: user.id,
-              label: user.username,
-            }))}
-            selectedValue={
-              selectedUser
-                ? { value: selectedUser.id, label: selectedUser.username }
-                : undefined
-            }
-            onSearchValueChange={(value) => {
-              setIsLoadingUsers(true);
-              debouncedSearchUser(value);
-            }}
-            onSelectedValue={(value) => {
-              setSelectedUser(
-                users.find((user) => user.id === value?.value) || null,
-              );
-            }}
-          />
-
-          <Combo
-            label="Tags associés"
-            rightIcon={
-              isLoadingTags ? (
-                <span className="material-symbols-outlined animate-spin">
-                  progress_activity
-                </span>
-              ) : undefined
-            }
-            selectedValue={selectedTags?.map((tag) => ({
-              value: tag.id,
-              label: tag.name,
-            }))}
-            values={nonSelectedTags.map((tag) => ({
-              value: tag.id,
-              label: `${tag.name} (${tag.recipes_count})`,
-            }))}
-            onSearchValueChange={(value) => {
-              setIsLoadingTags(true);
-              debouncedSearchTags(value);
-            }}
-            onSelectedValue={(value) => {
-              setSelectedTags((prev) => [
-                ...prev,
-                tags.find((tag) => tag.id === value?.value)!,
-              ]);
-            }}
-            onSelectedValueRemove={(value) => {
-              setSelectedTags((prev) =>
-                prev.filter((tag) => tag.id !== value.value),
-              );
-            }}
+        <Section title="Filtres" childrenClassName="">
+          <RecipeFilters
+            searchQuery={searchQuery}
+            onSearchQueryChange={setSearchQuery}
+            selectedUser={selectedUser}
+            onSelectedUserChange={setSelectedUser}
+            selectedTags={selectedTags}
+            onSelectedTagsChange={setSelectedTags}
+            users={users}
+            tags={tags}
+            isLoadingUsers={isLoadingUsers}
+            isLoadingTags={isLoadingTags}
+            onSearchUsers={searchUsers}
+            onSearchTags={searchTags}
+            errors={errors}
           />
         </Section>
 

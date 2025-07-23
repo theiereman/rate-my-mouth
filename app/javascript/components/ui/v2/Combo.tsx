@@ -1,8 +1,8 @@
 import { Badge, Input } from "@components/ui";
-import { InputHTMLAttributes, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { InputProps } from "./Input";
 
-interface ComboValue {
+export interface ComboValue {
   value: any;
   label: string;
 }
