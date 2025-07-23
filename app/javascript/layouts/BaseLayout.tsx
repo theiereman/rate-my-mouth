@@ -33,13 +33,15 @@ export function BaseLayout({ children }: { children: React.ReactNode }) {
   }, [csrf_token]);
 
   return (
-    <div className="relative flex h-screen flex-col items-stretch overflow-hidden">
-      <Logo className="pointer-events-none absolute -right-1/8 -bottom-1/5 size-7/10 rotate-10 fill-current opacity-5" />
+    <>
+      <div className="pointer-events-none fixed top-0 left-0 flex h-dvh w-screen flex-col items-stretch overflow-hidden">
+        <Logo className="absolute -right-1/8 -bottom-1/5 size-9/10 rotate-10 fill-current opacity-3" />
+      </div>
 
-      <div className="flex h-full flex-col overflow-auto">
+      <div className="flex h-full flex-col">
         <div className="flex-1">{children}</div>
         <Footer />
       </div>
-    </div>
+    </>
   );
 }

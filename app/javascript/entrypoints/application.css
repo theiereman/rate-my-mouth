@@ -88,6 +88,10 @@ body {
   background-color: var(--color-background);
 }
 
+#app {
+  height: 100%;
+}
+
 .material-icon--sm {
   font-size: 1.2em !important;
 }
