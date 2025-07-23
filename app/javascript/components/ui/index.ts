@@ -1,5 +1,4 @@
-export { Badge } from "./Badge";
-export type { BadgeVariant } from "./Badge";
+export { default as Badge } from "./v2/Badge";
 export { default as LinkButton } from "./v2/LinkButton";
 export { default as Button } from "./v2/Button";
 export type { ButtonProps } from "./v2/Button";

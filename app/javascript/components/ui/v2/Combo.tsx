@@ -111,9 +111,13 @@ export default function Combo({
                 onSelectedValueRemove && onSelectedValueRemove(cbVal);
               }}
               key={cbVal.value}
-              text={cbVal.label}
-              className="mt-2 mr-2 inline-block"
-            />
+              className="group mt-2 mr-2 inline-block hover:border-red-600 hover:text-red-600"
+            >
+              <div className="flex gap-1">
+                {cbVal.label}
+                <span className="hidden group-hover:block">x</span>
+              </div>
+            </Badge>
           );
         })}
     </div>
