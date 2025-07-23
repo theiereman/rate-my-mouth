@@ -38,7 +38,7 @@ export default function RecipeFilters({
   );
 
   return (
-    <div className="mb-6 grid grid-cols-1 md:mb-2 md:grid-cols-3 md:gap-4">
+    <div className="grid grid-cols-1 gap-2 md:grid-cols-3 md:gap-4">
       <Input
         label="Nom de la recette"
         onChange={(e) => onSearchQueryChange(e.target.value)}

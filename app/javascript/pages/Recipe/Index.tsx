@@ -5,7 +5,7 @@ import { LinkButton, Pagination } from "@components/ui";
 import { useEffect, useState } from "react";
 import { PagyMetadata } from "@components/ui/Pagination";
 import Page from "@components/ui/Pages/Page";
-import Section from "@components/ui/Pages/Section";
+import { Section } from "@components/ui";
 import { useDebouncedCallback } from "use-debounce";
 import { UserType } from "@customTypes/user.types";
 import EmptyPlaceholder from "@components/ui/EmptyPlaceholder";
@@ -80,47 +80,45 @@ export default function Index({
         </LinkButton>
       }
     >
-      <div>
-        <Section title="Filtres" childrenClassName="">
-          <RecipeFilters
-            searchQuery={searchQuery}
-            onSearchQueryChange={setSearchQuery}
-            selectedUser={selectedUser}
-            onSelectedUserChange={setSelectedUser}
-            selectedTags={selectedTags}
-            onSelectedTagsChange={setSelectedTags}
-            users={users}
-            tags={tags}
-            isLoadingUsers={isLoadingUsers}
-            isLoadingTags={isLoadingTags}
-            onSearchUsers={searchUsers}
-            onSearchTags={searchTags}
-            errors={errors}
-          />
-        </Section>
+      <Section title="Filtres" variant="ghost">
+        <RecipeFilters
+          searchQuery={searchQuery}
+          onSearchQueryChange={setSearchQuery}
+          selectedUser={selectedUser}
+          onSelectedUserChange={setSelectedUser}
+          selectedTags={selectedTags}
+          onSelectedTagsChange={setSelectedTags}
+          users={users}
+          tags={tags}
+          isLoadingUsers={isLoadingUsers}
+          isLoadingTags={isLoadingTags}
+          onSearchUsers={searchUsers}
+          onSearchTags={searchTags}
+          errors={errors}
+        />
+      </Section>
 
-        {isLoadingRecipes ? (
-          <div className="text-primary-900 mt-8 flex flex-col items-center gap-2">
-            <span className="text-lg">Chargement des recettes...</span>
-            <span className="material-symbols-outlined animate-spin">
-              progress_activity
-            </span>
-          </div>
-        ) : recipes.length === 0 ? (
-          <EmptyPlaceholder
-            text="Aucune recette disponible"
-            subtext="Soyez le premier à partager une nouvelle recette !"
-          />
-        ) : (
-          <div className="animate-fade-in grid grid-cols-1 gap-6">
-            {recipes.map((recipe) => (
-              <RecipeShort key={recipe.id} recipe={recipe} />
-            ))}
-          </div>
-        )}
+      {isLoadingRecipes ? (
+        <div className="text-primary-900 mt-8 flex flex-col items-center gap-2">
+          <span className="text-lg">Chargement des recettes...</span>
+          <span className="material-symbols-outlined animate-spin">
+            progress_activity
+          </span>
+        </div>
+      ) : recipes.length === 0 ? (
+        <EmptyPlaceholder
+          text="Aucune recette disponible"
+          subtext="Soyez le premier à partager une nouvelle recette !"
+        />
+      ) : (
+        <div className="animate-fade-in grid grid-cols-1 gap-6">
+          {recipes.map((recipe) => (
+            <RecipeShort key={recipe.id} recipe={recipe} />
+          ))}
+        </div>
+      )}
 
-        {pagy && <Pagination className="mt-8" pagy={pagy}></Pagination>}
-      </div>
+      {pagy && <Pagination className="mt-8" pagy={pagy}></Pagination>}
     </Page>
   );
 }

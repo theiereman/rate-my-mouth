@@ -11,3 +11,4 @@ export { Pagination, CustomPagination } from "./Pagination";
 export { default as TextArea } from "./TextArea";
 export { default as Toast } from "./Toast";
 export { default as UnderlineText } from "./UnderlineText";
+export { default as Section } from "./v2/Section";
