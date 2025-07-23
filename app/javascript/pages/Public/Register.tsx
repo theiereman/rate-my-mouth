@@ -1,12 +1,8 @@
 import { useForm, Link } from "@inertiajs/react";
-import { FormEvent, useState, useEffect } from "react";
+import { FormEvent } from "react";
 import { Input, Button } from "@components/ui";
-import { PageProps } from "@customTypes/usepage-props.types";
-import AuthLayout from "@layouts/AuthLayout";
 
-export default function Register({ flash }: PageProps) {
-  const [showAlert, setShowAlert] = useState(false);
-
+export default function Register() {
   const form = useForm<{
     email: string;
     username: string;
@@ -21,14 +17,6 @@ export default function Register({ flash }: PageProps) {
 
   const { data, setData, errors, processing, post } = form;
 
-  useEffect(() => {
-    if (flash?.alert) {
-      setShowAlert(true);
-    } else {
-      setShowAlert(false);
-    }
-  }, [flash?.alert]);
-
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     form.transform((data) => ({
@@ -37,14 +25,15 @@ export default function Register({ flash }: PageProps) {
     post("/users");
   };
 
-  const content = (
-    <div className="h-full flex flex-col justify-center items-stretch">
-      <h1 className="text-xl font-medium mb-4 text-neutral-800">
-        Créer un compte
-      </h1>
+  return (
+    <div className="mx-auto flex h-full max-w-sm flex-col justify-center gap-4">
+      <div>
+        <h1 className="text-4xl font-black">RATE MY MOUTH</h1>
+        <h2 className="text-2xl">Créer un nouveau compte</h2>
+      </div>
 
-      <form onSubmit={handleSubmit}>
-        <div className="mb-4">
+      <form className="space-y-4" onSubmit={handleSubmit}>
+        <div>
           <Input
             label="E-mail"
             type="email"
@@ -58,7 +47,7 @@ export default function Register({ flash }: PageProps) {
           />
         </div>
 
-        <div className="mb-4">
+        <div>
           <Input
             label="Nom d'utilisateur"
             type="text"
@@ -71,7 +60,7 @@ export default function Register({ flash }: PageProps) {
           />
         </div>
 
-        <div className="mb-4">
+        <div>
           <Input
             label={`Mot de passe (6 caractères minimum)`}
             type="password"
@@ -84,7 +73,7 @@ export default function Register({ flash }: PageProps) {
           />
         </div>
 
-        <div className="mb-6">
+        <div>
           <Input
             label="Confirmation de mot de passe"
             type="password"
@@ -97,24 +86,12 @@ export default function Register({ flash }: PageProps) {
           />
         </div>
 
-        <Button
-          type="submit"
-          variant="primary"
-          fullWidth
-          disabled={processing}
-          isLoading={processing}
-        >
+        <Button type="submit" className="w-full" disabled={processing}>
           S'inscrire
         </Button>
       </form>
 
-      {showAlert && flash?.alert && (
-        <div className="mt-4 p-3 bg-red-50 text-red-600 text-sm rounded-md">
-          {flash.alert}
-        </div>
-      )}
-
-      <div className="mt-4 text-sm">
+      <div className="text-sm">
         <Link
           href="/users/sign_in"
           className="text-primary-600 hover:text-primary-800 hover:underline"
@@ -124,9 +101,4 @@ export default function Register({ flash }: PageProps) {
       </div>
     </div>
   );
-
-  return <AuthLayout title="Inscription">{content}</AuthLayout>;
 }
-
-// Define the layout for the register page
-Register.layout = (page: React.ReactNode) => page;

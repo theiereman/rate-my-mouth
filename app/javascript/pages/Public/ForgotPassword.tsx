@@ -37,19 +37,20 @@ export default function ForgotPassword({ flash }: PageProps) {
     post("/users/password");
   };
 
-  const content = (
-    <div className="h-full flex flex-col justify-center items-stretch">
-      <h1 className="text-xl font-medium mb-4 text-neutral-800">
-        Mot de passe oublié ?
-      </h1>
+  return (
+    <div className="mx-auto flex h-full max-w-sm flex-col justify-center gap-4">
+      <div>
+        <h1 className="text-4xl font-black">RATE MY MOUTH</h1>
+        <h2 className="text-2xl">Mot de passe oublié ?</h2>
+      </div>
 
-      <p className="text-sm text-neutral-600 mb-6">
+      <p className="text-primary-900 justify text-sm">
         Entrez votre adresse e-mail et nous vous enverrons un lien pour
         réinitialiser votre mot de passe.
       </p>
 
-      <form onSubmit={handleSubmit}>
-        <div className="mb-4">
+      <form className="space-y-4" onSubmit={handleSubmit}>
+        <div>
           <Input
             label="Email"
             type="email"
@@ -63,25 +64,19 @@ export default function ForgotPassword({ flash }: PageProps) {
           />
         </div>
 
-        <Button
-          type="submit"
-          variant="primary"
-          fullWidth
-          disabled={processing}
-          isLoading={processing}
-        >
+        <Button type="submit" className="w-full" disabled={processing}>
           Envoyer le lien
         </Button>
       </form>
 
       {showAlert && flash?.alert && (
-        <div className="mt-4 p-3 bg-red-50 text-red-600 text-sm rounded-md">
+        <div className="mt-4 rounded-md bg-red-50 p-3 text-sm text-red-600">
           {flash.alert}
         </div>
       )}
 
       {showNotice && flash?.notice && (
-        <div className="mt-4 p-3 bg-green-50 text-green-600 text-sm rounded-md">
+        <div className="mt-4 rounded-md bg-green-50 p-3 text-sm text-green-600">
           {flash.notice}
         </div>
       )}
@@ -96,9 +91,4 @@ export default function ForgotPassword({ flash }: PageProps) {
       </div>
     </div>
   );
-
-  return <AuthLayout title="Mot de passe oublié">{content}</AuthLayout>;
 }
-
-// Define the layout for the forgot password page
-ForgotPassword.layout = (page: React.ReactNode) => page;

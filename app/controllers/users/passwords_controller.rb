@@ -2,7 +2,7 @@ class Users::PasswordsController < Devise::PasswordsController
   # GET /users/password/new
   def new
     # Utiliser Inertia pour rendre la page de récupération de mot de passe React
-    render inertia: "Auth/ForgotPassword"
+    render inertia: "Public/ForgotPassword"
   end
 
   # POST /users/password
@@ -16,7 +16,7 @@ class Users::PasswordsController < Devise::PasswordsController
       flash[:alert] = resource.errors.full_messages.join(", ")
     end
 
-    render inertia: "Auth/ForgotPassword"
+    render inertia: "Public/ForgotPassword"
   end
 
   # GET /users/password/edit?reset_password_token=abcdef

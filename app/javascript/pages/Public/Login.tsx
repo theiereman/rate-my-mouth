@@ -1,13 +1,8 @@
 import { useForm, Link } from "@inertiajs/react";
-import { FormEvent, useState, useEffect } from "react";
+import { FormEvent } from "react";
 import { Input, Button } from "@components/ui";
-import AuthLayout from "@layouts/AuthLayout";
-import logo from "../../assets/images/logo_full.svg";
-import { PageProps } from "@customTypes/usepage-props.types";
 
-export default function Login({ flash }: PageProps) {
-  const [showAlert, setShowAlert] = useState(false);
-
+export default function Login() {
   const form = useForm<{
     email: string;
     password: string;
@@ -20,14 +15,6 @@ export default function Login({ flash }: PageProps) {
 
   const { data, setData, errors, processing, post } = form;
 
-  useEffect(() => {
-    if (flash?.alert) {
-      setShowAlert(true);
-    } else {
-      setShowAlert(false);
-    }
-  }, [flash?.alert]);
-
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -37,12 +24,15 @@ export default function Login({ flash }: PageProps) {
     post("/users/sign_in");
   };
 
-  const content = (
-    <div className="h-full w-full flex flex-col items-stretch">
-      <img src={logo} alt="app logo" />
+  return (
+    <div className="mx-auto flex h-full max-w-sm flex-col justify-center gap-4">
+      <div>
+        <h1 className="text-4xl font-black">RATE MY MOUTH</h1>
+        <h2 className="text-2xl">Se connecter à votre compte</h2>
+      </div>
 
-      <form onSubmit={handleSubmit}>
-        <div className="mb-4">
+      <form className="space-y-4" onSubmit={handleSubmit}>
+        <div className="">
           <Input
             label="Email"
             type="email"
@@ -54,7 +44,7 @@ export default function Login({ flash }: PageProps) {
           />
         </div>
 
-        <div className="mb-4">
+        <div className="">
           <Input
             label="Mot de passe"
             type="password"
@@ -65,14 +55,14 @@ export default function Login({ flash }: PageProps) {
           />
         </div>
 
-        <div className="mb-4 flex items-center">
+        <div className="flex items-center">
           <input
             type="checkbox"
             id="remember_me"
             name="remember_me"
             checked={data.remember_me}
             onChange={(e) => setData("remember_me", e.target.checked)}
-            className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-neutral-300 rounded"
+            className="text-primary-600 focus:ring-primary-500 h-4 w-4 rounded border-neutral-300"
           />
           <label
             htmlFor="remember_me"
@@ -82,25 +72,15 @@ export default function Login({ flash }: PageProps) {
           </label>
         </div>
 
-        <Button
-          type="submit"
-          disabled={processing}
-          className="w-full"
-        >
+        <Button type="submit" disabled={processing} className="w-full">
           Se connecter
         </Button>
       </form>
 
-      {showAlert && flash?.alert && (
-        <div className="mt-4 p-3 bg-red-50 text-red-600 text-sm rounded-md">
-          {flash.alert}
-        </div>
-      )}
-
-      <div className="mt-4 text-sm flex flex-col">
+      <div className="mt-4 flex flex-col text-sm">
         <Link
           href="/users/password/new"
-          className="text-primary-600 hover:text-primary-800 hover:underline mr-4"
+          className="text-primary-600 hover:text-primary-800 mr-4 hover:underline"
         >
           Mot de passe oublié ?
         </Link>
@@ -113,9 +93,4 @@ export default function Login({ flash }: PageProps) {
       </div>
     </div>
   );
-
-  return <AuthLayout title="Connexion">{content}</AuthLayout>;
 }
-
-// Define the layout for the login page
-Login.layout = (page: React.ReactNode) => page;
