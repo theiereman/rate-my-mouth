@@ -5,7 +5,7 @@ import EmptyPlaceholder from "@components/ui/EmptyPlaceholder";
 import axios from "axios";
 import { useToast } from "@contexts/ToastProvider";
 import { PagyMetadata } from "@components/ui/Pagination";
-import { Button } from "@components/ui";
+import { Button, Section } from "@components/ui";
 import NavbarDropdown from "@components/ui/NavbarDropdown";
 
 export default function UserNotificationsDropdown() {
@@ -21,7 +21,7 @@ export default function UserNotificationsDropdown() {
   const hasReachedEnd = !pagyMetadata || pagyMetadata.next === null;
 
   const unreadNotifications: NotificationType[] = notifications.filter(
-    (n) => !n.read_at
+    (n) => !n.read_at,
   );
 
   const fetchUserNotifications = async (page: number = 1) => {
@@ -69,8 +69,8 @@ export default function UserNotificationsDropdown() {
       });
       setNotifications((prev) =>
         prev.map((n) =>
-          n.id === id ? { ...n, read_at: new Date().toISOString() } : n
-        )
+          n.id === id ? { ...n, read_at: new Date().toISOString() } : n,
+        ),
       );
     } catch (err) {
       showToast("Impossible de marquer la notification comme 'lue'", {
@@ -82,65 +82,68 @@ export default function UserNotificationsDropdown() {
   return (
     <NavbarDropdown
       buttonChildren={
-        <div className="relative flex">
-          <span className="material-symbols-outlined text-primary-600">
-            notifications
-          </span>
+        <div className="relative flex size-full items-center">
+          <span className="material-symbols-outlined">notifications</span>
           {notifications.filter((n) => !n.read_at).length > 0 && (
-            <div className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full size-4 flex items-center justify-center z-20">
+            <div className="absolute -top-1 -right-1 z-20 flex size-4 items-center justify-center rounded-full bg-red-500 text-xs font-light text-white">
               {notifications.filter((n) => !n.read_at).length}
             </div>
           )}
         </div>
       }
     >
-      <div>
-        <div className="flex text-sm items-center justify-between">
-          <h1 className="text-neutral-700">Historique des notifications</h1>
+      <Section
+        title="Notifications"
+        headerAction={
           <Button
             disabled={isLoading}
-            variant="ghost-primary"
-            className="text-xs p-0!"
+            variant="ghost"
             onClick={() => fetchUserNotifications(1)}
           >
-            Rafraîchir
+            <span className="material-symbols-outlined text-background hover:animate-spin">
+              refresh
+            </span>
           </Button>
-        </div>
+        }
+      >
         <Button
-          variant="ghost-primary"
-          className="text-xs p-0!"
+          variant="ghost"
+          className="mb-2 text-xs"
           onClick={handleMarkAllAsRead}
           disabled={unreadNotifications.length === 0}
         >
           Tout marquer comme lu
         </Button>
-      </div>
-      {isLoading && currentPage == 1 ? (
-        <EmptyPlaceholder
-          variant="ghost"
-          text="Chargement des notifications..."
-        ></EmptyPlaceholder>
-      ) : error ? (
-        <p className="text-error-600 text-sm">{error}</p>
-      ) : (
-        <>
-          <NotificationList
-            notifications={notifications}
-            handleMarkAsRead={handleMarkAsRead}
-          />
+        <div className="max-h-70 overflow-y-auto">
+          {isLoading && currentPage == 1 ? (
+            <EmptyPlaceholder
+              variant="ghost"
+              text="Chargement des notifications..."
+            ></EmptyPlaceholder>
+          ) : error ? (
+            <p className="text-error-600 text-sm">{error}</p>
+          ) : (
+            <>
+              <NotificationList
+                notifications={notifications}
+                handleMarkAsRead={handleMarkAsRead}
+              />
 
-          {notifications.length > 0 && (
-            <Button
-              variant="ghost-primary"
-              className="text-xs w-full"
-              disabled={hasReachedEnd || isNextPageLoading}
-              onClick={() => fetchUserNotifications(pagyMetadata?.next ?? 1)}
-            >
-              Charger plus{isNextPageLoading && "..."}
-            </Button>
+              {notifications.length > 0 && (
+                <Button
+                  className="mt-2 w-full text-xs"
+                  disabled={hasReachedEnd || isNextPageLoading}
+                  onClick={() =>
+                    fetchUserNotifications(pagyMetadata?.next ?? 1)
+                  }
+                >
+                  Charger plus{isNextPageLoading && "..."}
+                </Button>
+              )}
+            </>
           )}
-        </>
-      )}
+        </div>
+      </Section>
     </NavbarDropdown>
   );
 }

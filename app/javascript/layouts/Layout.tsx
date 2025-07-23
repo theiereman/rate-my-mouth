@@ -1,20 +1,15 @@
-import Navbar from "../components/navbar/Navbar";
-import HomeButton from "../components/navbar/HomeButton";
+import Navbar from "../components/navbar/v2/Navbar";
 import { PageProps } from "@customTypes/usepage-props.types";
 import { Footer } from "@components/ui";
 import { useToast } from "../contexts/ToastProvider";
-import { router, usePage } from "@inertiajs/react";
+import { usePage } from "@inertiajs/react";
 import { useEffect } from "react";
 import axios from "axios";
-import UserAvatar from "@components/Users/UserAvatar";
-import ThemeSelector from "@components/navbar/dropdowns/theme/ThemeSelector";
-import UserNotificationsDropdown from "@components/navbar/dropdowns/UserNotificationsDropdown";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const { flash } = usePage<PageProps>().props;
   const { showToast } = useToast();
   const { csrf_token } = usePage().props; // to make basic axios requests work
-  const { current_user } = usePage<PageProps>().props;
 
   useEffect(() => {
     // Check for different types of flash messages
@@ -39,27 +34,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <>
-      <div className="flex flex-col min-h-screen bg-background">
-        <header className="sticky top-0 z-50 bg-background shadow-xs">
-          <div className="flex items-center h-16 gap-2 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <HomeButton className="me-6" />
-            <Navbar />
-            <ThemeSelector />
-            <UserNotificationsDropdown />
-            <UserAvatar
-              user={current_user}
-              onClick={() => {
-                console.log("profile");
-                router.visit("/my_profile");
-              }}
-              title="Voir mon profil"
-              className="hover:scale-105 transition-transform duration-200"
-            />
-          </div>
-        </header>
+      <div className="bg-background flex min-h-screen flex-col">
+        <div className="bg-background sticky top-0 z-10 p-2 px-4">
+          <Navbar />
+        </div>
 
         <main className="flex-grow">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in">
+          <div className="animate-fade-in mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
             {children}
           </div>
         </main>

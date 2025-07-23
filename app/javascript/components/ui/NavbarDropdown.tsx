@@ -1,4 +1,5 @@
 import { usePopupElement } from "@hooks/usePopupElement";
+import { Button } from "@components/ui";
 
 export default function NavbarDropdown({
   children,
@@ -10,18 +11,19 @@ export default function NavbarDropdown({
   const { contentRef, buttonRef, isOpen } = usePopupElement();
 
   return (
-    <div ref={contentRef} className="relative group">
-      <button
+    <div ref={contentRef} className="group relative">
+      <Button
+        variant="ghost"
         ref={buttonRef}
-        className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center space-x-3 focus:outline-none cursor-pointer transition-transform group-hover:scale-105"
+        className="h-full cursor-pointer px-2 focus:outline-none"
       >
         {buttonChildren}
-      </button>
+      </Button>
 
       <div
         className={`${
           !isOpen ? "hidden" : "block"
-        } absolute right-0 bg-white rounded-md shadow-lg z-10 w-70 overflow-auto p-4 max-h-90`}
+        } bg-background absolute -right-0.5 z-10 w-70 overflow-auto border-2 shadow-lg`}
       >
         {children}
       </div>

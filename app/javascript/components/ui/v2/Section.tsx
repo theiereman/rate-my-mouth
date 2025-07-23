@@ -27,22 +27,25 @@ const getChildrenContainerClassnames = (variant: SectionVariant) => {
 
 export default function Section({
   title,
+  headerAction,
   children,
   variant = "default",
   className,
 }: {
   title: string;
+  headerAction?: React.ReactNode;
   children: React.ReactNode;
   variant?: SectionVariant;
   className?: string;
 }) {
   return (
     <div className={`${getMainContainerClassnames(variant)} ${className}`}>
-      <p
-        className={`${getTitleClassnames(variant)} text-xl font-bold uppercase`}
+      <div
+        className={`${getTitleClassnames(variant)} flex items-center justify-between`}
       >
-        {title}
-      </p>
+        <p className={`flex-1 text-xl font-bold uppercase`}>{title}</p>
+        {headerAction && <div>{headerAction}</div>}
+      </div>
       <div className={`${getChildrenContainerClassnames(variant)}`}>
         {children}
       </div>
