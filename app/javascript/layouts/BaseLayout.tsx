@@ -6,7 +6,7 @@ import axios from "axios";
 import Logo from "@components/ui/Logo";
 import { useToast } from "@contexts/ToastProvider";
 
-export function Layout({ children }: { children: React.ReactNode }) {
+export function BaseLayout({ children }: { children: React.ReactNode }) {
   const { flash } = usePage<PageProps>().props;
   const { showToast } = useToast();
   const { csrf_token } = usePage().props; // to make basic axios requests work
@@ -36,9 +36,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
     <div className="relative flex h-screen flex-col items-stretch overflow-hidden">
       <Logo className="pointer-events-none absolute -right-1/8 -bottom-1/5 size-7/10 rotate-10 fill-current opacity-5" />
 
-      <div className="flex-1 overflow-auto p-4">{children}</div>
-
-      <Footer />
+      <div className="flex h-full flex-col overflow-auto">
+        <div className="flex-1">{children}</div>
+        <Footer />
+      </div>
     </div>
   );
 }

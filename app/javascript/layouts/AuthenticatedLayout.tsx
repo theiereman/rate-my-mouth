@@ -1,5 +1,5 @@
 import Navbar from "@components/navbar/v2/Navbar";
-import { Layout } from "./Layout";
+import { BaseLayout } from "./BaseLayout";
 
 export default function AuthenticatedLayout({
   children,
@@ -7,8 +7,8 @@ export default function AuthenticatedLayout({
   children: React.ReactNode;
 }) {
   return (
-    <Layout>
-      <div className="bg-background sticky top-0 z-10">
+    <BaseLayout>
+      <div className="bg-background sticky top-0 z-10 mx-4 my-2">
         <Navbar />
       </div>
       <main className="relative flex-grow">
@@ -16,6 +16,6 @@ export default function AuthenticatedLayout({
           {children}
         </div>
       </main>
-    </Layout>
+    </BaseLayout>
   );
 }

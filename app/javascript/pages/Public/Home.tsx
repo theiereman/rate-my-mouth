@@ -3,7 +3,7 @@ import { LinkButton } from "@components/ui";
 export default function Home() {
   return (
     <div className="text-primary-900 relative z-10 flex h-full flex-1 flex-col justify-between overflow-hidden lg:flex-row">
-      <div>
+      <div className="flex-1">
         <h1 className="text-7xl font-black lg:text-[164px]/40">
           RATE<br></br>MY<br></br>MOUTH
         </h1>

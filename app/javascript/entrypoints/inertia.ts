@@ -2,9 +2,10 @@ import { createInertiaApp } from "@inertiajs/react";
 import { createElement, ReactNode } from "react";
 import { createRoot } from "react-dom/client";
 import { ThemeProvider } from "@contexts/ThemeContext";
-import { Layout } from "@layouts/v2/Layout";
+import { Layout } from "@layouts/BaseLayout";
 import { ToastProvider } from "@contexts/ToastProvider";
-import AuthenticatedLayout from "@layouts/v2/AuthenticatedLayout";
+import AuthenticatedLayout from "@layouts/AuthenticatedLayout";
+import PublicLayout from "@layouts/PublicLayout";
 
 // Temporary type definition, until @inertiajs/react provides one
 type ResolvedComponent = {
@@ -26,7 +27,7 @@ createInertiaApp({
     if (page && page.default) {
       (page.default as any).layout ||= (page: ReactNode) =>
         name.startsWith("Public/")
-          ? createElement(Layout, null, page)
+          ? createElement(PublicLayout, null, page)
           : createElement(AuthenticatedLayout, null, page);
     }
 
