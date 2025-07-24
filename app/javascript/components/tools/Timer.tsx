@@ -1,4 +1,4 @@
-import { Button, Input } from "@components/ui";
+import { Button, Section } from "@components/ui";
 import { useState, useRef } from "react";
 import { useTimer } from "@contexts/TimerContext";
 import alarmSound from "../../assets/sounds/alert.wav";
@@ -26,26 +26,26 @@ export default function Timer() {
             prev.seconds > 0
               ? prev.seconds - 1
               : prev.minutes > 0
-              ? 59
-              : prev.hours > 0
-              ? 59
-              : 0;
+                ? 59
+                : prev.hours > 0
+                  ? 59
+                  : 0;
 
           const newMinutes =
             prev.seconds > 0
               ? prev.minutes
               : prev.minutes > 0
-              ? prev.minutes - 1
-              : prev.hours > 0
-              ? 59
-              : 0;
+                ? prev.minutes - 1
+                : prev.hours > 0
+                  ? 59
+                  : 0;
 
           const newHours =
             prev.seconds > 0 || prev.minutes > 0
               ? prev.hours
               : prev.hours > 0
-              ? prev.hours - 1
-              : 0;
+                ? prev.hours - 1
+                : 0;
 
           if (newHours === 0 && newMinutes === 0 && newSeconds === 0) {
             clearInterval(timerRef.current!);
@@ -88,18 +88,17 @@ export default function Timer() {
   };
 
   return (
-    <div
+    <Section
+      title="Minuteur"
+      variant="full"
       data-timer="true"
-      className={`${
-        isOver ? "p-1! rounded-lg border-4 border-primary-500" : ""
-      }`}
+      className={`p-0 ${isOver ? "border-red-500" : ""}`}
     >
-      <div className="flex">
-        <Input
-          containerClassName="w-full"
-          inputClassName="rounded-r-none rounded-bl-none p-1!"
+      <div className="flex items-center justify-center font-bold">
+        <input
           type="number"
-          value={hours}
+          className="w-16 border-none bg-transparent text-center text-3xl ring-0"
+          value={hours.toString().padStart(2, "0")}
           onChange={(e) =>
             setTimerState((prev) => ({
               ...prev,
@@ -109,11 +108,11 @@ export default function Timer() {
           onFocus={(e) => e.target.select()}
           disabled={isRunning}
         />
-        <Input
-          containerClassName="w-full"
-          inputClassName="rounded-none border-l-0 border-r-0 p-1!"
+        <span className="pb-1 text-3xl">:</span>
+        <input
           type="number"
-          value={minutes}
+          className="w-16 border-none bg-transparent text-center text-3xl ring-0"
+          value={minutes.toString().padStart(2, "0")}
           onChange={(e) =>
             setTimerState((prev) => ({
               ...prev,
@@ -123,11 +122,12 @@ export default function Timer() {
           onFocus={(e) => e.target.select()}
           disabled={isRunning}
         />
-        <Input
-          containerClassName="w-full"
-          inputClassName="rounded-l-none rounded-br-none p-1!"
+        <span className="pb-1 text-3xl">:</span>
+
+        <input
           type="number"
-          value={seconds}
+          className="w-16 border-none bg-transparent text-center text-3xl ring-0"
+          value={seconds.toString().padStart(2, "0")}
           onChange={(e) =>
             setTimerState((prev) => ({
               ...prev,
@@ -140,23 +140,17 @@ export default function Timer() {
       </div>
       <div className="flex w-full">
         <Button
-          className="py-1 w-full rounded-none rounded-bl-lg"
+          className="w-full"
           onClick={handleStart}
           disabled={isRunning || totalSeconds() <= 0}
         >
           Start
         </Button>
-        <Button
-          className="py-1 w-full rounded-none"
-          onClick={handlePause}
-          disabled={!isRunning}
-        >
+        <Button className="w-full" onClick={handlePause} disabled={!isRunning}>
           Pause
         </Button>
         <Button
-          className={`py-1 w-full rounded-none rounded-br-lg ${
-            isOver ? "animate-pulse" : ""
-          }`}
+          className={`w-full ${isOver ? "animate-pulse" : ""}`}
           onClick={() => {
             handleStop();
             stopSound();
@@ -166,6 +160,6 @@ export default function Timer() {
           Stop
         </Button>
       </div>
-    </div>
+    </Section>
   );
 }

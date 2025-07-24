@@ -1,3 +1,5 @@
+@import url("../../assets/stylesheets/input.css");
+
 @import "tailwindcss";
 @config "./tailwind.config.js";
 
