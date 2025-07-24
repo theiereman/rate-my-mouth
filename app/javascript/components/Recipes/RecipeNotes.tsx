@@ -1,6 +1,7 @@
 import { LinkButton, TextArea } from "@components/ui";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Link } from "@inertiajs/react";
 
 export default function RecipeNotes({ recipeId }: { recipeId: number }) {
   const [notes, setNotes] = useState("");
@@ -11,7 +12,7 @@ export default function RecipeNotes({ recipeId }: { recipeId: number }) {
       setIsLoading(true);
       try {
         const response = await axios.get(
-          `/recipes/${recipeId}/notes/show_for_user`
+          `/recipes/${recipeId}/notes/show_for_user`,
         );
         setNotes(response.data ?? "");
       } catch (err) {
@@ -33,7 +34,7 @@ export default function RecipeNotes({ recipeId }: { recipeId: number }) {
         textareaClassName={`${
           isLoading ? "text-neutral-400 italic" : ""
         } h-full resize-none`}
-        value={notes}
+        value={isLoading ? "Chargement..." : notes}
         onChange={(e) => setNotes(e.target.value)}
       />
 
@@ -44,10 +45,9 @@ export default function RecipeNotes({ recipeId }: { recipeId: number }) {
         method="patch"
         href={`/recipes/${recipeId}/notes/update_for_user`}
         data={{ notes: notes }}
-        preserveScroll
-        preserveState
-        icon={<span className="material-symbols-outlined">save</span>}
-      ></LinkButton>
+      >
+        <span className="material-symbols-outlined">save</span>
+      </LinkButton>
     </div>
   );
 }
