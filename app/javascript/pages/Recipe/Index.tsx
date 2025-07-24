@@ -1,8 +1,7 @@
 import { router } from "@inertiajs/react";
-import { RecipeType } from "@customTypes/recipe.types";
-import RecipeShort from "@components/Recipes/RecipeShortItem";
+import { RawRecipe, RecipeType } from "@customTypes/recipe.types";
 import { LinkButton, Pagination } from "@components/ui";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { PagyMetadata } from "@components/ui/Pagination";
 import Page from "@components/ui/Pages/Page";
 import { Section } from "@components/ui";
@@ -13,18 +12,26 @@ import { TagType } from "@customTypes/tag.types";
 import RecipeFilters from "@components/Recipe/RecipeFilters";
 import { useRecipeFilters } from "@hooks/useRecipeFilters";
 import { useUrlParams } from "@hooks/useUrlParams";
+import { RecipeAdapter } from "@adapters/recipe.adapter";
+import RecipeShortItem from "@components/Recipes/RecipeLink";
+import RecipeLink from "@components/Recipes/RecipeLink";
 
 export default function Index({
-  recipes,
+  recipes: rawRecipes,
   pagy,
 }: {
-  recipes: RecipeType[];
+  recipes: RawRecipe[];
   pagy: PagyMetadata;
 }) {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedTags, setSelectedTags] = useState<TagType[]>([]);
   const [selectedUser, setSelectedUser] = useState<UserType | null>(null);
   const [isLoadingRecipes, setIsLoadingRecipes] = useState(false);
+
+  const recipes = useMemo(
+    () => RecipeAdapter.fromApiArray(rawRecipes),
+    [rawRecipes],
+  ); //TODO: consider HOC to avoid having to adapt the recipes inside the component
 
   const {
     tags,
@@ -106,9 +113,9 @@ export default function Index({
           subtext="Soyez le premier à partager une nouvelle recette !"
         />
       ) : (
-        <div className="animate-fade-in grid grid-cols-1 gap-6">
-          {recipes.map((recipe) => (
-            <RecipeShort key={recipe.id} recipe={recipe} />
+        <div className="grid grid-cols-1 gap-2">
+          {recipes.map((recipe: RecipeType) => (
+            <RecipeLink key={recipe.id} recipe={recipe} />
           ))}
         </div>
       )}

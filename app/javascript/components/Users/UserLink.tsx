@@ -21,7 +21,7 @@ export default function UserLink({
 
   return (
     <div className={`${className} flex flex-col`}>
-      <div className="flex items-center gap-1 text-neutral-400">
+      <div className="flex items-center gap-1">
         {prefix && <span>{prefix} </span>}
         {disabled ? (
           <span>
@@ -30,13 +30,13 @@ export default function UserLink({
         ) : (
           <Link
             href={`/users/${user.id}`}
-            className={`text-primary-600 hover:underline flex items-center gap-1`}
+            className={`text-primary-600 hover:underline`}
           >
             {user.username} {isCurrentUser && <span>(vous)</span>}
           </Link>
         )}
       </div>
-      <p className="text-neutral-500 text-xs">
+      <p className="text-xs text-neutral-500">
         {showTitle && user.title && `${user.title}`}
       </p>
     </div>

@@ -37,7 +37,7 @@ export default function Form({
       })) || [],
     url: recipe.url || "",
     number_of_servings: recipe.number_of_servings || 4,
-    difficulty: recipe.difficulty_value || 0,
+    difficulty: recipe.difficulty || 0,
     description: recipe.description || "",
     tags_attributes:
       recipe.tags?.map((tag) => ({ id: tag.id, name: tag.name })) || [],
@@ -102,7 +102,7 @@ export default function Form({
             helperText="Si cette recette provient d'un site web, vous pouvez indiquer l'URL ici"
           />
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-start">
+          <div className="grid grid-cols-1 items-start gap-4 md:grid-cols-3">
             <Input
               mandatory
               label="Nombre de personnes"
@@ -158,16 +158,16 @@ export default function Form({
           onDataChange={(contentData) => {
             setData(
               "ingredients_attributes",
-              contentData.ingredients_attributes
+              contentData.ingredients_attributes,
             );
             setData(
               "instructions_attributes",
-              contentData.instructions_attributes
+              contentData.instructions_attributes,
             );
           }}
         />
 
-        <div className="flex gap-2 justify-end">
+        <div className="flex justify-end gap-2">
           <LinkButton
             preserveScroll
             variant="ghost"

@@ -1,7 +1,7 @@
 import { RecipeType } from "@customTypes/recipe.types";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import RecipeShortItem from "@components/Recipes/RecipeShortItem";
+import RecipeShortItem from "@components/Recipes/RecipeLink";
 import { useToast } from "@contexts/ToastProvider";
 import EmptyPlaceholder from "@components/ui/EmptyPlaceholder";
 import Section from "@components/ui/Pages/Section";
@@ -60,7 +60,7 @@ export default function CreatedRecipes({ userId }: { userId: number }) {
                   ))}
               </div>
               <Link
-                className="mx-auto underline text-primary-500 hover:text-primary-600"
+                className="text-primary-500 hover:text-primary-600 mx-auto underline"
                 href={`/recipes?user_id=${userId}`}
               >
                 Voir plus de recettes de cet utilisateur

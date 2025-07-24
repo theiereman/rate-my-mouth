@@ -1,5 +1,5 @@
 import { Head } from "@inertiajs/react";
-import { RecipeType } from "@customTypes/recipe.types";
+import { RawRecipe, RecipeType } from "@customTypes/recipe.types";
 import { RatingType } from "@customTypes/rating.types";
 import { CommentableType } from "@customTypes/comment.types";
 import Timer from "@components/tools/Timer";
@@ -11,20 +11,24 @@ import RecipeContentItemList from "@components/Recipes/RecipeContentItemList";
 import IngredientsQuantitySelector from "@components/Recipes/Ingredients/IngredientsQuantitySelector";
 import RecipeActionsButtons from "@components/Recipes/RecipeActionsButtons";
 import RecipeHeader from "@components/Recipes/RecipeHeader";
-import RecipeBadges from "@components/Recipes/RecipeBadges";
 import RecipeThumbnail from "@components/Recipes/RecipeThumbnail";
 import { useIngredientQuantifier } from "@hooks/useIngredientQuantifier";
 import { useUserIsCurrentUser } from "@hooks/useUserIsCurrentUser";
 import Page from "@components/ui/Pages/Page";
 import { TimerProvider } from "@contexts/TimerContext";
 import RecipeRelatedItemList from "@components/Recipes/RecipeRelatedItemList";
+import { RecipeAdapter } from "@adapters/recipe.adapter";
+import { useMemo } from "react";
 
 interface ShowProps {
-  recipe: RecipeType;
+  recipe: RawRecipe;
   userRating: RatingType;
 }
 
-export default function Show({ recipe, userRating }: ShowProps) {
+export default function Show({ recipe: rawRecipe, userRating }: ShowProps) {
+  //TODO: consider HOC to avoid having to adapt the recipes inside the component
+  const recipe = useMemo(() => RecipeAdapter.fromApi(rawRecipe), [rawRecipe]);
+
   const { isCurrentUser } = useUserIsCurrentUser(recipe.user);
 
   const {
@@ -48,7 +52,6 @@ export default function Show({ recipe, userRating }: ShowProps) {
 
         <div className="flex flex-col justify-between gap-6">
           <RecipeHeader showDescription recipe={recipe} />
-          <RecipeBadges recipe={recipe} />
           {isCurrentUser && <RecipeActionsButtons recipe={recipe} />}
         </div>
 
@@ -99,7 +102,7 @@ export default function Show({ recipe, userRating }: ShowProps) {
             <RatingForm
               recipeId={recipe.id}
               rating={userRating}
-              className="self-start md:self-stretch md:h-10" //forcing height to match the comment form
+              className="self-start md:h-10 md:self-stretch" //forcing height to match the comment form
             />
             <RecipeRelatedItemList recipe={recipe} relatedItemType="ratings" />
           </Section>

@@ -32,7 +32,7 @@ export default function Section({
   variant = "default",
   className,
 }: {
-  title: string;
+  title?: string;
   headerAction?: React.ReactNode;
   children: React.ReactNode;
   variant?: SectionVariant;
@@ -40,12 +40,14 @@ export default function Section({
 }) {
   return (
     <div className={`${getMainContainerClassnames(variant)} ${className}`}>
-      <div
-        className={`${getTitleClassnames(variant)} flex items-center justify-between`}
-      >
-        <p className={`flex-1 text-xl font-bold uppercase`}>{title}</p>
-        {headerAction && <div>{headerAction}</div>}
-      </div>
+      {title && (
+        <div
+          className={`${getTitleClassnames(variant)} flex items-center justify-between`}
+        >
+          <h2 className={`flex-1 text-xl font-bold uppercase`}>{title}</h2>
+          {headerAction && <div>{headerAction}</div>}
+        </div>
+      )}
       <div className={`${getChildrenContainerClassnames(variant)}`}>
         {children}
       </div>
