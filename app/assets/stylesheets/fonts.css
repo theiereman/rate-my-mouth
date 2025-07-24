@@ -1,0 +1,6 @@
+@font-face {
+  font-family: "MonaSans";
+  font-style: normal;
+  font-weight: 300 900; /* light to black */
+  src: url("/assets/fonts/MonaSans.ttf") format("truetype");
+}

@@ -1,4 +1,6 @@
 @import url("../../assets/stylesheets/input.css");
+@import url("../../assets/stylesheets/material-icons.css");
+@import url("../../assets/stylesheets/fonts.css");
 
 @import "tailwindcss";
 @config "./tailwind.config.js";
@@ -38,59 +40,6 @@
   text-decoration-skip-ink: none;
 }
 
-/*
- * Congratulations for exploring the source code!
- *
- * You've found a clue to unlock a hidden achievement.
- * Visit the following URL to unlock the "Code Explorer" achievement:
- *
- * /source_explorer/curious_minds_find_hidden_treasures
- *
- * Happy exploring!
- */
-
-@font-face {
-  font-family: "Material Icons";
-  font-style: normal;
-  font-weight: 400;
-  src:
-    local("Material Icons"),
-    local("MaterialIcons-Outlined"),
-    url("/assets/fonts/material-symbol-outlined.woff2") format("woff2");
-}
-
-@font-face {
-  font-family: "MonaSans";
-  font-style: normal;
-  font-weight: 300 900; /* light to black */
-  src: url("/assets/fonts/MonaSans.ttf") format("truetype");
-}
-
-.material-symbols-outlined {
-  font-family: "Material Icons";
-  font-weight: normal;
-  font-style: normal;
-  font-size: 24px; /* Preferred icon size */
-  display: inline-block;
-  line-height: 1;
-  text-transform: none;
-  letter-spacing: normal;
-  word-wrap: normal;
-  white-space: nowrap;
-  direction: ltr;
-
-  /* Support for all WebKit browsers. */
-  -webkit-font-smoothing: antialiased;
-  /* Support for Safari and Chrome. */
-  text-rendering: optimizeLegibility;
-
-  /* Support for Firefox. */
-  -moz-osx-font-smoothing: grayscale;
-
-  /* Support for IE. */
-  font-feature-settings: "liga";
-}
-
 html,
 body {
   height: 100%;
@@ -99,20 +48,4 @@ body {
 
 #app {
   height: 100%;
-}
-
-.material-icon--sm {
-  font-size: 1.2em !important;
-}
-
-.material-icon--md {
-  font-size: 1.6em !important;
-}
-
-.material-icon--lg {
-  font-size: 3em !important;
-}
-
-.material-icon--fill {
-  font-variation-settings: "FILL" 1;
 }
