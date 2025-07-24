@@ -89,10 +89,6 @@ class Recipe < ApplicationRecord
     ratings.reduce(0) { |sum, rating| sum + rating.value }.to_f / ratings.size
   end
 
-  def difficulty_value
-    Recipe.difficulties[self[:difficulty]]
-  end
-
   def thumbnail_url
     if thumbnail.attached?
       Rails.application.routes.url_helpers.rails_blob_path(thumbnail, only_path: true)
