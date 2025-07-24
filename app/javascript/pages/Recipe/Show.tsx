@@ -7,7 +7,10 @@ import RecipeNotes from "@components/Recipes/RecipeNotes";
 import { Section } from "@components/ui";
 import CommentForm from "@components/Comments/Form/CommentForm";
 import RatingForm from "@components/Ratings/Form/RatingForm";
-import RecipeContentItemList from "@components/Recipes/RecipeContentItemList";
+import {
+  IngredientList,
+  InstructionList,
+} from "@components/Recipes/RecipeContentItemList";
 import IngredientsQuantitySelector from "@components/Recipes/Ingredients/IngredientsQuantitySelector";
 import RecipeActionsButtons from "@components/Recipes/RecipeActionsButtons";
 import RecipeHeader from "@components/Recipes/RecipeHeader";
@@ -34,8 +37,10 @@ export default function Show({ recipe: rawRecipe, userRating }: ShowProps) {
   const {
     handleIncrease,
     handleDecrease,
+    handleResetToDefault,
     numberOfServings,
     updatedIngredients,
+    isValueChanged,
   } = useIngredientQuantifier({ recipe });
 
   return (
@@ -55,23 +60,30 @@ export default function Show({ recipe: rawRecipe, userRating }: ShowProps) {
           {isCurrentUser && <RecipeActionsButtons recipe={recipe} />}
         </div>
 
-        <Section title="Ingredients">
-          <IngredientsQuantitySelector
-            numberOfServings={numberOfServings}
-            onValueIncrease={handleIncrease}
-            onValueDecrease={handleDecrease}
-          />
-          <RecipeContentItemList recipeItems={updatedIngredients} />
+        <Section
+          title="Ingredients"
+          headerAction={
+            <IngredientsQuantitySelector
+              className="text-background!"
+              numberOfServings={numberOfServings}
+              onValueIncrease={handleIncrease}
+              onValueDecrease={handleDecrease}
+              onValueReset={handleResetToDefault}
+              isValueChanged={isValueChanged}
+            />
+          }
+        >
+          <IngredientList ingredients={updatedIngredients} />
         </Section>
 
         <Section title="Instructions">
-          <RecipeContentItemList recipeItems={recipe.instructions} ordered />
+          <InstructionList instructions={recipe.instructions} />
         </Section>
 
         <div className="flex flex-col gap-16 md:flex-row md:gap-12">
           <Timer />
 
-          <Section title="Notes personnelles">
+          <Section title="Notes personnelles" variant="no-padding">
             <RecipeNotes recipeId={recipe.id} />
           </Section>
         </div>

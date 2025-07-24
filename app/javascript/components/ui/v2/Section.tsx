@@ -1,11 +1,11 @@
-type SectionVariant = "default" | "full" | "ghost";
+type SectionVariant = "default" | "no-padding" | "ghost";
 
 const getMainContainerClassnames = (variant: SectionVariant) => {
   switch (variant) {
     case "ghost":
       return "bg-transparent";
     case "default":
-    case "full":
+    case "no-padding":
       return "border-3";
   }
 };
@@ -15,7 +15,7 @@ const getTitleClassnames = (variant: SectionVariant) => {
     case "ghost":
       return "text-primary-900 mb-2";
     case "default":
-    case "full":
+    case "no-padding":
       return "text-background bg-primary-900 px-2 py-1";
   }
 };
@@ -44,9 +44,12 @@ export default function Section({
     <div className={`${getMainContainerClassnames(variant)} ${className}`}>
       {title && (
         <div
-          className={`${getTitleClassnames(variant)} flex items-center justify-between`}
+          className={`${getTitleClassnames(variant)} flex items-center justify-between gap-2`}
         >
           <h2 className={`flex-1 text-xl font-bold uppercase`}>{title}</h2>
+          {variant == "ghost" && (
+            <div className="bg-primary-900 h-1.5 w-full" />
+          )}
           {headerAction && <div>{headerAction}</div>}
         </div>
       )}

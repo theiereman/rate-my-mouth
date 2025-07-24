@@ -90,7 +90,7 @@ export default function Timer() {
   return (
     <Section
       title="Minuteur"
-      variant="full"
+      variant="no-padding"
       data-timer="true"
       className={`p-0 ${isOver ? "border-red-500" : ""}`}
     >
