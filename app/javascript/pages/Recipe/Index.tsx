@@ -57,7 +57,23 @@ export default function Index({
     initFromUrl();
   }, []);
 
-  const fetchRecipes = useDebouncedCallback(() => {
+  const fetchRecipes = () => {
+    const params: { name?: string; user_id?: number; tags_ids?: string } = {};
+
+    if (searchQuery?.trim()) params.name = searchQuery;
+    if (selectedUser) params.user_id = selectedUser.id;
+    if (selectedTags.length > 0)
+      params.tags_ids = selectedTags.map((tag) => tag.id).join(",");
+
+    setIsLoadingRecipes(true);
+    router.get("/recipes", params, {
+      preserveState: true,
+      preserveScroll: true,
+      onFinish: () => setIsLoadingRecipes(false),
+    });
+  };
+
+  const fetchRecipesDebounced = useDebouncedCallback(() => {
     const params: { name?: string; user_id?: number; tags_ids?: string } = {};
 
     if (searchQuery?.trim()) params.name = searchQuery;
@@ -73,10 +89,6 @@ export default function Index({
     });
   }, 500);
 
-  useEffect(() => {
-    fetchRecipes();
-  }, [searchQuery, selectedUser, selectedTags]);
-
   return (
     <Page
       title="Index des recettes"
@@ -85,11 +97,20 @@ export default function Index({
       <Section title="Filtres" variant="ghost">
         <RecipeFilters
           searchQuery={searchQuery}
-          onSearchQueryChange={setSearchQuery}
+          onSearchQueryChange={(value) => {
+            setSearchQuery(value);
+            fetchRecipesDebounced();
+          }}
           selectedUser={selectedUser}
-          onSelectedUserChange={setSelectedUser}
+          onSelectedUserChange={(user) => {
+            setSelectedUser(user);
+            fetchRecipes();
+          }}
           selectedTags={selectedTags}
-          onSelectedTagsChange={setSelectedTags}
+          onSelectedTagsChange={(tags) => {
+            setSelectedTags(tags);
+            fetchRecipes();
+          }}
           users={users}
           tags={tags}
           isLoadingUsers={isLoadingUsers}
