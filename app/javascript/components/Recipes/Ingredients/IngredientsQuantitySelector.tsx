@@ -1,33 +1,43 @@
+import { Button } from "@components/ui";
+
 export default function IngredientsQuantitySelector({
   numberOfServings = 1,
   onValueIncrease,
   onValueDecrease,
+  onValueReset,
+  className,
+  isValueChanged = false,
 }: {
   numberOfServings?: number;
   onValueIncrease: () => void;
   onValueDecrease: () => void;
+  onValueReset: () => void;
+  isValueChanged?: boolean;
+  className?: string;
 }) {
   return (
-    <div className="flex gap-2 mb-2">
-      <h2>
-        Quantités pour {numberOfServings}{" "}
-        <span className="inline-flex gap-1">
-          <button
-            className="bg-primary-100 size-6 rounded-full hover:bg-primary-200 hover:cursor-pointer"
-            onClick={onValueDecrease}
-          >
-            -
-          </button>
-          <button
-            className="bg-primary-100 size-6 rounded-full hover:bg-primary-200 hover:cursor-pointer"
-            onClick={onValueIncrease}
-          >
-            +
-          </button>
-        </span>{" "}
-        personne
-        {numberOfServings > 1 ? "s" : ""}
-      </h2>
+    <div className={`flex items-center gap-2 font-bold ${className}`}>
+      <span>{`${numberOfServings} ${numberOfServings > 1 ? "personnes" : "personne"}`}</span>
+      {isValueChanged && (
+        <Button
+          className={`bg-background! text-primary-900 hover:bg-primary-800! p-0! text-4xl`}
+          onClick={onValueReset}
+        >
+          <span className="material-symbols-outlined">undo</span>
+        </Button>
+      )}
+      <Button
+        className={`bg-background! text-primary-900 hover:bg-primary-800! p-0! text-4xl`}
+        onClick={onValueDecrease}
+      >
+        <span className="material-symbols-outlined">remove</span>
+      </Button>
+      <Button
+        className={`bg-background! text-primary-900 hover:bg-primary-800! p-0! text-4xl`}
+        onClick={onValueIncrease}
+      >
+        <span className="material-symbols-outlined">add</span>
+      </Button>
     </div>
   );
 }
