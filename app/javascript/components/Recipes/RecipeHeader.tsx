@@ -3,7 +3,6 @@ import UserLink from "@components/Users/UserLink";
 import { RecipeType } from "@customTypes/recipe.types";
 import { formatDateTime } from "@helpers/date-helper";
 import DifficultyDisplay from "./v2/DifficultyDisplay";
-import RecipeBadges from "./RecipeBadges";
 import { Badge } from "@components/ui";
 
 type RecipeHeaderProps = {
@@ -56,13 +55,13 @@ export default function RecipeHeader({
         <AverageRatingDisplay
           value={recipe.average_rating}
           numberOfRatings={recipe.ratings_count}
-          className="md:items-end"
+          className="md:mt-1 md:items-end"
         />
       </div>
       <div className="flex flex-col gap-2 md:flex-row md:items-center">
         <div className="flex flex-1 flex-wrap gap-2">
           {recipe.tags?.map((tag) => (
-            <Badge>{tag.name}</Badge>
+            <Badge key={tag.name}>{tag.name}</Badge>
           ))}
         </div>
         <DifficultyDisplay difficulty={recipe.difficulty} />
