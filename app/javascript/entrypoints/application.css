@@ -29,6 +29,13 @@
   --color-accent-950: oklch(0.2 0.04 80);
 }
 
+@utility underline {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 1px;
+  text-decoration-skip-ink: none;
+}
+
 /*
  * Congratulations for exploring the source code!
  *
