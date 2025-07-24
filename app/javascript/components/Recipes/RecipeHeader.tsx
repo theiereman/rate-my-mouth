@@ -1,7 +1,7 @@
+import AverageRatingDisplay from "@components/Ratings/AverageRatingDisplay";
 import UserLink from "@components/Users/UserLink";
 import { RecipeType } from "@customTypes/recipe.types";
 import { formatDateTime } from "@helpers/date-helper";
-import { Rating } from "@mui/material";
 
 type RecipeHeaderProps = {
   recipe: RecipeType;
@@ -17,16 +17,16 @@ export default function RecipeHeader({
   enableUserlink = true,
 }: RecipeHeaderProps) {
   return (
-    <div className={`flex-1 md:flex gap-6 ${className}`}>
-      <div className="flex-1 flex flex-col gap-2 md:gap-0">
+    <div className={`flex-1 gap-6 md:flex ${className}`}>
+      <div className="flex flex-1 flex-col gap-2 md:gap-0">
         <h3
           title={recipe.name}
-          className="text-4xl font-medium text-neutral-800 line-clamp-2 sm:line-clamp-1 font-serif"
+          className="line-clamp-2 font-serif text-4xl font-medium text-neutral-800 sm:line-clamp-1"
         >
           {recipe.name}
         </h3>
         {recipe.user && (
-          <span className="text-neutral-400 text-sm flex flex-col md:flex-row gap-1">
+          <span className="flex flex-col gap-1 text-sm text-neutral-400 md:flex-row">
             <UserLink
               prefix="Par"
               user={recipe.user}
@@ -42,26 +42,19 @@ export default function RecipeHeader({
         {showDescription && recipe.description && (
           <p
             title={recipe.description}
-            className="text-neutral-500 text-sm italic my-4 line-clamp-6"
+            className="my-4 line-clamp-6 text-sm text-neutral-500 italic"
           >
             {recipe.description}
           </p>
         )}
         <div className="text-xs text-neutral-400"></div>
       </div>
-      <div className="flex flex-col items-start sm:items-end gap-1">
-        <Rating
-          size="medium"
-          precision={0.5}
-          value={recipe.average_rating}
-          readOnly
-        />
-        <span className="text-sm text-neutral-600 mx-1">
-          {`${recipe.average_rating.toFixed(1)} sur ${
-            recipe.ratings_count
-          } avis`}
-        </span>
-      </div>
+      <AverageRatingDisplay
+        value={recipe.average_rating}
+        numberOfRatings={recipe.ratings_count}
+        size="lg"
+        alignment="end"
+      />
     </div>
   );
 }
