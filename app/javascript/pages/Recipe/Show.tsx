@@ -4,7 +4,7 @@ import { RatingType } from "@customTypes/rating.types";
 import { CommentableType } from "@customTypes/comment.types";
 import Timer from "@components/tools/Timer";
 import RecipeNotes from "@components/Recipes/RecipeNotes";
-import Section from "@components/ui/Pages/Section";
+import { Section } from "@components/ui";
 import CommentForm from "@components/Comments/Form/CommentForm";
 import RatingForm from "@components/Ratings/Form/RatingForm";
 import RecipeContentItemList from "@components/Recipes/RecipeContentItemList";
@@ -55,7 +55,7 @@ export default function Show({ recipe: rawRecipe, userRating }: ShowProps) {
           {isCurrentUser && <RecipeActionsButtons recipe={recipe} />}
         </div>
 
-        <Section title="Ingredients" underlineStroke={1}>
+        <Section title="Ingredients">
           <IngredientsQuantitySelector
             numberOfServings={numberOfServings}
             onValueIncrease={handleIncrease}
@@ -64,28 +64,20 @@ export default function Show({ recipe: rawRecipe, userRating }: ShowProps) {
           <RecipeContentItemList recipeItems={updatedIngredients} />
         </Section>
 
-        <Section title="Instructions" underlineStroke={2}>
+        <Section title="Instructions">
           <RecipeContentItemList recipeItems={recipe.instructions} ordered />
         </Section>
 
         <div className="flex flex-col gap-16 md:flex-row md:gap-12">
-          <Section
-            title="Minuteur"
-            containerClassName="flex-2"
-            underlineStroke={1}
-          >
-            <Timer />
-          </Section>
-          <Section title="Notes personnelles" containerClassName="flex-3">
+          <Timer />
+
+          <Section title="Notes personnelles">
             <RecipeNotes recipeId={recipe.id} />
           </Section>
         </div>
 
         <div className="flex flex-col gap-16 md:flex-row md:gap-12">
-          <Section
-            title={`Commentaires (${recipe.comments_count})`}
-            containerClassName="flex-3"
-          >
+          <Section title={`Commentaires (${recipe.comments_count})`}>
             <CommentForm
               commentableId={recipe.id}
               commentableType={CommentableType.recipe}
@@ -94,11 +86,7 @@ export default function Show({ recipe: rawRecipe, userRating }: ShowProps) {
             <RecipeRelatedItemList recipe={recipe} relatedItemType="comments" />
           </Section>
 
-          <Section
-            title={`Évaluations (${recipe.ratings_count})`}
-            containerClassName="flex-2"
-            underlineStroke={4}
-          >
+          <Section title={`Évaluations (${recipe.ratings_count})`}>
             <RatingForm
               recipeId={recipe.id}
               rating={userRating}

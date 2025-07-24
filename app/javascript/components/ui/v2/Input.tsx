@@ -1,7 +1,7 @@
 import { InputHTMLAttributes, useId } from "react";
 
 export type InputProps = InputHTMLAttributes<HTMLInputElement> & {
-  label: string;
+  label?: string;
   error?: string;
   rightIcon?: React.ReactNode;
 };
