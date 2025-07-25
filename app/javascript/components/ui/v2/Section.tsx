@@ -23,7 +23,10 @@ const getTitleClassnames = (variant: SectionVariant) => {
 const getChildrenContainerClassnames = (variant: SectionVariant) => {
   switch (variant) {
     case "default":
-      return "p-2 bg-background";
+      return "p-2";
+    case "no-padding":
+    case "default":
+      return "bg-background";
   }
 };
 

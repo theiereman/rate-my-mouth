@@ -30,7 +30,7 @@ export default function UserLink({
         ) : (
           <Link
             href={`/users/${user.id}`}
-            className={`text-primary-600 hover:underline`}
+            className={`text-primary-900 font-bold hover:underline`}
           >
             {user.username} {isCurrentUser && <span>(vous)</span>}
           </Link>
