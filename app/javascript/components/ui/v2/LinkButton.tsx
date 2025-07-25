@@ -4,8 +4,8 @@ import type { FormDataConvertible, Method } from "@inertiajs/core";
 
 type LinkButtonProps = {
   href: string;
-  method: Method;
-  data: Record<string, FormDataConvertible> | undefined;
+  method?: Method;
+  data?: Record<string, FormDataConvertible> | undefined;
   onBefore?: () => void;
   onSuccess?: () => void;
   children: React.ReactNode;
@@ -14,8 +14,8 @@ type LinkButtonProps = {
 
 const handleLinkClick = ({
   href,
-  method,
-  data,
+  method = "get",
+  data = {},
   onBefore,
   onSuccess,
 }: LinkButtonProps) => {
