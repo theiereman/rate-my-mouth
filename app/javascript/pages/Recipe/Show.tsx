@@ -80,15 +80,12 @@ export default function Show({ recipe: rawRecipe, userRating }: ShowProps) {
           <InstructionList instructions={recipe.instructions} />
         </Section>
 
-        <div className="flex flex-col gap-16 md:flex-row md:gap-12">
+        <div className="flex flex-col gap-8 md:flex-row">
           <Timer />
-
-          <Section title="Notes personnelles" variant="no-padding">
-            <RecipeNotes recipeId={recipe.id} />
-          </Section>
+          <RecipeNotes recipeId={recipe.id} />
         </div>
 
-        <div className="flex flex-col gap-16 md:flex-row md:gap-12">
+        <div className="flex flex-col gap-8 md:flex-row">
           <Section title={`Commentaires (${recipe.comments_count})`}>
             <CommentForm
               commentableId={recipe.id}

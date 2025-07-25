@@ -8,7 +8,7 @@ export type { ComboValue } from "./v2/Combo";
 export { default as Footer } from "./Footer";
 export { default as Input } from "./v2/Input";
 export { Pagination, CustomPagination } from "./Pagination";
-export { default as TextArea } from "./TextArea";
+export { default as TextArea } from "./v2/TextArea";
 export { default as Toast } from "./Toast";
 export { default as UnderlineText } from "./UnderlineText";
 export { default as Section } from "./v2/Section";

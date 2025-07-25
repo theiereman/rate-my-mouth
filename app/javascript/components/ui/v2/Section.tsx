@@ -43,7 +43,9 @@ export default function Section({
   className?: string;
 }) {
   return (
-    <div className={`${getMainContainerClassnames(variant)} ${className}`}>
+    <div
+      className={`flex flex-col ${getMainContainerClassnames(variant)} ${className}`}
+    >
       {title && (
         <div
           className={`${getTitleClassnames(variant)} flex items-center justify-between gap-2`}
@@ -55,7 +57,7 @@ export default function Section({
           {headerAction}
         </div>
       )}
-      <div className={`${getChildrenContainerClassnames(variant)}`}>
+      <div className={`flex-1 ${getChildrenContainerClassnames(variant)}`}>
         {children}
       </div>
     </div>

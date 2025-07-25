@@ -66,7 +66,7 @@ export const TextArea = ({
       {label && (
         <label
           htmlFor={props.id}
-          className={`block text-sm font-medium text-neutral-700 mb-1 ${labelClassName}`}
+          className={`mb-1 block text-sm font-medium text-neutral-700 ${labelClassName}`}
         >
           {label}
           {mandatory && <span className="text-red-500"> *</span>}
