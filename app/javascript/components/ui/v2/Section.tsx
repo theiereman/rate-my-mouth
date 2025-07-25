@@ -23,9 +23,8 @@ const getTitleClassnames = (variant: SectionVariant) => {
 const getChildrenContainerClassnames = (variant: SectionVariant) => {
   switch (variant) {
     case "default":
-      return "p-2";
+      return "p-2 bg-background";
     case "no-padding":
-    case "default":
       return "bg-background";
   }
 };
@@ -35,7 +34,7 @@ export default function Section({
   headerAction,
   children,
   variant = "default",
-  className,
+  className = "",
 }: {
   title?: string;
   headerAction?: React.ReactNode;

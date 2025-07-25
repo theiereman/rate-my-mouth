@@ -45,7 +45,7 @@ export default function RecipeHeader({
           {showDescription && recipe.description && (
             <p
               title={recipe.description}
-              className="my-4 line-clamp-6 text-sm text-neutral-500 italic"
+              className="mt-4 line-clamp-6 text-sm text-neutral-500 italic"
             >
               {recipe.description}
             </p>
