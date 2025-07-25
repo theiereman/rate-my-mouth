@@ -11,7 +11,7 @@ interface RecipeProps {
 export default function RecipeLink({ recipe }: RecipeProps) {
   return (
     <Link href={`/recipes/${recipe.id}`} className="block">
-      <Section className="p-2 transition-transform hover:scale-102 hover:shadow-md">
+      <Section className="bg-background p-2 transition-transform hover:scale-102 hover:shadow-md">
         <RecipeHeader recipe={recipe} />
       </Section>
     </Link>

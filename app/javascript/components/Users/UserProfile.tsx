@@ -1,16 +1,19 @@
 import { UserType } from "@customTypes/user.types";
-import { Badge, LinkButton } from "@components/ui";
+import { Badge } from "@components/ui";
 import { formatDate } from "@helpers/date-helper";
 import UserAvatar from "@components/Users/UserAvatar";
 import { useUserIsCurrentUser } from "@hooks/useUserIsCurrentUser";
-import Section from "@components/ui/Pages/Section";
+import { Section } from "@components/ui";
 import { useFilePicker } from "use-file-picker";
 import { FileSizeValidator } from "use-file-picker/validators";
 import { FILE_PICKER_ERROR_MESSAGES } from "@helpers/filepickerHelper";
 import { router } from "@inertiajs/react";
+import { useToast } from "@contexts/ToastProvider";
 
 export default function UserProfile({ user }: { user: UserType }) {
   const { isCurrentUser } = useUserIsCurrentUser(user);
+
+  const { showToast } = useToast();
 
   const { openFilePicker } = useFilePicker({
     accept: [".jpg", ".jpeg", ".png"],
@@ -26,7 +29,7 @@ export default function UserProfile({ user }: { user: UserType }) {
             "Erreur lors de la selection de l'image.",
           {
             type: "error",
-          }
+          },
         );
       });
     },
@@ -38,8 +41,8 @@ export default function UserProfile({ user }: { user: UserType }) {
   });
 
   return (
-    <Section title="Profil" underlineStroke={4}>
-      <div className="flex gap-4 items-center">
+    <Section title="Profil">
+      <div className="mb-4 flex items-center gap-4">
         <UserAvatar
           user={user}
           size="xl"
@@ -54,12 +57,12 @@ export default function UserProfile({ user }: { user: UserType }) {
 
         <div className="flex-1">
           <h3 className="text-xl font-semibold text-neutral-800">
-            {user.username} {isCurrentUser && `(${user.email})`}
+            {user.username}
           </h3>
           {user.title ? (
             <p className="text-sm text-neutral-700">{user.title}</p>
           ) : (
-            <p className="italic text-sm text-neutral-400">
+            <p className="text-sm text-neutral-400 italic">
               Aucun titre selectionné
             </p>
           )}
@@ -69,9 +72,9 @@ export default function UserProfile({ user }: { user: UserType }) {
         </div>
       </div>
       <div className="flex flex-wrap gap-2">
-        <Badge text={`${user.comments_count} commentaires`} variant="primary" />
-        <Badge text={`${user.recipes_count} recettes`} variant="secondary" />
-        <Badge text={`${user.ratings_count} évaluations`} variant="accent" />
+        <Badge>{`${user.comments_count} commentaires`}</Badge>
+        <Badge>{`${user.recipes_count} recettes`}</Badge>
+        <Badge>{`${user.ratings_count} évaluations`}</Badge>
       </div>
     </Section>
   );

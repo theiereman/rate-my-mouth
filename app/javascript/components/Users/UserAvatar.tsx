@@ -54,13 +54,13 @@ export const UserAvatar = ({
   return (
     <div
       {...props}
-      className={`relative ${className} group ${
+      className={`relative border-3 ${className} group ${
         onClick ? "cursor-pointer" : ""
       }`}
     >
       {iconOnHover && (
         <div
-          className={`${sizeClasses} absolute top-0 right-0 hidden group-hover:flex cursor-pointer text-primary-600 bg-white opacity-60 z-10 items-center justify-center pointer-events-none`}
+          className={`${sizeClasses} text-primary-600 pointer-events-none absolute top-0 right-0 z-10 hidden cursor-pointer items-center justify-center bg-white opacity-60 group-hover:flex`}
         >
           {iconOnHover}
         </div>
@@ -71,11 +71,11 @@ export const UserAvatar = ({
           onClick={onClick}
           src={user.avatar_url}
           alt={user.username}
-          className={`${sizeClasses} rounded-full object-cover`}
+          className={`${sizeClasses} object-cover`}
         />
       ) : (
         <div
-          className={`${sizeClasses} rounded-full bg-primary-100 text-primary-800 flex items-center justify-center font-medium`}
+          className={`${sizeClasses} bg-primary-100 text-primary-800 flex items-center justify-center font-medium`}
         >
           {getInitials(user.username)}
         </div>

@@ -1,4 +1,4 @@
-import Section from "@components/ui/Pages/Section";
+import { Section } from "@components/ui";
 import Toggle from "@components/ui/Toggle";
 import { UserType } from "@customTypes/user.types";
 import { router } from "@inertiajs/react";
@@ -10,7 +10,7 @@ export default function UserPreferences({ user }: { user: UserType }) {
   });
 
   const handleNotificationPreferenceChange = (
-    e: ChangeEvent<HTMLInputElement>
+    e: ChangeEvent<HTMLInputElement>,
   ) => {
     const value = e.target.checked;
     setValues((prev) => ({
@@ -28,16 +28,16 @@ export default function UserPreferences({ user }: { user: UserType }) {
       {
         preserveScroll: true,
         preserveState: true,
-      }
+      },
     );
   };
 
   return (
-    <Section title="Préférences" underlineStroke={1}>
+    <Section title="Préférences" variant="ghost">
       <Toggle
         checked={values.notification_preference}
         onChange={handleNotificationPreferenceChange}
-        label="Activer les notifications par e-mail"
+        label={`Envoyer les notifications par e-mail à ${user.email}`}
         helperText="Recevoir des notifications par e-mail pour les nouvelles recettes et les commentaires."
       />
     </Section>

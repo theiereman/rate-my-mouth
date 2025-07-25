@@ -34,7 +34,7 @@ export default function LinkButton(props: LinkButtonProps) {
   return (
     <Button
       {...props}
-      disabled={props.isLoading}
+      disabled={props.isLoading || props.disabled}
       onClick={() => handleLinkClick(props)}
     >
       {props.children}

@@ -54,7 +54,11 @@ export default function Show({ user }: { user: UserType }) {
         )}
 
         {isCurrentUser && (
-          <LinkButton variant="error" href="/users/sign_out" method="delete">
+          <LinkButton
+            className="bg-red-800 text-white hover:bg-red-700!"
+            href="/users/sign_out"
+            method="delete"
+          >
             Se déconnecter
           </LinkButton>
         )}

@@ -23,7 +23,7 @@ const getTitleClassnames = (variant: SectionVariant) => {
 const getChildrenContainerClassnames = (variant: SectionVariant) => {
   switch (variant) {
     case "default":
-      return "p-2";
+      return "p-2 bg-background";
   }
 };
 
@@ -46,11 +46,11 @@ export default function Section({
         <div
           className={`${getTitleClassnames(variant)} flex items-center justify-between gap-2`}
         >
-          <h2 className={`flex-1 text-xl font-bold uppercase`}>{title}</h2>
-          {variant == "ghost" && (
-            <div className="bg-primary-900 h-1.5 w-full" />
-          )}
-          {headerAction && <div>{headerAction}</div>}
+          <h2 className={`text-xl font-bold whitespace-nowrap uppercase`}>
+            {title}
+          </h2>
+          <div className="bg-primary-900 h-1.5 w-full flex-1" />
+          {headerAction}
         </div>
       )}
       <div className={`${getChildrenContainerClassnames(variant)}`}>
