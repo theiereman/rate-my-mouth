@@ -11,8 +11,8 @@ export default function UserRelatedEventHeader({
   eventTimestamp: string;
 }) {
   return (
-    <div className="flex gap-3 mb-2">
-      <UserAvatar user={user} size="md" />
+    <div className="mb-2 flex items-center gap-3">
+      <UserAvatar user={user} size="sm" />
       <div className="flex flex-col">
         <UserLink className="flex-1" user={user} />
         <p className="text-xs text-neutral-500">

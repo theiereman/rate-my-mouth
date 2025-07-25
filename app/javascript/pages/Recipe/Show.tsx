@@ -86,7 +86,10 @@ export default function Show({ recipe: rawRecipe, userRating }: ShowProps) {
         </div>
 
         <div className="flex flex-col gap-8 md:flex-row">
-          <Section title={`Commentaires (${recipe.comments_count})`}>
+          <Section
+            className="flex-1"
+            title={`Commentaires (${recipe.comments_count})`}
+          >
             <CommentForm
               commentableId={recipe.id}
               commentableType={CommentableType.recipe}

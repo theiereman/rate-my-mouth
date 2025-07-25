@@ -27,12 +27,12 @@ export default function RecipeRelatedItemList({
   const fetchItems = async (page: number) => {
     try {
       const response = await axios.get(
-        `/recipes/${recipe.id}/${relatedItemType}?page=${page}`
+        `/recipes/${recipe.id}/${relatedItemType}?page=${page}`,
       );
       setItems(
         relatedItemType === "ratings"
           ? response.data.ratings
-          : response.data.comments
+          : response.data.comments,
       );
       setPagy(response.data.pagy);
     } catch (error) {
@@ -42,7 +42,7 @@ export default function RecipeRelatedItemList({
         }.`,
         {
           type: "error",
-        }
+        },
       );
     } finally {
       setFirstLoading(false);
@@ -65,7 +65,7 @@ export default function RecipeRelatedItemList({
     setItems((prev) => {
       if (relatedItemType === "ratings") {
         const prevById = new Map(
-          (prev as RatingType[]).map((item) => [item.id, item])
+          (prev as RatingType[]).map((item) => [item.id, item]),
         );
         (newItems as RatingType[]).forEach((item) => {
           if (!prevById.has(item.id)) {
@@ -75,12 +75,12 @@ export default function RecipeRelatedItemList({
         // Preserve original order of prev, append only new items
         return (prev as RatingType[]).concat(
           (newItems as RatingType[]).filter(
-            (item) => !prev.some((p) => p.id === item.id)
-          )
+            (item) => !prev.some((p) => p.id === item.id),
+          ),
         );
       } else {
         const prevById = new Map(
-          (prev as CommentType[]).map((item) => [item.id, item])
+          (prev as CommentType[]).map((item) => [item.id, item]),
         );
         (newItems as CommentType[]).forEach((item) => {
           if (!prevById.has(item.id)) {
@@ -90,8 +90,8 @@ export default function RecipeRelatedItemList({
         // Preserve original order of prev, append only new items
         return (prev as CommentType[]).concat(
           (newItems as CommentType[]).filter(
-            (item) => !prev.some((p) => p.id === item.id)
-          )
+            (item) => !prev.some((p) => p.id === item.id),
+          ),
         );
       }
     });
@@ -100,7 +100,7 @@ export default function RecipeRelatedItemList({
   return (
     <div>
       {firstLoading ? (
-        <Loading text="Chargement des évaluations..." />
+        <Loading text="Chargement..." />
       ) : (
         <>
           {relatedItemType === "ratings" ? (

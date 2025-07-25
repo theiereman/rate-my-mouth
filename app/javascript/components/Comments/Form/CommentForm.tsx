@@ -24,7 +24,7 @@ export default function CommentForm({
     setPlaceholder(
       COMMENTS_PLACEHOLDERS[
         Math.floor(Math.random() * COMMENTS_PLACEHOLDERS.length)
-      ]
+      ],
     );
   }, []);
 
@@ -39,23 +39,17 @@ export default function CommentForm({
 
   return (
     <form
-      className={`flex flex-col sm:flex-row gap-3 ${className}`}
+      className={`flex flex-col items-stretch gap-3 sm:flex-row ${className}`}
       onSubmit={submit}
     >
-      <div className="flex-1">
-        <Input
-          placeholder={`${placeholder}...`}
-          value={data.content}
-          onChange={(e) => setData("content", e.target.value)}
-          error={errors.content}
-          leftIcon={
-            <span className="material-symbols-outlined text-primary-600">
-              edit_note
-            </span>
-          }
-        />
-      </div>
-      <Button variant="primary" isLoading={processing} type="submit">
+      <Input
+        className="flex-1"
+        placeholder={`${placeholder}...`}
+        value={data.content}
+        onChange={(e) => setData("content", e.target.value)}
+        error={errors.content}
+      />
+      <Button disabled={processing} type="submit">
         Commenter
       </Button>
     </form>
