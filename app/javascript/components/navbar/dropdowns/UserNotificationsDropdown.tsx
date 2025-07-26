@@ -85,9 +85,9 @@ export default function UserNotificationsDropdown() {
         <div className="relative flex size-full items-center">
           <span className="material-symbols-outlined">notifications</span>
           {notifications.filter((n) => !n.read_at).length > 0 && (
-            <div className="absolute -top-1 -right-1 z-20 flex size-4 items-center justify-center rounded-full bg-red-500 text-xs font-light text-white">
+            <span className="text-primary-900 text-sm font-bold">
               {notifications.filter((n) => !n.read_at).length}
-            </div>
+            </span>
           )}
         </div>
       }
