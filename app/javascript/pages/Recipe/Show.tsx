@@ -99,11 +99,14 @@ export default function Show({ recipe: rawRecipe, userRating }: ShowProps) {
           </Section>
 
           <Section title={`Évaluations (${recipe.ratings_count})`}>
-            <RatingForm
-              recipeId={recipe.id}
-              rating={userRating}
-              className="self-start md:h-10 md:self-stretch" //forcing height to match the comment form
-            />
+            <Section variant="ghost" title="Votre évaluation">
+              <RatingForm
+                recipeId={recipe.id}
+                rating={userRating}
+                className="self-start md:h-10 md:self-stretch" //forcing height to match the comment form
+              />
+            </Section>
+            <div className="bg-primary-900 mt-4 h-1.5 w-full" />
             <RecipeRelatedItemList recipe={recipe} relatedItemType="ratings" />
           </Section>
         </div>

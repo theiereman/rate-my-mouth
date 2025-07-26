@@ -1,7 +1,7 @@
 import { RatingType } from "@customTypes/rating.types";
-import RatingItem from "@components/Ratings/RatingItem";
 import EmptyPlaceholder from "@components/ui/EmptyPlaceholder";
 import UserRelatedEventHeader from "@components/Users/UserRelatedEventHeader";
+import RatingItem from "./RatingItem";
 
 export default function RatingList({
   ratings,
@@ -13,7 +13,7 @@ export default function RatingList({
   const sortedRatings = [...ratings]
     .sort(
       (a, b) =>
-        new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+        new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
     )
     .slice(0, count);
 
@@ -27,7 +27,7 @@ export default function RatingList({
                 user={rating.user}
                 eventTimestamp={rating.created_at}
               />
-              <RatingItem rating={rating} />
+              <RatingItem readOnly value={rating.value} />
             </li>
           ))}
         </ul>

@@ -1,6 +1,6 @@
 import { TextareaHTMLAttributes, useId } from "react";
 
-export type TextAreaProps = TextareaHTMLAttributes<HTMLTextAreaElement> & {
+type TextAreaProps = TextareaHTMLAttributes<HTMLTextAreaElement> & {
   label?: string;
   rightIcon?: React.ReactNode;
 };
