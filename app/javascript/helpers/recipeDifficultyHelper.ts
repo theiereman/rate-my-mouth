@@ -49,3 +49,16 @@ export function getDifficultyLabel(difficulty: Difficulty): string {
       return "Inconnu";
   }
 }
+
+export function getDifficultyValue(value: string): number {
+  switch (value.toLowerCase()) {
+    case "easy":
+      return 0;
+    case "medium":
+      return 1;
+    case "hard":
+      return 2;
+    default:
+      return 0;
+  }
+}

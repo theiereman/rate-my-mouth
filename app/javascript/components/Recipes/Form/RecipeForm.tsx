@@ -8,6 +8,10 @@ import RecipeContentSubform from "./RecipeContentSubform";
 import { Section } from "@components/ui";
 import Page from "@components/ui/Pages/Page";
 import TagsCombo from "@components/Tags/TagsCombo";
+import {
+  getDifficultyLabel,
+  getDifficultyValue,
+} from "@helpers/recipeDifficultyHelper";
 
 interface FormProps {
   recipe: RecipeType;
@@ -38,7 +42,7 @@ export default function Form({
       })) || [],
     url: recipe.url || "",
     number_of_servings: recipe.number_of_servings || 4,
-    difficulty: recipe.difficulty || 0,
+    difficulty: getDifficultyValue(recipe.difficulty.toString()) || 0,
     description: recipe.description || "",
     tags_attributes:
       recipe.tags?.map((tag) => ({ id: tag.id, name: tag.name })) || [],
@@ -50,6 +54,8 @@ export default function Form({
     e.preventDefault();
     onSubmit(form);
   };
+
+  console.log(data.difficulty);
 
   return (
     <form onSubmit={handleSubmit} className="contents">
@@ -117,6 +123,10 @@ export default function Form({
 
               <Combo
                 label="Difficulté *"
+                selectedValue={{
+                  value: data.difficulty,
+                  label: getDifficultyLabel(data.difficulty),
+                }}
                 values={[
                   { value: 0, label: "Facile" },
                   { value: 1, label: "Moyen" },
@@ -125,7 +135,6 @@ export default function Form({
                 onSelectedValue={(value) =>
                   setData("difficulty", value?.value ?? 0)
                 }
-                value={data.difficulty}
                 className="w-full"
               />
 
