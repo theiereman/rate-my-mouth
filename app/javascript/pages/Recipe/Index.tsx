@@ -10,7 +10,6 @@ import { UserType } from "@customTypes/user.types";
 import EmptyPlaceholder from "@components/ui/EmptyPlaceholder";
 import { TagType } from "@customTypes/tag.types";
 import RecipeFilters from "@components/Recipe/RecipeFilters";
-import { useRecipeFilters } from "@hooks/useRecipeFilters";
 import { useUrlParams } from "@hooks/useUrlParams";
 import { RecipeAdapter } from "@adapters/recipe.adapter";
 import RecipeLink from "@components/Recipes/RecipeLink";
@@ -32,18 +31,6 @@ export default function Index({
     [rawRecipes],
   ); //TODO: consider HOC to avoid having to adapt the recipes inside the component
 
-  const {
-    tags,
-    users,
-    isLoadingTags,
-    isLoadingUsers,
-    errors,
-    searchTags,
-    searchUsers,
-    initTags,
-    initUsers,
-  } = useRecipeFilters();
-
   const { initFromUrl } = useUrlParams({
     onQueryInit: setSearchQuery,
     onUserInit: setSelectedUser,
@@ -51,18 +38,24 @@ export default function Index({
   });
 
   useEffect(() => {
-    initUsers();
-    initTags();
     initFromUrl();
   }, []);
 
-  const fetchRecipes = () => {
+  const fetchRecipes = (overrides?: {
+    searchQuery?: string;
+    selectedUser?: UserType | null;
+    selectedTags?: TagType[];
+  }) => {
+    const currentSearchQuery = overrides?.searchQuery ?? searchQuery;
+    const currentSelectedUser = overrides?.selectedUser;
+    const currentSelectedTags = overrides?.selectedTags ?? selectedTags;
+
     const params: { name?: string; user_id?: number; tags_ids?: string } = {};
 
-    if (searchQuery?.trim()) params.name = searchQuery;
-    if (selectedUser) params.user_id = selectedUser.id;
-    if (selectedTags.length > 0)
-      params.tags_ids = selectedTags.map((tag) => tag.id).join(",");
+    if (currentSearchQuery?.trim()) params.name = currentSearchQuery;
+    if (currentSelectedUser) params.user_id = currentSelectedUser.id;
+    if (currentSelectedTags && currentSelectedTags.length > 0)
+      params.tags_ids = currentSelectedTags.map((tag) => tag.id).join(",");
 
     setIsLoadingRecipes(true);
     router.get("/recipes", params, {
@@ -102,21 +95,15 @@ export default function Index({
           }}
           selectedUser={selectedUser}
           onSelectedUserChange={(user) => {
+            console.log("Selected user:", user);
             setSelectedUser(user);
-            fetchRecipes();
+            fetchRecipes({ selectedUser: user });
           }}
           selectedTags={selectedTags}
           onSelectedTagsChange={(tags) => {
             setSelectedTags(tags);
-            fetchRecipes();
+            fetchRecipes({ selectedTags: tags });
           }}
-          users={users}
-          tags={tags}
-          isLoadingUsers={isLoadingUsers}
-          isLoadingTags={isLoadingTags}
-          onSearchUsers={searchUsers}
-          onSearchTags={searchTags}
-          errors={errors}
         />
       </Section>
 

@@ -1,11 +1,13 @@
 import { InertiaFormProps, useForm } from "@inertiajs/react";
 import { FormEvent } from "react";
 import { RecipeFormType, RecipeType } from "@customTypes/recipe.types";
+import { TagType } from "@customTypes/tag.types";
 import { Button, Input, Combo, TextArea, LinkButton } from "@components/ui";
 import RecipeThumbnail from "../RecipeThumbnail";
 import RecipeContentSubform from "./RecipeContentSubform";
 import { Section } from "@components/ui";
 import Page from "@components/ui/Pages/Page";
+import TagsCombo from "@components/Tags/TagsCombo";
 
 interface FormProps {
   recipe: RecipeType;
@@ -127,43 +129,21 @@ export default function Form({
                 className="w-full"
               />
 
-              <Combo
-                label="Tags associés"
-                rightIcon={
-                  isLoadingTags ? (
-                    <span className="material-symbols-outlined animate-spin">
-                      progress_activity
-                    </span>
-                  ) : undefined
-                }
-                selectedValue={selectedTags?.map((tag) => ({
-                  value: tag.id,
-                  label: tag.name,
+              <TagsCombo
+                selectedTags={(data.tags_attributes || []).map((tag) => ({
+                  id: tag.id || 0,
+                  name: tag.name,
+                  recipes_count: 0,
                 }))}
-                values={nonSelectedTags.map((tag) => ({
-                  value: tag.id,
-                  label: `${tag.name} (${tag.recipes_count})`,
-                }))}
-                onSearchValueChange={(value: string) => {
-                  onSearchTags(value);
-                }}
-                onSelectedValue={(value: ComboValue | null) => {
-                  const tag = tags.find((tag) => tag.id === value?.value);
-                  if (tag) {
-                    onSelectedTagsChange([...selectedTags, tag]);
-                  }
-                }}
-                onSelectedValueRemove={(value: ComboValue) => {
-                  onSelectedTagsChange(
-                    selectedTags.filter((tag) => tag.id !== value.value),
+                onSelectedTagsChange={(selectedTags: TagType[]) => {
+                  setData(
+                    "tags_attributes",
+                    selectedTags.map((tag) => ({
+                      id: tag.id,
+                      name: tag.name,
+                    })),
                   );
                 }}
-              />
-
-              <TagsSelector
-                initialTags={data.tags_attributes}
-                onTagsSelected={(tags) => setData("tags_attributes", tags)}
-                maxTags={3}
                 className="w-full"
               />
             </div>

@@ -30,7 +30,7 @@ export default function Input({
       <div className="relative flex-1">
         <input
           id={inputId}
-          className={`focus:border-accent-400 border-primary-900 size-full border-3 p-1 ring-0 focus:border-3 ${rightIcon ? "pr-10" : ""} ${className}`}
+          className={`focus:border-accent-400 border-primary-900 w-full border-3 p-1 ring-0 focus:border-3 ${rightIcon ? "pr-10" : ""} ${className}`}
           {...props}
         />
         {rightIcon && (
