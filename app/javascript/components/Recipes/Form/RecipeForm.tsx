@@ -2,10 +2,9 @@ import { InertiaFormProps, useForm } from "@inertiajs/react";
 import { FormEvent } from "react";
 import { RecipeFormType, RecipeType } from "@customTypes/recipe.types";
 import { Button, Input, Combo, TextArea, LinkButton } from "@components/ui";
-import TagsSelector from "@components/Tags/TagsSelector";
 import RecipeThumbnail from "../RecipeThumbnail";
 import RecipeContentSubform from "./RecipeContentSubform";
-import Section from "@components/ui/Pages/Section";
+import { Section } from "@components/ui";
 import Page from "@components/ui/Pages/Page";
 
 interface FormProps {
@@ -64,79 +63,110 @@ export default function Form({
           }}
         />
 
-        <Section title="Informations générales" underlineStroke={1}>
-          <Input
-            mandatory
-            label="Nom de la recette"
-            type="text"
-            name="name"
-            id="name"
-            value={data.name}
-            onChange={(e) => setData("name", e.target.value)}
-            error={errors.name}
-            placeholder="Tarte aux pommes, Poulet rôti aux herbes..."
-            data-1p-ignore
-            data-lpignore="true"
-            data-protonpass-ignore="true"
-          />
-
-          <TextArea
-            label="Description"
-            name="description"
-            id="description"
-            value={data.description}
-            onChange={(e) => setData("description", e.target.value)}
-            error={errors.description}
-            placeholder="Une recette de mon enfance qui me donne les larmes aux yeux quand j'y pense..."
-          />
-
-          <Input
-            label="URL de la source (optionnel)"
-            type="text"
-            name="url"
-            id="url"
-            value={data.url}
-            onChange={(e) => setData("url", e.target.value)}
-            error={errors.url}
-            placeholder="https://..."
-            helperText="Si cette recette provient d'un site web, vous pouvez indiquer l'URL ici"
-          />
-
-          <div className="grid grid-cols-1 items-start gap-4 md:grid-cols-3">
+        <Section title="Informations générales" variant="ghost">
+          <div className="flex flex-col gap-2">
             <Input
-              mandatory
-              label="Nombre de personnes"
-              type="number"
-              name="number_of_servings"
-              id="number_of_servings"
-              value={data.number_of_servings}
-              onChange={(e) =>
-                setData("number_of_servings", parseInt(e.target.value))
-              }
-              error={errors.number_of_servings}
+              label="Nom de la recette *"
+              type="text"
+              name="name"
+              id="name"
+              value={data.name}
+              onChange={(e) => setData("name", e.target.value)}
+              error={errors.name}
+              placeholder="Tarte aux pommes, Poulet rôti aux herbes..."
+              data-1p-ignore
+              data-lpignore="true"
+              data-protonpass-ignore="true"
             />
 
-            <Combo
-              mandatory
-              label="Difficulté"
-              values={[
-                { value: 0, label: "Facile" },
-                { value: 1, label: "Moyen" },
-                { value: 2, label: "Difficile" },
-              ]}
-              onSelectedValue={(value) =>
-                setData("difficulty", value?.value ?? 0)
-              }
-              value={data.difficulty}
-              className="w-full"
+            <TextArea
+              label="Description"
+              name="description"
+              id="description"
+              value={data.description}
+              onChange={(e) => setData("description", e.target.value)}
+              placeholder="Une recette de mon enfance qui me donne les larmes aux yeux quand j'y pense..."
             />
 
-            <TagsSelector
-              initialTags={data.tags_attributes}
-              onTagsSelected={(tags) => setData("tags_attributes", tags)}
-              maxTags={3}
-              className="w-full"
+            <Input
+              label="URL de la source (optionnel)"
+              type="text"
+              name="url"
+              id="url"
+              value={data.url}
+              onChange={(e) => setData("url", e.target.value)}
+              error={errors.url}
+              placeholder="https://..."
+              // helperText="Si cette recette provient d'un site web, vous pouvez indiquer l'URL ici"
             />
+
+            <div className="grid grid-cols-1 items-start gap-4 md:grid-cols-3">
+              <Input
+                label="Nombre de personne *"
+                type="number"
+                name="number_of_servings"
+                id="number_of_servings"
+                value={data.number_of_servings}
+                onChange={(e) =>
+                  setData("number_of_servings", parseInt(e.target.value))
+                }
+                error={errors.number_of_servings}
+              />
+
+              <Combo
+                label="Difficulté *"
+                values={[
+                  { value: 0, label: "Facile" },
+                  { value: 1, label: "Moyen" },
+                  { value: 2, label: "Difficile" },
+                ]}
+                onSelectedValue={(value) =>
+                  setData("difficulty", value?.value ?? 0)
+                }
+                value={data.difficulty}
+                className="w-full"
+              />
+
+              <Combo
+                label="Tags associés"
+                rightIcon={
+                  isLoadingTags ? (
+                    <span className="material-symbols-outlined animate-spin">
+                      progress_activity
+                    </span>
+                  ) : undefined
+                }
+                selectedValue={selectedTags?.map((tag) => ({
+                  value: tag.id,
+                  label: tag.name,
+                }))}
+                values={nonSelectedTags.map((tag) => ({
+                  value: tag.id,
+                  label: `${tag.name} (${tag.recipes_count})`,
+                }))}
+                onSearchValueChange={(value: string) => {
+                  onSearchTags(value);
+                }}
+                onSelectedValue={(value: ComboValue | null) => {
+                  const tag = tags.find((tag) => tag.id === value?.value);
+                  if (tag) {
+                    onSelectedTagsChange([...selectedTags, tag]);
+                  }
+                }}
+                onSelectedValueRemove={(value: ComboValue) => {
+                  onSelectedTagsChange(
+                    selectedTags.filter((tag) => tag.id !== value.value),
+                  );
+                }}
+              />
+
+              <TagsSelector
+                initialTags={data.tags_attributes}
+                onTagsSelected={(tags) => setData("tags_attributes", tags)}
+                maxTags={3}
+                className="w-full"
+              />
+            </div>
           </div>
         </Section>
 
@@ -169,13 +199,12 @@ export default function Form({
 
         <div className="flex justify-end gap-2">
           <LinkButton
-            preserveScroll
             variant="ghost"
             href={recipe.id ? `/recipes/${recipe.id}` : "/recipes"}
           >
             Annuler
           </LinkButton>
-          <Button type="submit" variant="primary" isLoading={processing}>
+          <Button type="submit" disabled={processing}>
             {submitText}
           </Button>
         </div>

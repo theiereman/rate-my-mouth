@@ -17,7 +17,8 @@ import {
   useSensors,
 } from "@dnd-kit/core";
 import { v4 as uuidv4 } from "uuid";
-import Section from "@components/ui/Pages/Section";
+import { Section } from "@components/ui";
+import { capitalize } from "lodash";
 
 interface RecipeContentSubformProps {
   initialIngredients?: IngredientType[];
@@ -58,7 +59,7 @@ export default function RecipeContentSubform({
         value: ingredient.name,
         category: ingredient.category || "",
         dbId: ingredient.id,
-      })
+      }),
     );
 
     const initialInstructionsItems: RecipeItem[] = initialInstructions.map(
@@ -68,7 +69,7 @@ export default function RecipeContentSubform({
         value: instruction.name,
         category: instruction.category || "",
         dbId: instruction.id,
-      })
+      }),
     );
 
     setIngredients(initialIngredientsItems);
@@ -166,7 +167,7 @@ export default function RecipeContentSubform({
         if (itemType === "ingredient") {
           if (item.dbId) {
             setIngredients((prev) =>
-              prev.map((i) => (i.id === itemId ? { ...i, _destroy: true } : i))
+              prev.map((i) => (i.id === itemId ? { ...i, _destroy: true } : i)),
             );
           } else {
             setIngredients((prev) => prev.filter((i) => i.id !== itemId));
@@ -174,7 +175,7 @@ export default function RecipeContentSubform({
         } else {
           if (item.dbId) {
             setInstructions((prev) =>
-              prev.map((i) => (i.id === itemId ? { ...i, _destroy: true } : i))
+              prev.map((i) => (i.id === itemId ? { ...i, _destroy: true } : i)),
             );
           } else {
             setInstructions((prev) => prev.filter((i) => i.id !== itemId));
@@ -206,10 +207,10 @@ export default function RecipeContentSubform({
 
   const updateItem = (id: string, value: string) => {
     setIngredients((prev) =>
-      prev.map((item) => (item.id === id ? { ...item, value } : item))
+      prev.map((item) => (item.id === id ? { ...item, value } : item)),
     );
     setInstructions((prev) =>
-      prev.map((item) => (item.id === id ? { ...item, value } : item))
+      prev.map((item) => (item.id === id ? { ...item, value } : item)),
     );
   };
 
@@ -221,8 +222,8 @@ export default function RecipeContentSubform({
       if (ingredientToDelete.dbId) {
         setIngredients((prev) =>
           prev.map((item) =>
-            item.id === id ? { ...item, _destroy: true } : item
-          )
+            item.id === id ? { ...item, _destroy: true } : item,
+          ),
         );
       } else {
         setIngredients((prev) => prev.filter((item) => item.id !== id));
@@ -233,8 +234,8 @@ export default function RecipeContentSubform({
       if (instructionToDelete.dbId) {
         setInstructions((prev) =>
           prev.map((item) =>
-            item.id === id ? { ...item, _destroy: true } : item
-          )
+            item.id === id ? { ...item, _destroy: true } : item,
+          ),
         );
       } else {
         setInstructions((prev) => prev.filter((item) => item.id !== id));
@@ -245,7 +246,7 @@ export default function RecipeContentSubform({
   const handleCategoryNameChange = (
     oldName: string,
     newName: string,
-    type: ItemType
+    type: ItemType,
   ) => {
     setLastUsedCategory((prev) => {
       prev.set(type, newName);
@@ -255,14 +256,14 @@ export default function RecipeContentSubform({
     if (type === "ingredient") {
       setIngredients((prev) =>
         prev.map((item) =>
-          item.category === oldName ? { ...item, category: newName } : item
-        )
+          item.category === oldName ? { ...item, category: newName } : item,
+        ),
       );
     } else {
       setInstructions((prev) =>
         prev.map((item) =>
-          item.category === oldName ? { ...item, category: newName } : item
-        )
+          item.category === oldName ? { ...item, category: newName } : item,
+        ),
       );
     }
   };
@@ -276,135 +277,97 @@ export default function RecipeContentSubform({
     if (type === "ingredient") {
       setIngredients((prev) =>
         prev.map((item) =>
-          item.category === name ? { ...item, category: "" } : item
-        )
+          item.category === name ? { ...item, category: "" } : item,
+        ),
       );
     } else {
       setInstructions((prev) =>
         prev.map((item) =>
-          item.category === name ? { ...item, category: "" } : item
-        )
+          item.category === name ? { ...item, category: "" } : item,
+        ),
       );
     }
   };
 
   return (
-    <Section
-      title="Ingrédients et instructions"
-      childrenClassName="space-y-4"
-      underlineStroke={2}
-    >
-      <div className="flex flex-col sm:flex-row gap-2 w-full">
-        <Input
-          value={inputText}
-          onChange={(e) => setInputText(e.target.value)}
-          onKeyDown={handleKeyDown}
-          containerClassName="flex-1"
-          placeholder="2 oeufs, cuire la viande pendant 1h, etc."
-          className={
-            detectedType === "ingredient"
-              ? "border-primary-500 bg-primary-50"
-              : detectedType === "instruction"
-              ? "border-secondary-500 bg-secondary-50"
-              : ""
-          }
-        ></Input>
+    <Section title="Ingrédients et instructions" variant="ghost">
+      <div className="flex flex-col gap-2">
+        <div className="flex w-full flex-col gap-2 sm:flex-row">
+          <Input
+            value={inputText}
+            onChange={(e) => setInputText(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder="2 oeufs, cuire la viande pendant 1h, etc."
+          />
 
-        <div className="flex gap-2 justify-end">
-          <Button
-            variant="primary"
-            onClick={(e) => {
-              e.preventDefault();
-              addItem(inputText, "ingredient");
-            }}
-          >
-            <span className="material-symbols-outlined">add</span>
-            Ingredient
-          </Button>
-          <Button
-            variant="secondary"
-            onClick={(e) => {
-              e.preventDefault();
-              addItem(inputText, "instruction");
-            }}
-          >
-            <span className="material-symbols-outlined">add</span>
-            Instruction
-          </Button>
+          <div className="flex gap-2">
+            <Button
+              className="w-full"
+              onClick={(e) => {
+                e.preventDefault();
+                addItem(inputText, "ingredient");
+              }}
+            >
+              <span className="material-symbols-outlined">add</span>
+              Ingredient
+            </Button>
+            <Button
+              className="w-full"
+              onClick={(e) => {
+                e.preventDefault();
+                addItem(inputText, "instruction");
+              }}
+            >
+              <span className="material-symbols-outlined">add</span>
+              Instruction
+            </Button>
+          </div>
         </div>
-      </div>
-      {inputText.trim() && (
-        <>
-          {detectedType === "ingredient" ? (
-            <Badge
-              text="Ingrédient - Appuyez sur Entrée pour ajouter"
-              variant="primary"
+
+        {inputText.trim() && (
+          <Badge className="w-full">
+            {capitalize(detectedType)} - Appuyez sur Entrée pour ajouter
+          </Badge>
+        )}
+
+        <div className="flex flex-col gap-2 md:flex-row">
+          <DndContext
+            onDragEnd={handleDragEnd}
+            sensors={useSensors(
+              useSensor(PointerSensor, {
+                activationConstraint: { distance: 8 },
+              }),
+              useSensor(TouchSensor, {
+                activationConstraint: { delay: 250, tolerance: 5 },
+              }),
+            )}
+          >
+            <ItemsCategorizer
+              items={visibleIngredients}
+              type="ingredient"
+              onItemUpdate={updateItem}
+              onItemDelete={deleteItem}
+              onCategoryNameChange={(name, newName) =>
+                handleCategoryNameChange(name, newName, "ingredient")
+              }
+              onCategoryDelete={(name) =>
+                handleCategoryDelete(name, "ingredient")
+              }
             />
-          ) : (
-            <Badge
-              text="Instruction - Appuyez sur Entrée pour ajouter"
-              variant="secondary"
+            <ItemsCategorizer
+              items={visibleInstructions}
+              type="instruction"
+              onItemUpdate={updateItem}
+              onItemDelete={deleteItem}
+              onCategoryNameChange={(name, newName) =>
+                handleCategoryNameChange(name, newName, "instruction")
+              }
+              onCategoryDelete={(name) =>
+                handleCategoryDelete(name, "instruction")
+              }
             />
-          )}
-        </>
-      )}
-      <ul className="text-sm text-neutral-600">
-        <li className="flex items-start gap-2">
-          <span className="material-symbols-outlined text-primary-600">
-            check
-          </span>
-          <span>
-            Les <strong>ingrédients</strong> contiennent généralement des
-            quantités (ex: "200g de farine", "une pincée de sel")
-          </span>
-        </li>
-        <li className="flex items-start gap-2">
-          <span className="material-symbols-outlined text-secondary-600">
-            check
-          </span>
-          <span>
-            Les <strong>instructions</strong> commencent souvent par un verbe
-            (ex: "Mélanger les ingrédients", "Cuire 10 minutes")
-          </span>
-        </li>
-      </ul>
-      <div className="flex flex-col md:flex-row gap-6">
-        <DndContext
-          onDragEnd={handleDragEnd}
-          sensors={useSensors(
-            useSensor(PointerSensor, {
-              activationConstraint: { distance: 8 },
-            }),
-            useSensor(TouchSensor, {
-              activationConstraint: { delay: 250, tolerance: 5 },
-            })
-          )}
-        >
-          <ItemsCategorizer
-            items={visibleIngredients}
-            type="ingredient"
-            onItemUpdate={updateItem}
-            onItemDelete={deleteItem}
-            onCategoryNameChange={(name, newName) =>
-              handleCategoryNameChange(name, newName, "ingredient")
-            }
-            onCategoryDelete={(name) =>
-              handleCategoryDelete(name, "ingredient")
-            }
-          />
-          <ItemsCategorizer
-            items={visibleInstructions}
-            type="instruction"
-            onItemUpdate={updateItem}
-            onItemDelete={deleteItem}
-            onCategoryNameChange={(name, newName) =>
-              handleCategoryNameChange(name, newName, "instruction")
-            }
-            onCategoryDelete={(name) =>
-              handleCategoryDelete(name, "instruction")
-            }
-          />
-        </DndContext>
+          </DndContext>
+        </div>
       </div>
     </Section>
   );

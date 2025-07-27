@@ -2,7 +2,6 @@ import { useForm, Link } from "@inertiajs/react";
 import { FormEvent, useState, useEffect } from "react";
 import { Input, Button } from "@components/ui";
 import { PageProps } from "@customTypes/usepage-props.types";
-import AuthLayout from "@layouts/AuthLayout";
 
 export default function ForgotPassword({ flash }: PageProps) {
   const [showAlert, setShowAlert] = useState(false);

@@ -16,11 +16,6 @@ export default function RecipeContentItem({
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [active, setActive] = useState(false);
 
-  const bgColorClass =
-    item.type === "ingredient"
-      ? "border-primary-100 bg-primary-50 hover:bg-primary-100"
-      : "border-secondary-200 bg-secondary-100 hover:bg-secondary-200";
-
   const { attributes, listeners, setNodeRef, transform, isDragging } =
     useDraggable({
       id: item.id,
@@ -88,12 +83,13 @@ export default function RecipeContentItem({
 
   return (
     <div
-      className={`flex-1 flex items-start justify-between p-1 rounded-lg border transition-colors cursor-grab touch-manipulation ${bgColorClass}`}
+      className={`border-primary-900 flex flex-1 cursor-grab touch-manipulation items-center justify-between border-1 p-1`}
       ref={setNodeRef}
       style={style}
       {...listeners}
       {...attributes}
     >
+      <span className="material-symbols-outlined">drag_indicator</span>
       <textarea
         ref={textareaRef}
         value={item.value}
@@ -104,14 +100,14 @@ export default function RecipeContentItem({
         onKeyDown={handleKeyDown}
         rows={1}
         className={`${
-          active ? "bg-white focus:ring-2" : "ring-0"
-        } text-neutral-800 w-full self-center bg-transparent border-none rounded-sm resize-none overflow-hidden`}
+          active ? "ring-accent-600 bg-white focus:ring-2" : "ring-0"
+        } w-full resize-none self-center overflow-hidden border-none bg-transparent text-neutral-800`}
         style={{ minHeight: "24px" }}
       />
       <Button
         variant="ghost"
         onClick={handleDelete}
-        className="text-red-600 hover:text-red-700"
+        className="ms-2 text-red-600"
       >
         <span className="material-symbols-outlined">delete</span>
       </Button>

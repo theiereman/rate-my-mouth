@@ -4,6 +4,7 @@ export type InputProps = InputHTMLAttributes<HTMLInputElement> & {
   label?: string;
   error?: string;
   rightIcon?: React.ReactNode;
+  ref?: React.Ref<HTMLInputElement>;
 };
 
 export default function Input({
@@ -11,6 +12,7 @@ export default function Input({
   error,
   className,
   rightIcon,
+  ref,
   ...props
 }: InputProps) {
   const inputId = useId();

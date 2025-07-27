@@ -1,9 +1,10 @@
-import { Badge, Button } from "@components/ui";
-import EmptyPlaceholder from "@components/ui/EmptyPlaceholder";
+import { Button, Section } from "@components/ui";
+import { EmptyPlaceholder } from "@components/ui";
 import { ItemCategory, ItemType, RecipeItem } from "@customTypes/recipe.types";
 import CategoryItem from "./CategoryItem";
 import { useState } from "react";
 import { useDroppable } from "@dnd-kit/core";
+import { capitalize } from "lodash";
 
 export default function ItemsCategorizer({
   type,
@@ -75,8 +76,8 @@ export default function ItemsCategorizer({
   const handleCategoryNameChange = (oldName: string, newName: string) => {
     setEmptyCategories((prev) =>
       prev.map((cat) =>
-        cat.name === oldName ? { ...cat, name: newName } : cat
-      )
+        cat.name === oldName ? { ...cat, name: newName } : cat,
+      ),
     );
     onCategoryNameChange && onCategoryNameChange(oldName, newName);
   };
@@ -87,63 +88,50 @@ export default function ItemsCategorizer({
   };
 
   return (
-    <div
+    <Section
+      title={capitalize(type)}
+      headerAction={
+        <span className="text-xl font-bold">{items.length.toString()}</span>
+      }
       ref={setNodeRef}
-      className={`flex-1 space-y-4 ${
-        isOver && over?.id === type ? "border-2 border-primary-500" : ""
+      className={`flex-1 ${
+        isOver && over?.id === type ? "border-accent-500 border-2" : ""
       }`}
     >
-      <div className="flex flex-col">
-        <h2 className="text-xl font-semibold text-neutral-800 flex items-center gap-1">
-          {type === "ingredient" ? "Ingrédients" : "Instructions"}
-          <Badge
-            text={items.length.toString()}
-            variant={type === "ingredient" ? "primary" : "secondary"}
-          />
-        </h2>
-        {items.length > 0 && (
-          <p className="text-xs flex items-center gap-1 text-neutral-400">
-            <span className="material-symbols-outlined material-icon--sm">
-              info
-            </span>
-            Les éléments sont déplaçables entre les sous-catégories.
-          </p>
-        )}
-      </div>
-      {allCategories.length === 0 ? (
-        <EmptyPlaceholder
-          text={
-            type == "ingredient"
+      <div className="flex h-full flex-col">
+        {allCategories.length === 0 ? (
+          <EmptyPlaceholder className="h-full p-4">
+            {type == "ingredient"
               ? "Aucun ingrédient ajouté"
-              : `Aucune instruction ajoutée`
-          }
-          subtext="Utiliser le champs ci-dessus pour en ajouter."
-          variant={type === "ingredient" ? "primary" : "secondary"}
-        />
-      ) : (
-        <>
-          {allCategories
-            .sort((a, b) => a.name.localeCompare(b.name))
-            .map((category, index) => (
-              <CategoryItem
-                key={`${category.name}-${index}`}
-                name={category.name}
-                type={type}
-                color={category.color}
-                items={items.filter((item) => item.category === category.name)}
-                onItemUpdate={onItemUpdate}
-                onItemDelete={onItemDelete}
-                onNameChange={(newName) =>
-                  handleCategoryNameChange(category.name, newName)
-                }
-                onDelete={() => handleCategoryDelete(category.name)}
-              />
-            ))}
-        </>
-      )}
-      <Button onClick={handleAddCategoryClick} variant="outline" fullWidth>
-        Ajouter une sous-catégorie
-      </Button>
-    </div>
+              : `Aucune instruction ajoutée`}
+          </EmptyPlaceholder>
+        ) : (
+          <>
+            {allCategories
+              .sort((a, b) => a.name.localeCompare(b.name))
+              .map((category, index) => (
+                <CategoryItem
+                  key={`${category.name}-${index}`}
+                  name={category.name}
+                  type={type}
+                  color={category.color}
+                  items={items.filter(
+                    (item) => item.category === category.name,
+                  )}
+                  onItemUpdate={onItemUpdate}
+                  onItemDelete={onItemDelete}
+                  onNameChange={(newName) =>
+                    handleCategoryNameChange(category.name, newName)
+                  }
+                  onDelete={() => handleCategoryDelete(category.name)}
+                />
+              ))}
+          </>
+        )}
+        <Button className="w-full" onClick={handleAddCategoryClick}>
+          Ajouter une sous-catégorie
+        </Button>
+      </div>
+    </Section>
   );
 }

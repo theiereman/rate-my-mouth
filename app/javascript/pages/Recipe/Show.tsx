@@ -1,5 +1,5 @@
 import { Head } from "@inertiajs/react";
-import { RawRecipe, RecipeType } from "@customTypes/recipe.types";
+import { RawRecipe } from "@customTypes/recipe.types";
 import { RatingType } from "@customTypes/rating.types";
 import { CommentableType } from "@customTypes/comment.types";
 import Timer from "@components/tools/Timer";

@@ -1,6 +1,6 @@
 import { router } from "@inertiajs/react";
 import { RawRecipe, RecipeType } from "@customTypes/recipe.types";
-import { LinkButton, Pagination } from "@components/ui";
+import { Pagination } from "@components/ui";
 import { useEffect, useMemo, useState } from "react";
 import { PagyMetadata } from "@components/ui/Pagination";
 import Page from "@components/ui/Pages/Page";
@@ -13,7 +13,6 @@ import RecipeFilters from "@components/Recipe/RecipeFilters";
 import { useRecipeFilters } from "@hooks/useRecipeFilters";
 import { useUrlParams } from "@hooks/useUrlParams";
 import { RecipeAdapter } from "@adapters/recipe.adapter";
-import RecipeShortItem from "@components/Recipes/RecipeLink";
 import RecipeLink from "@components/Recipes/RecipeLink";
 
 export default function Index({

@@ -35,15 +35,18 @@ export default function Section({
   children,
   variant = "default",
   className = "",
+  ref,
 }: {
   title?: string;
   headerAction?: React.ReactNode;
   children: React.ReactNode;
   variant?: SectionVariant;
   className?: string;
+  ref?: React.Ref<HTMLDivElement>;
 }) {
   return (
     <div
+      ref={ref}
       className={`flex flex-col ${getMainContainerClassnames(variant)} ${className}`}
     >
       {title && (

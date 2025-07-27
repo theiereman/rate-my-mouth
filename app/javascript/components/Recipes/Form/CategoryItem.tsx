@@ -1,5 +1,5 @@
 import { Button, Input } from "@components/ui";
-import EmptyPlaceholder from "@components/ui/EmptyPlaceholder";
+import { EmptyPlaceholder } from "@components/ui";
 import { ItemType, RecipeItem } from "@customTypes/recipe.types";
 import { useState, useRef, useEffect } from "react";
 import { useDroppable } from "@dnd-kit/core";
@@ -90,27 +90,26 @@ export default function CategoryItem({
   return (
     <div
       ref={setNodeRef}
-      className={`rounded-lg ${isOver ? "border-2 border-primary-500" : ""}`}
+      className={`py-2 ${isOver ? "border-accent-500 border-3 p-2" : ""}`}
       style={{ backgroundColor: color }}
     >
       {isEditing ? (
-        <Input
-          ref={inputRef}
-          type="text"
-          value={editName}
-          onChange={handleInputChange}
-          onKeyDown={handleInputKeyDown}
-          onBlur={handleInputBlur}
-          inputClassName="p-1!"
-          containerClassName="mb-2"
-        />
+        <div>
+          <Input
+            ref={inputRef}
+            value={editName}
+            onChange={handleInputChange}
+            onKeyDown={handleInputKeyDown}
+            onBlur={handleInputBlur}
+          />
+        </div>
       ) : (
         !defaultCategory && (
-          <div className="flex justify-between items-start">
+          <div className="flex items-start justify-between">
             <h3
-              className={`text-neutral-600 text-sm mb-2 line-clamp-1 text-ellipsis ${
+              className={`mb-2 line-clamp-1 font-bold text-ellipsis text-neutral-600 ${
                 onNameChange && !defaultCategory
-                  ? "cursor-pointer hover:text-neutral-800 transition-colors"
+                  ? "cursor-pointer transition-colors hover:text-neutral-800"
                   : ""
               }`}
               onClick={handleTitleClick}
@@ -129,10 +128,9 @@ export default function CategoryItem({
         )
       )}
       {items.length === 0 ? (
-        <EmptyPlaceholder
-          text="Aucun élément dans cette catégorie"
-          variant={type === "ingredient" ? "primary" : "secondary"}
-        />
+        <EmptyPlaceholder className="border-1 p-2">
+          Aucun élément dans cette catégorie
+        </EmptyPlaceholder>
       ) : (
         <div className="space-y-2">
           {items.map((item) => (

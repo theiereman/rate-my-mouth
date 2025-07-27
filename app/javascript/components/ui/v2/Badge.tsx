@@ -12,7 +12,7 @@ export default function Badge({
   return (
     <span
       title={title}
-      className={`text-primary-900 border-primary-900 border-3 px-2 text-sm font-bold whitespace-nowrap ${className} ${onClick ? "cursor-pointer" : ""}`}
+      className={`text-primary-900 border-primary-900 border-3 px-2 text-center text-sm font-bold whitespace-nowrap ${className} ${onClick ? "cursor-pointer" : ""}`}
       onClick={onClick}
     >
       {children}
