@@ -4,8 +4,7 @@ import { Rating, RatingProps } from "@mui/material";
 function Empty({ className }: { className?: string }) {
   return (
     <div
-      className={`border-primary-900 size-6 rounded-full border-5 ${className}`}
-      style={{ aspectRatio: "1 / 1", minWidth: "unset" }}
+      className={`border-primary-900 aspect-[1/1] size-6 rounded-full border-5 ${className}`}
     />
   );
 }
@@ -13,8 +12,7 @@ function Empty({ className }: { className?: string }) {
 function Full({ className }: { className?: string }) {
   return (
     <div
-      className={`bg-primary-900 size-6 rounded-full ${className}`}
-      style={{ aspectRatio: "1 / 1", minWidth: "unset" }}
+      className={`bg-primary-900 aspect-[1/1] size-6 rounded-full ${className}`}
     />
   );
 }
@@ -34,7 +32,7 @@ export default function RatingItem(
       <Badge
         className={`w-10 text-center ${props.pendingChange ? "text-accent-500! border-accent-500!" : ""}`}
       >
-        {props.value?.toFixed(1)}
+        {props.value?.toFixed(1) || "0.0"}
       </Badge>
     </div>
   );

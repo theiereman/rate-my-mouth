@@ -103,7 +103,7 @@ export default function Show({ recipe: rawRecipe, userRating }: ShowProps) {
               <RatingForm
                 recipeId={recipe.id}
                 rating={userRating}
-                className="self-start md:h-10 md:self-stretch" //forcing height to match the comment form
+                className="self-start md:h-10 md:self-stretch"
               />
             </Section>
             <div className="bg-primary-900 mt-4 h-1.5 w-full" />
