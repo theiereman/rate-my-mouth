@@ -4,30 +4,15 @@ import { useToast } from "@contexts/ToastContext";
 import { FILE_PICKER_ERROR_MESSAGES } from "@helpers/FilepickerHelper";
 import { useState } from "react";
 
-type ThumbnailFormat = "square" | "full";
-
 interface ThumbnailProps {
   thumbnailUrl?: string;
-  format?: ThumbnailFormat;
   className?: string;
   allowThumbnailChange?: boolean;
   onThumbnailSelected?: (file: File | null) => void;
 }
 
-const getFormatClasses = (size: ThumbnailFormat) => {
-  switch (size) {
-    case "square":
-      return "w-full md:w-32 h-32 md:h-full";
-    case "full":
-      return "w-full h-64";
-    default:
-      return "w-32 h-32";
-  }
-};
-
 export const RecipeThumbnail = ({
   thumbnailUrl,
-  format = "full",
   className = "",
   onThumbnailSelected,
 }: ThumbnailProps) => {
@@ -58,16 +43,17 @@ export const RecipeThumbnail = ({
     },
   });
 
-  const formatClasses = getFormatClasses(format);
   const cursorClass = !onThumbnailSelected ? "" : "cursor-pointer";
 
   return (
-    <div className={`relative ${className} group overflow-hidden rounded-lg`}>
+    <div
+      className={`relative ${className} group border-primary-900 overflow-hidden border-3`}
+    >
       {onThumbnailSelected && (
         <div className="absolute top-0 left-0 hidden h-full w-full items-center justify-center gap-2 bg-black/60 text-white group-hover:flex">
           <div
             onClick={openFilePicker}
-            className="hover:text-valid-600 flex cursor-pointer flex-col items-center gap-2"
+            className={`flex cursor-pointer flex-col items-center gap-2 hover:text-green-600`}
           >
             <span className="material-symbols-outlined material-icon--lg">
               add_photo_alternate
@@ -94,15 +80,16 @@ export const RecipeThumbnail = ({
         <img
           src={url}
           alt="Miniature de la recette"
-          className={`${formatClasses} ${cursorClass} object-cover`}
+          className={`h-64 w-full ${cursorClass} object-cover`}
         />
       ) : (
         <div
-          className={`${formatClasses} ${cursorClass} bg-primary-100 text-primary-500 flex items-center justify-center`}
+          className={`h-64 w-full ${cursorClass} bg-primary-100 text-primary-900 flex flex-col items-center justify-center`}
         >
           <span className="material-symbols-outlined material-icon--lg">
-            restaurant
+            add_photo_alternate
           </span>
+          <span className="text-sm font-medium">Aucune miniature</span>
         </div>
       )}
     </div>
