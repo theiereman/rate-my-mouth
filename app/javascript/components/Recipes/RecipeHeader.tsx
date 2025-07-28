@@ -1,7 +1,9 @@
+import AverageRatingDisplay from "@components/Ratings/AverageRatingDisplay";
 import UserLink from "@components/Users/UserLink";
 import { RecipeType } from "@customTypes/recipe.types";
-import { formatDateTime } from "@helpers/date-helper";
-import { Rating } from "@mui/material";
+import { formatDateTime } from "@helpers/DateHelper";
+import DifficultyDisplay from "./RecipeDifficultyDisplay";
+import { Badge } from "@components/ui";
 
 type RecipeHeaderProps = {
   recipe: RecipeType;
@@ -13,54 +15,56 @@ type RecipeHeaderProps = {
 export default function RecipeHeader({
   recipe,
   showDescription = false,
+  enableUserlink = false,
   className = "",
-  enableUserlink = true,
 }: RecipeHeaderProps) {
   return (
-    <div className={`flex-1 md:flex gap-6 ${className}`}>
-      <div className="flex-1 flex flex-col gap-2 md:gap-0">
-        <h3
-          title={recipe.name}
-          className="text-4xl font-medium text-neutral-800 line-clamp-2 sm:line-clamp-1 font-serif"
-        >
-          {recipe.name}
-        </h3>
-        {recipe.user && (
-          <span className="text-neutral-400 text-sm flex flex-col md:flex-row gap-1">
-            <UserLink
-              prefix="Par"
-              user={recipe.user}
-              className="text-sm!"
-              disabled={!enableUserlink}
-            />
-            <span>le {formatDateTime(recipe.created_at)}</span>
-            {recipe.updated_at !== recipe.created_at && (
-              <span> (modifiée le {formatDateTime(recipe.updated_at)})</span>
-            )}
-          </span>
-        )}
-        {showDescription && recipe.description && (
-          <p
-            title={recipe.description}
-            className="text-neutral-500 text-sm italic my-4 line-clamp-6"
+    <div className="flex flex-col gap-4">
+      <div className={`flex-1 gap-6 md:flex ${className}`}>
+        <div className="flex flex-1 flex-col gap-2 md:gap-0">
+          <h3
+            title={recipe.name}
+            className="line-clamp-2 text-2xl font-bold text-neutral-800 sm:line-clamp-1"
           >
-            {recipe.description}
-          </p>
-        )}
-        <div className="text-xs text-neutral-400"></div>
-      </div>
-      <div className="flex flex-col items-start sm:items-end gap-1">
-        <Rating
-          size="medium"
-          precision={0.5}
+            {recipe.name}
+          </h3>
+          {recipe.user && (
+            <span className="text-primary-900/60! flex flex-col gap-1 text-sm md:flex-row">
+              <UserLink
+                prefix="Par"
+                user={recipe.user}
+                className="text-primary-900/60! text-sm!"
+                disabled={!enableUserlink}
+              />
+              <span>le {formatDateTime(recipe.created_at)}</span>
+              {recipe.updated_at !== recipe.created_at && (
+                <span> (modifiée le {formatDateTime(recipe.updated_at)})</span>
+              )}
+            </span>
+          )}
+          {showDescription && recipe.description && (
+            <p
+              title={recipe.description}
+              className="mt-4 line-clamp-6 text-sm text-neutral-500 italic"
+            >
+              {recipe.description}
+            </p>
+          )}
+          <div className="text-xs text-neutral-400"></div>
+        </div>
+        <AverageRatingDisplay
           value={recipe.average_rating}
-          readOnly
+          numberOfRatings={recipe.ratings_count}
+          className="md:mt-1 md:items-end"
         />
-        <span className="text-sm text-neutral-600 mx-1">
-          {`${recipe.average_rating.toFixed(1)} sur ${
-            recipe.ratings_count
-          } avis`}
-        </span>
+      </div>
+      <div className="flex flex-col gap-2 md:flex-row md:items-center">
+        <div className="flex flex-1 flex-wrap gap-2">
+          {recipe.tags?.map((tag) => (
+            <Badge key={tag.name}>{tag.name}</Badge>
+          ))}
+        </div>
+        <DifficultyDisplay difficulty={recipe.difficulty} />
       </div>
     </div>
   );

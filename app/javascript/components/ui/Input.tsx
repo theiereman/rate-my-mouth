@@ -1,122 +1,48 @@
-import { InputHTMLAttributes } from "react";
+import { InputHTMLAttributes, useId } from "react";
 
-interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-  mandatory?: boolean;
+export type InputProps = InputHTMLAttributes<HTMLInputElement> & {
   label?: string;
-  helperText?: string;
   error?: string;
-  leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
-  variant?: "default" | "filled" | "outlined";
-  className?: string;
-  containerClassName?: string;
-  labelClassName?: string;
-  inputClassName?: string;
-  helperTextClassName?: string;
-  errorClassName?: string;
-  disabled?: boolean;
   ref?: React.Ref<HTMLInputElement>;
-}
-
-const getVariantClasses = (variant: string, hasError: boolean) => {
-  const errorBorderClass = hasError
-    ? "border-red-500 focus:border-red-500 focus:ring-red-500"
-    : "";
-
-  switch (variant) {
-    case "default":
-      return `bg-white border ${
-        hasError ? "border-red-500" : "border-neutral-300"
-      } focus:border-blue-500 focus:ring-primary-500 ${errorBorderClass}`;
-    case "filled":
-      return `bg-neutral-100 border border-transparent focus:bg-white focus:border-blue-500 focus:ring-primary-500 ${errorBorderClass}`;
-    case "outlined":
-      return `bg-transparent border ${
-        hasError ? "border-red-500" : "border-neutral-300"
-      } focus:border-blue-500 focus:ring-primary-500 ${errorBorderClass}`;
-    default:
-      return `bg-white border ${
-        hasError ? "border-red-500" : "border-neutral-300"
-      } focus:border-blue-500 focus:ring-primary-500 ${errorBorderClass}`;
-  }
 };
 
-export const Input = ({
-  mandatory = false,
-  label = "",
-  helperText = "",
-  error = "",
-  leftIcon,
+export default function Input({
+  label,
+  error,
+  className,
   rightIcon,
-  variant = "default",
-  className = "",
-  containerClassName = "",
-  labelClassName = "",
-  inputClassName = "",
-  helperTextClassName = "",
-  errorClassName = "",
-  disabled = false,
   ref,
   ...props
-}: InputProps) => {
-  const hasError = !!error;
-  const variantClasses = getVariantClasses(variant, hasError);
-  const baseInputClasses =
-    "block rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-opacity-50 transition-colors duration-200";
-  const iconPaddingLeft = leftIcon ? "pl-10" : "";
-  const iconPaddingRight = rightIcon ? "pr-10" : "";
+}: InputProps) {
+  const inputId = useId();
 
   return (
-    <div className={`${containerClassName} ${disabled ? "opacity-60" : ""}`}>
+    <div className="flex size-full flex-col">
       {label && (
         <label
-          htmlFor={props.id}
-          className={`block text-sm font-medium text-neutral-700 mb-1 ${labelClassName}`}
+          htmlFor={inputId}
+          className="bg-primary-900 text-background flex px-2 py-0.5 font-bold"
         >
           {label}
-          {mandatory && <span className="text-red-500"> *</span>}
         </label>
       )}
-      <div className="relative">
-        {leftIcon && (
-          <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-neutral-500">
-            {leftIcon}
-          </div>
-        )}
+      <div className="relative flex-1">
         <input
-          ref={ref}
-          className={`${baseInputClasses} ${variantClasses} ${iconPaddingLeft} ${iconPaddingRight} w-full ${inputClassName}`}
-          aria-invalid={hasError}
-          aria-describedby={
-            props.id ? `${props.id}-helper-text ${props.id}-error` : undefined
-          }
-          disabled={disabled}
+          id={inputId}
+          className={`focus:border-accent-400 border-primary-900 w-full border-3 p-1 ring-0 focus:border-3 ${rightIcon ? "pr-10" : ""} ${className}`}
           {...props}
         />
         {rightIcon && (
-          <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-neutral-500">
+          <div className="text-primary-900 absolute top-1/2 right-2 flex -translate-y-1/2 items-center justify-center">
             {rightIcon}
           </div>
         )}
       </div>
-      {helperText && !error && (
-        <p
-          id={props.id ? `${props.id}-helper-text` : undefined}
-          className={`mt-1 text-sm text-neutral-500 ${helperTextClassName}`}
-        >
-          {helperText}
-        </p>
-      )}
+
       {error && (
-        <p
-          id={props.id ? `${props.id}-error` : undefined}
-          className={`mt-1 text-sm text-red-600 ${errorClassName}`}
-        >
-          {error}
-        </p>
+        <span className="mt-1 text-sm font-medium text-red-600">{error}</span>
       )}
     </div>
   );
-};
-
-export default Input;
+}

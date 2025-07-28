@@ -1,11 +1,22 @@
 class TagsController < ApplicationController
+  include Paginatable
+
   inertia_share flash: -> { flash.to_hash }
 
   # GET /tags
   def index
-    @tags = Tag.all.sort { |a, b| b.recipes_count <=> a.recipes_count }
+    @tags = Tag.filter(params.slice(:name)).order(recipes_count: :asc)
+    @pagy, @tags = paginate_collection(@tags)
 
-    render json: @tags.map { |tag| serialize_tag(tag) }
+    render json: {tags: @tags.as_json, pagy: pagy_metadata(@pagy)}
+  end
+
+  # GET /tags/by_ids
+  def by_ids
+    ids = params[:ids]&.split(",")&.map(&:to_i) || []
+    @tags = Tag.where(id: ids)
+
+    render json: {tags: @tags.as_json}
   end
 
   # POST /tags
@@ -13,7 +24,7 @@ class TagsController < ApplicationController
     @tag = Tag.new(tag_params)
 
     if @tag.save
-      render json: serialize_tag(@tag), status: :created
+      render json: @tag.as_json, status: :created
     else
       render json: {errors: @tag.errors}, status: :unprocessable_entity
     end
@@ -24,9 +35,5 @@ class TagsController < ApplicationController
   # Only allow a list of trusted parameters through.
   def tag_params
     params.expect(tag: [:name])
-  end
-
-  def serialize_tag(tag)
-    tag.as_json
   end
 end

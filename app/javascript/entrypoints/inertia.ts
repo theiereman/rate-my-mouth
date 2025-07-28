@@ -2,8 +2,9 @@ import { createInertiaApp } from "@inertiajs/react";
 import { createElement, ReactNode } from "react";
 import { createRoot } from "react-dom/client";
 import { ThemeProvider } from "@contexts/ThemeContext";
-import { Layout } from "@layouts/Layout";
-import { ToastProvider } from "@contexts/ToastProvider";
+import { ToastProvider } from "@contexts/ToastContext";
+import AuthenticatedLayout from "@layouts/AuthenticatedLayout";
+import PublicLayout from "@layouts/PublicLayout";
 
 // Temporary type definition, until @inertiajs/react provides one
 type ResolvedComponent = {
@@ -24,7 +25,9 @@ createInertiaApp({
 
     if (page && page.default) {
       (page.default as any).layout ||= (page: ReactNode) =>
-        createElement(Layout, null, page);
+        name.startsWith("Public/")
+          ? createElement(PublicLayout, null, page)
+          : createElement(AuthenticatedLayout, null, page);
     }
 
     return page;
@@ -36,14 +39,14 @@ createInertiaApp({
         createElement(
           ToastProvider,
           null,
-          createElement(ThemeProvider, null, createElement(App, props))
-        )
+          createElement(ThemeProvider, null, createElement(App, props)),
+        ),
       );
     } else {
       console.error(
         "Missing root element.\n\n" +
           "If you see this error, it probably means you load Inertia.js on non-Inertia pages.\n" +
-          'Consider moving <%= vite_typescript_tag "inertia" %> to the Inertia-specific layout instead.'
+          'Consider moving <%= vite_typescript_tag "inertia" %> to the Inertia-specific layout instead.',
       );
     }
   },

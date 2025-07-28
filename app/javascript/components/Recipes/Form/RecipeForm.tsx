@@ -1,12 +1,17 @@
 import { InertiaFormProps, useForm } from "@inertiajs/react";
 import { FormEvent } from "react";
 import { RecipeFormType, RecipeType } from "@customTypes/recipe.types";
+import { TagType } from "@customTypes/tag.types";
 import { Button, Input, Combo, TextArea, LinkButton } from "@components/ui";
-import TagsSelector from "@components/Tags/TagsSelector";
 import RecipeThumbnail from "../RecipeThumbnail";
-import RecipeContentSubform from "./RecipeContentSubform";
-import Section from "@components/ui/Pages/Section";
-import Page from "@components/ui/Pages/Page";
+import RecipeContentForm from "./RecipeContentForm";
+import { Section } from "@components/ui";
+import Page from "@components/ui/Page";
+import TagsCombo from "@components/Tags/TagCombo";
+import {
+  getDifficultyLabel,
+  getDifficultyValue,
+} from "@helpers/RecipeDifficultyHelper";
 
 interface FormProps {
   recipe: RecipeType;
@@ -37,7 +42,7 @@ export default function Form({
       })) || [],
     url: recipe.url || "",
     number_of_servings: recipe.number_of_servings || 4,
-    difficulty: recipe.difficulty_value || 0,
+    difficulty: getDifficultyValue(recipe.difficulty.toString()) || 0,
     description: recipe.description || "",
     tags_attributes:
       recipe.tags?.map((tag) => ({ id: tag.id, name: tag.name })) || [],
@@ -49,6 +54,8 @@ export default function Form({
     e.preventDefault();
     onSubmit(form);
   };
+
+  console.log(data.difficulty);
 
   return (
     <form onSubmit={handleSubmit} className="contents">
@@ -64,83 +71,95 @@ export default function Form({
           }}
         />
 
-        <Section title="Informations générales" underlineStroke={1}>
-          <Input
-            mandatory
-            label="Nom de la recette"
-            type="text"
-            name="name"
-            id="name"
-            value={data.name}
-            onChange={(e) => setData("name", e.target.value)}
-            error={errors.name}
-            placeholder="Tarte aux pommes, Poulet rôti aux herbes..."
-            data-1p-ignore
-            data-lpignore="true"
-            data-protonpass-ignore="true"
-          />
-
-          <TextArea
-            label="Description"
-            name="description"
-            id="description"
-            value={data.description}
-            onChange={(e) => setData("description", e.target.value)}
-            error={errors.description}
-            placeholder="Une recette de mon enfance qui me donne les larmes aux yeux quand j'y pense..."
-          />
-
-          <Input
-            label="URL de la source (optionnel)"
-            type="text"
-            name="url"
-            id="url"
-            value={data.url}
-            onChange={(e) => setData("url", e.target.value)}
-            error={errors.url}
-            placeholder="https://..."
-            helperText="Si cette recette provient d'un site web, vous pouvez indiquer l'URL ici"
-          />
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-start">
+        <Section title="Informations générales" variant="ghost">
+          <div className="flex flex-col gap-2">
             <Input
-              mandatory
-              label="Nombre de personnes"
-              type="number"
-              name="number_of_servings"
-              id="number_of_servings"
-              value={data.number_of_servings}
-              onChange={(e) =>
-                setData("number_of_servings", parseInt(e.target.value))
-              }
-              error={errors.number_of_servings}
+              label="Nom de la recette *"
+              type="text"
+              name="name"
+              id="name"
+              value={data.name}
+              onChange={(e) => setData("name", e.target.value)}
+              error={errors.name}
+              placeholder="Tarte aux pommes, Poulet rôti aux herbes..."
+              data-1p-ignore
+              data-lpignore="true"
+              data-protonpass-ignore="true"
             />
 
-            <Combo
-              mandatory
-              label="Difficulté"
-              values={[
-                { value: 0, label: "Facile" },
-                { value: 1, label: "Moyen" },
-                { value: 2, label: "Difficile" },
-              ]}
-              onSelectedValue={(value) =>
-                setData("difficulty", value?.value ?? 0)
-              }
-              value={data.difficulty}
-              className="w-full"
+            <TextArea
+              label="Description"
+              name="description"
+              id="description"
+              value={data.description}
+              onChange={(e) => setData("description", e.target.value)}
+              placeholder="Une recette de mon enfance qui me donne les larmes aux yeux quand j'y pense..."
             />
 
-            <TagsSelector
-              initialTags={data.tags_attributes}
-              onTagsSelected={(tags) => setData("tags_attributes", tags)}
-              maxTags={3}
-              className="w-full"
+            <Input
+              label="URL de la source (optionnel)"
+              type="text"
+              name="url"
+              id="url"
+              value={data.url}
+              onChange={(e) => setData("url", e.target.value)}
+              error={errors.url}
+              placeholder="https://..."
+              // helperText="Si cette recette provient d'un site web, vous pouvez indiquer l'URL ici"
             />
+
+            <div className="grid grid-cols-1 items-start gap-4 md:grid-cols-3">
+              <Input
+                label="Nombre de personne *"
+                type="number"
+                name="number_of_servings"
+                id="number_of_servings"
+                value={data.number_of_servings}
+                onChange={(e) =>
+                  setData("number_of_servings", parseInt(e.target.value))
+                }
+                error={errors.number_of_servings}
+              />
+
+              <Combo
+                label="Difficulté *"
+                selectedValue={{
+                  value: data.difficulty,
+                  label: getDifficultyLabel(data.difficulty),
+                }}
+                values={[
+                  { value: 0, label: "Facile" },
+                  { value: 1, label: "Moyen" },
+                  { value: 2, label: "Difficile" },
+                ]}
+                onSelectedValue={(value) =>
+                  setData("difficulty", value?.value ?? 0)
+                }
+                className="w-full"
+              />
+
+              <TagsCombo
+                selectedTags={(data.tags_attributes || []).map((tag) => ({
+                  id: tag.id || 0,
+                  name: tag.name,
+                  recipes_count: 0,
+                }))}
+                onSelectedTagsChange={(selectedTags: TagType[]) => {
+                  setData(
+                    "tags_attributes",
+                    selectedTags.map((tag) => ({
+                      id: tag.id,
+                      name: tag.name,
+                    })),
+                  );
+                }}
+                className="w-full"
+              />
+            </div>
           </div>
         </Section>
 
-        <RecipeContentSubform
+        <RecipeContentForm
           initialIngredients={
             data.ingredients_attributes.map((ing) => ({
               id: ing.id || 0,
@@ -158,24 +177,23 @@ export default function Form({
           onDataChange={(contentData) => {
             setData(
               "ingredients_attributes",
-              contentData.ingredients_attributes
+              contentData.ingredients_attributes,
             );
             setData(
               "instructions_attributes",
-              contentData.instructions_attributes
+              contentData.instructions_attributes,
             );
           }}
         />
 
-        <div className="flex gap-2 justify-end">
+        <div className="flex justify-end gap-2">
           <LinkButton
-            preserveScroll
             variant="ghost"
             href={recipe.id ? `/recipes/${recipe.id}` : "/recipes"}
           >
             Annuler
           </LinkButton>
-          <Button type="submit" variant="primary" isLoading={processing}>
+          <Button type="submit" disabled={processing}>
             {submitText}
           </Button>
         </div>

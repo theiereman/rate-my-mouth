@@ -5,7 +5,8 @@ class Recipe < ApplicationRecord
   scope :filter_by_name, ->(name) { where("recipes.name LIKE ?", "%#{name}%") }
   scope :filter_by_user_id, ->(user_id) { where(user_id: user_id) }
   scope :filter_by_tags_ids, ->(tag_ids) {
-    tag_ids = Array(tag_ids)
+    # Convertir la chaîne séparée par des virgules en array
+    tag_ids = tag_ids.is_a?(String) ? tag_ids.split(",").map(&:to_i) : Array(tag_ids)
     joins(:tags)
       .where(tags: {id: tag_ids})
       .group("recipes.id")
@@ -88,10 +89,6 @@ class Recipe < ApplicationRecord
     ratings.reduce(0) { |sum, rating| sum + rating.value }.to_f / ratings.size
   end
 
-  def difficulty_value
-    Recipe.difficulties[self[:difficulty]]
-  end
-
   def thumbnail_url
     if thumbnail.attached?
       Rails.application.routes.url_helpers.rails_blob_path(thumbnail, only_path: true)
@@ -100,11 +97,5 @@ class Recipe < ApplicationRecord
 
   def commenters
     comments.includes(:user).map(&:user).uniq
-  end
-
-  private
-
-  def filtering_params
-    params.slice(:name, :user_id, :tag_ids)
   end
 end

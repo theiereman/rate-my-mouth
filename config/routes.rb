@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   resources :users, only: [:index, :show, :update] do
     resources :achievements, only: [:index]
     patch "update_avatar", on: :member
+    get "by_id", on: :collection
   end
 
   patch "select_achievement_as_title", to: "achievements#select_achievement_as_title", as: :select_achievement_as_title
@@ -26,14 +27,16 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :tags, only: [:index, :create]
+  resources :tags, only: [:index, :create] do
+    get "by_ids", on: :collection
+  end
 
   resource :leaderboard, only: [:show]
   resolve("Leaderboard") { [:leaderboard] }
 
   get "up" => "rails/health#show", :as => :rails_health_check
 
-  root "recipes#index"
+  root "public#index"
 
   # Route secrète pour les explorateurs de code source
   get "source_explorer/:secret_key", to: "source_explorer#unlock_secret", as: :source_explorer

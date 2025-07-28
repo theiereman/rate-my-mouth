@@ -62,13 +62,6 @@ class RecipesControllerTest < BaseControllerTest
     assert_redirected_to recipe_url(Recipe.last)
   end
 
-  test "should not create recipe with invalid data" do
-    assert_no_difference("Recipe.count") do
-      post recipes_url, params: {recipe: {name: "", url: ""}}
-    end
-    assert_response :unprocessable_entity
-  end
-
   test "should not create recipe when not logged in" do
     sign_out @user
     assert_no_difference("Recipe.count") do

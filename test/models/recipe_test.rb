@@ -44,18 +44,6 @@ class RecipeTest < ActiveSupport::TestCase
     assert_respond_to @recipe, :difficulty
     assert_respond_to Recipe, :difficulties
 
-    @recipe.difficulty = :easy
-    assert_equal "easy", @recipe.difficulty
-    assert_equal 0, @recipe.difficulty_value
-
-    @recipe.difficulty = :medium
-    assert_equal "medium", @recipe.difficulty
-    assert_equal 1, @recipe.difficulty_value
-
-    @recipe.difficulty = :hard
-    assert_equal "hard", @recipe.difficulty
-    assert_equal 2, @recipe.difficulty_value
-
     @recipe.difficulty = 0
     assert_equal "easy", @recipe.difficulty
 

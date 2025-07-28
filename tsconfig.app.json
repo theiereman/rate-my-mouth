@@ -32,7 +32,8 @@
       "@helpers/*": ["./app/javascript/helpers/*"],
       "@const/*": ["./app/javascript/const/*"],
       "@contexts/*": ["./app/javascript/contexts/*"],
-      "@hooks/*": ["./app/javascript/hooks/*"]
+      "@hooks/*": ["./app/javascript/hooks/*"],
+      "@adapters/*": ["./app/javascript/adapters/*"]
     }
   },
   "include": ["app/javascript"]

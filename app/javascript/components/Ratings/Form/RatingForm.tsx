@@ -1,8 +1,8 @@
-import Rating from "@mui/material/Rating";
 import { RatingType } from "@customTypes/rating.types";
 import { router } from "@inertiajs/react";
 import { useState } from "react";
-import { Badge, Button } from "@components/ui";
+import { Button } from "@components/ui";
+import RatingItem from "../RatingItem";
 
 export default function RatingForm({
   recipeId,
@@ -32,7 +32,7 @@ export default function RatingForm({
           setIsSubmitting(false);
           setValue(pendingValue);
         },
-      }
+      },
     );
   };
 
@@ -44,22 +44,17 @@ export default function RatingForm({
 
   return (
     <div className={`flex items-stretch gap-2 ${className}`}>
-      <Rating
-        name="user-rating"
-        precision={0.5}
+      <RatingItem
         value={pendingValue ?? value}
         onChange={handleChange}
-        size="large"
         disabled={isSubmitting}
-        className="text-primary-500 m-auto"
+        pendingChange={pendingUpdate}
       />
-      {pendingValue && (
-        <Badge
-          text={`${pendingValue?.toFixed(1)}${pendingUpdate ? "*" : ""}`}
-          variant={pendingUpdate ? "warning" : "primary"}
-        />
-      )}
-      <Button className="flex-1" onClick={handleSubmit} disabled={isSubmitting}>
+      <Button
+        className="flex-1"
+        onClick={handleSubmit}
+        disabled={!pendingUpdate || isSubmitting}
+      >
         {isSubmitting ? "Envoi..." : "Noter"}
       </Button>
     </div>

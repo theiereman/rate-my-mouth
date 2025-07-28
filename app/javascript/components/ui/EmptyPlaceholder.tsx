@@ -1,25 +1,17 @@
-type PlaceholderVariant = "primary" | "secondary" | "ghost";
+import React from "react";
 
 export default function EmptyPlaceholder({
-  text,
-  subtext,
-  variant = "primary",
+  children,
+  className = "",
 }: {
-  text: string;
-  subtext?: string;
-  variant?: PlaceholderVariant;
+  children: React.ReactNode;
+  className?: string;
 }) {
-  const baseClasses = "text-center py-4 px-2 rounded-lg border";
-  const variantClasses = {
-    primary: "bg-primary-50 border-primary-100 text-primary-500",
-    secondary: "bg-secondary-50 border-secondary-100 text-secondary-500",
-    ghost: "bg-transparent border-transparent text-neutral-500",
-  };
-
   return (
-    <div className={`${baseClasses} ${variantClasses[variant]}`}>
-      <p className="text-sm">{text}</p>
-      <p className="text-xs">{subtext}</p>
+    <div
+      className={`text-primary-900/60 border-primary-900 flex items-center justify-center py-4 ${className}`}
+    >
+      {children}
     </div>
   );
 }

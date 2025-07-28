@@ -2,7 +2,7 @@ class Users::SessionsController < Devise::SessionsController
   # GET /users/sign_in
   def new
     # Utiliser Inertia pour rendre la page de connexion React
-    render inertia: "Auth/Login"
+    render inertia: "Public/Login"
   end
 
   # POST /users/sign_in
@@ -16,13 +16,13 @@ class Users::SessionsController < Devise::SessionsController
       redirect_to root_path
     else
       flash[:alert] = "Email ou mot de passe invalide"
-      render inertia: "Auth/Login", status: :unprocessable_entity
+      render inertia: "Public/Login", status: :unprocessable_entity
     end
   end
 
   # DELETE /users/sign_out
   def destroy
     sign_out
-    inertia_location new_user_session_path
+    inertia_location root_path
   end
 end

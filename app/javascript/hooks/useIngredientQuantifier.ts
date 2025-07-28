@@ -3,8 +3,11 @@ import { useState } from "react";
 
 export function useIngredientQuantifier({ recipe }: { recipe: RecipeType }) {
   const [numberOfServings, setNumberOfServings] = useState(
-    recipe.number_of_servings
+    recipe.number_of_servings,
   );
+
+  const initialNumberOfServings = recipe.number_of_servings || 1;
+  const isValueChanged = numberOfServings !== initialNumberOfServings;
 
   const handleIncrease = () => {
     setNumberOfServings((prev) => prev + 1);
@@ -13,6 +16,9 @@ export function useIngredientQuantifier({ recipe }: { recipe: RecipeType }) {
     if (numberOfServings > 1) {
       setNumberOfServings((prev) => prev - 1);
     }
+  };
+  const handleResetToDefault = () => {
+    setNumberOfServings(initialNumberOfServings);
   };
 
   const updatedIngredients = recipe.ingredients?.map((ingredient) => {
@@ -38,7 +44,9 @@ export function useIngredientQuantifier({ recipe }: { recipe: RecipeType }) {
   return {
     handleIncrease,
     handleDecrease,
+    handleResetToDefault,
     updatedIngredients,
     numberOfServings,
+    isValueChanged,
   };
 }

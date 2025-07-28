@@ -1,151 +1,132 @@
 import { router } from "@inertiajs/react";
-import { RecipeType } from "@customTypes/recipe.types";
-import RecipeShort from "@components/Recipes/RecipeShortItem";
-import UserSelector from "@components/Users/UserSelector";
-import { LinkButton, Input, Pagination } from "@components/ui";
+import { RawRecipe, RecipeType } from "@customTypes/recipe.types";
+import { Pagination } from "@components/ui";
 import { useEffect, useMemo, useState } from "react";
-import { debounce } from "lodash";
-import TagsSelector from "@components/Tags/TagsSelector";
 import { PagyMetadata } from "@components/ui/Pagination";
-import Page from "@components/ui/Pages/Page";
-import Section from "@components/ui/Pages/Section";
+import Page from "@components/ui/Page";
+import { Section } from "@components/ui";
+import { useDebouncedCallback } from "use-debounce";
+import { UserType } from "@customTypes/user.types";
+import { EmptyPlaceholder } from "@components/ui";
+import { TagType } from "@customTypes/tag.types";
+import RecipeFilters from "@components/Recipes/RecipeFilters";
+import { useUrlParams } from "@hooks/useUrlParams";
+import { RecipeAdapter } from "@adapters/recipe.adapter";
+import RecipeLink from "@components/Recipes/RecipeLink";
 
-interface IndexProps {
-  recipes: RecipeType[];
+export default function Index({
+  recipes: rawRecipes,
+  pagy,
+}: {
+  recipes: RawRecipe[];
   pagy: PagyMetadata;
-}
+}) {
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [selectedTags, setSelectedTags] = useState<TagType[]>([]);
+  const [selectedUser, setSelectedUser] = useState<UserType | null>(null);
+  const [isLoadingRecipes, setIsLoadingRecipes] = useState(false);
 
-export default function Index({ recipes, pagy }: IndexProps) {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
-  const [selectedTagIds, setSelectedTagIds] = useState<number[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const recipes = useMemo(
+    () => RecipeAdapter.fromApiArray(rawRecipes),
+    [rawRecipes],
+  ); //TODO: consider HOC to avoid having to adapt the recipes inside the component
+
+  const { initFromUrl } = useUrlParams({
+    onQueryInit: setSearchQuery,
+    onUserInit: setSelectedUser,
+    onTagsInit: setSelectedTags,
+  });
 
   useEffect(() => {
-    // Récupérer les paramètres de l'URL
-    const params = new URLSearchParams(window.location.search);
-
-    const query = params.get("name") || "";
-    const userId = params.get("user_id");
-    const tags = params.getAll("tags_ids[]");
-
-    // Initialiser les états avec les valeurs des paramètres
-    setSearchQuery(query);
-    setSelectedUserId(userId ? parseInt(userId, 10) : null);
-    setSelectedTagIds(tags.map((tag) => parseInt(tag)));
+    initFromUrl();
   }, []);
 
-  const search = (
-    name?: string,
-    user_id?: number | null,
-    tags_ids?: number[]
-  ) => {
-    setIsLoading(true);
+  const fetchRecipes = (overrides?: {
+    searchQuery?: string;
+    selectedUser?: UserType | null;
+    selectedTags?: TagType[];
+  }) => {
+    const currentSearchQuery = overrides?.searchQuery ?? searchQuery;
+    const currentSelectedUser = overrides?.hasOwnProperty("selectedUser")
+      ? overrides.selectedUser
+      : selectedUser;
+    const currentSelectedTags = overrides?.selectedTags ?? selectedTags;
 
-    const params: { name?: string; user_id?: number; tags_ids?: number[] } = {};
+    const params: { name?: string; user_id?: number; tags_ids?: string } = {};
 
-    if (name?.trim()) params.name = name;
-    if (user_id) params.user_id = user_id;
-    if (tags_ids && tags_ids.length > 0) params.tags_ids = tags_ids;
+    if (currentSearchQuery?.trim()) params.name = currentSearchQuery;
+    if (currentSelectedUser) params.user_id = currentSelectedUser.id;
+    if (currentSelectedTags && currentSelectedTags.length > 0)
+      params.tags_ids = currentSelectedTags.map((tag) => tag.id).join(",");
 
+    setIsLoadingRecipes(true);
     router.get("/recipes", params, {
       preserveState: true,
       preserveScroll: true,
-      onSuccess: () => setIsLoading(false),
-      onError: () => setIsLoading(false),
+      onFinish: () => setIsLoadingRecipes(false),
     });
   };
 
-  const debouncedSearch = useMemo(() => debounce(search, 500), []);
-  useEffect(() => {
-    return () => {
-      debouncedSearch.cancel();
-    };
-  }, [debouncedSearch]);
+  const fetchRecipesDebounced = useDebouncedCallback(() => {
+    const params: { name?: string; user_id?: number; tags_ids?: string } = {};
 
-  const handleSearch = (query: string) => {
-    setIsLoading(true);
-    setSearchQuery(query);
-    debouncedSearch(query, selectedUserId, selectedTagIds);
-  };
+    if (searchQuery?.trim()) params.name = searchQuery;
+    if (selectedUser) params.user_id = selectedUser.id;
+    if (selectedTags.length > 0)
+      params.tags_ids = selectedTags.map((tag) => tag.id).join(",");
 
-  const handleUserSelected = (userId: number | null) => {
-    setSelectedUserId(userId);
-    search(searchQuery, userId, selectedTagIds);
-  };
-
-  const handleTagsSelected = (tags: { id?: number; name: string }[]) => {
-    const tagIds = tags.map((tag) => tag.id).filter(Boolean) as number[];
-    setSelectedTagIds(tagIds);
-    search(searchQuery, selectedUserId, tagIds);
-  };
+    setIsLoadingRecipes(true);
+    router.get("/recipes", params, {
+      preserveState: true,
+      preserveScroll: true,
+      onFinish: () => setIsLoadingRecipes(false),
+    });
+  }, 500);
 
   return (
     <Page
-      title="Recettes"
+      title="Index des recettes"
       subtitle="Découvrez les dernières recettes et partagez vos recettes favorites !"
-      additionnalHeaderContent={
-        <LinkButton
-          href="/recipes/new"
-          variant="primary"
-          className="w-full sm:w-auto"
-        >
-          Nouvelle recette
-        </LinkButton>
-      }
     >
-      <div>
-        <Section
-          title="Filtres"
-          childrenClassName="grid grid-cols-1 mb-6 md:mb-2 md:grid-cols-3 md:gap-4"
-        >
-          <Input
-            placeholder="Rechercher une recette..."
-            onChange={(e) => handleSearch(e.target.value)}
-            value={searchQuery}
-            rightIcon={
-              isLoading ? (
-                <span className="material-symbols-outlined text-primary-600 animate-spin">
-                  progress_activity
-                </span>
-              ) : undefined
-            }
-          />
+      <Section title="Filtres" variant="ghost">
+        <RecipeFilters
+          searchQuery={searchQuery}
+          onSearchQueryChange={(value) => {
+            setSearchQuery(value);
+            fetchRecipesDebounced();
+          }}
+          selectedUser={selectedUser}
+          onSelectedUserChange={(user) => {
+            console.log("Selected user:", user);
+            setSelectedUser(user);
+            fetchRecipes({ selectedUser: user });
+          }}
+          selectedTags={selectedTags}
+          onSelectedTagsChange={(tags) => {
+            setSelectedTags(tags);
+            fetchRecipes({ selectedTags: tags });
+          }}
+        />
+      </Section>
 
-          <UserSelector
-            initialUserId={selectedUserId ?? undefined}
-            onUserSelected={handleUserSelected}
-          />
-          <TagsSelector
-            maxTags={Infinity}
-            label=""
-            createNewTags={false}
-            initialTags={selectedTagIds.map((id) => ({ id, name: "" }))}
-            onTagsSelected={handleTagsSelected}
-          />
-        </Section>
+      {isLoadingRecipes ? (
+        <div className="text-primary-900 mt-8 flex flex-col items-center gap-2">
+          <span className="text-lg">Chargement des recettes...</span>
+          <span className="material-symbols-outlined animate-spin">
+            progress_activity
+          </span>
+        </div>
+      ) : recipes.length === 0 ? (
+        <EmptyPlaceholder>Aucune recette disponible</EmptyPlaceholder>
+      ) : (
+        <div className="grid grid-cols-1 gap-2">
+          {recipes.map((recipe: RecipeType) => (
+            <RecipeLink key={recipe.id} recipe={recipe} />
+          ))}
+        </div>
+      )}
 
-        {recipes.length === 0 ? (
-          <div className="text-center py-12 bg-neutral-50 rounded-lg border border-neutral-200">
-            <h3 className="text-lg font-medium text-neutral-800 mb-2">
-              Aucune recette disponible
-            </h3>
-            <p className="text-neutral-600 mb-4">
-              Soyez le premier à partager une recette délicieuse !
-            </p>
-            <LinkButton href="/recipes/new" variant="primary">
-              Ajouter une recette
-            </LinkButton>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 gap-6 animate-fade-in">
-            {recipes.map((recipe) => (
-              <RecipeShort key={recipe.id} recipe={recipe} />
-            ))}
-          </div>
-        )}
-        {pagy && <Pagination className="mt-8" pagy={pagy}></Pagination>}
-      </div>
+      {pagy && <Pagination className="mt-8" pagy={pagy}></Pagination>}
     </Page>
   );
 }

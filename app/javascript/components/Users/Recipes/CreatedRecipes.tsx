@@ -1,12 +1,12 @@
 import { RecipeType } from "@customTypes/recipe.types";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import RecipeShortItem from "@components/Recipes/RecipeShortItem";
-import { useToast } from "@contexts/ToastProvider";
-import EmptyPlaceholder from "@components/ui/EmptyPlaceholder";
-import Section from "@components/ui/Pages/Section";
-import { Link } from "@inertiajs/react";
+import RecipeShortItem from "@components/Recipes/RecipeLink";
+import { useToast } from "@contexts/ToastContext";
+import { EmptyPlaceholder } from "@components/ui";
+import { LinkButton, Section } from "@components/ui";
 import Loading from "@components/ui/Loading";
+import { RecipeAdapter } from "@adapters/recipe.adapter";
 
 export default function CreatedRecipes({ userId }: { userId: number }) {
   const [recipes, setRecipes] = useState<RecipeType[]>([]);
@@ -28,7 +28,8 @@ export default function CreatedRecipes({ userId }: { userId: number }) {
             Accept: "application/json",
           },
         });
-        setRecipes(response.data.recipes);
+
+        setRecipes(RecipeAdapter.fromApiArray(response.data.recipes));
       } catch (error) {
         showToast("Impossible de récupérer les recettes", {
           type: "error",
@@ -42,32 +43,30 @@ export default function CreatedRecipes({ userId }: { userId: number }) {
   }, [userId]);
 
   return (
-    <Section
-      title="Dernières recettes"
-      underlineStroke={2}
-      childrenClassName="flex flex-col"
-    >
+    <Section title="Dernières recettes" variant="ghost">
       {loadingRecipes ? (
         <Loading text="Chargement des recettes..." />
       ) : (
         <>
           {recipes.length > 0 ? (
             <>
-              <div className="grid grid-cols-1 gap-4">
+              <div className="grid grid-cols-1 gap-2">
                 {recipes.length > 0 &&
                   recipes.map((recipe) => (
                     <RecipeShortItem key={recipe.id} recipe={recipe} />
                   ))}
+                <LinkButton
+                  className="w-full"
+                  href={`/recipes?user_id=${userId}`}
+                >
+                  Voir plus de recettes de cet utilisateur
+                </LinkButton>
               </div>
-              <Link
-                className="mx-auto underline text-primary-500 hover:text-primary-600"
-                href={`/recipes?user_id=${userId}`}
-              >
-                Voir plus de recettes de cet utilisateur
-              </Link>
             </>
           ) : (
-            <EmptyPlaceholder text="Aucune recette créée pour le moment" />
+            <EmptyPlaceholder>
+              Aucune recette créée pour le moment
+            </EmptyPlaceholder>
           )}
         </>
       )}

@@ -1,67 +1,70 @@
 import { IngredientType, InstructionType } from "@customTypes/recipe.types";
-import EmptyPlaceholder from "@components/ui/EmptyPlaceholder";
+import { EmptyPlaceholder } from "@components/ui";
 import RecipeCategoryContainer from "./RecipeCategoryContainer";
 import TextWithTimerLinks from "@components/ui/TextWithTimerLinks";
 
-function ItemListComponent({
-  ordered,
-  items,
-}: {
-  ordered: boolean;
-  items: IngredientType[] | InstructionType[];
-}) {
-  return (
-    <ol className={`space-y-1 ${ordered ? "list-decimal" : "list-disc"}`}>
-      {items.map((item) => (
-        <span key={item.id} className="flex items-center gap-2 pl-5">
-          <li>
-            <TextWithTimerLinks text={item.name} />
-          </li>
-        </span>
-      ))}
-    </ol>
-  );
-}
-
-export default function RecipeContentItemList({
+function RecipeContentItemList({
   recipeItems,
   ordered = false,
 }: {
   recipeItems: IngredientType[] | InstructionType[];
   ordered?: boolean;
 }) {
-  return (
-    <>
-      {recipeItems && recipeItems.length > 0 ? (
-        (() => {
-          const categorizedItems = recipeItems.reduce((categories, item) => {
-            const category = item.category || "";
-            if (!categories[category]) {
-              categories[category] = [];
-            }
-            categories[category].push(item);
-            return categories;
-          }, {} as Record<string, typeof recipeItems>);
+  const categorizedItems = recipeItems.reduce(
+    (categories, item) => {
+      const category = item.category || "";
+      if (!categories[category]) {
+        categories[category] = [];
+      }
+      categories[category].push(item);
+      return categories;
+    },
+    {} as Record<string, typeof recipeItems>,
+  );
 
-          return (
-            <div className="space-y-4">
-              {Object.entries(categorizedItems)
-                .sort(([a], [b]) => a.localeCompare(b)) // empty category first
-                .map(([category, item]) => (
-                  <div className="flex flex-col items-start" key={category}>
-                    <RecipeCategoryContainer title={category}>
-                      <ItemListComponent ordered={ordered} items={item} />
-                    </RecipeCategoryContainer>
-                  </div>
-                ))}
-            </div>
-          );
-        })()
-      ) : (
-        <EmptyPlaceholder
-          text={`Aucun élément n'a été ajouté à cette recette.`}
-        />
-      )}
-    </>
+  return (
+    <div className="space-y-4">
+      {Object.entries(categorizedItems)
+        .sort(([a], [b]) => a.localeCompare(b)) // empty category first
+        .map(([category, item]) => (
+          <RecipeCategoryContainer title={category}>
+            <ol
+              className={`space-y-1 ${ordered ? "list-decimal" : "list-disc"}`}
+            >
+              {item.map((i) => (
+                <span key={i.id} className="flex items-center gap-2 pl-5">
+                  <li>
+                    <TextWithTimerLinks text={i.name} />
+                  </li>
+                </span>
+              ))}
+            </ol>
+          </RecipeCategoryContainer>
+        ))}
+    </div>
+  );
+}
+
+export function InstructionList({
+  instructions,
+}: {
+  instructions: InstructionType[];
+}) {
+  return instructions.length > 0 ? (
+    <RecipeContentItemList recipeItems={instructions} ordered={true} />
+  ) : (
+    <EmptyPlaceholder>Aucune instruction trouvée.</EmptyPlaceholder>
+  );
+}
+
+export function IngredientList({
+  ingredients,
+}: {
+  ingredients: IngredientType[];
+}) {
+  return ingredients.length > 0 ? (
+    <RecipeContentItemList recipeItems={ingredients} />
+  ) : (
+    <EmptyPlaceholder>Aucun ingrédient trouvé.</EmptyPlaceholder>
   );
 }

@@ -4,7 +4,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # GET /users/sign_up
   def new
     # Utiliser Inertia pour rendre la page d'inscription React
-    render inertia: "Auth/Register"
+    render inertia: "Public/Register"
   end
 
   # POST /users
@@ -28,7 +28,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
       clean_up_passwords resource
       set_minimum_password_length
       flash[:alert] = resource.errors.full_messages.join(", ")
-      render inertia: "Auth/Register", status: :unprocessable_entity
+      render inertia: "Public/Register", status: :unprocessable_entity
     end
   end
 

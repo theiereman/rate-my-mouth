@@ -1,4 +1,4 @@
-import { ACTION_VERBS, INGREDIENT_PATTERNS } from "@const/text-detection";
+import { ACTION_VERBS, INGREDIENT_PATTERNS } from "@const/TextDetection";
 import { ItemType } from "@customTypes/recipe.types";
 import { useEffect, useState } from "react";
 
@@ -19,18 +19,18 @@ export function useTextTypeDetection() {
   const isInstruction = (text: string): boolean => {
     // Vérifier si le texte contient un verbe d'action culinaire
     const containsActionVerb = ACTION_VERBS.some((verb) =>
-      new RegExp(`\\b${verb}\\b`, "i").test(text)
+      new RegExp(`\\b${verb}\\b`, "i").test(text),
     );
 
     // Vérifier si le texte commence par un verbe à l'impératif ou à l'infinitif
     const startsWithVerb = ACTION_VERBS.some((verb) =>
-      new RegExp(`^\\s*${verb}\\b`, "i").test(text)
+      new RegExp(`^\\s*${verb}\\b`, "i").test(text),
     );
 
     // Vérifier si le texte contient des indicateurs temporels
     const containsTimeIndicator =
       /\b(pendant|durant|minutes?|heures?|secondes?|min|h|jusqu'à|jusqu'a)\b/i.test(
-        text
+        text,
       );
 
     // Vérifier si le texte est une phrase complète

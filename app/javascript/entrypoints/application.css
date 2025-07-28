@@ -1,94 +1,51 @@
+@import url("../assets/stylesheets/input.css");
+@import url("../assets/stylesheets/material-icons.css");
+@import url("../assets/stylesheets/fonts.css");
+
 @import "tailwindcss";
 @config "./tailwind.config.js";
 
-/*
- * Congratulations for exploring the source code!
- *
- * You've found a clue to unlock a hidden achievement.
- * Visit the following URL to unlock the "Code Explorer" achievement:
- *
- * /source_explorer/curious_minds_find_hidden_treasures
- *
- * Happy exploring!
- */
+@theme {
+  --color-background: oklch(0.9558 0.0235 var(--base-hue, 240));
 
-@font-face {
-  font-family: "Material Icons";
-  font-style: normal;
-  font-weight: 400;
-  src: local("Material Icons"), local("MaterialIcons-Outlined"),
-    url("/assets/fonts/material-symbol-outlined.woff2") format("woff2");
+  --color-primary-50: oklch(0.97 0.02 var(--primary-hue, 280));
+  --color-primary-100: oklch(0.95 0.04 var(--primary-hue, 280));
+  --color-primary-200: oklch(0.9 0.08 var(--primary-hue, 280));
+  --color-primary-300: oklch(0.85 0.12 var(--primary-hue, 280));
+  --color-primary-400: oklch(0.8 0.16 var(--primary-hue, 280));
+  --color-primary-500: oklch(0.75 0.2 var(--primary-hue, 280));
+  --color-primary-600: oklch(0.65 0.18 var(--primary-hue, 280));
+  --color-primary-700: oklch(0.55 0.16 var(--primary-hue, 280));
+  --color-primary-800: oklch(0.45 0.14 var(--primary-hue, 280));
+  --color-primary-900: oklch(0.25 0.06 var(--primary-hue, 280));
+  --color-primary-950: oklch(0.2 0.04 var(--primary-hue, 280));
+
+  --color-accent-50: oklch(0.97 0.02 80);
+  --color-accent-100: oklch(0.95 0.04 80);
+  --color-accent-200: oklch(0.9 0.08 80);
+  --color-accent-300: oklch(0.85 0.12 80);
+  --color-accent-400: oklch(0.8 0.16 80);
+  --color-accent-500: oklch(0.75 0.2 80);
+  --color-accent-600: oklch(0.65 0.18 80);
+  --color-accent-700: oklch(0.55 0.16 80);
+  --color-accent-800: oklch(0.45 0.14 80);
+  --color-accent-900: oklch(0.25 0.06 80);
+  --color-accent-950: oklch(0.2 0.04 80);
 }
 
-@font-face {
-  font-family: "LoveYaLikeASister";
-  font-style: normal;
-  font-weight: 200 900;
-  src: url("/assets/fonts/loveyalikeasister.ttf") format("truetype");
-}
-
-@font-face {
-  font-family: "Quicksand";
-  font-style: normal;
-  font-weight: 500 900;
-  src: url("/assets/fonts/quicksand-variable.ttf") format("truetype");
-}
-
-.material-symbols-outlined {
-  font-family: "Material Icons";
-  font-weight: normal;
-  font-style: normal;
-  font-size: 24px; /* Preferred icon size */
-  display: inline-block;
-  line-height: 1;
-  text-transform: none;
-  letter-spacing: normal;
-  word-wrap: normal;
-  white-space: nowrap;
-  direction: ltr;
-
-  /* Support for all WebKit browsers. */
-  -webkit-font-smoothing: antialiased;
-  /* Support for Safari and Chrome. */
-  text-rendering: optimizeLegibility;
-
-  /* Support for Firefox. */
-  -moz-osx-font-smoothing: grayscale;
-
-  /* Support for IE. */
-  font-feature-settings: "liga";
-}
-
-:root {
-  /* Default theme values - will be overridden by ThemeContext */
-  --primary-hue: 230;
-  --secondary-hue: 300;
-  --accent-hue: 270;
-
-  /* Semantic color hues - can be adjusted by themes */
-  --valid-hue: 140;
-  --error-hue: 20;
-  --warning-hue: 85;
+@utility underline {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 1px;
+  text-decoration-skip-ink: none;
 }
 
 html,
 body {
   height: 100%;
-  background-color: #fafafa; /* neutral-50 */
+  background-color: var(--color-background);
 }
 
-.material-icon--sm {
-  font-size: 1.2em !important;
-}
-
-.material-icon--md {
-  font-size: 1.6em !important;
-}
-
-.material-icon--lg {
-  font-size: 3em !important;
-}
-
-.material-icon--fill {
-  font-variation-settings: "FILL" 1;
+#app {
+  height: 100%;
 }

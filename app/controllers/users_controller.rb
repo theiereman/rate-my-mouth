@@ -4,8 +4,20 @@ class UsersController < ApplicationController
   before_action :set_user, only: %i[show update update_avatar]
 
   def index
-    @users = User.all.order(:username)
-    render json: @users.as_json(only: [:id, :username, :email])
+    @users = User.filter(params.slice(:username))
+    @pagy, @users = paginate_collection(@users)
+    render json: {users: @users.as_json(only: [:id, :username, :email]), pagy: pagy_metadata(@pagy)}
+  end
+
+  # GET /users/by_id
+  def by_id
+    @user = User.find_by(id: params[:id])
+
+    if @user
+      render json: {user: @user.as_json(only: [:id, :username, :email])}
+    else
+      render json: {user: nil}
+    end
   end
 
   def show

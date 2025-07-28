@@ -28,7 +28,7 @@ class RecipesController < ApplicationController
                 user: {only: [:id, :username, :ratings_count]},
                 tags: {}
               },
-              methods: [:average_rating, :difficulty_value, :thumbnail_url]
+              methods: [:average_rating, :thumbnail_url]
             )
           },
           pagy: pagy_metadata(@pagy)
@@ -61,7 +61,7 @@ class RecipesController < ApplicationController
         tags: {},
         ingredients: {},
         instructions: {}
-      }, methods: [:average_rating, :difficulty_value, :thumbnail_url])
+      }, methods: [:average_rating, :thumbnail_url])
     }
   end
 
@@ -73,7 +73,7 @@ class RecipesController < ApplicationController
     if @recipe.save
       redirect_to @recipe
     else
-      redirect_to new_recipe_url, status: :unprocessable_entity, inertia: {errors: @recipe.errors}
+      redirect_to new_recipe_url, inertia: {errors: @recipe.errors}
     end
   end
 
@@ -118,6 +118,6 @@ class RecipesController < ApplicationController
       tags: {},
       ingredients: {},
       instructions: {}
-    }, methods: [:average_rating, :difficulty_value, :thumbnail_url])
+    }, methods: [:average_rating, :thumbnail_url])
   end
 end

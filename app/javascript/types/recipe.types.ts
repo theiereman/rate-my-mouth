@@ -1,6 +1,11 @@
-import { RatingType } from "@customTypes/rating.types";
 import { TagType } from "@customTypes/tag.types";
 import { UserType } from "@customTypes/user.types";
+
+export enum Difficulty {
+  Easy = 0,
+  Medium = 1,
+  Hard = 2,
+}
 
 export interface IngredientType {
   id: number;
@@ -14,16 +19,15 @@ export interface InstructionType {
   category: string;
 }
 
-export interface RecipeType {
+export type RawRecipe = {
   id: number;
   name: string;
   url: string;
   number_of_servings: number;
-  difficulty: number;
+  difficulty: string;
   ingredients: IngredientType[];
   instructions: InstructionType[];
   description: string;
-  difficulty_value: number;
   thumbnail_url?: string;
   average_rating: number;
   created_at: string;
@@ -32,7 +36,11 @@ export interface RecipeType {
   tags?: TagType[];
   comments_count: number;
   ratings_count: number;
-}
+};
+
+export type RecipeType = Omit<RawRecipe, "difficulty"> & {
+  difficulty: Difficulty;
+};
 
 export type RecipeFormType = {
   name: string;

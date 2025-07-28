@@ -1,37 +1,46 @@
 import { Head } from "@inertiajs/react";
-import { RecipeType } from "@customTypes/recipe.types";
+import { RawRecipe } from "@customTypes/recipe.types";
 import { RatingType } from "@customTypes/rating.types";
 import { CommentableType } from "@customTypes/comment.types";
-import Timer from "@components/tools/Timer";
+import Timer from "@components/ui/Timer";
 import RecipeNotes from "@components/Recipes/RecipeNotes";
-import Section from "@components/ui/Pages/Section";
+import { Section } from "@components/ui";
 import CommentForm from "@components/Comments/Form/CommentForm";
 import RatingForm from "@components/Ratings/Form/RatingForm";
-import RecipeContentItemList from "@components/Recipes/RecipeContentItemList";
-import IngredientsQuantitySelector from "@components/Recipes/Ingredients/IngredientsQuantitySelector";
+import {
+  IngredientList,
+  InstructionList,
+} from "@components/Recipes/RecipeContentItemList";
 import RecipeActionsButtons from "@components/Recipes/RecipeActionsButtons";
 import RecipeHeader from "@components/Recipes/RecipeHeader";
-import RecipeBadges from "@components/Recipes/RecipeBadges";
 import RecipeThumbnail from "@components/Recipes/RecipeThumbnail";
 import { useIngredientQuantifier } from "@hooks/useIngredientQuantifier";
 import { useUserIsCurrentUser } from "@hooks/useUserIsCurrentUser";
-import Page from "@components/ui/Pages/Page";
+import Page from "@components/ui/Page";
 import { TimerProvider } from "@contexts/TimerContext";
 import RecipeRelatedItemList from "@components/Recipes/RecipeRelatedItemList";
+import { RecipeAdapter } from "@adapters/recipe.adapter";
+import { useMemo } from "react";
+import IngredientsQuantitySelector from "@components/Ingredients/IngredientsQuantitySelector";
 
 interface ShowProps {
-  recipe: RecipeType;
+  recipe: RawRecipe;
   userRating: RatingType;
 }
 
-export default function Show({ recipe, userRating }: ShowProps) {
+export default function Show({ recipe: rawRecipe, userRating }: ShowProps) {
+  //TODO: consider HOC to avoid having to adapt the recipes inside the component
+  const recipe = useMemo(() => RecipeAdapter.fromApi(rawRecipe), [rawRecipe]);
+
   const { isCurrentUser } = useUserIsCurrentUser(recipe.user);
 
   const {
     handleIncrease,
     handleDecrease,
+    handleResetToDefault,
     numberOfServings,
     updatedIngredients,
+    isValueChanged,
   } = useIngredientQuantifier({ recipe });
 
   return (
@@ -48,40 +57,38 @@ export default function Show({ recipe, userRating }: ShowProps) {
 
         <div className="flex flex-col justify-between gap-6">
           <RecipeHeader showDescription recipe={recipe} />
-          <RecipeBadges recipe={recipe} />
           {isCurrentUser && <RecipeActionsButtons recipe={recipe} />}
         </div>
 
-        <Section title="Ingredients" underlineStroke={1}>
-          <IngredientsQuantitySelector
-            numberOfServings={numberOfServings}
-            onValueIncrease={handleIncrease}
-            onValueDecrease={handleDecrease}
-          />
-          <RecipeContentItemList recipeItems={updatedIngredients} />
+        <Section
+          title="Ingredients"
+          headerAction={
+            <IngredientsQuantitySelector
+              className="text-background!"
+              numberOfServings={numberOfServings}
+              onValueIncrease={handleIncrease}
+              onValueDecrease={handleDecrease}
+              onValueReset={handleResetToDefault}
+              isValueChanged={isValueChanged}
+            />
+          }
+        >
+          <IngredientList ingredients={updatedIngredients} />
         </Section>
 
-        <Section title="Instructions" underlineStroke={2}>
-          <RecipeContentItemList recipeItems={recipe.instructions} ordered />
+        <Section title="Instructions">
+          <InstructionList instructions={recipe.instructions} />
         </Section>
 
-        <div className="flex flex-col gap-16 md:flex-row md:gap-12">
-          <Section
-            title="Minuteur"
-            containerClassName="flex-2"
-            underlineStroke={1}
-          >
-            <Timer />
-          </Section>
-          <Section title="Notes personnelles" containerClassName="flex-3">
-            <RecipeNotes recipeId={recipe.id} />
-          </Section>
+        <div className="flex flex-col gap-8 md:flex-row">
+          <Timer />
+          <RecipeNotes recipeId={recipe.id} />
         </div>
 
-        <div className="flex flex-col gap-16 md:flex-row md:gap-12">
+        <div className="flex flex-col gap-8 md:flex-row">
           <Section
+            className="flex-1"
             title={`Commentaires (${recipe.comments_count})`}
-            containerClassName="flex-3"
           >
             <CommentForm
               commentableId={recipe.id}
@@ -91,16 +98,15 @@ export default function Show({ recipe, userRating }: ShowProps) {
             <RecipeRelatedItemList recipe={recipe} relatedItemType="comments" />
           </Section>
 
-          <Section
-            title={`Évaluations (${recipe.ratings_count})`}
-            containerClassName="flex-2"
-            underlineStroke={4}
-          >
-            <RatingForm
-              recipeId={recipe.id}
-              rating={userRating}
-              className="self-start md:self-stretch md:h-10" //forcing height to match the comment form
-            />
+          <Section title={`Évaluations (${recipe.ratings_count})`}>
+            <Section variant="ghost" title="Votre évaluation">
+              <RatingForm
+                recipeId={recipe.id}
+                rating={userRating}
+                className="self-start md:h-10 md:self-stretch"
+              />
+            </Section>
+            <div className="bg-primary-900 mt-4 h-1.5 w-full" />
             <RecipeRelatedItemList recipe={recipe} relatedItemType="ratings" />
           </Section>
         </div>

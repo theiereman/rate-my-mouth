@@ -78,7 +78,7 @@ export function CustomPagination({
 }) {
   return (
     (pagy?.pages ?? 0) > 1 && (
-      <div className={`flex gap-2 justify-center items-center ${className}`}>
+      <div className={`flex items-center justify-center gap-2 ${className}`}>
         <Button disabled={pagy?.prev === null} onClick={onFirstClick}>
           <span className="material-symbols-outlined">first_page</span>
         </Button>

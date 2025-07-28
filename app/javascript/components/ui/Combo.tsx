@@ -1,151 +1,124 @@
-import { useState, useEffect, useRef } from "react";
-import { Input } from "@components/ui";
-
-interface ComboProps {
-  value?: number | null;
-  values: ComboValue[];
-  onSelectedValue: (value: ComboValue | null) => void;
-  onSearchValueChange?: (value: string) => void;
-  placeholder?: string;
-  label?: string;
-  className?: string;
-  disabled?: boolean;
-  variant?: "default" | "filled" | "outlined";
-  erasable?: boolean;
-  mandatory?: boolean;
-  disableFiltering?: boolean;
-}
+import { Badge, Input, InputProps } from "@components/ui";
+import { useEffect, useRef, useState } from "react";
 
 export interface ComboValue {
-  value: number;
+  value: any;
   label: string;
 }
 
-export function Combo({
-  values,
-  value = null,
+type ComboProps = InputProps & {
+  selectedValue?: ComboValue[] | ComboValue; //multi select or single select
+  values: ComboValue[];
+  label: string;
+  onSelectedValue?: (value: ComboValue | null) => void;
+  onSearchValueChange?: (value: string) => void;
+  onSelectedValueRemove?: (value: ComboValue) => void;
+};
+
+export default function Combo({
+  selectedValue,
+  values = [],
   onSelectedValue,
   onSearchValueChange,
-  placeholder = "Sélectionner...",
-  label = "",
-  className = "",
-  disabled = false,
-  erasable = false,
-  variant = "default",
-  mandatory = false,
-  disableFiltering = false,
+  onSelectedValueRemove,
+  ...props
 }: ComboProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [searchValue, setSearchValue] = useState("");
-  const [filteredValues, setFilteredValues] = useState<ComboValue[]>(values);
-  const comboRef = useRef<HTMLDivElement>(null);
+  const [inputValue, setInputValue] = useState("");
+  const [isUserTyping, setIsUserTyping] = useState(false);
 
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setSearchValue(value);
+  const divRef = useRef<HTMLDivElement>(null);
 
-    if (onSearchValueChange) {
-      onSearchValueChange(value);
-    }
+  const isMultiselect = Array.isArray(selectedValue);
 
-    const filtered = disableFiltering
-      ? values
-      : values.filter((val) =>
-          val.label.toLowerCase().includes(value.toLowerCase())
-        );
-    setFilteredValues(filtered);
-  };
-
-  const handleSelect = (value: ComboValue | null) => {
-    setSearchValue("");
-    setIsOpen(false);
-    onSelectedValue(value);
-  };
-
+  //update input value when selectedValue changes
   useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (
-        comboRef.current &&
-        !comboRef.current.contains(event.target as Node)
-      ) {
-        setIsOpen(false);
-      }
+    if (!isUserTyping && !isMultiselect && selectedValue) {
+      setInputValue(selectedValue.label);
     }
+  }, [selectedValue]);
 
-    document.addEventListener("mousedown", handleClickOutside);
+  //handle click outside the div
+  useEffect(() => {
+    const handleClick = (event: MouseEvent) => {
+      if (!divRef.current) return;
+
+      if (!divRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+        return;
+      }
+    };
+    document.addEventListener("mousedown", handleClick);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("mousedown", handleClick);
     };
   }, []);
 
-  useEffect(() => {
-    setFilteredValues(values);
-  }, [values]);
+  const handleSearchValueChange = (value: string) => {
+    setInputValue(value);
+    if (value.trim() === "" && !isMultiselect) {
+      onSelectedValue && onSelectedValue(null);
+    }
+    onSearchValueChange && onSearchValueChange(value);
+  };
+
+  const handleSelectedValueChange = (value: ComboValue) => {
+    onSelectedValue && onSelectedValue(value);
+    if (!isMultiselect) setInputValue(value.label);
+    setIsOpen(false);
+  };
 
   return (
-    <div className="flex items-end gap-1">
-      <div className={`relative ${className}`} ref={comboRef}>
-        {/* Input field with search functionality */}
-        <Input
-          mandatory={mandatory}
-          label={label}
-          placeholder={placeholder}
-          value={
-            isOpen
-              ? searchValue
-              : value !== null
-              ? values.find((v) => v.value === value)?.label || ""
-              : ""
-          }
-          onChange={handleSearchChange}
-          onClick={() => !disabled && setIsOpen(true)}
-          rightIcon={
-            <span className="material-symbols-outlined">
-              keyboard_arrow_down
-            </span>
-          }
-          variant={variant}
-          disabled={disabled}
-          className="cursor-pointer"
-        />
-        {/* Dropdown menu */}
-        {isOpen && (
-          <div className="absolute z-10 w-full mt-1 bg-white border border-neutral-200 rounded-md shadow-lg max-h-60 overflow-auto animate-fade-in">
-            {filteredValues.length > 0 ? (
-              <ul className="py-1">
-                {filteredValues.map((value, index) => (
-                  <li
-                    key={index}
-                    className="px-4 py-2 hover:bg-primary-50 cursor-pointer text-neutral-700 hover:text-primary-700 transition-colors duration-150"
-                    onClick={() => handleSelect(value)}
-                  >
-                    {value.label}
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <div className="px-4 py-2 text-neutral-500 text-center">
-                Aucun résultat
-              </div>
-            )}
-          </div>
-        )}
-      </div>
-
-      {erasable && value && (
-        <button
-          className="text-red-500 text-xl cursor-pointer mb-2 flex items-center"
-          onClick={() => {
-            handleSelect(null);
-          }}
-        >
-          <span className="material-symbols-outlined text-primary-600">
-            close
-          </span>
-        </button>
+    <div ref={divRef} className="relative">
+      <Input
+        label={props.label}
+        value={inputValue}
+        onChange={(e) => handleSearchValueChange(e.target.value)}
+        onClick={() => setIsOpen(true)}
+        className={isOpen ? "border-b-0" : undefined}
+        onFocus={() => setIsUserTyping(true)}
+        onBlur={() => setIsUserTyping(false)}
+        rightIcon={props.rightIcon}
+      />
+      {isOpen && (
+        <div className="border-primary-900 absolute z-10 max-h-60 w-full overflow-auto border-x-3 border-b-3 bg-white shadow-lg">
+          {values.length > 0 ? (
+            <ul>
+              {values.map((value, index) => (
+                <li
+                  key={index}
+                  className="hover:bg-primary-900 hover:text-background text-primary-900 cursor-pointer px-4 py-2 transition-all hover:font-bold"
+                  onClick={() => handleSelectedValueChange(value)}
+                >
+                  {value.label}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <div className="px-4 py-2 text-center text-neutral-500">
+              Aucun résultat
+            </div>
+          )}
+        </div>
       )}
+      {isMultiselect &&
+        selectedValue.length > 0 &&
+        selectedValue.map((cbVal) => {
+          return (
+            <Badge
+              onClick={() => {
+                onSelectedValueRemove && onSelectedValueRemove(cbVal);
+              }}
+              key={cbVal.value}
+              className="group mt-2 mr-2 inline-block hover:border-red-600 hover:text-red-600"
+            >
+              <div className="flex gap-1">
+                {cbVal.label}
+                <span className="hidden group-hover:block">x</span>
+              </div>
+            </Badge>
+          );
+        })}
     </div>
   );
 }
-
-export default Combo;
