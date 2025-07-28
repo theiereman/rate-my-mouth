@@ -1,6 +1,5 @@
 import { AchievementType } from "@customTypes/achievement.types";
 import AchievementItem from "@components/Achievements/AchievementItem";
-import EmptyPlaceholder from "@components/ui/EmptyPlaceholder";
 import { UserType } from "@customTypes/user.types";
 import { Section } from "@components/ui";
 
@@ -25,19 +24,15 @@ export default function AchievementsList({
       }
       variant="ghost"
     >
-      {achievements.length > 0 ? (
-        <div className="grid grid-cols-1 gap-4">
-          {achievements.map((achievement) => (
-            <AchievementItem
-              key={achievement.key}
-              achievement={achievement}
-              user={user}
-            />
-          ))}
-        </div>
-      ) : (
-        <EmptyPlaceholder text="Tous les succès ont été débloqués !" />
-      )}
+      <div className="grid grid-cols-1 gap-4">
+        {achievements.map((achievement) => (
+          <AchievementItem
+            key={achievement.key}
+            achievement={achievement}
+            user={user}
+          />
+        ))}
+      </div>
     </Section>
   );
 }

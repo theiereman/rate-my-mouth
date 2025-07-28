@@ -1,5 +1,5 @@
 import Comment from "@components/Comments/CommentItem";
-import EmptyPlaceholder from "@components/ui/EmptyPlaceholder";
+import { EmptyPlaceholder } from "@components/ui";
 import { CommentType } from "@customTypes/comment.types";
 
 export default function CommentList({ comments }: { comments: CommentType[] }) {
@@ -19,7 +19,7 @@ export default function CommentList({ comments }: { comments: CommentType[] }) {
           ))}
         </ul>
       ) : (
-        <EmptyPlaceholder text="Aucun commentaire pour le moment" />
+        <EmptyPlaceholder>Aucun commentaire pour le moment</EmptyPlaceholder>
       )}
     </>
   );

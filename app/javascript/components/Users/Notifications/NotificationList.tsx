@@ -1,4 +1,4 @@
-import EmptyPlaceholder from "@components/ui/EmptyPlaceholder";
+import { EmptyPlaceholder } from "@components/ui";
 import { NotificationType } from "@customTypes/notifications.types";
 import NotificationItem from "./NotificationItem";
 
@@ -23,7 +23,7 @@ export default function NotificationList({
           ))}
         </ul>
       ) : (
-        <EmptyPlaceholder variant="ghost" text="Aucune notification" />
+        <EmptyPlaceholder>Aucune notification</EmptyPlaceholder>
       )}
     </>
   );

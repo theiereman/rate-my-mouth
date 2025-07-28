@@ -1,5 +1,5 @@
 import { RatingType } from "@customTypes/rating.types";
-import EmptyPlaceholder from "@components/ui/EmptyPlaceholder";
+import { EmptyPlaceholder } from "@components/ui";
 import UserRelatedEventHeader from "@components/Users/UserRelatedEventHeader";
 import RatingItem from "./RatingItem";
 
@@ -32,7 +32,7 @@ export default function RatingList({
           ))}
         </ul>
       ) : (
-        <EmptyPlaceholder text="Aucune évaluation pour le moment" />
+        <EmptyPlaceholder>Aucune évaluation pour le moment</EmptyPlaceholder>
       )}
     </div>
   );

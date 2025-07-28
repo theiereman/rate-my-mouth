@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import RecipeShortItem from "@components/Recipes/RecipeLink";
 import { useToast } from "@contexts/ToastProvider";
-import EmptyPlaceholder from "@components/ui/EmptyPlaceholder";
+import { EmptyPlaceholder } from "@components/ui";
 import { LinkButton, Section } from "@components/ui";
 import Loading from "@components/ui/Loading";
 import { RecipeAdapter } from "@adapters/recipe.adapter";
@@ -64,7 +64,9 @@ export default function CreatedRecipes({ userId }: { userId: number }) {
               </div>
             </>
           ) : (
-            <EmptyPlaceholder text="Aucune recette créée pour le moment" />
+            <EmptyPlaceholder>
+              Aucune recette créée pour le moment
+            </EmptyPlaceholder>
           )}
         </>
       )}

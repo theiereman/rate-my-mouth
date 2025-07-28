@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import NotificationList from "@components/Users/Notifications/NotificationList";
 import { NotificationType } from "@customTypes/notifications.types";
-import EmptyPlaceholder from "@components/ui/EmptyPlaceholder";
+import { EmptyPlaceholder } from "@components/ui";
 import axios from "axios";
 import { useToast } from "@contexts/ToastProvider";
 import { PagyMetadata } from "@components/ui/Pagination";

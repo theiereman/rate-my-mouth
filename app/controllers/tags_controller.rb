@@ -24,7 +24,7 @@ class TagsController < ApplicationController
     @tag = Tag.new(tag_params)
 
     if @tag.save
-      render json: tag.as_json, status: :created
+      render json: @tag.as_json, status: :created
     else
       render json: {errors: @tag.errors}, status: :unprocessable_entity
     end

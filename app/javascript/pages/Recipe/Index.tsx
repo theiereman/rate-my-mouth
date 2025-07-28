@@ -7,7 +7,7 @@ import Page from "@components/ui/Pages/Page";
 import { Section } from "@components/ui";
 import { useDebouncedCallback } from "use-debounce";
 import { UserType } from "@customTypes/user.types";
-import EmptyPlaceholder from "@components/ui/EmptyPlaceholder";
+import { EmptyPlaceholder } from "@components/ui";
 import { TagType } from "@customTypes/tag.types";
 import RecipeFilters from "@components/Recipe/RecipeFilters";
 import { useUrlParams } from "@hooks/useUrlParams";
@@ -115,10 +115,7 @@ export default function Index({
           </span>
         </div>
       ) : recipes.length === 0 ? (
-        <EmptyPlaceholder
-          text="Aucune recette disponible"
-          subtext="Soyez le premier à partager une nouvelle recette !"
-        />
+        <EmptyPlaceholder>Aucune recette disponible</EmptyPlaceholder>
       ) : (
         <div className="grid grid-cols-1 gap-2">
           {recipes.map((recipe: RecipeType) => (
