@@ -1,6 +1,5 @@
-import { Badge, Input } from "@components/ui";
+import { Badge, Input, InputProps } from "@components/ui";
 import { useEffect, useRef, useState } from "react";
-import { InputProps } from "./Input";
 
 export interface ComboValue {
   value: any;

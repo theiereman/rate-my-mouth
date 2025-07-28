@@ -1,6 +1,6 @@
 import { LinkButton } from "@components/ui";
 import { usePage } from "@inertiajs/react";
-import UserNotificationsDropdown from "../dropdowns/UserNotificationsDropdown";
+import UserNotificationsDropdown from "./UserNotificationsDropdown";
 import { PageProps } from "@customTypes/usepage-props.types";
 
 const navItems = [

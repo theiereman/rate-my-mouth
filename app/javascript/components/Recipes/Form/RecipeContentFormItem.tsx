@@ -4,7 +4,7 @@ import { useDraggable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
 import { useEffect, useRef, useState } from "react";
 
-export default function RecipeContentItem({
+export default function RecipeContentFormItem({
   item,
   onUpdate,
   onDelete,

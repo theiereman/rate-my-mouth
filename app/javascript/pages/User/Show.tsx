@@ -8,7 +8,7 @@ import { AchievementType } from "@customTypes/achievement.types";
 import UserPreferences from "@components/Users/UserPreferences";
 import { useUserIsCurrentUser } from "@hooks/useUserIsCurrentUser";
 import CreatedRecipes from "@components/Users/Recipes/CreatedRecipes";
-import Page from "@components/ui/Pages/Page";
+import Page from "@components/ui/Page";
 import Loading from "@components/ui/Loading";
 import { LinkButton } from "@components/ui";
 

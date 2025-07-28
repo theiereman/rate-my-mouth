@@ -3,9 +3,9 @@ import { EmptyPlaceholder } from "@components/ui";
 import { ItemType, RecipeItem } from "@customTypes/recipe.types";
 import { useState, useRef, useEffect } from "react";
 import { useDroppable } from "@dnd-kit/core";
-import RecipeContentItem from "./RecipeContentItem";
+import RecipeContentFormItem from "./RecipeContentFormItem";
 
-export default function CategoryItem({
+export default function RecipeContentFormCategory({
   name,
   type,
   items,
@@ -134,7 +134,7 @@ export default function CategoryItem({
       ) : (
         <div className="space-y-2">
           {items.map((item) => (
-            <RecipeContentItem
+            <RecipeContentFormItem
               key={item.id}
               item={item}
               onUpdate={onItemUpdate}

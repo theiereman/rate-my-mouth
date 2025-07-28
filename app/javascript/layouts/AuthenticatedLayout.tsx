@@ -1,4 +1,4 @@
-import Navbar from "@components/navbar/v2/Navbar";
+import Navbar from "@components/Navbar/Navbar";
 import { BaseLayout } from "./BaseLayout";
 import { useEffect, useState } from "react";
 

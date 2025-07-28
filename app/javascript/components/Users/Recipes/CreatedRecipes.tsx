@@ -2,7 +2,7 @@ import { RecipeType } from "@customTypes/recipe.types";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import RecipeShortItem from "@components/Recipes/RecipeLink";
-import { useToast } from "@contexts/ToastProvider";
+import { useToast } from "@contexts/ToastContext";
 import { EmptyPlaceholder } from "@components/ui";
 import { LinkButton, Section } from "@components/ui";
 import Loading from "@components/ui/Loading";

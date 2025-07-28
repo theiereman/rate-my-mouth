@@ -1,6 +1,6 @@
 import { Button } from "@components/ui";
 import { NotificationType } from "@customTypes/notifications.types";
-import { formatDateTime } from "@helpers/date-helper";
+import { formatDateTime } from "@helpers/DateHelper";
 import { router } from "@inertiajs/react";
 
 export default function NotificationItem({
@@ -23,7 +23,7 @@ export default function NotificationItem({
   };
 
   return (
-    <div className="flex gap-2">
+    <div className="flex items-center gap-2">
       <span className="material-symbols-outlined text-primary-600 mt-1 mr-1">
         {icon}
       </span>
@@ -40,7 +40,7 @@ export default function NotificationItem({
         </span>
       </div>
       {!notification.read_at && (
-        <span className="bg-secondary-600 mx-auto size-2 animate-pulse rounded-full" />
+        <span className="bg-accent-600 mx-auto size-2 animate-pulse rounded-full" />
       )}
     </div>
   );

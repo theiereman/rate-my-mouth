@@ -4,14 +4,14 @@ import { RecipeFormType, RecipeType } from "@customTypes/recipe.types";
 import { TagType } from "@customTypes/tag.types";
 import { Button, Input, Combo, TextArea, LinkButton } from "@components/ui";
 import RecipeThumbnail from "../RecipeThumbnail";
-import RecipeContentSubform from "./RecipeContentSubform";
+import RecipeContentForm from "./RecipeContentForm";
 import { Section } from "@components/ui";
-import Page from "@components/ui/Pages/Page";
-import TagsCombo from "@components/Tags/TagsCombo";
+import Page from "@components/ui/Page";
+import TagsCombo from "@components/Tags/TagCombo";
 import {
   getDifficultyLabel,
   getDifficultyValue,
-} from "@helpers/recipeDifficultyHelper";
+} from "@helpers/RecipeDifficultyHelper";
 
 interface FormProps {
   recipe: RecipeType;
@@ -159,7 +159,7 @@ export default function Form({
           </div>
         </Section>
 
-        <RecipeContentSubform
+        <RecipeContentForm
           initialIngredients={
             data.ingredients_attributes.map((ing) => ({
               id: ing.id || 0,

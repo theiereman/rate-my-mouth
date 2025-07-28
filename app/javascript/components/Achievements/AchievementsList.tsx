@@ -25,13 +25,15 @@ export default function AchievementsList({
       variant="ghost"
     >
       <div className="grid grid-cols-1 gap-4">
-        {achievements.map((achievement) => (
-          <AchievementItem
-            key={achievement.key}
-            achievement={achievement}
-            user={user}
-          />
-        ))}
+        {achievements
+          .sort((a, b) => Number(b.unlocked) - Number(a.unlocked))
+          .map((achievement) => (
+            <AchievementItem
+              key={achievement.key}
+              achievement={achievement}
+              user={user}
+            />
+          ))}
       </div>
     </Section>
   );

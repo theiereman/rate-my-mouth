@@ -1,77 +1,21 @@
-export type BadgeVariant =
-  | "primary"
-  | "secondary"
-  | "accent"
-  | "valid"
-  | "warning"
-  | "error"
-  | "neutral"
-  | "gray"
-  | "ghost";
-
-interface BadgeProps {
-  text: string;
-  variant?: BadgeVariant;
-  rounded?: boolean;
-  icon?: React.ReactNode;
-  iconPosition?: "left" | "right";
-  className?: string;
-  onClick?: () => void;
-}
-
-const backgroundClasses = (variant: BadgeVariant) => {
-  switch (variant) {
-    case "primary":
-      return "bg-primary-100 border-primary-500";
-    case "secondary":
-      return "bg-secondary-100 border-secondary-500";
-    case "accent":
-      return "bg-accent-100 border-accent-500";
-    case "valid":
-      return "bg-valid-100 border-valid-500";
-    case "warning":
-      return "bg-warning-100 border-warning-500";
-    case "error":
-      return "bg-error-100 border-error-500";
-    case "neutral":
-      return "bg-neutral-100 border-neutral-500";
-    case "gray":
-      return "bg-gray-200 border-gray-300";
-    case "ghost":
-      return "";
-    default:
-      return "";
-  }
-};
-
-export const Badge = ({
-  text,
-  variant = "primary",
-  icon,
-  iconPosition = "left",
-  className = "",
+export default function Badge({
+  children,
+  className,
+  title,
   onClick,
-}: BadgeProps) => {
-  const cursorClass = onClick ? "cursor-pointer" : "";
-
+}: {
+  children: React.ReactNode;
+  className?: string;
+  title?: string;
+  onClick?: () => void;
+}) {
   return (
     <span
-      className={`flex rounded-full justify-center items-center whitespace-nowrap text-neutral-600 border-1 ${backgroundClasses(
-        variant
-      )} text-sm px-2 ${cursorClass} ${className}`}
+      title={title}
+      className={`text-primary-900 border-primary-900 border-3 px-2 text-center text-sm font-bold whitespace-nowrap ${className} ${onClick ? "cursor-pointer" : ""}`}
       onClick={onClick}
     >
-      <span className={`flex items-center`}>
-        {icon && iconPosition === "left" && (
-          <div className="mr-1 flex align-center">{icon}</div>
-        )}
-        <span className="font-black">{text}</span>
-        {icon && iconPosition === "right" && (
-          <div className="ml-1 flex align-center">{icon}</div>
-        )}
-      </span>
+      {children}
     </span>
   );
-};
-
-export default Badge;
+}

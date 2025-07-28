@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import NotificationList from "@components/Users/Notifications/NotificationList";
+import NotificationList from "@components/Notifications/NotificationList";
 import { NotificationType } from "@customTypes/notifications.types";
 import { EmptyPlaceholder } from "@components/ui";
 import axios from "axios";
-import { useToast } from "@contexts/ToastProvider";
+import { useToast } from "@contexts/ToastContext";
 import { PagyMetadata } from "@components/ui/Pagination";
 import { Button, Section } from "@components/ui";
-import NavbarDropdown from "@components/ui/NavbarDropdown";
+import NavbarDropdown from "@components/Navbar/NavbarDropdown";
 
 export default function UserNotificationsDropdown() {
   const [isLoading, setIsLoading] = useState(false);

@@ -1,4 +1,4 @@
-import { formatDateTime } from "@helpers/date-helper";
+import { formatDateTime } from "@helpers/DateHelper";
 import UserAvatar from "./UserAvatar";
 import UserLink from "./UserLink";
 import { UserType } from "@customTypes/user.types";

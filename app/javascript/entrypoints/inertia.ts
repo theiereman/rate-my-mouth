@@ -2,7 +2,7 @@ import { createInertiaApp } from "@inertiajs/react";
 import { createElement, ReactNode } from "react";
 import { createRoot } from "react-dom/client";
 import { ThemeProvider } from "@contexts/ThemeContext";
-import { ToastProvider } from "@contexts/ToastProvider";
+import { ToastProvider } from "@contexts/ToastContext";
 import AuthenticatedLayout from "@layouts/AuthenticatedLayout";
 import PublicLayout from "@layouts/PublicLayout";
 

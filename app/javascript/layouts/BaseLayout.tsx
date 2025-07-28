@@ -4,7 +4,7 @@ import { usePage } from "@inertiajs/react";
 import { useEffect } from "react";
 import axios from "axios";
 import Logo from "@components/ui/Logo";
-import { useToast } from "@contexts/ToastProvider";
+import { useToast } from "@contexts/ToastContext";
 
 export function BaseLayout({ children }: { children: React.ReactNode }) {
   const { flash } = usePage<PageProps>().props;

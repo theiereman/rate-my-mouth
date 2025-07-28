@@ -1,12 +1,12 @@
 import { Button, Section } from "@components/ui";
 import { EmptyPlaceholder } from "@components/ui";
 import { ItemCategory, ItemType, RecipeItem } from "@customTypes/recipe.types";
-import CategoryItem from "./CategoryItem";
+import CategoryItem from "./RecipeContentFormCategory";
 import { useState } from "react";
 import { useDroppable } from "@dnd-kit/core";
 import { capitalize } from "lodash";
 
-export default function ItemsCategorizer({
+export default function RecipeContentFormCategoryContainer({
   type,
   items,
   onItemUpdate,

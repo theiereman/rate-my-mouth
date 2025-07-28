@@ -12,7 +12,7 @@ export default function NotificationList({
   return (
     <>
       {notifications.length > 0 ? (
-        <ul className="divide-y divide-neutral-200">
+        <ul className="divide-primary-900/20 divide-y">
           {notifications.map((notification) => (
             <li className="py-1" key={notification.id}>
               <NotificationItem

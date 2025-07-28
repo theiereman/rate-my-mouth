@@ -2,7 +2,7 @@ import { Head } from "@inertiajs/react";
 import { RawRecipe } from "@customTypes/recipe.types";
 import { RatingType } from "@customTypes/rating.types";
 import { CommentableType } from "@customTypes/comment.types";
-import Timer from "@components/tools/Timer";
+import Timer from "@components/ui/Timer";
 import RecipeNotes from "@components/Recipes/RecipeNotes";
 import { Section } from "@components/ui";
 import CommentForm from "@components/Comments/Form/CommentForm";
@@ -11,17 +11,17 @@ import {
   IngredientList,
   InstructionList,
 } from "@components/Recipes/RecipeContentItemList";
-import IngredientsQuantitySelector from "@components/Recipes/Ingredients/IngredientsQuantitySelector";
 import RecipeActionsButtons from "@components/Recipes/RecipeActionsButtons";
 import RecipeHeader from "@components/Recipes/RecipeHeader";
 import RecipeThumbnail from "@components/Recipes/RecipeThumbnail";
 import { useIngredientQuantifier } from "@hooks/useIngredientQuantifier";
 import { useUserIsCurrentUser } from "@hooks/useUserIsCurrentUser";
-import Page from "@components/ui/Pages/Page";
+import Page from "@components/ui/Page";
 import { TimerProvider } from "@contexts/TimerContext";
 import RecipeRelatedItemList from "@components/Recipes/RecipeRelatedItemList";
 import { RecipeAdapter } from "@adapters/recipe.adapter";
 import { useMemo } from "react";
+import IngredientsQuantitySelector from "@components/Ingredients/IngredientsQuantitySelector";
 
 interface ShowProps {
   recipe: RawRecipe;

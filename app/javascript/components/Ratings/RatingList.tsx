@@ -20,7 +20,7 @@ export default function RatingList({
   return (
     <div className="flex flex-col gap-4 rounded-lg">
       {sortedRatings.length > 0 ? (
-        <ul className="divide-y divide-neutral-200">
+        <ul className="divide-primary-900/20 divide-y">
           {sortedRatings.map((rating) => (
             <li className="py-4" key={rating.id}>
               <UserRelatedEventHeader

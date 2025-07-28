@@ -1,6 +1,6 @@
 import { useForm } from "@inertiajs/react";
 import { CommentableType } from "@customTypes/comment.types";
-import { COMMENTS_PLACEHOLDERS } from "@const/comments-placeholders";
+import { COMMENTS_PLACEHOLDERS } from "@const/CommentsPlaceholders";
 import { useState, useEffect } from "react";
 import { Button, Input } from "@components/ui";
 

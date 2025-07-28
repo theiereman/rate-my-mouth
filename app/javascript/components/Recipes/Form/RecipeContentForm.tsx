@@ -1,5 +1,5 @@
 import { Badge, Button, Input } from "@components/ui";
-import ItemsCategorizer from "./ItemsCategorizer";
+import RecipeContentFormCategoryContainer from "./RecipeContentFormCategoryContainer";
 import { useTextTypeDetection } from "@hooks/useTextTypeDetection";
 import { useState, useEffect } from "react";
 import {
@@ -39,7 +39,7 @@ interface RecipeContentSubformProps {
   }) => void;
 }
 
-export default function RecipeContentSubform({
+export default function RecipeContentForm({
   initialIngredients = [],
   initialInstructions = [],
   onDataChange,
@@ -342,7 +342,7 @@ export default function RecipeContentSubform({
               }),
             )}
           >
-            <ItemsCategorizer
+            <RecipeContentFormCategoryContainer
               items={visibleIngredients}
               type="ingredient"
               onItemUpdate={updateItem}
@@ -354,7 +354,7 @@ export default function RecipeContentSubform({
                 handleCategoryDelete(name, "ingredient")
               }
             />
-            <ItemsCategorizer
+            <RecipeContentFormCategoryContainer
               items={visibleInstructions}
               type="instruction"
               onItemUpdate={updateItem}

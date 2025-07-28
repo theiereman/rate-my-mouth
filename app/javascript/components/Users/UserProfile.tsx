@@ -1,14 +1,14 @@
 import { UserType } from "@customTypes/user.types";
 import { Badge } from "@components/ui";
-import { formatDate } from "@helpers/date-helper";
+import { formatDate } from "@helpers/DateHelper";
 import UserAvatar from "@components/Users/UserAvatar";
 import { useUserIsCurrentUser } from "@hooks/useUserIsCurrentUser";
 import { Section } from "@components/ui";
 import { useFilePicker } from "use-file-picker";
 import { FileSizeValidator } from "use-file-picker/validators";
-import { FILE_PICKER_ERROR_MESSAGES } from "@helpers/filepickerHelper";
+import { FILE_PICKER_ERROR_MESSAGES } from "@helpers/FilepickerHelper";
 import { router } from "@inertiajs/react";
-import { useToast } from "@contexts/ToastProvider";
+import { useToast } from "@contexts/ToastContext";
 
 export default function UserProfile({ user }: { user: UserType }) {
   const { isCurrentUser } = useUserIsCurrentUser(user);

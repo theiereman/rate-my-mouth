@@ -11,7 +11,7 @@ export default function CommentList({ comments }: { comments: CommentType[] }) {
   return (
     <>
       {sortedComments.length > 0 ? (
-        <ul className="divide-primary-900/40 divide-y">
+        <ul className="divide-primary-900/20 divide-y">
           {sortedComments.map((comment) => (
             <li key={comment.id}>
               <Comment comment={comment} />

@@ -3,26 +3,6 @@ import { EmptyPlaceholder } from "@components/ui";
 import RecipeCategoryContainer from "./RecipeCategoryContainer";
 import TextWithTimerLinks from "@components/ui/TextWithTimerLinks";
 
-function ItemListComponent({
-  ordered,
-  items,
-}: {
-  ordered: boolean;
-  items: IngredientType[] | InstructionType[];
-}) {
-  return (
-    <ol className={`space-y-1 ${ordered ? "list-decimal" : "list-disc"}`}>
-      {items.map((item) => (
-        <span key={item.id} className="flex items-center gap-2 pl-5">
-          <li>
-            <TextWithTimerLinks text={item.name} />
-          </li>
-        </span>
-      ))}
-    </ol>
-  );
-}
-
 function RecipeContentItemList({
   recipeItems,
   ordered = false,
@@ -48,7 +28,17 @@ function RecipeContentItemList({
         .sort(([a], [b]) => a.localeCompare(b)) // empty category first
         .map(([category, item]) => (
           <RecipeCategoryContainer title={category}>
-            <ItemListComponent ordered={ordered} items={item} />
+            <ol
+              className={`space-y-1 ${ordered ? "list-decimal" : "list-disc"}`}
+            >
+              {item.map((i) => (
+                <span key={i.id} className="flex items-center gap-2 pl-5">
+                  <li>
+                    <TextWithTimerLinks text={i.name} />
+                  </li>
+                </span>
+              ))}
+            </ol>
           </RecipeCategoryContainer>
         ))}
     </div>

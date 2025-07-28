@@ -1,4 +1,4 @@
-import { useToast } from "@contexts/ToastProvider";
+import { useToast } from "@contexts/ToastContext";
 import { RatingType } from "@customTypes/rating.types";
 import { useEffect, useState } from "react";
 import axios from "axios";

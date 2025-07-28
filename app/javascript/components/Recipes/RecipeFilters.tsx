@@ -1,5 +1,5 @@
 import { Input } from "@components/ui";
-import TagsCombo from "@components/Tags/TagsCombo";
+import TagsCombo from "@components/Tags/TagCombo";
 import { TagType } from "@customTypes/tag.types";
 import { UserType } from "@customTypes/user.types";
 import UserCombo from "@components/Users/UserCombo";

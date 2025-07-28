@@ -3,9 +3,9 @@ import {
   getBackgroundColorClass,
   getDifficultyLabel,
   getTextColorClass,
-} from "@helpers/recipeDifficultyHelper";
+} from "@helpers/RecipeDifficultyHelper";
 
-export default function DifficultyDisplay({
+export default function RecipeDifficultyDisplay({
   difficulty,
 }: {
   difficulty: Difficulty;

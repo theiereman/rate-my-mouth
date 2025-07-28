@@ -1,8 +1,8 @@
 import AverageRatingDisplay from "@components/Ratings/AverageRatingDisplay";
 import UserLink from "@components/Users/UserLink";
 import { RecipeType } from "@customTypes/recipe.types";
-import { formatDateTime } from "@helpers/date-helper";
-import DifficultyDisplay from "./v2/DifficultyDisplay";
+import { formatDateTime } from "@helpers/DateHelper";
+import DifficultyDisplay from "./RecipeDifficultyDisplay";
 import { Badge } from "@components/ui";
 
 type RecipeHeaderProps = {

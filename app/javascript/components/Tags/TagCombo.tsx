@@ -11,7 +11,7 @@ interface TagsComboProps {
   className?: string;
 }
 
-export default function TagsCombo({
+export default function TagCombo({
   label = "Tags associés",
   selectedTags,
   onSelectedTagsChange,
