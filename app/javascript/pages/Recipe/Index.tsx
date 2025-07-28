@@ -47,7 +47,9 @@ export default function Index({
     selectedTags?: TagType[];
   }) => {
     const currentSearchQuery = overrides?.searchQuery ?? searchQuery;
-    const currentSelectedUser = overrides?.selectedUser;
+    const currentSelectedUser = overrides?.hasOwnProperty("selectedUser")
+      ? overrides.selectedUser
+      : selectedUser;
     const currentSelectedTags = overrides?.selectedTags ?? selectedTags;
 
     const params: { name?: string; user_id?: number; tags_ids?: string } = {};
