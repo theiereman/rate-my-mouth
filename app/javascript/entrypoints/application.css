@@ -1,6 +1,6 @@
-@import url("../../assets/stylesheets/input.css");
-@import url("../../assets/stylesheets/material-icons.css");
-@import url("../../assets/stylesheets/fonts.css");
+@import url("../assets/stylesheets/input.css");
+@import url("../assets/stylesheets/material-icons.css");
+@import url("../assets/stylesheets/fonts.css");
 
 @import "tailwindcss";
 @config "./tailwind.config.js";

@@ -116,10 +116,7 @@ export default function UserNotificationsDropdown() {
         </Button>
         <div className="max-h-70 overflow-y-auto">
           {isLoading && currentPage == 1 ? (
-            <EmptyPlaceholder
-              variant="ghost"
-              text="Chargement des notifications..."
-            ></EmptyPlaceholder>
+            <EmptyPlaceholder>Chargement des notifications...</EmptyPlaceholder>
           ) : error ? (
             <p className="text-error-600 text-sm">{error}</p>
           ) : (
