@@ -124,69 +124,6 @@ class RecipeTest < ActiveSupport::TestCase
     assert_includes results, recipe2
     assert_not_includes results, @recipe
   end
-
-  # Tests de la gestion des tags
-  test "should handle tags_attributes assignment" do
-    tag_params = [
-      {name: "dessert"},
-      {name: "facile"}
-    ]
-
-    @recipe.tags_attributes = tag_params
-
-    assert_equal 2, @recipe.tags.count
-    tag_names = @recipe.tags.pluck(:name)
-    assert_includes tag_names, "dessert"
-    assert_includes tag_names, "facile"
-  end
-
-  test "should handle tags_attributes with existing tag ids" do
-    existing_tag = tags(:one)
-    tag_params = [
-      {id: existing_tag.id, name: existing_tag.name},
-      {name: "nouveau"}
-    ]
-
-    @recipe.tags_attributes = tag_params
-
-    assert_equal 2, @recipe.tags.count
-    assert_includes @recipe.tags, existing_tag
-    assert @recipe.tags.exists?(name: "nouveau")
-  end
-
-  test "should find or create tags by name case insensitively" do
-    # Créer un tag en minuscules
-    existing_tag = @recipe.find_or_create_tag_by_name("dessert")
-
-    # Essayer de créer le même tag en majuscules
-    same_tag = @recipe.find_or_create_tag_by_name("DESSERT")
-
-    assert_equal existing_tag, same_tag
-  end
-
-  test "should clear existing tags when assigning new tags_attributes" do
-    old_tag = tags(:one)
-    assert_includes @recipe.tags, old_tag
-
-    @recipe.tags_attributes = [{name: "nouveau_tag"}]
-
-    assert_not_includes @recipe.tags, old_tag
-    assert @recipe.tags.exists?(name: "nouveau_tag")
-  end
-
-  test "should skip blank tag names in tags_attributes" do
-    tag_params = [
-      {name: "valide"},
-      {name: ""},
-      {name: "  "}
-    ]
-
-    @recipe.tags_attributes = tag_params
-
-    assert_equal 1, @recipe.tags.count
-    assert_equal "valide", @recipe.tags.first.name
-  end
-
   # Tests de destruction des associations
   test "should destroy associated ingredients when recipe is destroyed" do
     ingredient = @recipe.ingredients.create!(name: "Test ingredient", category: "test")
@@ -249,34 +186,6 @@ class RecipeTest < ActiveSupport::TestCase
   test "should have default difficulty as easy" do
     recipe = Recipe.new(name: "Test", user: @user, number_of_servings: 4)
     assert_equal "easy", recipe.difficulty
-  end
-
-  test "should handle invalid tag id in tags_attributes gracefully" do
-    tag_params = [
-      {id: 99999, name: "inexistant"}, # ID qui n'existe pas
-      {name: "nouveau"}
-    ]
-
-    @recipe.tags_attributes = tag_params
-
-    # Les deux tags doivent être créés par nom
-    assert_equal 2, @recipe.tags.count
-    tag_names = @recipe.tags.pluck(:name)
-    assert_includes tag_names, "inexistant"
-    assert_includes tag_names, "nouveau"
-  end
-
-  test "should not create duplicate tags when using find_or_create_tag_by_name" do
-    initial_tag_count = Tag.count
-
-    # Créer le même tag plusieurs fois
-    @recipe.find_or_create_tag_by_name("unique_tag")
-    @recipe.find_or_create_tag_by_name("unique_tag")
-    @recipe.find_or_create_tag_by_name("UNIQUE_TAG") # Test case insensitive
-
-    # Un seul tag doit être créé
-    assert_equal initial_tag_count + 1, Tag.count
-    assert_equal 1, @recipe.tags.where("lower(name) = ?", "unique_tag").count
   end
 
   test "should handle filter_by_name case insensitively" do

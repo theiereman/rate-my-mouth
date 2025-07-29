@@ -67,13 +67,11 @@ class RecipesController < ApplicationController
 
   # POST /recipes
   def create
-    @recipe = Recipe.new(recipe_params)
-    @recipe.user = current_user
-
-    if @recipe.save
-      redirect_to @recipe
+    result = Recipes::CreateRecipe.call(user: current_user, params: recipe_params)
+    if result.success?
+      redirect_to result.data[:recipe]
     else
-      redirect_to new_recipe_url, inertia: {errors: @recipe.errors}
+      redirect_to new_recipe_url, inertia: {errors: result.errors}
     end
   end
 

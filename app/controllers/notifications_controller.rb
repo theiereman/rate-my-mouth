@@ -12,9 +12,7 @@ class NotificationsController < ApplicationController
 
   def mark_as_read
     notification_ids = params[:notification_ids]
-    p notification_ids
     notifications = current_user.notifications.where(id: notification_ids).where(read_at: nil)
-    p notifications
     notifications.each(&:mark_as_read!)
     render json: {success: true}
   rescue => e
