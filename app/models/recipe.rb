@@ -47,6 +47,7 @@ class Recipe < ApplicationRecord
     ratings.reduce(0) { |sum, rating| sum + rating.value }.to_f / ratings.size
   end
 
+  # TODO: maybe this should go inside a presenter object
   def thumbnail_url
     if thumbnail.attached?
       Rails.application.routes.url_helpers.rails_blob_path(thumbnail, only_path: true)

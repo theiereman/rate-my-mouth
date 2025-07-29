@@ -48,10 +48,7 @@ class RecipesController < ApplicationController
 
   # GET /recipes/new
   def new
-    @recipe = Recipe.new
-    render inertia: "Recipe/New", props: {
-      recipe: recipe_as_json
-    }
+    render inertia: "Recipe/New"
   end
 
   # GET /recipes/1/edit

@@ -9,13 +9,11 @@ export default function Edit({ recipe }: EditProps) {
   return (
     <>
       <Form
-        title={`Modification de la recette`}
         recipe={recipe}
         onSubmit={(form) => {
           form.transform((data) => ({ recipe: data }));
           form.patch(`/recipes/${recipe.id}`);
         }}
-        submitText="Mettre à jour la recette"
       />
     </>
   );

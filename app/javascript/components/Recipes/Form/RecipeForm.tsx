@@ -14,38 +14,31 @@ import {
 } from "@helpers/RecipeDifficultyHelper";
 
 interface FormProps {
-  recipe: RecipeType;
+  recipe?: RecipeType;
   onSubmit: (form: InertiaFormProps<RecipeFormType>) => void;
-  submitText: string;
-  title: string;
 }
 
-export default function Form({
-  recipe,
-  onSubmit,
-  submitText,
-  title,
-}: FormProps) {
+export default function Form({ recipe, onSubmit }: FormProps) {
   const form = useForm<RecipeFormType>({
-    name: recipe.name || "",
+    name: recipe?.name || "",
     ingredients_attributes:
-      recipe.ingredients?.map((ing) => ({
+      recipe?.ingredients?.map((ing) => ({
         id: ing.id,
         name: ing.name,
         category: ing.category || "",
       })) || [],
     instructions_attributes:
-      recipe.instructions?.map((inst) => ({
+      recipe?.instructions?.map((inst) => ({
         id: inst.id,
         name: inst.name,
         category: inst.category || "",
       })) || [],
-    url: recipe.url || "",
-    number_of_servings: recipe.number_of_servings || 4,
-    difficulty: getDifficultyValue(recipe.difficulty.toString()) || 0,
-    description: recipe.description || "",
+    url: recipe?.url || "",
+    number_of_servings: recipe?.number_of_servings || 4,
+    difficulty: getDifficultyValue(recipe?.difficulty.toString() || "") || 0,
+    description: recipe?.description || "",
     tags_attributes:
-      recipe.tags?.map((tag) => ({ id: tag.id, name: tag.name })) || [],
+      recipe?.tags?.map((tag) => ({ id: tag.id, name: tag.name })) || [],
     thumbnail: undefined,
   });
   const { data, setData, errors, processing } = form;
@@ -60,11 +53,11 @@ export default function Form({
   return (
     <form onSubmit={handleSubmit} className="contents">
       <Page
-        title={title}
+        title={recipe ? "Modifier la recette" : "Nouvelle recette"}
         subtitle="Partagez votre recette avec le reste de la communauté et inspirez d'autres cuisiniers !"
       >
         <RecipeThumbnail
-          thumbnailUrl={data.thumbnail || recipe.thumbnail_url}
+          thumbnailUrl={data.thumbnail || recipe?.thumbnail_url}
           allowThumbnailChange={true}
           onThumbnailSelected={(file) => {
             setData("thumbnail", file as unknown as string);
@@ -186,15 +179,15 @@ export default function Form({
           }}
         />
 
-        <div className="flex justify-end gap-2">
+        <div className="flex justify-end gap-6">
           <LinkButton
             variant="ghost"
-            href={recipe.id ? `/recipes/${recipe.id}` : "/recipes"}
+            href={recipe?.id ? `/recipes/${recipe.id}` : "/recipes"}
           >
             Annuler
           </LinkButton>
           <Button type="submit" disabled={processing}>
-            {submitText}
+            {recipe ? "Valider les modifications" : "Créer la recette"}
           </Button>
         </div>
       </Page>
