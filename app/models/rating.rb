@@ -3,7 +3,7 @@ class Rating < ApplicationRecord
   include Notificationable
 
   belongs_to :user, counter_cache: true
-  belongs_to :recipe, counter_cache: true
+  belongs_to :recipe, counter_cache: true, class_name: "Recipes::Models::Recipe"
 
   validates :value, presence: true, numericality: {only_float: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 5}
 

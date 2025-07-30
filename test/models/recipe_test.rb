@@ -42,7 +42,7 @@ class RecipeTest < ActiveSupport::TestCase
   # Tests de l'enum difficulty
   test "should handle difficulty enum" do
     assert_respond_to @recipe, :difficulty
-    assert_respond_to Recipe, :difficulties
+    assert_respond_to Recipes::Models::Recipe, :difficulties
 
     @recipe.difficulty = 0
     assert_equal "easy", @recipe.difficulty
@@ -69,10 +69,10 @@ class RecipeTest < ActiveSupport::TestCase
 
   # Tests des scopes de filtrage
   test "should filter by name" do
-    results = Recipe.filter_by_name("ABC")
+    results = Recipes::Models::Recipe.filter_by_name("ABC")
     assert_equal results, []
 
-    results = Recipe.filter_by_name("Gâteau")
+    results = Recipes::Models::Recipe.filter_by_name("Gâteau")
     assert_includes results, recipes(:one)
     assert_not_includes results, recipes(:two)
   end
@@ -80,7 +80,7 @@ class RecipeTest < ActiveSupport::TestCase
   test "should filter by user_id" do
     user2 = users(:two)
 
-    results = Recipe.filter_by_user_id(user2.id)
+    results = Recipes::Models::Recipe.filter_by_user_id(user2.id)
     assert_includes results, recipes(:two)
     assert_not_includes results, @recipe
   end
@@ -97,12 +97,12 @@ class RecipeTest < ActiveSupport::TestCase
     recipe2.save!
 
     # Filtre par un seul tag
-    results = Recipe.filter_by_tags_ids([tag1.id])
+    results = Recipes::Models::Recipe.filter_by_tags_ids([tag1.id])
     assert_includes results, @recipe
     assert_includes results, recipe2
 
     # Filtre par plusieurs tags (AND logic)
-    results = Recipe.filter_by_tags_ids([tag1.id, tag2.id])
+    results = Recipes::Models::Recipe.filter_by_tags_ids([tag1.id, tag2.id])
     assert_includes results, recipe2
     assert_not_includes results, @recipe
   end
@@ -159,27 +159,27 @@ class RecipeTest < ActiveSupport::TestCase
 
     @recipe.destroy
 
-    assert_not RecipeTag.exists?(recipe_tag_id)
+    assert_not Tags::Models::RecipeTag.exists?(recipe_tag_id)
     # Le tag lui-même ne doit pas être supprimé
-    assert Tag.exists?(tag.id)
+    assert Tags::Models::Tag.exists?(tag.id)
   end
 
   # Tests des attributs par défaut
   test "should have default difficulty as easy" do
-    recipe = Recipe.new(name: "Test", user: @user, number_of_servings: 4)
+    recipe = Recipes::Models::Recipe.new(name: "Test", user: @user, number_of_servings: 4)
     assert_equal "easy", recipe.difficulty
   end
 
   test "should handle filter_by_name case insensitively" do
     @recipe.name = "Gâteau au Chocolat"
 
-    results = Recipe.filter_by_name("gâteau")
+    results = Recipes::Models::Recipe.filter_by_name("gâteau")
     assert_includes results, @recipe
 
-    results = Recipe.filter_by_name("CHOCOLAT")
+    results = Recipes::Models::Recipe.filter_by_name("CHOCOLAT")
     assert_includes results, @recipe
 
-    results = Recipe.filter_by_name("GâTeAu")
+    results = Recipes::Models::Recipe.filter_by_name("GâTeAu")
     assert_includes results, @recipe
   end
 end

@@ -1,3 +1,6 @@
+_fixture:
+  model_class: Tags::Models::Tag
+
 one:
   name: dessert
 

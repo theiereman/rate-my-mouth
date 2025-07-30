@@ -1,4 +1,4 @@
-class NotificationPresenter # used to present Noticed::Notification objects
+class Notifications::Presenters::Base
   include Rails.application.routes.url_helpers
 
   TYPE_MAPPING = {

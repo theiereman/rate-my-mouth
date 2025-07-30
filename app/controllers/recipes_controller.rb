@@ -4,13 +4,13 @@ class RecipesController < ApplicationController
   before_action :set_recipe, only: %i[edit update]
 
   def index
-    @recipes = Recipes::QueryIndex.new(params).call
+    @recipes = Recipes::Queries::Index.call(params)
 
     @pagy, @recipes = paginate_collection(@recipes)
 
     result = {
       recipes: @recipes.map { |recipe|
-        Recipes::RecipeIndexPresenter.new(recipe).as_json
+        Recipes::Presenters::Index.new(recipe).as_json
       },
       pagy: pagy_metadata(@pagy)
     }
@@ -22,9 +22,9 @@ class RecipesController < ApplicationController
   end
 
   def show
-    @recipe = Recipes::QueryShow.new(params).call
+    @recipe = Recipes::Queries::Show.new(params).call
     render inertia: "Recipe/Show", props: {
-      recipe: Recipes::RecipeShowPresenter.new(@recipe, current_user).as_json
+      recipe: Recipes::Presenters::Show.new(@recipe, current_user).as_json
     }
   end
 
@@ -34,12 +34,12 @@ class RecipesController < ApplicationController
 
   def edit
     render inertia: "Recipe/Edit", props: {
-      recipe: Recipes::RecipeShowPresenter.new(@recipe).as_json
+      recipe: Recipes::Presenters::Show.new(@recipe).as_json
     }
   end
 
   def create
-    result = Recipes::UpsertRecipe.call(user: current_user, params: recipe_params)
+    result = Recipes::Commands::Upsert.call(user: current_user, params: recipe_params)
     if result.success?
       redirect_to result.data[:recipe]
     else
@@ -48,7 +48,7 @@ class RecipesController < ApplicationController
   end
 
   def update
-    result = Recipes::UpsertRecipe.call(user: current_user, params: recipe_params.merge(id: @recipe.id))
+    result = Recipes::Commands::Upsert.call(user: current_user, params: recipe_params.merge(id: @recipe.id))
     if result.success?
       redirect_to result.data[:recipe]
     else
@@ -57,7 +57,7 @@ class RecipesController < ApplicationController
   end
 
   def destroy
-    result = Recipes::DeleteRecipe.call(params: params)
+    result = Recipes::Commands::Delete.call(params: params)
     if result.success?
       redirect_to recipes_url, notice: "Recipe was successfully deleted."
     else
@@ -68,7 +68,7 @@ class RecipesController < ApplicationController
   private
 
   def set_recipe
-    @recipe = Recipe.find(params[:id])
+    @recipe = Recipes::Models::Recipe.find(params[:id])
   end
 
   # Only allow a list of trusted parameters through.

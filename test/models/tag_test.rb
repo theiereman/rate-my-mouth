@@ -34,17 +34,17 @@ class TagTest < ActiveSupport::TestCase
 
   test "should find or initialize by name" do
     tag_name = "UniqueTag"
-    tag = Tag.find_or_initialize_by_name(tag_name)
+    tag = Tags::Models::Tag.find_or_initialize_by_name(tag_name)
     assert tag.new_record?
     assert_equal tag_name, tag.name
 
-    found_tag = Tag.find_or_initialize_by_name(@tag.name)
+    found_tag = Tags::Models::Tag.find_or_initialize_by_name(@tag.name)
     assert_not found_tag.new_record?
     assert_equal @tag.id, found_tag.id
   end
 
   test "should not allow duplicate tags with different case" do
-    duplicate_tag = Tag.new(name: @tag.name.upcase)
+    duplicate_tag = Tags::Models::Tag.new(name: @tag.name.upcase)
     assert_not duplicate_tag.valid?
   end
 end

@@ -5,7 +5,7 @@ class RecipeTagTest < ActiveSupport::TestCase
     @user = users(:one)
     @recipe = recipes(:two)
     @tag = tags(:two)
-    @recipe_tag = RecipeTag.new(recipe: @recipe, tag: @tag)
+    @recipe_tag = Tags::Models::RecipeTag.new(recipe: @recipe, tag: @tag)
   end
 
   test "should be valid with recipe and tag" do
@@ -26,7 +26,7 @@ class RecipeTagTest < ActiveSupport::TestCase
 
   test "should not allow duplicate recipe-tag pairs" do
     @recipe_tag.save!
-    dup = RecipeTag.new(recipe: @recipe, tag: @tag)
+    dup = Tags::Models::RecipeTag.new(recipe: @recipe, tag: @tag)
     assert_not dup.valid?
   end
 end

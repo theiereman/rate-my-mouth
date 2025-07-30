@@ -1,3 +1,6 @@
+_fixture:
+  model_class: Recipes::Models::Recipe
+
 one:
   name: "Gâteau au chocolat"
   description: "Un délicieux gâteau au chocolat moelleux"

@@ -71,7 +71,7 @@ AchievementRules.define do
   rule key: :first_recipe,
     name: "Cuisinier novice",
     description: "Créer votre première recette",
-    triggers: {"Recipe" => :created},
+    triggers: {"Recipes::Models::Recipe" => :created},
     condition: ->(recipe) { recipe.user.recipes.count >= 1 }
 
   # Single model, single action
@@ -132,7 +132,7 @@ AchievementRules.define do
   rule key: :feast,
     name: "Joyeux festin",
     description: "Créer une recette avec des quantités pour 10 personnes (ou plus)",
-    triggers: {"Recipe" => :created},
+    triggers: {"Recipes::Models::Recipe" => :created},
     condition: ->(recipe) { recipe.user.recipes.where("number_of_servings >= 10").count >= 1 }
 
   rule key: :spammer,
@@ -141,35 +141,22 @@ AchievementRules.define do
     triggers: {"Comment" => :created},
     condition: ->(recipe) { recipe.user.comments.on_recipes.group(:commentable_id).count.any? { |_, count| count >= 10 } }
 
-  # NOTE: rails is currently having issue with the ingredients and instructions attributes because stored as nil when empty array (serialized string)
-  # rule key: :chemist,
-  #      name: "Chimiste",
-  #      description: "Créer une recette avec au minimum 20 ingrédients et 15 étapes",
-  #      triggers: { "Recipe" => :created },
-  #      condition: ->(recipe) { recipe.user.recipes.any? { |r| p r.ingredients.size >= 20 && r.instructions.size >= 15 } }
-  #
-  ## rule key: :low_effort,
-  #      name: "Flemmard",
-  #      description: "Créer une recette avec au maximum 2 ingrédients et 3 étapes",
-  #      triggers: { "Recipe" => :created },
-  #      condition: ->(recipe) { recipe.user.recipes.any? { |r| p r.ingredients.size <= 2 && r.instructions.size <= 3 } }
-
   rule key: :birthday,
     name: "Etoile de service",
     description: "Créer une recette exactement un an après la création de votre compte",
-    triggers: {"Recipe" => :created},
+    triggers: {"Recipes::Models::Recipe" => :created},
     condition: ->(recipe) { recipe.created_at.to_date == recipe.user.created_at.to_date.advance(years: 1) }
 
   rule key: :romantic,
     name: "Romantique",
     description: "Créer une recette le jour de la Saint-Valentin",
-    triggers: {"Recipe" => :created},
+    triggers: {"Recipes::Models::Recipe" => :created},
     condition: ->(recipe) { recipe.created_at.to_date == Date.new(2024, 2, 14) }
 
   rule key: :marathonian,
     name: "Marathonien",
     description: "Créer 5 recettes en une seule journée",
-    triggers: {"Recipe" => :created},
+    triggers: {"Recipes::Models::Recipe" => :created},
     condition: ->(recipe) { recipe.user.recipes.where(created_at: recipe.created_at.beginning_of_day..recipe.created_at.end_of_day).count >= 5 }
 
   # Secret success : for code explorers

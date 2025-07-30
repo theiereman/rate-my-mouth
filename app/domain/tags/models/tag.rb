@@ -1,4 +1,8 @@
-class Tag < ApplicationRecord
+class Tags::Models::Tag < ApplicationRecord
+  def self.model_name # for routes
+    ActiveModel::Name.new(self, nil, "Tag")
+  end
+
   include Filterable
 
   scope :filter_by_name, ->(name) { where("tags.name LIKE ?", "%#{name}%") }

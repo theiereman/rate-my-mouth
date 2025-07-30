@@ -1,4 +1,4 @@
-class Recipes::RecipePresenterBase
+class Recipes::Presenters::Base
   def initialize(recipe)
     @recipe = recipe
   end

@@ -1,4 +1,8 @@
-class Recipe < ApplicationRecord
+class Recipes::Models::Recipe < ApplicationRecord
+  def self.model_name # for routes
+    ActiveModel::Name.new(self, nil, "Recipe")
+  end
+
   include Achievable
   include Filterable
 
@@ -26,7 +30,7 @@ class Recipe < ApplicationRecord
   has_many :instructions, dependent: :destroy
 
   belongs_to :user, counter_cache: true
-  has_many :recipe_tags, dependent: :destroy
+  has_many :recipe_tags, dependent: :destroy, class_name: "Tags::Models::RecipeTag"
   has_many :tags, through: :recipe_tags
 
   # Nested attributes pour les formulaires

@@ -1,4 +1,4 @@
-class Recipes::RecipeIndexPresenter < Recipes::RecipePresenterBase
+class Recipes::Presenters::Index < Recipes::Presenters::Base
   def initialize(recipe)
     super
   end

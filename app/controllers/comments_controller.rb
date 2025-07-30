@@ -46,7 +46,7 @@ class CommentsController < ApplicationController
 
   def set_commentable
     if params[:recipe_id]
-      @commentable = Recipe.find(params[:recipe_id])
+      @commentable = Recipes::Models::Recipe.find(params[:recipe_id])
     end
   end
 

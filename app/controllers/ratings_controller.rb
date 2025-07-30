@@ -36,7 +36,7 @@ class RatingsController < ApplicationController
   private
 
   def set_recipe
-    @recipe = Recipe.find(params[:recipe_id])
+    @recipe = Recipes::Models::Recipe.find(params[:recipe_id])
   end
 
   def rating_params

@@ -1,4 +1,4 @@
-class Recipes::RecipeShowPresenter < Recipes::RecipePresenterBase
+class Recipes::Presenters::Show < Recipes::Presenters::Base
   def initialize(recipe, user = nil)
     @user = user
     super(recipe)

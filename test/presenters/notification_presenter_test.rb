@@ -8,7 +8,7 @@ NOTIFICATION_TYPES = {
   achievement: "AchievementUnlockedNotifier::Notification"
 }.freeze
 
-class NotificationPresenterTest < ActiveSupport::TestCase
+class Notifications::Presenters::BaseTest < ActiveSupport::TestCase
   setup do
     @user = users(:no_relationship_user)
     @recipe = recipes(:no_relationship_recipe)
@@ -23,7 +23,7 @@ class NotificationPresenterTest < ActiveSupport::TestCase
 
   test "to_h should return correct hash structure" do
     notification = create_mock_notification(:comment_to_author, @comment)
-    presenter = NotificationPresenter.new(notification)
+    presenter = Notifications::Presenters::Base.new(notification)
     result = presenter.to_h
 
     assert_instance_of Hash, result
@@ -38,7 +38,7 @@ class NotificationPresenterTest < ActiveSupport::TestCase
 
   test "message for comment notifications" do
     notification = create_mock_notification(:comment_to_author, @comment)
-    presenter = NotificationPresenter.new(notification)
+    presenter = Notifications::Presenters::Base.new(notification)
 
     expected_message = "Nouveau commentaire sur la recette '#{@recipe.name}'"
     assert_equal expected_message, presenter.send(:message)
@@ -46,7 +46,7 @@ class NotificationPresenterTest < ActiveSupport::TestCase
 
   test "message for rating notifications" do
     notification = create_mock_notification(:rating, @rating)
-    presenter = NotificationPresenter.new(notification)
+    presenter = Notifications::Presenters::Base.new(notification)
 
     expected_message = "Nouvelle note sur la recette '#{@recipe.name}'"
     assert_equal expected_message, presenter.send(:message)
@@ -54,7 +54,7 @@ class NotificationPresenterTest < ActiveSupport::TestCase
 
   test "message for achievement notifications" do
     notification = create_mock_notification(:achievement, @user_achievement)
-    presenter = NotificationPresenter.new(notification)
+    presenter = Notifications::Presenters::Base.new(notification)
 
     achievement_rule = AchievementRules.rules.find { |rule| rule.key.to_s == @user_achievement.key }
     expected_message = "Succès '#{achievement_rule.name}' débloqué"
@@ -63,7 +63,7 @@ class NotificationPresenterTest < ActiveSupport::TestCase
 
   test "linked_item_path for comment notifications" do
     notification = create_mock_notification(:comment_to_author, @comment)
-    presenter = NotificationPresenter.new(notification)
+    presenter = Notifications::Presenters::Base.new(notification)
 
     expected_path = "/recipes/#{@recipe.id}"
     assert_equal expected_path, presenter.send(:linked_item_path)
@@ -71,7 +71,7 @@ class NotificationPresenterTest < ActiveSupport::TestCase
 
   test "linked_item_path for achievement notifications" do
     notification = create_mock_notification(:achievement, @user_achievement)
-    presenter = NotificationPresenter.new(notification)
+    presenter = Notifications::Presenters::Base.new(notification)
 
     expected_path = "/my_profile"
     assert_equal expected_path, presenter.send(:linked_item_path)
@@ -79,7 +79,7 @@ class NotificationPresenterTest < ActiveSupport::TestCase
 
   test "extract_event returns correct event type for comment to author" do
     notification = create_mock_notification(:comment_to_author, @comment)
-    presenter = NotificationPresenter.new(notification)
+    presenter = Notifications::Presenters::Base.new(notification)
 
     assert_equal "new_comment", presenter.send(:extract_event)
   end

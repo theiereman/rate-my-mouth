@@ -1,4 +1,4 @@
-class ServiceResult
+class CommandResult
   attr_reader :success, :data, :errors
 
   def initialize(success:, data: nil, errors: nil)

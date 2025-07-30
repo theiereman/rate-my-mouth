@@ -19,18 +19,18 @@ class RecipesControllerTest < BaseControllerTest
   end
 
   test "should create minimal recipe" do
-    assert_difference("Recipe.count") do
+    assert_difference("Recipes::Models::Recipe.count") do
       post recipes_url, params: {recipe: {
         name: @recipe.name,
         url: @recipe.url
       }}
     end
 
-    assert_redirected_to recipe_url(Recipe.last)
+    assert_redirected_to recipe_url(Recipes::Models::Recipe.last)
   end
 
   test "should create recipe with all attributes" do
-    assert_difference("Recipe.count") do
+    assert_difference("Recipes::Models::Recipe.count") do
       post recipes_url, params: {recipe: {
         name: @recipe.name,
         url: @recipe.url,
@@ -46,7 +46,7 @@ class RecipesControllerTest < BaseControllerTest
   end
 
   test "should create a recipe with only string attributes" do
-    assert_difference("Recipe.count") do
+    assert_difference("Recipes::Models::Recipe.count") do
       post recipes_url, params: {recipe: {
         name: "Test Recipe",
         url: "http://example.com/test-recipe",
@@ -59,12 +59,12 @@ class RecipesControllerTest < BaseControllerTest
         thumbnail: fixture_file_upload("meme.png", "image/png")
       }}
     end
-    assert_redirected_to recipe_url(Recipe.last)
+    assert_redirected_to recipe_url(Recipes::Models::Recipe.last)
   end
 
   test "should not create recipe when not logged in" do
     sign_out @user
-    assert_no_difference("Recipe.count") do
+    assert_no_difference("Recipes::Models::Recipe.count") do
       post recipes_url, params: {recipe: {name: @recipe.name, url: @recipe.url}}
     end
     assert_redirected_to new_user_session_url
@@ -86,7 +86,7 @@ class RecipesControllerTest < BaseControllerTest
   end
 
   test "should destroy recipe" do
-    assert_difference("Recipe.count", -1) do
+    assert_difference("Recipes::Models::Recipe.count", -1) do
       delete recipe_url(@recipe)
     end
 

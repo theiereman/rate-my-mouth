@@ -6,7 +6,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
     :recoverable, :rememberable, :validatable
 
-  has_many :recipes, dependent: :destroy
+  has_many :recipes, dependent: :destroy, class_name: "Recipes::Models::Recipe"
   has_many :comments, dependent: :destroy
   has_many :ratings, dependent: :destroy
   has_many :user_achievements, dependent: :destroy

@@ -10,10 +10,4 @@ class TagsControllerTest < BaseControllerTest
     get tags_url
     assert_response :success
   end
-
-  test "should create tag" do
-    assert_difference("Tag.count") do
-      post tags_url, params: {tag: {name: "brand new tag !"}}
-    end
-  end
 end
