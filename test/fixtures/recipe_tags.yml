@@ -1,5 +1,5 @@
 _fixture:
-  model_class: Tags::Models::RecipeTag
+  model_class: Recipes::Models::RecipeTag
 
 one:
   recipe: one

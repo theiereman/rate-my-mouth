@@ -5,6 +5,6 @@ class Tags::Queries::ByIds < QueryBase
 
   def call
     ids = @params[:ids]&.split(",")&.map(&:to_i) || []
-    Tags::Models::Tag.where(id: ids)
+    Recipes::Models::Tag.where(id: ids)
   end
 end

@@ -1,4 +1,4 @@
-class Tags::Models::Tag < ApplicationRecord
+class Recipes::Models::Tag < ApplicationRecord
   def self.model_name # for routes
     ActiveModel::Name.new(self, nil, "Tag")
   end

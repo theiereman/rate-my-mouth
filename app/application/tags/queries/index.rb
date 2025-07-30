@@ -4,6 +4,6 @@ class Tags::Queries::Index < QueryBase
   end
 
   def call
-    Tags::Models::Tag.filter(@params.slice(:name)).order(recipes_count: :desc)
+    Recipes::Models::Tag.filter(@params.slice(:name)).order(recipes_count: :desc)
   end
 end

@@ -1,5 +1,5 @@
 _fixture:
-  model_class: Tags::Models::Tag
+  model_class: Recipes::Models::Tag
 
 one:
   name: dessert

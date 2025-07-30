@@ -159,9 +159,9 @@ class RecipeTest < ActiveSupport::TestCase
 
     @recipe.destroy
 
-    assert_not Tags::Models::RecipeTag.exists?(recipe_tag_id)
+    assert_not Recipes::Models::RecipeTag.exists?(recipe_tag_id)
     # Le tag lui-même ne doit pas être supprimé
-    assert Tags::Models::Tag.exists?(tag.id)
+    assert Recipes::Models::Tag.exists?(tag.id)
   end
 
   # Tests des attributs par défaut

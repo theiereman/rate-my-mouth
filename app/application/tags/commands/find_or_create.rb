@@ -8,7 +8,7 @@ class Tags::Commands::FindOrCreate < CommandBase
       tags: @tags.map do |t|
         next if t["name"].blank?
 
-        tag = Tags::Models::Tag.where("lower(name) = ?", t["name"].downcase).first_or_initialize(name: t["name"])
+        tag = Recipes::Models::Tag.where("lower(name) = ?", t["name"].downcase).first_or_initialize(name: t["name"])
         tag.save if tag.new_record?
         tag
       end.compact

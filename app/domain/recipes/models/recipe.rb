@@ -30,7 +30,7 @@ class Recipes::Models::Recipe < ApplicationRecord
   has_many :instructions, dependent: :destroy
 
   belongs_to :user, counter_cache: true
-  has_many :recipe_tags, dependent: :destroy, class_name: "Tags::Models::RecipeTag"
+  has_many :recipe_tags, dependent: :destroy, class_name: "Recipes::Models::RecipeTag"
   has_many :tags, through: :recipe_tags
 
   # Nested attributes pour les formulaires
