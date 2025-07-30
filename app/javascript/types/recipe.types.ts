@@ -1,5 +1,6 @@
 import { TagType } from "@customTypes/tag.types";
 import { UserType } from "@customTypes/user.types";
+import { RatingType } from "./rating.types";
 
 export enum Difficulty {
   Easy = 0,
@@ -36,6 +37,7 @@ export type RawRecipe = {
   tags?: TagType[];
   comments_count: number;
   ratings_count: number;
+  user_rating: RatingType; //used to show current_user rating on "show" route
 };
 
 export type RecipeType = Omit<RawRecipe, "difficulty"> & {

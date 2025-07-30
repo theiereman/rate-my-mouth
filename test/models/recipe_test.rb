@@ -67,24 +67,6 @@ class RecipeTest < ActiveSupport::TestCase
     end
   end
 
-  # Tests de la méthode average_rating
-  test "should return 0.0 for average_rating when no ratings" do
-    @recipe.ratings.destroy_all
-    assert_equal 0.0, @recipe.average_rating
-  end
-
-  test "should calculate correct average_rating" do
-    @recipe.ratings.destroy_all
-    @recipe.ratings.create!(value: 3.0, user: @recipe.user)
-    @recipe.ratings.create!(value: 5.0, user: @other_user)
-    assert_equal 4.0, @recipe.average_rating
-  end
-
-  # Tests de la méthode thumbnail_url
-  test "should return nil for thumbnail_url when no thumbnail attached" do
-    assert_nil @recipe.thumbnail_url
-  end
-
   # Tests des scopes de filtrage
   test "should filter by name" do
     results = Recipe.filter_by_name("ABC")

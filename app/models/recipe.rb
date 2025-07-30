@@ -42,18 +42,6 @@ class Recipe < ApplicationRecord
     super
   end
 
-  def average_rating
-    return 0.0 if ratings.size.zero?
-    ratings.reduce(0) { |sum, rating| sum + rating.value }.to_f / ratings.size
-  end
-
-  # TODO: maybe this should go inside a presenter object
-  def thumbnail_url
-    if thumbnail.attached?
-      Rails.application.routes.url_helpers.rails_blob_path(thumbnail, only_path: true)
-    end
-  end
-
   def commenters
     comments.includes(:user).map(&:user).uniq
   end

@@ -1,6 +1,5 @@
 import { Head } from "@inertiajs/react";
 import { RawRecipe } from "@customTypes/recipe.types";
-import { RatingType } from "@customTypes/rating.types";
 import { CommentableType } from "@customTypes/comment.types";
 import Timer from "@components/ui/Timer";
 import RecipeNotes from "@components/Recipes/RecipeNotes";
@@ -23,12 +22,7 @@ import { RecipeAdapter } from "@adapters/recipe.adapter";
 import { useMemo } from "react";
 import IngredientsQuantitySelector from "@components/Ingredients/IngredientsQuantitySelector";
 
-interface ShowProps {
-  recipe: RawRecipe;
-  userRating: RatingType;
-}
-
-export default function Show({ recipe: rawRecipe, userRating }: ShowProps) {
+export default function Show({ recipe: rawRecipe }: { recipe: RawRecipe }) {
   //TODO: consider HOC to avoid having to adapt the recipes inside the component
   const recipe = useMemo(() => RecipeAdapter.fromApi(rawRecipe), [rawRecipe]);
 
@@ -102,7 +96,7 @@ export default function Show({ recipe: rawRecipe, userRating }: ShowProps) {
             <Section variant="ghost" title="Votre évaluation">
               <RatingForm
                 recipeId={recipe.id}
-                rating={userRating}
+                rating={recipe.user_rating}
                 className="self-start md:h-10 md:self-stretch"
               />
             </Section>

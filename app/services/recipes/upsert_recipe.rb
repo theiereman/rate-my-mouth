@@ -1,11 +1,17 @@
-class Recipes::CreateRecipe < ApplicationService
+class Recipes::UpsertRecipe < ApplicationService
   def initialize(user:, params:)
     @user = user
     @params = params
   end
 
   def call
-    recipe = Recipe.new(recipe_attributes)
+    if @params[:id]
+      recipe = Recipe.find(@params[:id])
+      recipe.assign_attributes(recipe_attributes)
+    else
+      recipe = Recipe.new(recipe_attributes)
+    end
+
     recipe.user = @user
     recipe.tags = Tags::FindOrCreateTags.call(tags: @params.to_h[:tags_attributes] || []).data[:tags]
 
@@ -19,6 +25,6 @@ class Recipes::CreateRecipe < ApplicationService
   private
 
   def recipe_attributes
-    @params.except(:tags_attributes).slice(:name, :description, :url, :number_of_servings, :difficulty, :thumbnail)
+    @params.except(:tags_attributes)
   end
 end

@@ -97,7 +97,6 @@ export default function Index({
           }}
           selectedUser={selectedUser}
           onSelectedUserChange={(user) => {
-            console.log("Selected user:", user);
             setSelectedUser(user);
             fetchRecipes({ selectedUser: user });
           }}
