@@ -1,3 +1,6 @@
+_fixture:
+  model_class: Recipes::Models::Instruction
+
 one:
   name: "Mélanger les ingrédients secs"
   category: "préparation"

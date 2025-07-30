@@ -6,10 +6,10 @@ class AddMulipleCounterCaches < ActiveRecord::Migration[8.0]
     add_column :recipes, :comments_count, :integer, default: 0, null: false
 
     # Mettre à jour les compteurs existants
-    User.all.each do |user|
-      User.reset_counters(user.id, :recipes_count)
-      User.reset_counters(user.id, :comments_count)
-      User.reset_counters(user.id, :ratings_count)
+    Users::Models::User.all.each do |user|
+      Users::Models::User.reset_counters(user.id, :recipes_count)
+      Users::Models::User.reset_counters(user.id, :comments_count)
+      Users::Models::User.reset_counters(user.id, :ratings_count)
     end
 
     Recipe.all.each do |recipe|

@@ -25,7 +25,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should sign up user" do
-    assert_difference("User.count") do
+    assert_difference("Users::Models::User.count") do
       post user_registration_path, params: {user: {username: "new_user_name", email: "new_user@example.com", password: "password", password_confirmation: "password"}}
     end
 
@@ -33,7 +33,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should not sign up user with already taken email" do
-    assert_no_difference("User.count") do
+    assert_no_difference("Users::Models::User.count") do
       post user_registration_path, params: {user: {username: "new_user_name", email: @user.email, password: "password", password_confirmation: "password"}}
     end
 
@@ -42,7 +42,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should not sign up user with already taken username" do
-    assert_no_difference("User.count") do
+    assert_no_difference("Users::Models::User.count") do
       post user_registration_path, params: {user: {username: @user.username, email: "new_user@example.com", password: "password", password_confirmation: "password"}}
     end
 

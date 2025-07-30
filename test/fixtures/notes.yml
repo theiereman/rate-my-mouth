@@ -1,3 +1,6 @@
+_fixture:
+  model_class: Recipes::Models::Note
+
 one:
   content: "Noter : ajouter plus de cannelle la prochaine fois"
   user: one

@@ -4,7 +4,7 @@ class SourceExplorerController < ApplicationController
       if current_user.user_achievements.exists?(key: "code_explorer")
         flash[:info] = "Tu as déjà débloqué ce succès."
       else
-        UserAchievement.create!(
+        Users::Models::UserAchievement.create!(
           user: current_user,
           key: "code_explorer",
           unlocked_at: Time.current

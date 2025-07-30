@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  devise_for :users, controllers: {
+  devise_for :users, class_name: "Users::Models::User", controllers: {
     sessions: "users/sessions",
     registrations: "users/registrations",
     passwords: "users/passwords"

@@ -113,7 +113,7 @@ class RecipeTest < ActiveSupport::TestCase
 
     @recipe.destroy
 
-    assert_not Ingredient.exists?(ingredient_id)
+    assert_not Recipes::Models::Ingredient.exists?(ingredient_id)
   end
 
   test "should destroy associated instructions when recipe is destroyed" do
@@ -122,7 +122,7 @@ class RecipeTest < ActiveSupport::TestCase
 
     @recipe.destroy
 
-    assert_not Instruction.exists?(instruction_id)
+    assert_not Recipes::Models::Instruction.exists?(instruction_id)
   end
 
   test "should destroy associated ratings when recipe is destroyed" do
@@ -131,7 +131,7 @@ class RecipeTest < ActiveSupport::TestCase
 
     @recipe.destroy
 
-    assert_not Rating.exists?(rating_id)
+    assert_not Recipes::Models::Rating.exists?(rating_id)
   end
 
   test "should destroy associated comments when recipe is destroyed" do
@@ -140,7 +140,7 @@ class RecipeTest < ActiveSupport::TestCase
 
     @recipe.destroy
 
-    assert_not Comment.exists?(comment_id)
+    assert_not Recipes::Models::Comment.exists?(comment_id)
   end
 
   test "should destroy associated notes when recipe is destroyed" do
@@ -149,7 +149,7 @@ class RecipeTest < ActiveSupport::TestCase
 
     @recipe.destroy
 
-    assert_not Note.exists?(note_id)
+    assert_not Recipes::Models::Note.exists?(note_id)
   end
 
   test "should destroy associated recipe_tags when recipe is destroyed" do

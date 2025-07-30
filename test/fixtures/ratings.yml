@@ -1,3 +1,6 @@
+_fixture:
+  model_class: Recipes::Models::Rating
+
 one:
   value: 5
   user: one

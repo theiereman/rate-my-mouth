@@ -1,4 +1,4 @@
-class User < ApplicationRecord
+class Users::Models::User < ApplicationRecord
   include Filterable
 
   scope :filter_by_username, ->(username) { where("users.username LIKE ?", "%#{username}%") }
@@ -7,9 +7,9 @@ class User < ApplicationRecord
     :recoverable, :rememberable, :validatable
 
   has_many :recipes, dependent: :destroy, class_name: "Recipes::Models::Recipe"
-  has_many :comments, dependent: :destroy
-  has_many :ratings, dependent: :destroy
-  has_many :user_achievements, dependent: :destroy
+  has_many :comments, dependent: :destroy, class_name: "Recipes::Models::Comment"
+  has_many :ratings, dependent: :destroy, class_name: "Recipes::Models::Rating"
+  has_many :user_achievements, dependent: :destroy, class_name: "Users::Models::UserAchievement"
 
   has_many :notifications, class_name: "Noticed::Notification", as: :recipient
 

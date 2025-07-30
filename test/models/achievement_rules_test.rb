@@ -123,7 +123,7 @@ class AchievementRulesTest < ActiveSupport::TestCase
 
   test "food_critique achievement is unlocked when user rates 10 recipes with a comment" do
     # Créer un utilisateur propre pour ce test
-    critique_user = User.create!(
+    critique_user = Users::Models::User.create!(
       username: "CritiqueUser",
       email: "critique@example.com",
       password: "password123",
@@ -228,7 +228,7 @@ class AchievementRulesTest < ActiveSupport::TestCase
     assert_nil @user.user_achievements.find_by(key: "code_explorer")
 
     # Créer manuellement l'achievement
-    UserAchievement.create!(
+    Users::Models::UserAchievement.create!(
       user: @user,
       key: "code_explorer",
       unlocked_at: Time.current

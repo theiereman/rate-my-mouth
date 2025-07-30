@@ -78,28 +78,28 @@ AchievementRules.define do
   rule key: :first_comment,
     name: "Commentateur novice",
     description: "Créer votre premier commentaire",
-    triggers: {"Comment" => :created},
+    triggers: {"Recipes::Models::Comment" => :created},
     condition: ->(comment) { comment.user.comments.count >= 1 }
 
   # Single model, single action
   rule key: :first_rating,
     name: "Critique novice",
     description: "Créer votre première note",
-    triggers: {"Rating" => :created},
+    triggers: {"Recipes::Models::Rating" => :created},
     condition: ->(rating) { rating.user.ratings.count >= 1 }
 
   # Single model, single action
   rule key: :great_audience,
     name: "Bon public",
     description: "Noter 10 recettes avec la note maximale",
-    triggers: {"Rating" => :created},
+    triggers: {"Recipes::Models::Rating" => :created},
     condition: ->(rating) { rating.user.ratings.where(value: 5).count >= 10 }
 
   # Single model, single action
   rule key: :hater,
     name: "Haineux",
     description: "Noter 10 recettes avec la note minimale",
-    triggers: {"Rating" => :created},
+    triggers: {"Recipes::Models::Rating" => :created},
     condition: ->(rating) { rating.user.ratings.where(value: 0.5).count >= 10 }
 
   # Example of multiple models triggering the same achievement
@@ -107,8 +107,8 @@ AchievementRules.define do
     name: "Critique culinaire",
     description: "Ajouter une critique complete (note et commentaire) sur 10 recettes",
     triggers: {
-      "Rating" => :created,
-      "Comment" => :created
+      "Recipes::Models::Rating" => :created,
+      "Recipes::Models::Comment" => :created
     },
     condition: ->(record) {
       user = record.user
@@ -125,7 +125,7 @@ AchievementRules.define do
   rule key: :bad_reputation,
     name: "Mauvaise réputation",
     description: "Avoir une note moyenne inférieure à 2 (sur un total d'au moins 10 recettes)",
-    triggers: {"Rating" => :created},
+    triggers: {"Recipes::Models::Rating" => :created},
     target_user: ->(rating) { rating.recipe.user },
     condition: ->(rating) { rating.recipe.user.recipes.count >= 10 && rating.recipe.user.recipes.joins(:ratings).average("ratings.value").to_f < 2.0 }
 
@@ -138,7 +138,7 @@ AchievementRules.define do
   rule key: :spammer,
     name: "Forceur",
     description: "Ajouter 10 commentaires sur la même recette",
-    triggers: {"Comment" => :created},
+    triggers: {"Recipes::Models::Comment" => :created},
     condition: ->(recipe) { recipe.user.comments.on_recipes.group(:commentable_id).count.any? { |_, count| count >= 10 } }
 
   rule key: :birthday,
@@ -165,6 +165,6 @@ AchievementRules.define do
     name: "H4ck3r",
     description: "Trouver le secret caché dans le code source",
     secret: true,
-    triggers: {"User" => :custom_event},
+    triggers: {"Users::Models::User" => :custom_event},
     condition: ->(user) { true } # The condition is handled by the special controller
 end

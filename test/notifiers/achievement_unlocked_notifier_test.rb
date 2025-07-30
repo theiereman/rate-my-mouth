@@ -3,7 +3,7 @@ require "test_helper"
 class AchievementUnlockedNotifierTest < ActiveSupport::TestCase
   setup do
     @user = users(:no_relationship_user)
-    @user_achievement = UserAchievement.create!(
+    @user_achievement = Users::Models::UserAchievement.create!(
       user: @user,
       key: "first_recipe",
       unlocked_at: Time.current

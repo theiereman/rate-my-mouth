@@ -23,13 +23,13 @@ class Recipes::Models::Recipe < ApplicationRecord
   attribute :difficulty, :integer
   enum :difficulty, easy: 0, medium: 1, hard: 2
 
-  has_many :comments, as: :commentable, dependent: :destroy
-  has_many :ratings, dependent: :destroy
-  has_many :notes, dependent: :destroy
-  has_many :ingredients, dependent: :destroy
-  has_many :instructions, dependent: :destroy
+  has_many :comments, as: :commentable, dependent: :destroy, class_name: "Recipes::Models::Comment"
+  has_many :ratings, dependent: :destroy, class_name: "Recipes::Models::Rating"
+  has_many :notes, dependent: :destroy, class_name: "Recipes::Models::Note"
+  has_many :ingredients, dependent: :destroy, class_name: "Recipes::Models::Ingredient"
+  has_many :instructions, dependent: :destroy, class_name: "Recipes::Models::Instruction"
 
-  belongs_to :user, counter_cache: true
+  belongs_to :user, counter_cache: true, class_name: "Users::Models::User"
   has_many :recipe_tags, dependent: :destroy, class_name: "Recipes::Models::RecipeTag"
   has_many :tags, through: :recipe_tags
 

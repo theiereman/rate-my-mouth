@@ -1,3 +1,6 @@
+_fixture:
+  model_class: Recipes::Models::Ingredient
+
 one:
   name: "Farine"
   category: "base"

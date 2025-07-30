@@ -29,6 +29,6 @@ class Recipes::Presenters::Show < Recipes::Presenters::Base
   private
 
   def current_user_rating
-    Rating.find_by(user: @user, recipe: @recipe)
+    Recipes::Models::Rating.find_by(user: @user, recipe: @recipe)
   end
 end

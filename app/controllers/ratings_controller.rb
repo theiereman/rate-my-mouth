@@ -14,7 +14,7 @@ class RatingsController < ApplicationController
   end
 
   def create
-    @rating = Rating.find_by(user: current_user, recipe: @recipe)
+    @rating = Recipes::Models::Rating.find_by(user: current_user, recipe: @recipe)
     is_new_rating = @rating.nil?
 
     if is_new_rating

@@ -1,3 +1,6 @@
+_fixture:
+  model_class: Recipes::Models::Comment
+
 one:
   content: "Excellente recette, très facile à faire !"
   user: one

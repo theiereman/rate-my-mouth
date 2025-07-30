@@ -19,8 +19,8 @@ class MigrateArraysToModels < ActiveRecord::Migration[8.0]
     end
 
     # Supprimer les données des nouveaux modèles
-    Instruction.delete_all
-    Ingredient.delete_all
+    Recipes::Models::Instruction.delete_all
+    Recipes::Models::Ingredient.delete_all
   end
 
   private

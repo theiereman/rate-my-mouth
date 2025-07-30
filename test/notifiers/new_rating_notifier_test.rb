@@ -11,18 +11,18 @@ class NewRatingNotifierTest < ActiveSupport::TestCase
 
   test "should notify author after new rating" do
     assert_difference -> { @recipe_author.notifications.where(type: "NewRatingNotifier::Notification").count }, 1 do
-      Rating.create(user: @rater, recipe: @recipe, value: 5)
+      Recipes::Models::Rating.create(user: @rater, recipe: @recipe, value: 5)
     end
   end
 
   test "should not notify if rating own recipe" do
     assert_no_difference -> { @recipe_author.notifications.where(type: "NewRatingNotifier::Notification").count } do
-      Rating.create(user: @recipe_author, recipe: @recipe, value: 4)
+      Recipes::Models::Rating.create(user: @recipe_author, recipe: @recipe, value: 4)
     end
   end
 
   test "should not notify if updating rating on recipe" do
-    rating = Rating.create(user: @rater, recipe: @recipe, value: 3)
+    rating = Recipes::Models::Rating.create(user: @rater, recipe: @recipe, value: 3)
     assert_no_difference -> { @recipe_author.notifications.where(type: "NewRatingNotifier::Notification").count } do
       rating.update(value: 4)
     end
@@ -33,7 +33,7 @@ class NewRatingNotifierTest < ActiveSupport::TestCase
     @recipe_author.save!
 
     assert_emails 0 do
-      Rating.create(user: @rater, recipe: @recipe, value: 5)
+      Recipes::Models::Rating.create(user: @rater, recipe: @recipe, value: 5)
     end
   end
 end

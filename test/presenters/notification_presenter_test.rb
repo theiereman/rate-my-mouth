@@ -12,9 +12,9 @@ class Notifications::Presenters::BaseTest < ActiveSupport::TestCase
   setup do
     @user = users(:no_relationship_user)
     @recipe = recipes(:no_relationship_recipe)
-    @comment = Comment.create!(user: @user, commentable: @recipe, content: "Test comment")
-    @rating = Rating.create!(user: @user, recipe: @recipe, value: 4.5)
-    @user_achievement = UserAchievement.create!(
+    @comment = Recipes::Models::Comment.create!(user: @user, commentable: @recipe, content: "Test comment")
+    @rating = Recipes::Models::Rating.create!(user: @user, recipe: @recipe, value: 4.5)
+    @user_achievement = Users::Models::UserAchievement.create!(
       user: @user,
       key: "first_recipe",
       unlocked_at: Time.current

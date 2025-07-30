@@ -13,7 +13,7 @@ class NewCommentToAuthorNotifierTest < ActiveSupport::TestCase
 
   test "should notify author after new comment" do
     assert_difference -> { @recipe_one_author.notifications.count }, 1 do
-      Comment.create(user: @commenter, commentable: @recipe_one, content: "Great recipe!")
+      Recipes::Models::Comment.create(user: @commenter, commentable: @recipe_one, content: "Great recipe!")
     end
   end
 
@@ -21,11 +21,11 @@ class NewCommentToAuthorNotifierTest < ActiveSupport::TestCase
     @recipe_one.commenters.each do |commenter|
       if (commenter.id == @recipe_one.user.id) || (commenter.id == @commenter.id)
         assert_no_difference -> { commenter.notifications.where(type: "NewCommentToOtherCommentersNotifier::Notification").count } do
-          Comment.create(user: @commenter, commentable: @recipe_one, content: "Great recipe!")
+          Recipes::Models::Comment.create(user: @commenter, commentable: @recipe_one, content: "Great recipe!")
         end
       else
         assert_difference -> { commenter.notifications.where(type: "NewCommentToOtherCommentersNotifier::Notification").count }, 1 do
-          Comment.create(user: @commenter, commentable: @recipe_one, content: "Great recipe!")
+          Recipes::Models::Comment.create(user: @commenter, commentable: @recipe_one, content: "Great recipe!")
         end
       end
     end
@@ -36,7 +36,7 @@ class NewCommentToAuthorNotifierTest < ActiveSupport::TestCase
       @recipe_one_author.notifications
         .where(type: ["NewCommentToOtherCommentersNotifier::Notification", "NewCommentToAuthorNotifier::Notification"]).count
     } do
-      Comment.create(user: @recipe_one_author, commentable: @recipe_one, content: "Great recipe!")
+      Recipes::Models::Comment.create(user: @recipe_one_author, commentable: @recipe_one, content: "Great recipe!")
     end
   end
 
@@ -45,7 +45,7 @@ class NewCommentToAuthorNotifierTest < ActiveSupport::TestCase
     @recipe_one_author.save!
 
     assert_emails 0 do
-      Comment.create(user: @commenter, commentable: @recipe_one, content: "Great recipe!")
+      Recipes::Models::Comment.create(user: @commenter, commentable: @recipe_one, content: "Great recipe!")
     end
   end
 end

@@ -1,3 +1,6 @@
+_fixture:
+  model_class: Users::Models::User
+
 one:
   username: John Doe
   email: john.doe@example.com
