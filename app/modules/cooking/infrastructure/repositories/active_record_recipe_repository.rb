@@ -1,5 +1,5 @@
 class Cooking::Infrastructure::Repositories::ActiveRecordRecipeRepository < Cooking::Domain::Repositories::RecipeRepository
-  def initialize(tag_repository: Cooking::Infrastructure::Repositories::ActiveRecordTagsRepository.new)
+  def initialize(tag_repository: Cooking::Infrastructure::Repositories::ActiveRecordTagRepository.new)
     @tag_repository = tag_repository
   end
 

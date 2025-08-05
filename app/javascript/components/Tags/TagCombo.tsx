@@ -26,7 +26,7 @@ export default function TagCombo({
       setIsLoadingTags(true);
       setError(undefined);
       const response = await axios.get(`/tags${value ? `?name=${value}` : ""}`);
-      setTags(response.data.tags);
+      setTags(response.data);
     } catch (error) {
       setError("Erreur lors du chargement des tags");
     } finally {

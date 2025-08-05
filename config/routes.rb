@@ -29,8 +29,10 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :tags, only: [:index] do
-    get "by_ids", on: :collection
+  scope module: "cooking/interfaces/controllers" do
+    resources :tags, only: [:index] do
+      get "by_ids", on: :collection
+    end
   end
 
   resource :leaderboard, only: [:show]

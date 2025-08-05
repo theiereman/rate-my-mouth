@@ -1,5 +1,5 @@
 class Cooking::Domain::Repositories::TagRepository
-  def all
+  def popular
     raise NotImplementedError
   end
 
