@@ -18,12 +18,14 @@ Rails.application.routes.draw do
   get "notifications", to: "notifications#index", as: :notifications
   post "notifications/mark_as_read", to: "notifications#mark_as_read", as: :mark_notifications_as_read
 
-  resources :recipes do
-    resources :ratings, only: [:index, :create]
-    resources :comments, only: [:index, :create, :update, :destroy]
-    resources :notes, only: [] do
-      get "show_for_user", on: :collection
-      patch "update_for_user", on: :collection
+  scope module: "cooking/interfaces/controllers" do
+    resources :recipes do
+      resources :ratings, only: [:index, :create]
+      resources :comments, only: [:index, :create, :update, :destroy]
+      resources :notes, only: [] do
+        get "show_for_user", on: :collection
+        patch "update_for_user", on: :collection
+      end
     end
   end
 
