@@ -46,7 +46,7 @@ class Cooking::Infrastructure::Repositories::ActiveRecordRecipeRepository < Cook
       name: db_recipe[:name],
       number_of_servings: db_recipe[:number_of_servings],
       difficulty: db_recipe[:difficulty],
-      tags: db_recipe.tags.map { |db_tag| @tag_repository.send(:tag_to_entity, db_tag) }
+      tags: db_recipe.tags.map { |db_tag| @tag_repository.send(:db_tag_to_entity, db_tag) }
     )
     recipe.send(:"id=", db_recipe[:id])
     recipe

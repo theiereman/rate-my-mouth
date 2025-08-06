@@ -1,4 +1,4 @@
-class Cooking::Services::GetFilteredRecipesQuery
+class Cooking::Application::UseCases::Recipes::GetFilteredRecipesQuery
   def self.call(recipes_repo, **filters)
     new(recipes_repo, **filters).call
   end

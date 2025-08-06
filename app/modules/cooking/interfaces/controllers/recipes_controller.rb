@@ -5,7 +5,8 @@ class Cooking::Interfaces::Controllers::RecipesController < ApplicationControlle
 
   def index
     recipe_repo = Cooking::Infrastructure::Repositories::ActiveRecordRecipeRepository.new
-    recipes_entities = Cooking::Services::GetFilteredRecipesQuery.call(recipe_repo, name: params[:name], user_id: params[:user_id], tags_ids: params[:tags_ids])
+    recipes_entities = Cooking::Application::UseCases::Recipes::GetFilteredRecipesQuery
+      .call(recipe_repo, name: params[:name], user_id: params[:user_id], tags_ids: params[:tags_ids])
 
     @pagy, recipes_entities = paginate_array(recipes_entities)
 
