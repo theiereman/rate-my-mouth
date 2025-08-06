@@ -1,25 +1,39 @@
 class Cooking::Interfaces::Controllers::RecipesController < ApplicationController
   include Paginatable
+  include Shared::Interfaces::Controllers::PaginationHelper
 
   before_action :set_recipe, only: %i[edit update]
 
   def index
     recipe_repo = Cooking::Infrastructure::Repositories::ActiveRecordRecipeRepository.new
-    recipes_entities = Cooking::Application::UseCases::Recipes::GetFilteredRecipesQuery
-      .call(recipe_repo, name: params[:name], user_id: params[:user_id], tags_ids: params[:tags_ids])
+    user_repo = Cooking::Infrastructure::Repositories::ActiveRecordUserRepository.new
+    ratings_repo = Cooking::Infrastructure::Repositories::ActiveRecordRatingRepository.new
 
-    @pagy, recipes_entities = paginate_array(recipes_entities)
+    paginated_recipes_with_users = Cooking::Application::UseCases::Recipes::GetPaginatedRecipesWithUsersQuery.call(
+      recipe_repo,
+      user_repo,
+      pagination_params: extract_pagination_params,
+      filters: {
+        name: params[:name],
+        user_id: params[:user_id],
+        tags_ids: params[:tags_ids]
+      }
+    )
 
-    result = {
-      recipes: recipes_entities.map { |recipe_entity|
-        Cooking::Interfaces::Presenters::RecipePresenter.new(recipe_entity).as_json
+    response_data = {
+      recipes: paginated_recipes_with_users.data.map { |recipe_with_user|
+        Cooking::Interfaces::Presenters::RecipeWithUserPresenter.new(
+          recipe_with_user,
+          Cooking::Domain::Services::AverageRatingService.new(ratings_repo, recipe_with_user.recipe.id),
+          Cooking::Domain::Services::TotalRatingsService.new(ratings_repo, recipe_with_user.recipe.id)
+        ).as_json
       },
-      pagy: pagy_metadata(@pagy)
+      pagination: pagy_metadata(paginated_recipes_with_users.pagy)
     }
 
     respond_to do |format|
-      format.html { render inertia: "Recipe/Index", props: result }
-      format.json { render json: result }
+      format.html { render inertia: "Recipe/Index", props: response_data }
+      format.json { render json: response_data }
     end
   end
 

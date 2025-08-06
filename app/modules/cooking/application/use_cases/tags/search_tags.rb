@@ -1,4 +1,4 @@
-class Cooking::Application::UseCases::Tags::SearchTags < Common::Application::UseCaseBase
+class Cooking::Application::UseCases::Tags::SearchTags < Shared::Application::UseCases::UseCaseBase
   def initialize(tags_repo, query)
     @tags_repo = tags_repo
     @query = query

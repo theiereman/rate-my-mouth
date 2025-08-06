@@ -16,43 +16,43 @@ export interface PagyMetadata {
 }
 
 export function Pagination({
-  pagy,
+  pagination,
   className = "",
 }: {
-  pagy?: PagyMetadata;
+  pagination?: PagyMetadata;
   className?: string;
 }) {
   const handleNextClick = () => {
-    console.log("Next URL:", pagy?.next_url);
-    router.visit(pagy?.next_url ?? "#", {
+    console.log("Next URL:", pagination?.next_url);
+    router.visit(pagination?.next_url ?? "#", {
       preserveState: true,
       preserveScroll: true,
     });
   };
 
   const handlePrevClick = () => {
-    router.visit(pagy?.prev_url ?? "#", {
+    router.visit(pagination?.prev_url ?? "#", {
       preserveState: true,
       preserveScroll: true,
     });
   };
 
   const handleFirstClick = () => {
-    router.visit(pagy?.first_url ?? "#", {
+    router.visit(pagination?.first_url ?? "#", {
       preserveState: true,
       preserveScroll: true,
     });
   };
 
   const handleLastClick = () => {
-    router.visit(pagy?.last_url ?? "#", {
+    router.visit(pagination?.last_url ?? "#", {
       preserveState: true,
       preserveScroll: true,
     });
   };
 
   return CustomPagination({
-    pagy,
+    pagination,
     className,
     onNextClick: handleNextClick,
     onPrevClick: handlePrevClick,
@@ -62,14 +62,14 @@ export function Pagination({
 }
 
 export function CustomPagination({
-  pagy,
+  pagination,
   className,
   onNextClick,
   onPrevClick,
   onFirstClick,
   onLastClick,
 }: {
-  pagy?: PagyMetadata;
+  pagination?: PagyMetadata;
   className?: string;
   onNextClick?: () => void;
   onPrevClick?: () => void;
@@ -77,24 +77,24 @@ export function CustomPagination({
   onLastClick?: () => void;
 }) {
   return (
-    (pagy?.pages ?? 0) > 1 && (
+    (pagination?.pages ?? 0) > 1 && (
       <div className={`flex items-center justify-center gap-2 ${className}`}>
-        <Button disabled={pagy?.prev === null} onClick={onFirstClick}>
+        <Button disabled={pagination?.prev === null} onClick={onFirstClick}>
           <span className="material-symbols-outlined">first_page</span>
         </Button>
-        <Button disabled={pagy?.prev === null} onClick={onPrevClick}>
+        <Button disabled={pagination?.prev === null} onClick={onPrevClick}>
           <span className="material-symbols-outlined">keyboard_arrow_left</span>
         </Button>
         <span className="text-neutral-500">
-          {pagy?.page} / {pagy?.pages}
+          {pagination?.page} / {pagination?.pages}
         </span>
 
-        <Button onClick={onNextClick} disabled={pagy?.next === null}>
+        <Button onClick={onNextClick} disabled={pagination?.next === null}>
           <span className="material-symbols-outlined">
             keyboard_arrow_right
           </span>
         </Button>
-        <Button onClick={onLastClick} disabled={pagy?.next === null}>
+        <Button onClick={onLastClick} disabled={pagination?.next === null}>
           <span className="material-symbols-outlined">last_page</span>
         </Button>
       </div>

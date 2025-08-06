@@ -1,4 +1,4 @@
-class Cooking::Application::UseCases::Tags::ResolveTags < Common::Application::UseCaseBase
+class Cooking::Application::UseCases::Tags::ResolveTags < Shared::Application::UseCaseBase
   def initialize(tag_repository, tags)
     @tag_repository = tag_repository
     @tags = tags

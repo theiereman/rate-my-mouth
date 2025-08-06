@@ -110,7 +110,7 @@ export default function RecipeRelatedItemList({
           )}
           {items.length > 0 && (
             <CustomPagination
-              pagy={pagy}
+              pagination={pagy}
               onFirstClick={() => fetchItems(1)}
               onPrevClick={() => fetchItems(pagy?.prev)}
               onNextClick={() => fetchItems(pagy?.next)}

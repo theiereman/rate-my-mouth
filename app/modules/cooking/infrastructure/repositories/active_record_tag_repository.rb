@@ -27,6 +27,19 @@ class Cooking::Infrastructure::Repositories::ActiveRecordTagRepository < Cooking
 
   private
 
+  def build_base_query
+    Cooking::Infrastructure::Models::DbTag.all
+  end
+
+  def apply_filters(query, **filters)
+    query = query.where("name LIKE ?", "%#{filters[:name]}%") if filters[:name].present?
+    query
+  end
+
+  def apply_default_ordering_by_recipes_count(query)
+    query.order(recipes_count: :desc, name: :asc)
+  end
+
   def db_tag_to_tags_with_recipes_count(db_tag)
     Cooking::Application::Results::Tags::TagWithRecipesCount.new(
       id: db_tag.id,

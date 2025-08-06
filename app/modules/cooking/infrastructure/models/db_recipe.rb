@@ -12,9 +12,9 @@ class Cooking::Infrastructure::Models::DbRecipe < ApplicationRecord
 
   has_many :comments, as: :commentable, dependent: :destroy, class_name: "Recipes::Models::Comment"
   has_many :ratings, dependent: :destroy, class_name: "Recipes::Models::Rating"
-  has_many :notes, dependent: :destroy, class_name: "Recipes::Models::Note"
-  has_many :ingredients, dependent: :destroy, class_name: "Recipes::Models::Ingredient"
-  has_many :instructions, dependent: :destroy, class_name: "Recipes::Models::Instruction"
+  has_many :notes, dependent: :destroy, class_name: "Recipes::Models::Note", foreign_key: "recipe_id"
+  has_many :ingredients, dependent: :destroy, class_name: "Recipes::Models::Ingredient", foreign_key: "recipe_id"
+  has_many :instructions, dependent: :destroy, class_name: "Recipes::Models::Instruction", foreign_key: "recipe_id"
 
   belongs_to :user, counter_cache: true, class_name: "Users::Models::User"
   has_many :recipe_tags, dependent: :destroy, class_name: "Cooking::Infrastructure::Models::DbRecipeTags", foreign_key: "recipe_id"

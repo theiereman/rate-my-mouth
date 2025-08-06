@@ -16,15 +16,17 @@ import RecipeLink from "@components/Recipes/RecipeLink";
 
 export default function Index({
   recipes: rawRecipes,
-  pagy,
+  pagination,
 }: {
   recipes: RawRecipe[];
-  pagy: PagyMetadata;
+  pagination: PagyMetadata;
 }) {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedTags, setSelectedTags] = useState<TagType[]>([]);
   const [selectedUser, setSelectedUser] = useState<UserType | null>(null);
   const [isLoadingRecipes, setIsLoadingRecipes] = useState(false);
+
+  console.log(pagination);
 
   const recipes = useMemo(
     () => RecipeAdapter.fromApiArray(rawRecipes),
@@ -125,7 +127,7 @@ export default function Index({
         </div>
       )}
 
-      {pagy && <Pagination className="mt-8" pagy={pagy}></Pagination>}
+      <Pagination className="mt-8" pagination={pagination}></Pagination>
     </Page>
   );
 }

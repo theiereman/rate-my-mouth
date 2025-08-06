@@ -1,15 +1,18 @@
 class Cooking::Infrastructure::Repositories::ActiveRecordRecipeRepository < Cooking::Domain::Repositories::RecipeRepository
-  def initialize(tag_repository: Cooking::Infrastructure::Repositories::ActiveRecordTagRepository.new)
-    @tag_repository = tag_repository
-  end
+  include Shared::Concerns::PaginatableRepository
 
-  def all(**filters)
-    query = Cooking::Infrastructure::Models::DbRecipe.all.includes(:tags)
+  def all(pagination_params, filters)
+    query = Cooking::Infrastructure::Models::DbRecipe.includes(:tags)
     query = apply_filters(query, **filters) if filters.any?
 
-    query.map do |db_recipe|
-      recipe_to_entity(db_recipe)
-    end
+    pagy, records = paginate_collection(query, **pagination_params)
+
+    recipes_entities = records.order(created_at: :desc).map { |db_recipe| recipe_to_entity(db_recipe) }
+
+    Shared::Application::Results::PaginatedResult.new(
+      data: recipes_entities,
+      pagy: pagy
+    )
   end
 
   def find_by_id(id)
@@ -42,11 +45,18 @@ class Cooking::Infrastructure::Repositories::ActiveRecordRecipeRepository < Cook
   end
 
   def recipe_to_entity(db_recipe)
+    pp db_recipe.tags
+
     recipe = Cooking::Domain::Entities::Recipe.new(
       name: db_recipe[:name],
       number_of_servings: db_recipe[:number_of_servings],
       difficulty: db_recipe[:difficulty],
-      tags: db_recipe.tags.map { |db_tag| @tag_repository.send(:db_tag_to_entity, db_tag) }
+      tags: db_recipe.tags.map { |db_tag|
+        Cooking::Domain::Entities::Tag.new(
+            name: db_tag.name
+          )
+      },
+      user_id: db_recipe[:user_id]
     )
     recipe.send(:"id=", db_recipe[:id])
     recipe

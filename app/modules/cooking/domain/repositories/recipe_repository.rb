@@ -1,8 +1,4 @@
 class Cooking::Domain::Repositories::RecipeRepository
-  def initialize(tag_repository)
-    raise NotImplementedError
-  end
-
   def all(**filters)
     raise NotImplementedError
   end
