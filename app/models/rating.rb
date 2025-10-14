@@ -1,6 +1,9 @@
 class Rating < ApplicationRecord
-  include Achievable
-  include Notificationable
+  include AchievementTriggerable
+
+  after_create -> {
+    NewRatingNotifier.with(record: self).deliver
+  }
 
   belongs_to :user, counter_cache: true
   belongs_to :recipe, counter_cache: true

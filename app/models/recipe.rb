@@ -1,5 +1,5 @@
 class Recipe < ApplicationRecord
-  include Achievable
+  include AchievementTriggerable
   include Filterable
 
   scope :filter_by_name, ->(name) { where("recipes.name LIKE ?", "%#{name}%") }

@@ -2,13 +2,19 @@
 #
 # NewCommentToAuthorNotifier.with(record: @comment).deliver
 class NewCommentToAuthorNotifier < ApplicationNotifier
-  recipients -> { record.recipe.user }
+  recipients :recipe_author
 
   deliver_by :email do |config|
     config.mailer = "CommentMailer"
     config.method = :new_comment_to_author
-    config.if = -> { recipient.notification_preference? }
   end
 
   validates :record, presence: true
+
+  private
+
+  def recipe_author
+    return nil if record.user.id == record.recipe.user.id
+    record.recipe.user
+  end
 end

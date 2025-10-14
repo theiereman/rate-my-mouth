@@ -2,7 +2,7 @@
 #
 # AchievementUnlockedNotifier.with(record: @user_achievement).deliver(achievement_target_user)
 class AchievementUnlockedNotifier < ApplicationNotifier
-  recipients -> { record.user }
+  recipients :achievement_unlocker
 
   deliver_by :email do |config|
     config.mailer = "AchievementMailer"
@@ -10,4 +10,10 @@ class AchievementUnlockedNotifier < ApplicationNotifier
   end
 
   validates :record, presence: true
+
+  private
+
+  def achievement_unlocker
+    record.user
+  end
 end
