@@ -15,19 +15,19 @@ export default function Toggle({
   ...props
 }: ToggleProps) {
   return (
-    <div className="flex items-center gap-4">
-      <input
-        {...props}
-        onChange={onChange}
-        className="rounded border-neutral-300 text-primary-600 focus:ring-primary-500 disabled:opacity-50 cursor-pointer"
-        type="checkbox"
-      />
-      <div className="flex flex-col">
+    <div className="flex flex-col gap-1">
+      <div className="flex gap-4 items-center">
+        <input
+          {...props}
+          onChange={onChange}
+          className="text-primary-600 focus:ring-primary-500 cursor-pointer rounded border-neutral-300 disabled:opacity-50"
+          type="checkbox"
+        />
         <span>{label}</span>
-        {helperText && (
-          <span className="text-xs text-neutral-500 mt-1">{helperText}</span>
-        )}
       </div>
+      {helperText && (
+        <span className="ml-8 text-xs text-neutral-500">{helperText}</span>
+      )}
     </div>
   );
 }
