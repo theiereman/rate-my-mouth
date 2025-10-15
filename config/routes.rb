@@ -40,4 +40,8 @@ Rails.application.routes.draw do
 
   # Route secrète pour les explorateurs de code source
   get "source_explorer/:secret_key", to: "source_explorer#unlock_secret", as: :source_explorer
+
+  if Rails.env.local?
+    resource :error, only: [:show]
+  end
 end
