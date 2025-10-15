@@ -16,7 +16,7 @@ export default function Toggle({
 }: ToggleProps) {
   return (
     <div className="flex flex-col gap-1">
-      <div className="flex gap-4 items-center">
+      <div className="flex items-center gap-4">
         <input
           {...props}
           onChange={onChange}

@@ -15,8 +15,6 @@ export default function DesktopNavbar({ navItems }: DesktopNavbarProps) {
   return (
     <nav className="divide-primary-900 flex w-full border-1">
       <div className="flex flex-1 divide-x-1">
-        <LinkButton href="/recipes/new">Nouv. recette</LinkButton>
-
         {navItems.map((item) => (
           <LinkButton
             key={item.name}
@@ -36,6 +34,7 @@ export default function DesktopNavbar({ navItems }: DesktopNavbarProps) {
 
       <div className="flex flex-1 justify-end divide-x-1">
         <span></span>
+        <LinkButton href="/recipes/new">Nouv. recette</LinkButton>
         <UserNotificationsDropdown />
         <div className="flex flex-col items-end justify-center gap-0 px-2 py-0.5">
           <p className="font-bold">{current_user.username}</p>
