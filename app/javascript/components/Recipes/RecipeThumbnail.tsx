@@ -45,14 +45,42 @@ export const RecipeThumbnail = ({
 
   const cursorClass = !onThumbnailSelected ? "" : "cursor-pointer";
 
+  const isMobile = () => {
+    return (
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent,
+      ) || window.innerWidth < 768
+    );
+  };
+
+  const handleContainerClick = () => {
+    if (onThumbnailSelected) {
+      if (isMobile()) {
+        openFilePicker();
+      }
+    }
+  };
+
+  const handleDeleteImage = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (onThumbnailSelected) {
+      onThumbnailSelected(null);
+      setUrl(undefined);
+    }
+  };
+
   return (
     <div
       className={`relative ${className} group border-primary-900 overflow-hidden border-3`}
+      onClick={handleContainerClick}
     >
       {onThumbnailSelected && (
         <div className="absolute top-0 left-0 hidden h-full w-full items-center justify-center gap-2 bg-black/60 text-white group-hover:flex">
           <div
-            onClick={openFilePicker}
+            onClick={(e) => {
+              e.stopPropagation();
+              openFilePicker();
+            }}
             className={`flex cursor-pointer flex-col items-center gap-2 hover:text-green-600`}
           >
             <span className="material-symbols-outlined material-icon--lg">
@@ -62,10 +90,7 @@ export const RecipeThumbnail = ({
           </div>
           {url && (
             <div
-              onClick={() => {
-                onThumbnailSelected(null);
-                setUrl(undefined);
-              }}
+              onClick={handleDeleteImage}
               className="hover:text-error-600 flex cursor-pointer flex-col items-center gap-2"
             >
               <span className="material-symbols-outlined material-icon--lg">
@@ -75,6 +100,14 @@ export const RecipeThumbnail = ({
             </div>
           )}
         </div>
+      )}
+      {onThumbnailSelected && url && (
+        <button
+          onClick={handleDeleteImage}
+          className="absolute top-2 right-2 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-red-500/80 text-white hover:bg-red-600/90 md:hidden"
+        >
+          <span className="material-symbols-outlined text-lg">delete</span>
+        </button>
       )}
       {url ? (
         <img
@@ -90,6 +123,17 @@ export const RecipeThumbnail = ({
             add_photo_alternate
           </span>
           <span className="text-sm font-medium">Aucune miniature</span>
+          {onThumbnailSelected && (
+            <span className="text-primary-700 mt-1 text-xs md:hidden">
+              Touchez pour ajouter
+            </span>
+          )}
+        </div>
+      )}
+      {/* Indicateur visuel sur mobile pour les images existantes */}
+      {onThumbnailSelected && url && (
+        <div className="absolute right-2 bottom-2 rounded-full bg-black/50 p-2 text-white md:hidden">
+          <span className="material-symbols-outlined text-sm">edit</span>
         </div>
       )}
     </div>
