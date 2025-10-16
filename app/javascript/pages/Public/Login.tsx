@@ -1,6 +1,7 @@
-import { useForm, Link } from "@inertiajs/react";
+import { useForm, Link, usePage } from "@inertiajs/react";
 import { FormEvent } from "react";
 import { Input, Button } from "@components/ui";
+import Flashes from "@components/ui/Flashes";
 
 export default function Login() {
   const form = useForm<{
@@ -14,6 +15,13 @@ export default function Login() {
   });
 
   const { data, setData, errors, processing, post } = form;
+
+  const { flash } = usePage<{
+    flash: {
+      alert?: string;
+      notice?: string;
+    };
+  }>().props;
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -77,7 +85,9 @@ export default function Login() {
         </Button>
       </form>
 
-      <div className="mt-4 flex flex-col text-sm">
+      <Flashes flash={flash} />
+
+      <div className="flex flex-col text-sm">
         <Link
           href="/users/password/new"
           className="text-primary-600 hover:text-primary-800 mr-4 hover:underline"

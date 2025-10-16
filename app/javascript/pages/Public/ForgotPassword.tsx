@@ -2,11 +2,9 @@ import { useForm, Link } from "@inertiajs/react";
 import { FormEvent, useState, useEffect } from "react";
 import { Input, Button } from "@components/ui";
 import { PageProps } from "@customTypes/usepage-props.types";
+import Flashes from "@components/ui/Flashes";
 
 export default function ForgotPassword({ flash }: PageProps) {
-  const [showAlert, setShowAlert] = useState(false);
-  const [showNotice, setShowNotice] = useState(false);
-
   const form = useForm<{
     email: string;
   }>({
@@ -14,19 +12,6 @@ export default function ForgotPassword({ flash }: PageProps) {
   });
 
   const { data, setData, errors, processing, post } = form;
-
-  useEffect(() => {
-    if (flash?.alert) {
-      setShowAlert(true);
-      setShowNotice(false);
-    } else if (flash?.notice) {
-      setShowNotice(true);
-      setShowAlert(false);
-    } else {
-      setShowAlert(false);
-      setShowNotice(false);
-    }
-  }, [flash?.alert, flash?.notice]);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -68,17 +53,7 @@ export default function ForgotPassword({ flash }: PageProps) {
         </Button>
       </form>
 
-      {showAlert && flash?.alert && (
-        <div className="mt-4 rounded-md bg-red-50 p-3 text-sm text-red-600">
-          {flash.alert}
-        </div>
-      )}
-
-      {showNotice && flash?.notice && (
-        <div className="mt-4 rounded-md bg-green-50 p-3 text-sm text-green-600">
-          {flash.notice}
-        </div>
-      )}
+      <Flashes flash={flash} />
 
       <div className="mt-4 text-sm">
         <Link

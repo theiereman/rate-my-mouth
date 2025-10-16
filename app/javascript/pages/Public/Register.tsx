@@ -1,6 +1,7 @@
-import { useForm, Link } from "@inertiajs/react";
+import { useForm, Link, usePage } from "@inertiajs/react";
 import { FormEvent } from "react";
 import { Input, Button } from "@components/ui";
+import Flashes from "@components/ui/Flashes";
 
 export default function Register() {
   const form = useForm<{
@@ -16,6 +17,15 @@ export default function Register() {
   });
 
   const { data, setData, errors, processing, post } = form;
+
+  console.log(errors);
+
+  const { flash } = usePage<{
+    flash: {
+      alert?: string;
+      notice?: string;
+    };
+  }>().props;
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -90,6 +100,8 @@ export default function Register() {
           S'inscrire
         </Button>
       </form>
+
+      <Flashes flash={flash} />
 
       <div className="text-sm">
         <Link

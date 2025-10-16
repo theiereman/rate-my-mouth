@@ -1,137 +1,134 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+import { gsap } from "gsap";
 
 interface ToastProps {
   message: string;
   type?: "error" | "success" | "info" | "warning";
   duration?: number;
   onClose: () => void;
-  position?:
-    | "top-right"
-    | "top-left"
-    | "bottom-right"
-    | "bottom-left"
-    | "top-center"
-    | "bottom-center";
 }
 
 export default function Toast({
   message,
   type = "error",
-  duration = 4000,
+  duration = 5000,
   onClose,
-  position = "top-right",
 }: ToastProps) {
-  const [isVisible, setIsVisible] = useState(false);
-  const [isLeaving, setIsLeaving] = useState(false);
+  const backgroundRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const progressBarRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setIsVisible(true);
+    const timeline = gsap.timeline();
+
+    timeline
+      .set(contentRef.current, { opacity: 0 })
+      .set(backgroundRef.current, {
+        scaleX: 0,
+        transformOrigin: "left center",
+      })
+      .set(progressBarRef.current, {
+        scaleX: 0,
+        transformOrigin: "left center",
+      })
+      .to(backgroundRef.current, {
+        scaleX: 1,
+        duration: 0.4,
+        ease: "power2.out",
+      })
+      .to(
+        contentRef.current,
+        {
+          opacity: 1,
+          duration: 0.3,
+          ease: "power2.out",
+        },
+        "-=0.1",
+      )
+      .to(
+        progressBarRef.current,
+        {
+          scaleX: 1,
+          duration: duration / 1000,
+          ease: "none",
+        },
+        "-=0.1",
+      );
 
     const timer = setTimeout(() => {
-      setIsLeaving(true);
-
-      setTimeout(() => {
-        setIsVisible(false);
-        onClose();
-      }, 300);
+      startCloseAnimation();
     }, duration);
 
     return () => {
       clearTimeout(timer);
+      timeline.kill();
     };
-  }, [duration, onClose]);
+  }, [duration]);
 
-  const positionClasses = {
-    "top-right": "top-4 right-4",
-    "top-left": "top-4 left-4",
-    "bottom-right": "bottom-4 right-4",
-    "bottom-left": "bottom-4 left-4",
-    "top-center": "top-4 left-1/2 transform -translate-x-1/2",
-    "bottom-center": "bottom-4 left-1/2 transform -translate-x-1/2",
-  };
+  const startCloseAnimation = () => {
+    progressBarRef.current?.style.setProperty("opacity", "0");
+    const timeline = gsap.timeline();
 
-  const getTypeClasses = () => {
-    switch (type) {
-      case "error":
-        return "bg-red-50 text-red-800 border-l-4 border-red-500";
-      case "success":
-        return "bg-green-50 text-green-800 border-l-4 border-green-500";
-      case "info":
-        return "bg-blue-50 text-blue-800 border-l-4 border-blue-500";
-      case "warning":
-        return "bg-yellow-50 text-yellow-800 border-l-4 border-yellow-500";
-      default:
-        return "bg-red-50 text-red-800 border-l-4 border-red-500";
-    }
+    timeline
+      .to(progressBarRef.current, {
+        scaleY: 0,
+        transformOrigin: "center top",
+        duration: 0.1,
+        ease: "power2.in",
+      })
+      .to(contentRef.current, {
+        opacity: 0,
+        duration: 0.2,
+      })
+      .to(backgroundRef.current, {
+        scaleX: 0,
+        transformOrigin: "right center",
+        duration: 0.3,
+        ease: "power2.in",
+      })
+      .call(() => onClose());
   };
 
   const getIcon = () => {
     switch (type) {
       case "error":
-        return (
-          <span className="material-symbols-outlined text-error-600">
-            priority_high
-          </span>
-        );
+        return <span className="material-symbols-outlined">priority_high</span>;
       case "success":
-        return (
-          <span className="material-symbols-outlined text-valid-600">
-            check
-          </span>
-        );
+        return <span className="material-symbols-outlined">check</span>;
       case "info":
-        return (
-          <span className="material-symbols-outlined text-primary-600">
-            info
-          </span>
-        );
+        return <span className="material-symbols-outlined">info</span>;
       case "warning":
-        return (
-          <span className="material-symbols-outlined text-warning-600">
-            warning
-          </span>
-        );
+        return <span className="material-symbols-outlined">warning</span>;
       default:
         return null;
     }
   };
 
-  if (!isVisible) return null;
-
   return (
-    <div
-      className={`
-        fixed ${
-          positionClasses[position]
-        } flex items-start p-4 mb-4 w-full max-w-xs sm:max-w-sm
-        rounded-lg shadow-lg z-50
-        ${getTypeClasses()}
-        ${
-          isLeaving
-            ? "animate-[fadeOut_0.3s_ease-in-out]"
-            : "animate-[fadeIn_0.3s_ease-in-out]"
-        }
-      `}
-      role="alert"
-    >
-      <div className="inline-flex items-center justify-center flex-shrink-0 mr-3">
-        {getIcon()}
-      </div>
-      <div className="text-sm font-medium">{message}</div>
-      <button
-        type="button"
-        className="ml-auto -mx-1.5 -my-1.5 rounded-lg p-1.5 inline-flex items-center justify-center h-8 w-8 text-neutral-400 hover:text-neutral-800 focus:outline-none"
-        onClick={() => {
-          setIsLeaving(true);
-          setIsVisible(false);
-          onClose();
-        }}
+    <div className="flex w-full items-center p-4">
+      <div ref={backgroundRef} className="bg-primary-900 absolute inset-0" />
+      <div
+        ref={contentRef}
+        className="relative flex w-full items-center font-bold text-white"
+        role="alert"
       >
-        <span className="sr-only">Fermer</span>
-        <span className="material-symbols-outlined text-neutral-600 cursor-pointer">
-          close
-        </span>
-      </button>
+        {getIcon()}
+        <div className="line-clamp-1 flex-1 text-center">{message}</div>
+        <button
+          type="button"
+          className="flex items-center"
+          onClick={startCloseAnimation}
+        >
+          <span className="sr-only">Fermer</span>
+          <span className="material-symbols-outlined cursor-pointer text-white">
+            close
+          </span>
+        </button>
+      </div>
+      <div
+        ref={progressBarRef}
+        className="bg-primary-700 absolute bottom-0 left-0 h-1 w-full"
+      />
     </div>
   );
 }

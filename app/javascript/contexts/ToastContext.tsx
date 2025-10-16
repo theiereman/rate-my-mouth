@@ -1,23 +1,16 @@
-import { Toast } from "@components/ui";
 import { createContext, useContext, useState, ReactNode } from "react";
 
 type ToastType = "error" | "success" | "info" | "warning";
-type ToastPosition =
-  | "top-right"
-  | "top-left"
-  | "bottom-right"
-  | "bottom-left"
-  | "top-center"
-  | "bottom-center";
 
 interface ToastOptions {
   type?: ToastType;
   duration?: number;
-  position?: ToastPosition;
 }
 
 interface ToastContextType {
+  toasts: ToastItem[];
   showToast: (message: string, options?: ToastOptions) => void;
+  removeToast: (id: number) => void;
 }
 
 const ToastContext = createContext<ToastContextType | undefined>(undefined);
@@ -27,7 +20,6 @@ interface ToastItem {
   message: string;
   type: ToastType;
   duration: number;
-  position: ToastPosition;
 }
 
 export const ToastProvider = ({ children }: { children: ReactNode }) => {
@@ -35,17 +27,10 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
 
   const showToast = (
     message: string,
-    {
-      type = "info",
-      duration = 4000,
-      position = "top-right",
-    }: ToastOptions = {}
+    { type = "info", duration = 4000 }: ToastOptions = {},
   ) => {
     const id = Date.now(); // Simple unique ID
-    setToasts((prevToasts) => [
-      ...prevToasts,
-      { id, message, type, duration, position },
-    ]);
+    setToasts((prevToasts) => [...prevToasts, { id, message, type, duration }]);
   };
 
   const removeToast = (id: number) => {
@@ -53,18 +38,8 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <ToastContext.Provider value={{ showToast }}>
+    <ToastContext.Provider value={{ toasts, showToast, removeToast }}>
       {children}
-      {toasts.map((toast) => (
-        <Toast
-          key={toast.id}
-          message={toast.message}
-          type={toast.type}
-          duration={toast.duration}
-          position={toast.position}
-          onClose={() => removeToast(toast.id)}
-        />
-      ))}
     </ToastContext.Provider>
   );
 };
@@ -73,7 +48,7 @@ export const useToast = (): ToastContextType => {
   const context = useContext(ToastContext);
   if (context === undefined) {
     throw new Error(
-      "useToast doit être utilisé à l'intérieur d'un ToastProvider"
+      "useToast doit être utilisé à l'intérieur d'un ToastProvider",
     );
   }
   return context;
