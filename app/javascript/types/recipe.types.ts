@@ -7,6 +7,12 @@ export enum Difficulty {
   Hard = 2,
 }
 
+export enum OrderingOption {
+  Recent = "recent",
+  Popular = "popular",
+  TopRated = "top_rated",
+}
+
 export interface IngredientType {
   id: number;
   name: string;

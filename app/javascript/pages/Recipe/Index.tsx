@@ -1,5 +1,9 @@
 import { router } from "@inertiajs/react";
-import { RawRecipe, RecipeType } from "@customTypes/recipe.types";
+import {
+  OrderingOption,
+  RawRecipe,
+  RecipeType,
+} from "@customTypes/recipe.types";
 import { Pagination } from "@components/ui";
 import { useEffect, useMemo, useState } from "react";
 import { PagyMetadata } from "@components/ui/Pagination";
@@ -13,6 +17,7 @@ import RecipeFilters from "@components/Recipes/RecipeFilters";
 import { useUrlParams } from "@hooks/useUrlParams";
 import { RecipeAdapter } from "@adapters/recipe.adapter";
 import RecipeLink from "@components/Recipes/RecipeLink";
+import RecipeOrderingButtons from "@components/Recipes/RecipeOrderingButtons";
 
 export default function Index({
   recipes: rawRecipes,
@@ -25,16 +30,20 @@ export default function Index({
   const [selectedTags, setSelectedTags] = useState<TagType[]>([]);
   const [selectedUser, setSelectedUser] = useState<UserType | null>(null);
   const [isLoadingRecipes, setIsLoadingRecipes] = useState(false);
+  const [orderingOption, setOrderingOption] = useState<OrderingOption>(
+    OrderingOption.Recent,
+  );
 
   const recipes = useMemo(
     () => RecipeAdapter.fromApiArray(rawRecipes),
     [rawRecipes],
   ); //TODO: consider HOC to avoid having to adapt the recipes inside the component
 
-  const { initFromUrl } = useUrlParams({
+  const { initFromUrl, isInitializing } = useUrlParams({
     onQueryInit: setSearchQuery,
     onUserInit: setSelectedUser,
     onTagsInit: setSelectedTags,
+    onOrderingOptionInit: setOrderingOption,
   });
 
   useEffect(() => {
@@ -45,19 +54,29 @@ export default function Index({
     searchQuery?: string;
     selectedUser?: UserType | null;
     selectedTags?: TagType[];
+    orderingOption?: OrderingOption;
   }) => {
     const currentSearchQuery = overrides?.searchQuery ?? searchQuery;
     const currentSelectedUser = overrides?.hasOwnProperty("selectedUser")
       ? overrides.selectedUser
       : selectedUser;
     const currentSelectedTags = overrides?.selectedTags ?? selectedTags;
+    const currentOrderingOption = overrides?.orderingOption ?? orderingOption;
 
-    const params: { name?: string; user_id?: number; tags_ids?: string } = {};
+    setOrderingOption(currentOrderingOption);
+
+    const params: {
+      name?: string;
+      user_id?: number;
+      tags_ids?: string;
+      order?: string;
+    } = {};
 
     if (currentSearchQuery?.trim()) params.name = currentSearchQuery;
     if (currentSelectedUser) params.user_id = currentSelectedUser.id;
     if (currentSelectedTags && currentSelectedTags.length > 0)
       params.tags_ids = currentSelectedTags.map((tag) => tag.id).join(",");
+    if (currentOrderingOption) params.order = currentOrderingOption;
 
     setIsLoadingRecipes(true);
     router.get("/recipes", params, {
@@ -67,27 +86,20 @@ export default function Index({
     });
   };
 
-  const fetchRecipesDebounced = useDebouncedCallback(() => {
-    const params: { name?: string; user_id?: number; tags_ids?: string } = {};
-
-    if (searchQuery?.trim()) params.name = searchQuery;
-    if (selectedUser) params.user_id = selectedUser.id;
-    if (selectedTags.length > 0)
-      params.tags_ids = selectedTags.map((tag) => tag.id).join(",");
-
-    setIsLoadingRecipes(true);
-    router.get("/recipes", params, {
-      preserveState: true,
-      preserveScroll: true,
-      onFinish: () => setIsLoadingRecipes(false),
-    });
-  }, 500);
+  const fetchRecipesDebounced = useDebouncedCallback(fetchRecipes, 500);
 
   return (
     <Page
       title="Index des recettes"
       subtitle="Découvrez les dernières recettes et partagez vos recettes favorites !"
     >
+      <RecipeOrderingButtons
+        selectedOrderingOption={orderingOption}
+        onOrderingOptionChange={(option) =>
+          fetchRecipes({ orderingOption: option })
+        }
+        disabled={isInitializing}
+      />
       <Section title="Filtres" variant="ghost">
         <RecipeFilters
           searchQuery={searchQuery}
@@ -108,7 +120,6 @@ export default function Index({
           }}
         />
       </Section>
-
       {isLoadingRecipes ? (
         <div className="text-primary-900 mt-8 flex flex-col items-center gap-2">
           <span className="text-lg">Chargement des recettes...</span>
@@ -125,7 +136,6 @@ export default function Index({
           ))}
         </div>
       )}
-
       {pagy && <Pagination className="mt-8" pagy={pagy}></Pagination>}
     </Page>
   );

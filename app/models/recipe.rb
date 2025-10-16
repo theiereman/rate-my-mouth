@@ -2,10 +2,22 @@ class Recipe < ApplicationRecord
   include AchievementTriggerable
   include Filterable
 
+  ORDERING_TYPE = %w[recent top_rated popular].freeze
+  FILTERING_TYPE = %w[name user_id tags_ids].freeze
+
+  # ordering scopes
+  scope :recent, -> { order(created_at: :desc) }
+  scope :popular, -> { order(ratings_count: :desc, comments_count: :desc) }
+  scope :top_rated, -> {
+    left_joins(:ratings)
+      .group("recipes.id")
+      .order(Arel.sql("COALESCE(AVG(ratings.value), 0) DESC"))
+  }
+
+  # filtering scopes
   scope :filter_by_name, ->(name) { where("recipes.name LIKE ?", "%#{name}%") }
   scope :filter_by_user_id, ->(user_id) { where(user_id: user_id) }
   scope :filter_by_tags_ids, ->(tag_ids) {
-    # Convertir la chaîne séparée par des virgules en array
     tag_ids = tag_ids.is_a?(String) ? tag_ids.split(",").map(&:to_i) : Array(tag_ids)
     joins(:tags)
       .where(tags: {id: tag_ids})
@@ -29,13 +41,28 @@ class Recipe < ApplicationRecord
   has_many :recipe_tags, dependent: :destroy
   has_many :tags, through: :recipe_tags
 
-  # Nested attributes pour les formulaires
   accepts_nested_attributes_for :ingredients, allow_destroy: true, reject_if: :all_blank
   accepts_nested_attributes_for :instructions, allow_destroy: true, reject_if: :all_blank
 
   validates :name, presence: true
   validates :number_of_servings, presence: true, numericality: {only_integer: true, greater_than: 0}
   validates :difficulty, presence: true, inclusion: {in: difficulties.keys}
+
+  def self.ordered(ordering_type = nil)
+    raise ArgumentError, "Invalid ordering type" if ordering_type && !ORDERING_TYPE.include?(ordering_type.to_s)
+    return recent unless ordering_type
+    send(ordering_type)
+  end
+
+  def self.filtered(filters)
+    valid_filters = filters.select { |key, value| FILTERING_TYPE.include?(key.to_s) && value.present? }
+
+    if valid_filters.any?
+      filter(valid_filters)
+    else
+      all
+    end
+  end
 
   # FIXME: temp hack to make it work when you pass the thumbnail as recipe_param
   # it breaks the whole params hash and make value change type etc, please send help
