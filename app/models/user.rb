@@ -3,8 +3,7 @@ class User < ApplicationRecord
 
   scope :filter_by_username, ->(username) { where("users.username LIKE ?", "%#{username}%") }
 
-  devise :database_authenticatable, :registerable,
-    :recoverable, :rememberable, :validatable
+  devise :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable, :confirmable
 
   has_many :recipes, dependent: :destroy
   has_many :comments, dependent: :destroy
