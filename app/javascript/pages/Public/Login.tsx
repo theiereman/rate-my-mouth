@@ -29,7 +29,7 @@ export default function Login() {
     form.transform((data) => ({
       user: data,
     }));
-    post("/users/sign_in");
+    post("/auth/sign_in");
   };
 
   return (
@@ -89,13 +89,13 @@ export default function Login() {
 
       <div className="flex flex-col text-sm">
         <Link
-          href="/users/password/new"
+          href="/auth/password/new"
           className="text-primary-600 hover:text-primary-800 mr-4 hover:underline"
         >
           Mot de passe oublié ?
         </Link>
         <Link
-          href="/users/sign_up"
+          href="/auth/sign_up"
           className="text-primary-600 hover:text-primary-800 hover:underline"
         >
           S'inscrire

@@ -1,8 +1,8 @@
 Rails.application.routes.draw do
-  devise_for :users, controllers: {
+  devise_for :users, path: "auth", controllers: {
+    passwords: "users/passwords",
     sessions: "users/sessions",
-    registrations: "users/registrations",
-    passwords: "users/passwords"
+    registrations: "users/registrations"
   }
 
   resources :users, only: [:index, :show, :update] do

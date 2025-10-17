@@ -18,7 +18,7 @@ export default function ForgotPassword({ flash }: PageProps) {
     form.transform((data) => ({
       user: data,
     }));
-    post("/users/password");
+    post("/auth/password");
   };
 
   return (
@@ -57,7 +57,7 @@ export default function ForgotPassword({ flash }: PageProps) {
 
       <div className="mt-4 text-sm">
         <Link
-          href="/users/sign_in"
+          href="/auth/sign_in"
           className="text-primary-600 hover:text-primary-800 hover:underline"
         >
           Retour à la connexion

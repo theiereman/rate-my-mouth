@@ -15,13 +15,13 @@ export default function Home() {
       <div className="mt-12 flex flex-col items-end gap-2 lg:mt-6 lg:items-end">
         <LinkButton
           className="w-76 text-2xl max-sm:w-full"
-          href={"/users/sign_in"}
+          href={"/auth/sign_in"}
         >
           Se connecter
         </LinkButton>
         <LinkButton
           className="w-76 text-2xl max-sm:w-full"
-          href={"/users/sign_up"}
+          href={"/auth/sign_up"}
         >
           S'inscrire
         </LinkButton>

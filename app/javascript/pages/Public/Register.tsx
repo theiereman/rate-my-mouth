@@ -32,7 +32,7 @@ export default function Register() {
     form.transform((data) => ({
       user: data,
     }));
-    post("/users");
+    post("/auth");
   };
 
   return (
@@ -105,7 +105,7 @@ export default function Register() {
 
       <div className="text-sm">
         <Link
-          href="/users/sign_in"
+          href="/auth/sign_in"
           className="text-primary-600 hover:text-primary-800 hover:underline"
         >
           Déjà un compte ? Se connecter
