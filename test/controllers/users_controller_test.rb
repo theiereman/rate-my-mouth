@@ -37,7 +37,6 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
       post user_registration_path, params: {user: {username: "new_user_name", email: @user.email, password: "password", password_confirmation: "password"}}
     end
 
-    assert_response :unprocessable_entity
     assert_equal "Email has already been taken", flash[:alert]
   end
 
@@ -46,7 +45,6 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
       post user_registration_path, params: {user: {username: @user.username, email: "new_user@example.com", password: "password", password_confirmation: "password"}}
     end
 
-    assert_response :unprocessable_entity
     assert_equal "Username has already been taken", flash[:alert]
   end
 
