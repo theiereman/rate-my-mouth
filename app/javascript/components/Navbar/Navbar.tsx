@@ -23,6 +23,7 @@ export default function Navbar() {
           <Toast
             key={toasts[0].id}
             message={toasts[0].message}
+            duration={toasts[0].duration}
             onClose={() => removeToast(toasts[0].id)}
           />
         </div>
