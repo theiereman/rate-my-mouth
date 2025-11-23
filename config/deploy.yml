@@ -31,4 +31,4 @@ ssh:
   proxy: root@ratemymouth.dotsncircles.com
 
 volumes:
-  - "/home/root/docker_storage/ratemymouth_db/:/rails/storage"
+  - "/root/docker_storage/ratemymouth_db/:/rails/storage"
