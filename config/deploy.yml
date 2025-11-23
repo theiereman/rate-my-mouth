@@ -20,18 +20,15 @@ registry:
     - KAMAL_REGISTRY_PASSWORD
 
 builder:
-  arch: arm64
+  arch: amd64
 
 env:
   secret:
     - RAILS_MASTER_KEY
 
 ssh:
-  user: admin
-  proxy: admin@ratemymouth.dotsncircles.com
+  user: root
+  proxy: root@ratemymouth.dotsncircles.com
 
 volumes:
-  - "/home/admin/docker_storage/ratemymouth_db/:/rails/storage"
-
-deploy_timeout: 90
-drain_timeout: 90
+  - "/home/root/docker_storage/ratemymouth_db/:/rails/storage"
