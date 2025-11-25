@@ -12,7 +12,7 @@ servers:
 proxy:
   ssl: true
   host: ratemymouth.dotsncircles.com
-  app_port: 80
+  app_port: 3000
 
 registry:
   username: teyermann
