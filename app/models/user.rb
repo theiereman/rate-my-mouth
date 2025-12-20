@@ -33,9 +33,7 @@ class User < ApplicationRecord
     ratings.count
   end
 
-  def avatar_url
-    if avatar.attached?
-      Rails.application.routes.url_helpers.rails_blob_path(avatar.variant(:thumb), only_path: true)
-    end
+  def level
+    super || create_level(xp: 0)
   end
 end
