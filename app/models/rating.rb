@@ -1,5 +1,6 @@
 class Rating < ApplicationRecord
   include AchievementTriggerable
+  include Experiencable
 
   after_create -> {
     NewRatingNotifier.with(record: self).deliver

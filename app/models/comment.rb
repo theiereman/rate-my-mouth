@@ -1,5 +1,6 @@
 class Comment < ApplicationRecord
   include AchievementTriggerable
+  include Experiencable
 
   after_create -> {
     NewCommentToOtherCommentersNotifier.with(record: self).deliver

@@ -1,6 +1,7 @@
 class Recipe < ApplicationRecord
   include AchievementTriggerable
   include Filterable
+  include Experiencable
 
   ORDERING_TYPE = %w[recent top_rated popular].freeze
   FILTERING_TYPE = %w[name user_id tags_ids].freeze
