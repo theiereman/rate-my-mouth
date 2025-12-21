@@ -9,6 +9,8 @@ export interface UserType {
   comments_count: number;
   ratings_count: number;
   title?: string;
+  current_level: number;
+  level_progress_percentage: number;
 }
 
 export type UserFormType = Omit<UserType, "id">;

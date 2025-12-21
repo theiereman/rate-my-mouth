@@ -82,7 +82,7 @@ export default function UserNotificationsDropdown() {
   return (
     <NavbarDropdown
       buttonChildren={
-        <div className="relative flex size-full items-center">
+        <div className="relative flex size-full items-center px-1">
           <span className="material-symbols-outlined">notifications</span>
           {notifications.filter((n) => !n.read_at).length > 0 && (
             <span className="text-primary-900 text-sm font-bold">

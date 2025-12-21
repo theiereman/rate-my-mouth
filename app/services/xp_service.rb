@@ -38,9 +38,19 @@ class XpService
 
   private
 
+  def broadcast_xp_update(xp)
+    ExperienceChannel.broadcast_to(
+      @user,
+      xp: xp,
+      level: @user.current_level,
+      level_progress_percentage: @user.level_progress_percentage
+    )
+  end
+
   def add_xp(amount)
     @user.level ||= Level.create(user: @user, xp: 0)
     @user.level.xp += amount
     @user.level.save!
+    broadcast_xp_update(amount)
   end
 end

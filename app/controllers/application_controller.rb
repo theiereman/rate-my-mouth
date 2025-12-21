@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
   inertia_share if: :user_signed_in? do
     {
       csrf_token: form_authenticity_token,
-      current_user: current_user.as_json(only: [:username, :email])
+      current_user: current_user.as_json(only: [:username, :email], methods: [:current_level, :level_progress_percentage])
     }
   end
 
