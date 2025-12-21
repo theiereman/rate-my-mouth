@@ -1,4 +1,6 @@
 import { useToast } from "@contexts/ToastContext";
+import { usePage } from "@inertiajs/react";
+import { useEffect, useRef } from "react";
 import DesktopNavbar from "./DesktopNavbar";
 import MobileNavbar from "./MobileNavbar";
 import { Toast } from "@components/ui";
@@ -14,7 +16,28 @@ const navItems: NavItem[] = [
 ];
 
 export default function Navbar() {
-  const { toasts, removeToast } = useToast();
+  const { toasts, removeToast, showToast } = useToast();
+  const { flash } = usePage().props as any;
+  const flashShownRef = useRef<Set<string>>(new Set());
+
+  useEffect(() => {
+    if (flash) {
+      const flashKeys = Object.keys(flash);
+      flashKeys.forEach((key) => {
+        const message = flash[key];
+        if (message && !flashShownRef.current.has(message)) {
+          flashShownRef.current.add(message);
+          const type =
+            key === "notice" ? "success" : key === "alert" ? "error" : "info";
+          showToast(message, { type });
+          // Allow re-display after 5 seconds
+          setTimeout(() => {
+            flashShownRef.current.delete(message);
+          }, 5000);
+        }
+      });
+    }
+  }, [flash, showToast]);
 
   return (
     <div className="relative">
