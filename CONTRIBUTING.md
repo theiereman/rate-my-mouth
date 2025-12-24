@@ -18,7 +18,7 @@ If you would like to contribute on Windows, you will need to install WSL2 and us
 
 ### Rails / Ruby
 
-The project uses Rails 8 and Ruby 3.3.5. Make sure you install the right version before doing anything or it could cause some issues.
+The project uses Rails 8 and Ruby 3.4.8. Make sure you install the right version before doing anything or it could cause some issues.
 
 You can use [RVM](https://github.com/rvm/rvm) to install the desired version.
 

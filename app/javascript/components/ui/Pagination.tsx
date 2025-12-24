@@ -3,11 +3,11 @@ import { router } from "@inertiajs/react";
 
 export interface PagyMetadata {
   first_url: string;
-  prev_url: string;
+  previous_url: string;
   next_url: string;
   last_url: string;
   next: number | null;
-  prev: number | null;
+  previous: number | null;
   last: number | null;
   count: number;
   page: number;
@@ -31,7 +31,7 @@ export function Pagination({
   };
 
   const handlePrevClick = () => {
-    router.visit(pagy?.prev_url ?? "#", {
+    router.visit(pagy?.previous_url ?? "#", {
       preserveState: true,
       preserveScroll: true,
     });
@@ -79,10 +79,10 @@ export function CustomPagination({
   return (
     (pagy?.pages ?? 0) > 1 && (
       <div className={`flex items-center justify-center gap-2 ${className}`}>
-        <Button disabled={pagy?.prev === null} onClick={onFirstClick}>
+        <Button disabled={pagy?.previous === null} onClick={onFirstClick}>
           <span className="material-symbols-outlined">first_page</span>
         </Button>
-        <Button disabled={pagy?.prev === null} onClick={onPrevClick}>
+        <Button disabled={pagy?.previous === null} onClick={onPrevClick}>
           <span className="material-symbols-outlined">keyboard_arrow_left</span>
         </Button>
         <span className="text-neutral-500">

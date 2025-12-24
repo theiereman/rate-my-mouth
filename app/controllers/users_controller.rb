@@ -6,7 +6,7 @@ class UsersController < ApplicationController
   def index
     @users = User.filter(params.slice(:username))
     @pagy, @users = paginate_collection(@users)
-    render json: {users: @users.as_json(only: [:id, :username, :email]), pagy: pagy_metadata(@pagy)}
+    render json: {users: @users.as_json(only: [:id, :username, :email]), pagy: @pagy.data_hash}
   end
 
   # GET /users/by_id

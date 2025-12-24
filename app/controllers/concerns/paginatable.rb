@@ -5,8 +5,11 @@ module Paginatable
 
   def paginate_collection(collection, **options)
     limit = extract_limit_param
-    pagy_options = options.merge(limit: limit)
-    pagy(collection, **pagy_options)
+
+    pp "== LIMIT == #{limit}"
+
+    pagy_options = options.merge(limit: limit) if limit.present?
+    pagy(:offset, collection, **pagy_options)
   end
 
   def extract_limit_param

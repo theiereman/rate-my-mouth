@@ -88,6 +88,8 @@ export default function Index({
 
   const fetchRecipesDebounced = useDebouncedCallback(fetchRecipes, 500);
 
+  console.log(pagy);
+
   return (
     <Page
       title="Index des recettes"

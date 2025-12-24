@@ -29,7 +29,7 @@ The main goal of this app is to create a recipe sharing website that's fun to us
 
 ## Requirements
 
-- Ruby 3.3.5
+- Ruby 3.4.8
 - Node.js and npm
 - SQLite 3
 - AWS account to use Active Storage and Active Mailer

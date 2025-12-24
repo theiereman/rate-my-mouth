@@ -1,12 +1,12 @@
 class NotificationsController < ApplicationController
   def index
     @notifications = current_user.notifications.includes(event: [record: [:recipe, :commentable]]).order(Arel.sql("read_at IS NULL DESC, created_at DESC"))
-    @pagy, @notifications = pagy_countless(@notifications, page: params[:page])
+    @pagy, @notifications = pagy(:countless, @notifications, page: params[:page])
     @presented_notifications = @notifications.map { |notification| NotificationPresenter.new(notification).to_h }
 
     render json: {
       notifications: @presented_notifications,
-      pagy: pagy_metadata(@pagy)
+      pagy: @pagy.data_hash
     }
   end
 

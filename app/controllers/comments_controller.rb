@@ -10,7 +10,7 @@ class CommentsController < ApplicationController
 
     render json: {
       comments: @comments.map { |comment| comment.as_json(include: {user: {only: [:id, :username], methods: [:avatar_url]}}) },
-      pagy: pagy_metadata(@pagy)
+      pagy: @pagy.data_hash
     }
   end
 

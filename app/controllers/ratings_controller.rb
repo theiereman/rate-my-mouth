@@ -9,7 +9,7 @@ class RatingsController < ApplicationController
 
     render json: {
       ratings: @ratings.map { |rating| rating.as_json(include: {user: {only: [:id, :username], methods: [:avatar_url]}}) },
-      pagy: pagy_metadata(@pagy)
+      pagy: @pagy.data_hash
     }
   end
 

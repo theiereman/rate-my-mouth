@@ -2,7 +2,7 @@ require "test_helper"
 require_relative "base_controller_test"
 
 class RecipesControllerTest < BaseControllerTest
-  include Pagy::Backend
+  include Pagy::Method
 
   setup do
     @recipe = recipes(:one)

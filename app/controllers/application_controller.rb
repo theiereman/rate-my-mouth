@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  include Pagy::Backend
+  include Pagy::Method
 
   rescue_from StandardError, with: :inertia_error_page
 

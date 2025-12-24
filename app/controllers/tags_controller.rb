@@ -8,7 +8,7 @@ class TagsController < ApplicationController
     @tags = Tag.filter(params.slice(:name)).order(recipes_count: :asc)
     @pagy, @tags = paginate_collection(@tags)
 
-    render json: {tags: @tags.as_json, pagy: pagy_metadata(@pagy)}
+    render json: {tags: @tags.as_json, pagy: @pagy.data_hash}
   end
 
   # GET /tags/by_ids

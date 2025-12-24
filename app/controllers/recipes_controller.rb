@@ -10,7 +10,7 @@ class RecipesController < ApplicationController
     @pagy, @recipes = paginate_collection(@recipes)
 
     recipes_data = @recipes.map { |recipe| RecipePresenter.minimal_recipe_json(recipe) }
-    pagy_data = pagy_metadata(@pagy)
+    pagy_data = @pagy.data_hash
 
     respond_to do |format|
       format.html {

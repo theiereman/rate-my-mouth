@@ -64,18 +64,18 @@ group :test do
   gem "selenium-webdriver"
 end
 
-gem "inertia_rails", "~> 3.7"
+gem "inertia_rails", "~> 3.15"
 
 gem "vite_rails", "~> 3.0"
 
 gem "devise", "~> 4.9"
 
 # pagination
-gem "pagy", "~> 9.3"
+gem "pagy", "~> 43.2"
 
 # S3 bucket storage for Active Storage
 gem "aws-sdk-s3", require: false
 
-gem "noticed", "~> 2.7"
+gem "noticed", "~> 2.9"
 
 gem "standard", ">= 1.35.1"
