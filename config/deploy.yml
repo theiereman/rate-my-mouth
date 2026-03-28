@@ -10,7 +10,7 @@ servers:
     cmd: bin/rails solid_queue:start
 
 proxy:
-  ssl: true
+  ssl: false
   host: ratemymouth.dotsncircles.com
   app_port: 3000
 
